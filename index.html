@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sotreq CAT | Oportunidades Terras Raras Brasil</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  :root {
+    --cat-yellow: #FFCD00;
+    --cat-yellow-dark: #E5B800;
+    --cat-black: #1a1a1a;
+    --cat-dark: #0d0d0d;
+    --cat-gray: #2a2a2a;
+    --cat-gray-light: #3a3a3a;
+    --cat-text: #e0e0e0;
+    --cat-text-muted: #888;
+    --cat-green: #00C851;
+    --cat-red: #ff4444;
+    --cat-blue: #33b5e5;
+    --cat-orange: #FF8800;
+    --cat-purple: #aa66cc;
+    --cat-fg: #fff;
+  }
+  [data-theme="light"] {
+    --cat-yellow: #FFCD00;
+    --cat-yellow-dark: #E5B800;
+    --cat-black: #f0f0f0;
+    --cat-dark: #ffffff;
+    --cat-gray: #e0e0e0;
+    --cat-gray-light: #cccccc;
+    --cat-text: #1a1a1a;
+    --cat-text-muted: #666;
+    --cat-fg: #1a1a1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--cat-dark);
+    color: var(--cat-text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .top-bar {
+    background: var(--cat-black);
+    border-bottom: 3px solid var(--cat-yellow);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .top-bar .logo { display: flex; align-items: center; gap: 16px; }
+  .top-bar .logo .sotreq-logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .top-bar .logo .sotreq-logo svg {
+    height: 40px; width: auto;
+  }
+    .top-bar .logo .divider { width: 1px; height: 36px; background: var(--cat-gray-light); flex-shrink: 0; }
+  .top-bar .logo .brand-text h1 { font-size: 16px; font-weight: 700; color: var(--cat-fg); letter-spacing: -0.5px; }
+  .top-bar .logo .brand-text span { font-size: 11px; color: var(--cat-yellow); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+  .top-bar .tagline { text-align: right; display: flex; align-items: center; gap: 12px; }
+  .top-bar .tagline .title { font-size: 14px; font-weight: 600; color: var(--cat-yellow); }
+  .top-bar .tagline .sub { font-size: 11px; color: var(--cat-text-muted); }
+  .theme-btn {
+    background: var(--cat-gray); border: 1px solid var(--cat-gray-light); cursor: pointer;
+    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 18px; transition: all 0.2s; flex-shrink: 0;
+  }
+  .theme-btn:hover { border-color: var(--cat-yellow); transform: scale(1.1); }
+
+  .hero {
+    background: linear-gradient(135deg, var(--cat-black) 0%, var(--cat-dark) 50%, var(--cat-black) 100%);
+    padding: 56px 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,205,0,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cat-yellow), transparent);
+    opacity: 0.3;
+  }
+  .hero .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h2 { font-size: 36px; font-weight: 800; color: var(--cat-fg); margin-bottom: 8px; letter-spacing: -1px; }
+  .hero h2 em { color: var(--cat-yellow); font-style: normal; }
+  .hero p { font-size: 16px; color: var(--cat-text-muted); max-width: 700px; margin-bottom: 32px; }
+  .hero .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hero .tags span {
+    background: rgba(255,205,0,0.1); border: 1px solid rgba(255,205,0,0.2);
+    padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--cat-yellow);
+  }
+
+  .summary-carousel-wrapper { position: relative; max-width: 1400px; margin: -24px auto 0; padding: 0 32px; z-index: 2; }
+  .summary-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px 24px; transition: all 0.2s;
+  }
+  .summary-carousel .summary-card:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
+  .summary-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--cat-text-muted); font-weight: 600; margin-bottom: 4px; }
+  .summary-card .value { font-size: 28px; font-weight: 800; color: var(--cat-fg); letter-spacing: -1px; }
+  .summary-card .value.yellow { color: var(--cat-yellow); }
+  .summary-card .value.green { color: var(--cat-green); }
+  .summary-card .value.blue { color: var(--cat-blue); }
+  .summary-card .value.orange { color: var(--cat-orange); }
+  .summary-card .value.purple { color: var(--cat-purple); }
+  .summary-card .sub { font-size: 12px; color: var(--cat-text-muted); margin-top: 2px; }
+  .summary-card .value.purple { color: var(--cat-purple); }
+
+  .summary-carousel-wrapper { position: relative; max-width: 1400px; margin: -24px auto 0; padding: 0 32px; z-index: 2; }
+  .summary-carousel {
+    display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 4px;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .summary-carousel::-webkit-scrollbar { display: none; }
+  .summary-carousel .summary-card { flex: 0 0 200px; min-width: 0; }
+  .summary-carousel-btn {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--cat-gray); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-fg); font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .summary-carousel-btn:hover { background: var(--cat-yellow); color: var(--cat-black); border-color: var(--cat-yellow); }
+  .summary-carousel-btn.prev { left: 2px; }
+  .summary-carousel-btn.next { right: 2px; }
+
+  .main-content { max-width: 1400px; margin: 0 auto; padding: 40px 32px; }
+
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .section-header h3 { font-size: 20px; font-weight: 700; color: var(--cat-fg); letter-spacing: -0.3px; }
+  .section-header h3 .badge {
+    display: inline-block; background: var(--cat-yellow); color: var(--cat-black);
+    font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-left: 8px; vertical-align: middle;
+  }
+  .section-header .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .section-header .filters select, .section-header .filters input {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-text); padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-family: inherit; cursor: pointer; outline: none; transition: border-color 0.2s;
+  }
+  .section-header .filters select:focus, .section-header .filters input:focus { border-color: var(--cat-yellow); }
+  .section-header .filters select option { background: var(--cat-black); }
+
+  .table-wrapper { overflow-x: auto; overflow-y: auto; max-height: calc(100vh - 160px); border: 1px solid var(--cat-gray-light); border-radius: 12px; background: var(--cat-black); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1300px; }
+  table thead { position: sticky; top: 0; z-index: 10; }
+  table thead th {
+    padding: 12px 14px; text-align: left; font-weight: 600; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--cat-text-muted);
+    border-bottom: 2px solid var(--cat-gray-light); white-space: nowrap; cursor: pointer; user-select: none;
+    background: var(--cat-gray);
+  }
+  table thead th:hover { color: var(--cat-yellow); }
+  table thead th .sort-icon { display: inline-block; margin-left: 4px; opacity: 0.4; }
+  table tbody tr { border-bottom: 1px solid var(--cat-gray-light); transition: background 0.15s; }
+  table tbody tr:hover { background: rgba(255, 205, 0, 0.05); }
+  table tbody td { padding: 14px; vertical-align: middle; }
+  table tbody td .company { font-weight: 600; color: var(--cat-fg); }
+  table tbody td .project { font-size: 12px; color: var(--cat-text-muted); display: block; }
+
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .tag-s1 { background: rgba(255, 136, 0, 0.15); color: var(--cat-orange); }
+  .tag-s2 { background: rgba(255, 136, 0, 0.25); color: #ffaa33; }
+  .tag-s3 { background: rgba(51, 181, 229, 0.15); color: var(--cat-blue); }
+  .tag-s4 { background: rgba(51, 181, 229, 0.25); color: #66d9ff; }
+  .tag-s5 { background: rgba(255, 205, 0, 0.15); color: var(--cat-yellow); }
+  .tag-s6 { background: rgba(0, 200, 81, 0.15); color: var(--cat-green); }
+
+  .capex { font-weight: 700; color: var(--cat-fg); }
+  .capex small { font-weight: 400; color: var(--cat-text-muted); font-size: 11px; }
+  .location { display: flex; align-items: center; gap: 4px; }
+  .location .state {
+    background: var(--cat-gray); padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; color: var(--cat-text);
+  }
+  .machine-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .machine-tags .m-tag {
+    background: rgba(255, 205, 0, 0.1); border: 1px solid rgba(255, 205, 0, 0.2);
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; color: var(--cat-yellow); white-space: nowrap;
+  }
+  .machine-tags .m-tag.high { background: rgba(0, 200, 81, 0.1); border-color: rgba(0, 200, 81, 0.3); color: var(--cat-green); }
+  .priority-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .priority-critical { background: var(--cat-red); }
+  .priority-high { background: var(--cat-orange); }
+  .priority-medium { background: var(--cat-yellow); }
+  .priority-low { background: var(--cat-gray-light); }
+
+  /* PIPELINE SECTION */
+  .pipeline { margin-top: 40px; }
+  .pipeline-flow {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-top: 16px;
+  }
+  @media (max-width: 1000px) { .pipeline-flow { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .pipeline-flow { grid-template-columns: 1fr; } }
+  .pipe-stage {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 16px; position: relative;
+    transition: all 0.2s;
+  }
+  .pipe-stage:hover { border-color: var(--cat-yellow); }
+  .pipe-stage .ps-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .pipe-stage .ps-header .ps-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px; flex-shrink: 0;
+  }
+  .pipe-stage .ps-header .ps-name { font-weight: 700; font-size: 14px; color: var(--cat-fg); }
+  .pipe-stage .ps-header .ps-count {
+    margin-left: auto; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .pipe-stage .ps-desc { font-size: 11px; color: var(--cat-text-muted); margin-bottom: 10px; }
+  .pipe-stage .ps-projects { list-style: none; }
+  .pipe-stage .ps-projects li {
+    font-size: 12px; padding: 4px 0; border-bottom: 1px solid var(--cat-gray-light);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .pipe-stage .ps-projects li:last-child { border-bottom: none; }
+  .pipe-stage .ps-projects li .psp-co { color: var(--cat-fg); font-weight: 500; }
+  .pipe-stage .ps-projects li .psp-st { font-size: 10px; color: var(--cat-text-muted); }
+
+  .stage-s1 { border-left: 3px solid var(--cat-orange); }
+  .stage-s1 .ps-num { background: rgba(255,136,0,0.2); color: var(--cat-orange); }
+  .stage-s1 .ps-count { background: rgba(255,136,0,0.15); color: var(--cat-orange); }
+
+  .stage-s2 { border-left: 3px solid #ffaa33; }
+  .stage-s2 .ps-num { background: rgba(255,170,51,0.2); color: #ffaa33; }
+  .stage-s2 .ps-count { background: rgba(255,170,51,0.15); color: #ffaa33; }
+
+  .stage-s3 { border-left: 3px solid var(--cat-blue); }
+  .stage-s3 .ps-num { background: rgba(51,181,229,0.2); color: var(--cat-blue); }
+  .stage-s3 .ps-count { background: rgba(51,181,229,0.15); color: var(--cat-blue); }
+
+  .stage-s4 { border-left: 3px solid #66d9ff; }
+  .stage-s4 .ps-num { background: rgba(102,217,255,0.2); color: #66d9ff; }
+  .stage-s4 .ps-count { background: rgba(102,217,255,0.15); color: #66d9ff; }
+
+  .stage-s5 { border-left: 3px solid var(--cat-yellow); }
+  .stage-s5 .ps-num { background: rgba(255,205,0,0.2); color: var(--cat-yellow); }
+  .stage-s5 .ps-count { background: rgba(255,205,0,0.15); color: var(--cat-yellow); }
+
+  .stage-s6 { border-left: 3px solid var(--cat-green); }
+  .stage-s6 .ps-num { background: rgba(0,200,81,0.2); color: var(--cat-green); }
+  .stage-s6 .ps-count { background: rgba(0,200,81,0.15); color: var(--cat-green); }
+
+  .pipe-arrow { display: none; }
+
+  /* OPPORTUNITY */
+  .opportunity-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px; margin-top: 16px;
+  }
+  .opp-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px; transition: all 0.2s;
+  }
+  .opp-card:hover { border-color: var(--cat-yellow); }
+  .opp-card .opp-icon {
+    width: 40px; height: 40px; background: rgba(255,205,0,0.1);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 12px;
+  }
+  .opp-card h4 { font-size: 15px; font-weight: 700; color: var(--cat-fg); margin-bottom: 6px; }
+  .opp-card p { font-size: 13px; color: var(--cat-text-muted); line-height: 1.5; }
+  .opp-card .opp-value {
+    display: inline-block; margin-top: 10px; font-size: 20px; font-weight: 800; color: var(--cat-yellow);
+  }
+  .opp-card .opp-value small { font-size: 12px; font-weight: 400; color: var(--cat-text-muted); }
+
+  .machine-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px; margin-top: 16px;
+  }
+  .machine-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 16px; text-align: center; transition: all 0.2s;
+  }
+  .machine-card:hover { border-color: var(--cat-yellow); }
+  .machine-card .m-icon { font-size: 32px; margin-bottom: 8px; }
+  .machine-card .m-name { font-weight: 600; color: var(--cat-fg); font-size: 13px; }
+  .machine-card .m-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 4px; }
+  .machine-card .m-demand { font-size: 18px; font-weight: 800; color: var(--cat-yellow); margin-top: 8px; }
+  .machine-card .m-demand small { font-size: 11px; font-weight: 400; color: var(--cat-text-muted); }
+
+  .state-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px; margin-top: 16px;
+  }
+  .state-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px; transition: all 0.2s;
+  }
+  .state-card:hover { border-color: var(--cat-yellow); }
+  .state-card .state-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .state-card .state-header .state-name { font-size: 18px; font-weight: 700; color: var(--cat-fg); }
+  .state-card .state-header .state-count {
+    background: var(--cat-yellow); color: var(--cat-black);
+    font-weight: 700; font-size: 12px; padding: 2px 10px; border-radius: 20px;
+  }
+  .state-card .state-projects { list-style: none; }
+  .state-card .state-projects li {
+    padding: 6px 0; border-bottom: 1px solid var(--cat-gray-light);
+    font-size: 13px; display: flex; justify-content: space-between; align-items: center;
+  }
+  .state-card .state-projects li:last-child { border-bottom: none; }
+  .state-card .state-projects li .sp-company { color: var(--cat-fg); font-weight: 500; }
+  .state-card .state-projects li .sp-value { color: var(--cat-yellow); font-weight: 600; font-size: 12px; }
+  .state-card .state-total {
+    margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--cat-gray-light);
+    display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: var(--cat-fg);
+  }
+  .state-card .state-total .st-value { color: var(--cat-yellow); }
+
+  .timeline { display: flex; gap: 0; overflow-x: auto; padding: 16px 0; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0;
+    height: 2px; background: var(--cat-gray-light); transform: translateY(-50%);
+  }
+  .timeline-item { flex: 0 0 200px; position: relative; padding: 0 12px; }
+  .timeline-item .year {
+    background: var(--cat-yellow); color: var(--cat-black); font-weight: 800;
+    font-size: 13px; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px;
+  }
+  .timeline-item .tl-content {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 14px; position: relative;
+  }
+  .timeline-item .tl-content::before {
+    content: ''; position: absolute; top: -6px; left: 20px;
+    width: 10px; height: 10px; background: var(--cat-yellow); border-radius: 50%;
+  }
+  .timeline-item .tl-content .tl-company { font-weight: 600; font-size: 12px; color: var(--cat-fg); }
+  .timeline-item .tl-content .tl-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 4px; }
+
+  /* METHODOLOGY */
+  .methodology {
+    margin-top: 40px;
+    background: var(--cat-black);
+    border: 1px solid var(--cat-gray-light);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .methodology h3 { font-size: 18px; font-weight: 700; color: var(--cat-fg); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .methodology h3 .m-icon { font-size: 22px; }
+  .methodology .meth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .methodology .meth-item { }
+  .methodology .meth-item h4 {
+    font-size: 14px; font-weight: 600; color: var(--cat-yellow); margin-bottom: 6px;
+  }
+  .methodology .meth-item p {
+    font-size: 13px; color: var(--cat-text-muted); line-height: 1.6;
+  }
+  .methodology .meth-item .formula {
+    display: inline-block;
+    background: rgba(255,205,0,0.08);
+    border: 1px solid rgba(255,205,0,0.15);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--cat-yellow);
+    margin: 6px 0;
+  }
+
+  footer {
+    border-top: 1px solid var(--cat-gray-light);
+    padding: 32px; margin-top: 40px; text-align: center;
+  }
+  footer p { font-size: 12px; color: var(--cat-text-muted); }
+  footer .footer-logos { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 16px; }
+  footer .footer-logos .fl-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+  footer .footer-logos .fl-item .fl-dot {
+    width: 24px; height: 24px; background: var(--cat-yellow); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--cat-black); font-weight: 900;
+  }
+
+  @media (max-width: 768px) {
+    .top-bar { padding: 0 12px; height: auto; min-height: 60px; flex-wrap: wrap; gap: 4px; }
+    .top-bar .logo img { height: 40px; }
+    .top-bar .tagline .title { font-size: 11px; }
+    .top-bar .tagline .sub { font-size: 9px; }
+    .hero { padding: 24px 16px 32px; }
+    .hero h2 { font-size: 22px; }
+    .hero p { font-size: 14px; }
+    .summary-carousel-wrapper { padding: 0 12px; margin-top: -28px; }
+    .summary-carousel .summary-card { flex: 0 0 140px; }
+    .summary-card { padding: 12px; }
+    .summary-card .value { font-size: 20px; }
+    .main-content { padding: 20px 12px; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .section-header .filters { overflow-x: auto; flex-wrap: nowrap; width: 100%; padding-bottom: 4px; }
+    .section-header .filters select, .section-header .filters input { flex-shrink: 0; font-size: 12px; padding: 6px 10px; }
+    .opportunity-grid { grid-template-columns: 1fr; }
+    .state-grid { grid-template-columns: 1fr; }
+    .timeline-item { flex: 0 0 140px; }
+    .pipeline-flow { grid-template-columns: 1fr; }
+    .methodology .meth-grid { grid-template-columns: 1fr; }
+    .tab-bar { padding: 0 12px; overflow-x: auto; overflow-y: hidden; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+    .tab-btn { padding: 10px 16px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+    .machine-grid { grid-template-columns: 1fr; }
+    .summary-carousel-btn { display: none; }
+    .news-card { flex: 0 0 300px; }
+    footer { padding: 20px 16px; }
+    footer .footer-logos { flex-wrap: wrap; gap: 12px; }
+    .table-wrapper { max-height: none; }
+    table { font-size: 12px; }
+    table thead th, table tbody td { padding: 8px 10px; }
+    .brazil-map { grid-template-columns: 1fr; }
+    .metric-grid { grid-template-columns: 1fr; }
+    .methodology { padding: 20px 16px; }
+  }
+
+  @media (max-width: 480px) {
+    .top-bar .logo { gap: 8px; }
+    .top-bar .logo .brand-text h1 { font-size: 13px; }
+    .top-bar .logo .brand-text span { font-size: 9px; }
+    .top-bar .tagline .title { display: none; }
+    .top-bar .tagline .sub { display: none; }
+    .hero h2 { font-size: 18px; }
+    .hero p { font-size: 13px; }
+    .hero .tags span { font-size: 10px; padding: 3px 10px; }
+    .summary-carousel .summary-card { flex: 0 0 120px; }
+    .summary-card { padding: 10px; }
+    .summary-card .value { font-size: 17px; }
+    .summary-card .label { font-size: 9px; }
+    .tab-btn { padding: 8px 10px; font-size: 10px; }
+    .section-header h3 { font-size: 16px; }
+    .pipeline-flow { gap: 8px; }
+    .pipe-stage { padding: 12px; }
+    .machine-card .m-demand { font-size: 16px; }
+    .exe-kpi .ek-value { font-size: 20px; }
+    .metric-card { padding: 14px; }
+    .metric-card .mc-value { font-size: 20px; }
+    .re-header { padding: 16px; }
+    .re-header .re-h-left h1 { font-size: 18px; }
+    .re-header .re-h-right { flex-wrap: wrap; gap: 8px; }
+    .pipe-detail-grid { grid-template-columns: 1fr; }
+    .news-card { flex: 0 0 260px; }
+    .news-carousel-btn { display: none; }
+    #brazilSvgMap { min-height: 260px; }
+    .methodology .meth-item h4 { font-size: 13px; }
+    .state-card .state-header .state-name { font-size: 15px; }
+    table thead th, table tbody td { padding: 6px 8px; font-size: 11px; }
+    .insight-bar { flex-direction: column; text-align: center; gap: 8px; }
+    .section-badge h3 { font-size: 16px; }
+    .opp-map-layout { gap: 8px; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .summary-card, .opp-card, .machine-card, .state-card, .pipe-stage {
+    animation: fadeInUp 0.4s ease-out;
+  }
+  ::-webkit-scrollbar { height: 6px; width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cat-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--cat-gray-light); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--cat-text-muted); }
+
+  /* TABS */
+  .tab-bar {
+    display: flex; gap: 0; border-bottom: 2px solid var(--cat-gray-light);
+    max-width: 1400px; margin: 0 auto; padding: 0 32px;
+  }
+  .tab-btn {
+    background: transparent; border: none; border-bottom: 3px solid transparent;
+    color: var(--cat-text-muted); padding: 14px 28px; font-family: inherit;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: -2px;
+  }
+  .tab-btn:hover { color: var(--cat-text); background: rgba(255,255,255,0.02); }
+  .tab-btn.active { color: var(--cat-yellow); border-bottom-color: var(--cat-yellow); }
+  .tab-page { display: none; }
+  .tab-page.active { display: block; }
+
+  /* BRAZIL MAP */
+  .brazil-map {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; margin-top: 16px;
+  }
+  .map-region {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 16px; transition: all 0.2s;
+  }
+  .map-region:hover { border-color: var(--cat-yellow); }
+  .map-region .region-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--cat-gray-light);
+  }
+  .map-region .region-header .region-badge {
+    background: var(--cat-yellow); color: var(--cat-black);
+    font-weight: 700; font-size: 10px; padding: 2px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .map-region .region-header .region-name { font-weight: 700; color: var(--cat-fg); font-size: 14px; }
+  .map-state {
+    background: rgba(255,205,0,0.04); border: 1px solid var(--cat-gray-light);
+    border-radius: 8px; padding: 12px; margin-bottom: 10px; transition: all 0.2s;
+  }
+  .map-state:hover { border-color: var(--cat-yellow); background: rgba(255,205,0,0.08); }
+  .map-state .ms-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
+  }
+  .map-state .ms-header .ms-abbr {
+    font-size: 18px; font-weight: 800; color: var(--cat-yellow);
+  }
+  .map-state .ms-header .ms-count {
+    font-size: 11px; color: var(--cat-text-muted);
+    background: var(--cat-gray); padding: 2px 8px; border-radius: 10px;
+  }
+  .map-state .ms-stat { font-size: 12px; color: var(--cat-text-muted); line-height: 1.6; }
+  .map-state .ms-stat strong { color: var(--cat-fg); }
+  .map-state .ms-companies { margin-top: 6px; }
+  .map-state .ms-companies .ms-company {
+    font-size: 11px; color: var(--cat-blue); display: inline-block;
+    background: rgba(51,181,229,0.1); padding: 1px 6px; border-radius: 3px; margin: 2px 2px 0 0;
+  }
+
+  /* EXECUTIVE KPI GRID */
+  .exe-kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px; margin: 20px 0;
+  }
+  .exe-kpi {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 16px; text-align: center; transition: all 0.2s;
+  }
+  .exe-kpi:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
+  .exe-kpi .ek-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--cat-text-muted); font-weight: 600; }
+  .exe-kpi .ek-value { font-size: 24px; font-weight: 800; color: var(--cat-yellow); margin: 4px 0; }
+  .exe-kpi .ek-sub { font-size: 11px; color: var(--cat-text-muted); }
+  .exe-kpi.ek-green .ek-value { color: var(--cat-green); }
+  .exe-kpi.ek-blue .ek-value { color: var(--cat-blue); }
+  .exe-kpi.ek-orange .ek-value { color: var(--cat-orange); }
+
+  /* ========== RESUMO EXECUTIVO LAYOUT ========== */
+
+  .re-header {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 14px; padding: 28px 32px; margin-bottom: 28px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .re-header .re-h-left { flex: 1; min-width: 240px; }
+  .re-header .re-h-left h1 {
+    font-size: 28px; font-weight: 900; color: var(--cat-yellow);
+    letter-spacing: -0.5px; line-height: 1.1;
+  }
+  .re-header .re-h-left p { font-size: 14px; color: var(--cat-text-muted); margin-top: 6px; }
+  .re-header .re-h-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  .re-header .re-h-right .re-date {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--cat-gray); padding: 6px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 600; color: var(--cat-text);
+  }
+  .re-header .re-h-right .re-date .re-cal { font-size: 18px; }
+  .re-header .re-h-right .re-logos { display: flex; align-items: center; gap: 8px; }
+  .re-header .re-h-right .re-logos .re-logo-s {
+    background: var(--cat-yellow); color: var(--cat-black); padding: 6px 14px;
+    border-radius: 6px; font-weight: 800; font-size: 13px; letter-spacing: 1px;
+  }
+  .re-header .re-h-right .re-logos .re-logo-c {
+    background: var(--cat-black); color: var(--cat-yellow); border: 2px solid var(--cat-yellow);
+    padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 13px; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .re-header .re-h-right .re-logos .re-logo-c .re-cat {
+    width: 20px; height: 20px; background: #fff; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--cat-black); font-weight: 900;
+  }
+
+  .section-badge {
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  }
+  .section-badge .badge-num {
+    background: var(--cat-yellow); color: var(--cat-black); font-weight: 800;
+    font-size: 12px; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.5px;
+  }
+  .section-badge h3 { font-size: 20px; font-weight: 700; color: var(--cat-fg); letter-spacing: -0.3px; }
+
+  /* OPPORTUNITY MAP */
+  .opp-map-layout {
+    display: grid; grid-template-columns: 280px 1fr 280px;
+    gap: 16px; align-items: start;
+  }
+  @media (max-width: 1000px) { .opp-map-layout { grid-template-columns: 1fr; } }
+
+  .opp-map-center {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 14px; padding: 20px; min-height: 360px;
+  }
+  .opp-map-center .map-title { font-size: 14px; font-weight: 700; color: var(--cat-yellow); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 2px; }
+
+  #brazilSvgMap {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+  }
+  #brazilSvgMap svg {
+    width: 100%; max-width: 380px; height: auto;
+    display: block; margin: 0 auto;
+    transform: translateY(5px);
+  }
+  #brazilSvgMap path { transition: fill 0.15s, stroke 0.15s; }
+
+  .opp-card-col { display: flex; flex-direction: column; gap: 12px; }
+  .opp-card-col .opp-status-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 14px; transition: all 0.2s;
+  }
+  .opp-status-card:hover { border-color: var(--cat-yellow); }
+  .opp-status-card .osc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .opp-status-card .osc-header .osc-state { font-weight: 700; color: var(--cat-fg); font-size: 14px; }
+  .opp-status-card .osc-header .osc-badge { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .opp-status-card .osc-header .osc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .opp-status-card .osc-text { font-size: 11px; color: var(--cat-text-muted); line-height: 1.5; }
+
+  .insight-bar {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 20px 24px; margin-top: 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .insight-bar .insight-icon { font-size: 28px; }
+  .insight-bar .insight-text { font-size: 13px; color: var(--cat-text-muted); line-height: 1.6; }
+  .insight-bar .insight-text strong { color: var(--cat-fg); }
+
+  /* PIPELINE TABLE */
+  .pipe-exec-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+    border: 1px solid var(--cat-gray-light); border-radius: 12px; overflow: hidden;
+  }
+  .pipe-exec-table thead { background: var(--cat-black); }
+  .pipe-exec-table thead th {
+    padding: 12px 14px; text-align: left; font-weight: 600; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--cat-text-muted);
+    border-bottom: 2px solid var(--cat-gray-light); white-space: nowrap;
+  }
+  .pipe-exec-table tbody tr { border-bottom: 1px solid var(--cat-gray-light); transition: background 0.15s; }
+  .pipe-exec-table tbody tr:hover { background: rgba(255,205,0,0.05); }
+  .pipe-exec-table tbody td { padding: 12px 14px; vertical-align: middle; }
+  .pipe-exec-table .pe-status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+  .pipe-exec-table .pe-status .pe-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .pipe-exec-table .pe-company { font-weight: 600; color: var(--cat-fg); font-size: 13px; }
+  .pipe-exec-table .pe-project { font-size: 11px; color: var(--cat-text-muted); display: block; }
+  .pipe-exec-table .pe-location { display: flex; align-items: center; gap: 4px; }
+  .pipe-exec-table .pe-location .pe-state { background: var(--cat-gray); padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; color: var(--cat-text); }
+  .pipe-exec-table .pe-badge-new {
+    display: inline-block; background: var(--cat-yellow); color: var(--cat-black);
+    font-size: 8px; font-weight: 800; padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; letter-spacing: 0.3px;
+  }
+
+  /* METRIC CARDS */
+  .metric-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px; margin-top: 16px;
+  }
+  .metric-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px; display: flex; align-items: flex-start; gap: 16px;
+    transition: all 0.2s;
+  }
+  .metric-card:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
+  .metric-card .mc-icon {
+    width: 48px; height: 48px; background: rgba(255,205,0,0.1);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .metric-card .mc-body { flex: 1; }
+  .metric-card .mc-value { font-size: 28px; font-weight: 800; color: var(--cat-yellow); letter-spacing: -1px; margin-bottom: 4px; }
+  .metric-card .mc-label { font-size: 12px; color: var(--cat-text-muted); line-height: 1.5; }
+  .metric-card .mc-label .hl { color: var(--cat-fg); font-weight: 600; background: rgba(255,205,0,0.15); padding: 0 4px; border-radius: 2px; }
+
+  .status-green { background: var(--cat-green); }
+  .status-yellow { background: var(--cat-yellow); }
+  .status-black { background: var(--cat-gray-light); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .re-header { padding: 20px; flex-direction: column; align-items: stretch; text-align: center; }
+    .re-header .re-h-left h1 { font-size: 22px; }
+    .re-header .re-h-right { justify-content: center; }
+    #brazilSvgMap svg { width: 100%; max-width: 100%; height: auto; }
+    .pipe-exec-table { font-size: 11px; }
+    .pipe-exec-table thead { display: none; }
+    .pipe-exec-table tbody tr { display: block; padding: 12px; border-bottom: 2px solid var(--cat-gray-light); }
+    .pipe-exec-table tbody td { display: block; padding: 4px 0; border: none; }
+    .pipe-exec-table tbody td::before { content: attr(data-label); font-weight: 600; font-size: 10px; color: var(--cat-text-muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+    .metric-card { padding: 16px; }
+    .metric-card .mc-value { font-size: 22px; }
+    .opp-map-layout { grid-template-columns: 1fr; }
+    .opp-map-center { min-height: 280px; padding: 12px; }
+  }
+
+  @media (max-width: 480px) {
+    .re-header .re-h-left h1 { font-size: 18px; }
+    .re-header .re-h-left p { font-size: 12px; }
+    .re-header .re-h-right .re-date { font-size: 10px; padding: 4px 10px; }
+    .re-header .re-h-right .re-logos .re-logo-s, .re-header .re-h-right .re-logos .re-logo-c { font-size: 11px; padding: 4px 10px; }
+    .pipe-exec-table tbody td { font-size: 12px; }
+    .metric-card .mc-value { font-size: 20px; }
+    .metric-card .mc-label { font-size: 11px; }
+    .exe-kpi .ek-value { font-size: 20px; }
+    .exe-kpi { padding: 12px; }
+  }
+
+  /* PIPELINE DETAIL */
+  .pipe-detail-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px; margin-top: 16px;
+  }
+  .pipe-detail-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px; transition: all 0.2s;
+  }
+  .pipe-detail-card:hover { border-color: var(--cat-yellow); }
+  .pipe-detail-card .pdc-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+  }
+  .pipe-detail-card .pdc-header .pdc-stage { font-weight: 700; font-size: 14px; color: var(--cat-fg); }
+  .pipe-detail-card .pdc-header .pdc-count {
+    font-size: 12px; font-weight: 600;
+    padding: 2px 10px; border-radius: 10px;
+  }
+  .pipe-detail-card .pdc-bar {
+    height: 8px; background: var(--cat-gray); border-radius: 4px; margin: 8px 0; overflow: hidden;
+  }
+  .pipe-detail-card .pdc-bar .pdc-fill {
+    height: 100%; border-radius: 4px; transition: width 0.8s ease;
+  }
+  .pipe-detail-card .pdc-stats { font-size: 12px; color: var(--cat-text-muted); line-height: 1.7; }
+  .pipe-detail-card .pdc-stats strong { color: var(--cat-fg); }
+  .pipe-detail-card .pdc-projects { margin-top: 8px; }
+  .pipe-detail-card .pdc-projects .pdc-proj {
+    font-size: 12px; padding: 4px 0; border-bottom: 1px solid var(--cat-gray-light);
+    display: flex; justify-content: space-between;
+  }
+  .pipe-detail-card .pdc-projects .pdc-proj:last-child { border-bottom: none; }
+  .pipe-detail-card .pdc-projects .pdc-proj .pdc-pname { color: var(--cat-fg); font-weight: 500; }
+  .pipe-detail-card .pdc-projects .pdc-proj .pdc-pcapex { color: var(--cat-yellow); font-weight: 600; font-size: 11px; }
+
+  .news-grid {
+    display: flex; gap: 16px; margin-top: 16px;
+    overflow-x: auto; scroll-behavior: smooth; padding-bottom: 8px;
+    scrollbar-width: thin; scrollbar-color: var(--cat-gray-light) transparent;
+  }
+  .news-grid::-webkit-scrollbar { height: 6px; }
+  .news-grid::-webkit-scrollbar-track { background: transparent; }
+  .news-grid::-webkit-scrollbar-thumb { background: var(--cat-gray-light); border-radius: 3px; }
+  .news-card {
+    flex: 0 0 380px; min-height: 240px;
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px; transition: all 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .news-card:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
+  .news-card .nc-date { font-size: 10px; color: var(--cat-yellow); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .news-card .nc-source { font-size: 10px; color: var(--cat-text-muted); margin-bottom: 8px; }
+  .news-card .nc-source strong { color: var(--cat-fg); }
+  .news-card h4 { font-size: 14px; font-weight: 700; color: var(--cat-fg); margin-bottom: 6px; }
+  .news-card h4 a { color: var(--cat-fg); text-decoration: none; transition: color 0.15s; }
+  .news-card h4 a:hover { color: var(--cat-yellow); text-decoration: underline; }
+  .news-card p { font-size: 12px; color: var(--cat-text-muted); line-height: 1.6; flex: 1; }
+  .news-card .nc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+  .news-card .nc-tags span {
+    background: rgba(255,205,0,0.1); border: 1px solid rgba(255,205,0,0.15);
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; color: var(--cat-yellow);
+  }
+  .news-card .nc-link { margin-top: 10px; }
+  .news-card .nc-link a {
+    font-size: 11px; color: var(--cat-blue); text-decoration: none; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .news-card .nc-link a:hover { text-decoration: underline; color: var(--cat-yellow); }
+  .news-carousel-wrapper { position: relative; }
+  .news-carousel-btn {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--cat-gray); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-fg); font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .news-carousel-btn:hover { background: var(--cat-yellow); color: var(--cat-black); border-color: var(--cat-yellow); }
+  .news-carousel-btn.prev { left: -14px; }
+  .news-carousel-btn.next { right: -14px; }
+  .news-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .news-filters button {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-text-muted); padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; font-family: inherit; font-weight: 500; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .news-filters button:hover { border-color: var(--cat-yellow); color: var(--cat-fg); }
+  .news-filters button.active { background: var(--cat-yellow); color: var(--cat-black); border-color: var(--cat-yellow); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">
+    <img src="Logo%20Sotreq.png" alt="Sotreq" style="height:52px;width:auto;">
+    <div class="divider"></div>
+    <div class="brand-text">
+      <h1>Sotreq</h1>
+      <span>Dealer Caterpillar</span>
+    </div>
+  </div>
+  <div class="tagline">
+    <div>
+      <div class="title">Inteligência de Mercado</div>
+      <div class="sub">Terras Raras Brasil · 2026-2030</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" title="Alternar tema claro/escuro" id="themeBtn">🌙</button>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <h2>Oportunidades em <em>Terras Raras</em> no Brasil</h2>
+    <p>Análise estratégica completa dos projetos greenfield de terras raras no Brasil — incluindo Minas Gerais, Bahia, Goiás, Amazonas, Pará e outros — para identificação de oportunidades de negócio para a Sotreq no fornecimento de máquinas e soluções Cat para mineração. As estimativas de equipamentos foram recalibradas para refletir o perfil operacional mais provável de cada depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (manuseio/pátio) ou exploração.</p>
+    <div class="tags">
+      <span>16 Projetos Mapeados</span>
+      <span>US$ 5,1 Bi em CAPEX</span>
+      <span>6 Estados</span>
+      <span>MG · BA · GO · AM · PA · RJ</span>
+      <span>Argila Iônica · Rocha Dura · Fosfogesso</span>
+      <span>Janela 2026-2030</span>
+    </div>
+  </div>
+</section>
+
+<div class="summary-carousel-wrapper">
+  <button class="summary-carousel-btn prev" onclick="scrollSummary(-1)">‹</button>
+  <div class="summary-carousel" id="summaryCarousel">
+    <div class="summary-card">
+      <div class="label">Projetos Mapeados</div>
+      <div class="value yellow" id="totalProjetos">0</div>
+      <div class="sub">Em diferentes estágios</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">CAPEX Total</div>
+      <div class="value green" id="totalCapex">0</div>
+      <div class="sub">Investimento acumulado</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Início Operação</div>
+      <div class="value blue">2026-2030</div>
+      <div class="sub">Janela crítica de oportunidade</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Estados</div>
+      <div class="value orange" id="totalEstados">0</div>
+      <div class="sub">MG, BA, GO, AM, PA, RJ</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Potencial Máquinas</div>
+      <div class="value yellow" id="totalMachine">0</div>
+      <div class="sub">Unidades estimadas</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Oportunidade Sotreq</div>
+      <div class="value green" id="totalOpportunity">0</div>
+      <div class="sub">Receita estimada máquinas + serviços</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Crescimento Anual (IEA)</div>
+      <div class="value purple">15–20%</div>
+      <div class="sub">Demanda global de REE até 2030</div>
+    </div>
+  </div>
+  <button class="summary-carousel-btn next" onclick="scrollSummary(1)">›</button>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+  <button class="tab-btn" onclick="switchTab('resumo')">📋 Resumo Executivo</button>
+  <button class="tab-btn" onclick="switchTab('pipeline')">🔷 Pipeline Detalhado</button>
+  <button class="tab-btn" onclick="switchTab('noticias')">📰 Notícias do Mês</button>
+</div>
+
+<div class="main-content">
+
+<div id="tab-dashboard" class="tab-page active">
+
+  <!-- PIPELINE / FUNIL DE MATURIDADE -->
+  <div class="pipeline">
+    <div class="section-header">
+      <h3>Funil de Maturidade dos Projetos</h3>
+    </div>
+    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
+      Classificação própria em 6 estágios, do greenfield inicial à operação comercial.
+    </p>
+    <div class="pipeline-flow" id="pipelineFlow"></div>
+  </div>
+
+  <!-- PROJECT TABLE -->
+  <div style="margin-top: 40px;">
+    <div class="section-header">
+      <h3>Todos os Projetos <span class="badge" id="badgeCount">0</span></h3>
+      <div class="filters">
+        <select id="stateFilter" onchange="applyFilters()">
+          <option value="all">Todos os Estados</option>
+        </select>
+        <select id="stageFilter" onchange="applyFilters()">
+          <option value="all">Todos os Estágios</option>
+        </select>
+        <select id="priorityFilter" onchange="applyFilters()">
+          <option value="all">Todas Prioridades</option>
+          <option value="critical">Crítica</option>
+          <option value="high">Alta</option>
+          <option value="medium">Média</option>
+          <option value="low">Baixa</option>
+        </select>
+        <select id="depositFilter" onchange="applyFilters()">
+          <option value="all">Todos os Depósitos</option>
+          <option value="iacSaprolite">Argila Iônica / IAC</option>
+          <option value="hardRock">Rocha Dura</option>
+          <option value="reprocessing">Fosfogesso / Resíduos</option>
+          <option value="exploration">Exploração</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Prioridade</th>
+            <th onclick="sortTable(1)">Empresa <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(2)">Projeto <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(3)">Localização <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(4)">CAPEX <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(5)">Estágio <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(6)">Previsão <span class="sort-icon">↕</span></th>
+            <th>Licenciamento</th>
+            <th>Máquinas Necessárias</th>
+            <th>Oportunidade Sotreq</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MACHINERY -->
+  <div class="machinery-section" style="margin-top:40px;">
+    <div class="section-header">
+      <h3>Análise de Demanda por Máquinas CAT</h3>
+    </div>
+    <div class="machine-grid">
+      <div class="machine-card">
+        <div class="m-icon">🚛</div>
+        <div class="m-name">Caminhões articulados e rígidos menores</div>
+        <div class="m-desc">Modelos: CAT 740 GC, CAT 745, CAT 707 · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
+        <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon">⛏️</div>
+        <div class="m-name">Escavadeiras hidráulicas médias/grandes</div>
+        <div class="m-desc">Modelos: CAT 349, CAT 350, CAT 352 · Aplicação: lavra seletiva, carregamento de caminhões 40–66 t, abertura de frentes e manuseio de material</div>
+        <div class="m-demand" id="machExcavators">0 <small>unidades</small></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon">🔄</div>
+        <div class="m-name">Carregadeiras de rodas</div>
+        <div class="m-desc">Modelos: CAT 972, CAT 982, CAT 988 High Lift · Aplicação: alimentação de planta, pátios, pilhas, carregamento e apoio operacional</div>
+        <div class="m-demand" id="machLoaders">0 <small>unidades</small></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon">📐</div>
+        <div class="m-name">Tratores de esteira</div>
+        <div class="m-desc">Modelos: CAT D6, D8, D9 · Aplicação: acessos, limpeza, recomposição, pilhas, infraestrutura e apoio à lavra</div>
+        <div class="m-demand" id="machDozers">0 <small>unidades</small></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon">⚙️</div>
+        <div class="m-name">Motoniveladoras e compactadores</div>
+        <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16, CAT 815, CAT 825 · Aplicação: manutenção de vias, plataformas, compactação, drenagem e estabilidade operacional</div>
+        <div class="m-demand" id="machSupport1">0 <small>unidades</small></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon">🔩</div>
+        <div class="m-name">Equipamentos de apoio</div>
+        <div class="m-desc">Modelos: CAT 318, CAT 250, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, pequenas movimentações e operação de pátio</div>
+        <div class="m-demand" id="machSupport2">0 <small>unidades</small></div>
+      </div>
+    </div>
+    <p style="color:var(--cat-text-muted);font-size:12px;margin-top:12px;border-left:3px solid var(--cat-yellow);padding-left:12px;"><strong style="color:var(--cat-fg);">Nova premissa:</strong> Terras raras ≠ sempre mineração pesada. O dimensionamento agora varia por tipo de depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (foco em manuseio/pátio) ou exploração (sem frota operacional completa).</p>
+  </div>
+
+
+
+  <!-- TIMELINE -->
+  <div class="timeline-section" style="margin-top:40px;">
+    <div class="section-header">
+      <h3>Cronograma dos Principais Projetos</h3>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="methodology">
+    <h3><span class="m-icon">📐</span> Metodologia de Dimensionamento de Máquinas</h3>
+    <div class="meth-grid">
+      <div class="meth-item">
+        <h4>1. Classificação por Tipo de Depósito</h4>
+        <p>Projetos de <strong>argila iônica / IAC / saprolito</strong> (ex: Viridis, Meteoric, Aclara) — lavra rasa, material argiloso, baixo desmonte, frota média e seletiva. Projetos de <strong>rocha dura / carbonatito</strong> (ex: BRE/Monte Alto, St George) — requerem britagem, perfuração e frota mais pesada. Projetos de <strong>reprocessamento / fosfogesso</strong> (ex: Rainbow/Mosaic) — foco em manuseio de material e pátio. Projetos em <strong>exploração</strong> — frota operacional completa não estimada.</p>
+      </div>
+      <div class="meth-item">
+        <h4>2. Baseline Viridis (Argila Iônica)</h4>
+        <p>Utilizamos como referência principal a cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX), com frota de: 15 caminhões CAT 707 (66 t), 2 carregadeiras CAT 988 High Lift, 4 tratores D9 + 4 D8, 4 escavadeiras CAT 350 + 1 CAT 318, 1 motoniveladora CAT 16, 1 compactador CAT 825 e 2 minicarregadeiras CAT 250. Projetos IAC são dimensionados proporcionalmente a este baseline.</p>
+      </div>
+      <div class="meth-item">
+        <h4>3. Composição de Frota por Perfil</h4>
+        <p><strong>Argila iônica:</strong> caminhões articulados CAT 740 GC / CAT 745 ou rígidos CAT 707 (36–66 t), escavadeiras CAT 349–352, carregadeiras CAT 972–988, tratores D6–D9, motoniveladoras CAT 140–16, compactadores CAT 815/825 e equipamentos de apoio.<br><br>
+        <strong>Rocha dura:</strong> caminhões CAT 745/770/772/773 (60–100+ t), escavadeiras CAT 352–395, carregadeiras CAT 988–992, tratores D8–D10, perfuratrizes e britadores.<br><br>
+        <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, compactadores e motoniveladoras.<br><br>
+        <strong>Exploração:</strong> apenas equipamentos leves, sondagem e abertura de acessos — sem frota operacional completa.</p>
+        <div class="formula">Frota estimada por projeto = Baseline × (CAPEX do projeto ÷ CAPEX de referência)</div>
+      </div>
+      <div class="meth-item">
+        <h4>4. Fases do Projeto</h4>
+        <p>Consideramos 3 fases: <strong>Construção</strong> (terraplenagem, vias, fundações — 18 a 24 meses), <strong>Rampeamento</strong> (aumento gradual de produção — 12 a 18 meses) e <strong>Operação Plena</strong> (frota estabilizada). A demanda por máquinas CAT é maior nas fases de construção e rampeamento.</p>
+      </div>
+      <div class="meth-item">
+        <h4>5. Fonte dos Dados</h4>
+        <p>CAPEX declarados em comunicados ao mercado (ASX, TSX, SEC), estudos de viabilidade (PFS/DFS), relatórios do Ibram, BNDES, ANM, imprensa especializada (Valor Econômico, BNamericas, Brasil Mineral, Reuters), dados de capacidade produtiva divulgados pelas empresas e <strong>cotação real de fornecedor (Sotreq/Viridis, Maio/2026).</strong></p>
+      </div>
+      <div class="meth-item">
+        <h4>6. Limitações & Riscos</h4>
+        <p>Projetos em estágio inicial (S1-S2) têm CAPEX menos precisos. Variáveis como câmbio, inflação de insumos, atrasos regulatórios e volatilidade de preços de REE podem alterar cronogramas. Este é um documento de inteligência de mercado, não uma proposta comercial vinculante.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end tab-dashboard -->
+
+<!-- ============================================================ -->
+<!-- TAB: RESUMO EXECUTIVO                                         -->
+<!-- ============================================================ -->
+<div id="tab-resumo" class="tab-page">
+
+  <!-- HEADER -->
+  <div class="re-header">
+    <div class="re-h-left">
+      <h1>TERRAS RARAS NO BRASIL</h1>
+      <p>Resumo executivo de oportunidades, projetos, investimentos e pipeline para Sotreq.</p>
+    </div>
+    <div class="re-h-right">
+      <div class="re-date"><span class="re-cal">📅</span> MAIO 2026</div>
+      <div class="re-logos">
+        <div class="re-logo-s"><img src="Logo%20Sotreq.png" alt="Sotreq" style="height:32px;width:auto;"></div>
+        <div class="re-logo-c"><img src="Logo%20Cat.png" alt="CAT" style="height:32px;width:auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 01: MAPA DE OPORTUNIDADES                               -->
+  <!-- ============================================================ -->
+  <div class="section-badge"><span class="badge-num">01</span><h3>MAPA DE OPORTUNIDADES</h3></div>
+
+  <div class="opp-map-layout">
+
+    <!-- Left column -->
+    <div class="opp-card-col" id="reMapLeft"></div>
+
+    <!-- Center map -->
+    <div class="opp-map-center">
+      <div class="map-title">ESTADOS COM PROJETOS</div>
+      <div id="brazilSvgMap" style="width:100%;min-height:380px;position:relative;">
+        <div id="mapTooltip" style="position:absolute;background:var(--cat-black);color:var(--cat-fg);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;pointer-events:none;opacity:0;transition:opacity 0.15s;border:1px solid var(--cat-yellow);z-index:10;white-space:nowrap;"></div>
+      </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="opp-card-col" id="reMapRight"></div>
+
+  </div>
+
+  <div class="insight-bar">
+    <div class="insight-icon">💡</div>
+    <div class="insight-text">
+      <strong>INSIGHT ESTRATÉGICO:</strong> O Brasil avança para além da mineração: projetos como Caldeira (Meteoric) colocam o país na rota do refino e da separação de terras raras, abrindo oportunidade para desenvolvimento de toda a cadeia de valor. O dimensionamento de equipamentos considera o perfil de cada depósito — argila iônica (frota seletiva, baseline Viridis), rocha dura (equipamentos robustos), reprocessamento (manuseio/pátio) e exploração (sem frota completa).
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 02: PIPELINE DE PROJETOS                                -->
+  <!-- ============================================================ -->
+  <div style="margin-top: 40px;">
+    <div class="section-badge"><span class="badge-num">02</span><h3>PIPELINE DE PROJETOS</h3></div>
+
+    <div class="table-wrapper">
+      <table class="pipe-exec-table">
+        <thead>
+          <tr>
+            <th>Projeto / Empresa</th>
+            <th>Localização</th>
+            <th>Fase Atual</th>
+            <th>Próximos Marcos (2026)</th>
+            <th>Contato</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="rePipelineBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 03: INDICADORES-CHAVE                                   -->
+  <!-- ============================================================ -->
+  <div style="margin-top: 40px;">
+    <div class="section-badge"><span class="badge-num">03</span><h3>INDICADORES-CHAVE</h3></div>
+    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:4px;">Estimativas 2026 — todos os valores em USD</p>
+
+    <div class="metric-grid" id="reMetricGrid"></div>
+  </div>
+
+</div><!-- end tab-resumo -->
+
+<!-- ============================================================ -->
+<!-- TAB: PIPELINE DETALHADO                                       -->
+<!-- ============================================================ -->
+<div id="tab-pipeline" class="tab-page">
+
+  <div class="section-header">
+    <h3>Pipeline Detalhado por Estágio</h3>
+  </div>
+  <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
+    Distribuição dos 16 projetos nos 6 estágios de maturidade, com CAPEX acumulado e estimativa de equipamentos por perfil de depósito (argila iônica, rocha dura, reprocessamento ou exploração).
+  </p>
+
+  <div class="pipe-detail-grid" id="pipeDetailGrid"></div>
+
+  <!-- Métricas Agregadas -->
+  <div style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;" id="pipeMetrics"></div>
+
+</div><!-- end tab-pipeline -->
+
+<!-- ============================================================ -->
+<!-- TAB: NOTÍCIAS                                                -->
+<!-- ============================================================ -->
+<div id="tab-noticias" class="tab-page">
+
+  <div class="section-header">
+    <h3>Notícias do Mês — Maio 2026</h3>
+  </div>
+  <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
+    Principais fatos e comunicados ao mercado que embasam as estimativas deste relatório. Clique no título para acessar a notícia original.
+  </p>
+
+  <div class="news-filters" id="newsFilters"></div>
+
+  <div class="news-carousel-wrapper">
+    <button class="news-carousel-btn prev" onclick="scrollNews(-1)">‹</button>
+    <div class="news-grid" id="newsGrid"></div>
+    <button class="news-carousel-btn next" onclick="scrollNews(1)">›</button>
+  </div>
+
+  <div class="methodology" style="margin-top: 24px;">
+    <h3><span class="m-icon">📌</span> Sobre esta seção</h3>
+    <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;">
+      As notícias listadas são eventos reais coletados de comunicados oficiais ao mercado (ASX, TSX, SEC),
+      relatórios setoriais (Ibram, BNDES, ANM) e imprensa especializada (Valor Econômico, BNamericas,
+      Brasil Mineral, Reuters). Cada notícia está vinculada a um ou mais projetos do portfólio mapeado
+      e serve como referência direta para as premissas adotadas neste documento de inteligência de mercado.
+    </p>
+  </div>
+
+</div><!-- end tab-noticias -->
+
+</div><!-- end main-content -->
+
+  <footer>
+    <div class="footer-logos">
+      <div class="fl-item">
+        <img src="Logo%20Sotreq.png" alt="Sotreq" style="height:36px;width:auto;">
+      </div>
+      <span style="color:var(--cat-text-muted);font-size:18px;">+</span>
+      <div class="fl-item" style="color: var(--cat-yellow);">
+        <img src="Logo%20Cat.png" alt="CAT" style="height:36px;width:auto;">
+        <span>Caterpillar</span>
+      </div>
+    </div>
+    <p>Documento de inteligência de mercado para análise interna da Sotreq. Dados atualizados em Maio de 2026.</p>
+    <p style="margin-top: 4px;">Fontes: Ibram, BNDES, ANM, ASX, TSX, comunicados oficiais, Valor Econômico, BNamericas, Brasil Mineral, Reuters</p>
+  </footer>
+
+<script>
+const stageNames = [
+  'S1 · Prospecção Inicial',
+  'S2 · Recursos Estimados',
+  'S3 · Licença Prévia (LP)',
+  'S4 · Licença Instalação (LI)',
+  'S5 · Construção',
+  'S6 · Operação Comercial'
+];
+const stageDescriptions = [
+  'Direitos minerários adquiridos, primeiras sondagens, target identification.',
+  'Recursos inferidos/indicados, estudos metalúrgicos, PEA/Scoping Study.',
+  'EIA/RIMA protocolado, LP concedida, viabilidade técnica comprovada.',
+  'LI emitida, engenharia detalhada, projetos executivos, preparação para construção.',
+  'Mobilização, terraplenagem, implantação de planta, comissionamento.',
+  'Produção comercial, rampeamento, expansão futura.'
+];
+
+const equipmentProfiles = {
+  iacSaprolite: {
+    label: 'Argila iônica / saprolito / IAC',
+    truckRange: '36–66 t',
+    trucks: ['CAT 740 GC', 'CAT 745', 'CAT 707'],
+    excavators: ['CAT 349', 'CAT 350', 'CAT 352'],
+    loaders: ['CAT 972', 'CAT 982', 'CAT 988'],
+    dozers: ['CAT D6', 'CAT D8', 'CAT D9'],
+    support: ['CAT 16', 'CAT 825', 'CAT 318', 'CAT 250'],
+    sizingLogic: 'Frota média, lavra seletiva, cava rasa, baixo desmonte e transporte moderado.'
+  },
+  hardRock: {
+    label: 'Rocha dura / carbonatito / alcalino',
+    truckRange: '60–100+ t',
+    trucks: ['CAT 745', 'CAT 770', 'CAT 772', 'CAT 773'],
+    excavators: ['CAT 352', 'CAT 374', 'CAT 395'],
+    loaders: ['CAT 988', 'CAT 990', 'CAT 992'],
+    dozers: ['CAT D8', 'CAT D9', 'CAT D10'],
+    support: ['Perfuratrizes', 'Britadores', 'Motoniveladoras CAT 16/18'],
+    sizingLogic: 'Frota maior, possível perfuração/desmonte, britagem e maior movimentação de massa.'
+  },
+  reprocessing: {
+    label: 'Reprocessamento / fosfogesso / resíduos',
+    truckRange: 'baixo a médio',
+    trucks: ['Caminhões articulados menores quando necessário'],
+    excavators: ['CAT 330', 'CAT 349'],
+    loaders: ['CAT 966', 'CAT 972', 'CAT 982', 'CAT 988'],
+    dozers: ['CAT D6', 'CAT D8'],
+    support: ['Empilhadeiras', 'Correias', 'Compactadores', 'Motoniveladoras'],
+    sizingLogic: 'Foco em pátio, manuseio, carregamento e alimentação de planta.'
+  },
+  exploration: {
+    label: 'Exploração / estudos iniciais',
+    truckRange: 'leve',
+    trucks: ['Caminhões de apoio'],
+    excavators: ['Escavadeiras médias/pequenas'],
+    loaders: ['Carregadeiras médias'],
+    dozers: ['Tratores menores'],
+    support: ['Sondagem', 'Abertura de acessos', 'Topografia'],
+    sizingLogic: 'Não considerar frota operacional completa nesta fase.'
+  }
+};
+
+const projects = [ // __DATA_BEGIN_PROJECTS__
+  {
+    priority: 'critical', company: 'Meteoric Resources', origin: 'Austrália',
+    project: 'Caldeira', location: { city: 'Poços de Caldas / Caldas', state: 'MG' },
+    capex: 740, capexDetail: 'US$ 440M (mina) + US$ 300M (separação)',
+    stage: 4, forecast: 'Produção 2028', capacity: '14.000 t/ano REO',
+    licensing: 'LP obtida (Dez/25) · LI protocolada (Mar/26) · Piloto operacional',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'US$ 222M', type: 'Argila Iônica',
+    highlights: 'Offtake: Ucore + Neo Materials (40%) · US$300M EXIM Bank · FID previsto Out/26',
+    startYear: 2028, depositType: 'iacSaprolite'
+  },
+  {
+    priority: 'critical', company: 'Viridis Mining & Minerals', origin: 'Austrália',
+    project: 'Colossus', location: { city: 'Poços de Caldas', state: 'MG' },
+    capex: 560, capexDetail: 'US$ 360M (mina) + US$ 200M (separação)',
+    stage: 4, forecast: 'Produção 2028', capacity: '~13.500 t/ano REO',
+    licensing: 'LP obtida (Dez/25) · LI protocolada (Mai/26) · DF concluído',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'US$ 168M', type: 'Argila Iônica',
+    highlights: 'US$50M Export Finance Australia · US$30M BNDES · Plataforma BIP Gov.Federal · JV Viridion reciclagem',
+    startYear: 2028, depositType: 'iacSaprolite'
+  },
+  {
+    priority: 'critical', company: 'Brazilian Rare Earths (BRE)', origin: 'Austrália',
+    project: 'Monte Alto', location: { city: 'Jiquiriçá/Ubaíra + Camaçari', state: 'BA' },
+    capex: 720, capexDetail: 'R$ 600M (fase 1) a R$ 3,6B (total) ~ US$ 720M',
+    stage: 3, forecast: 'Scoping Q3/26 · Piloto Set/26', capacity: 'Maior teor global (>15% TREO)',
+    licensing: 'Licença Lavra Experimental (Mar/26) · LP em andamento',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Britadores Móveis', 'Motoniveladoras'],
+    opportunity: 'US$ 216M', type: 'Rocha Dura',
+    highlights: 'Parceria Carester (França) · Hancock Prospecting · US$160M em caixa · SENAI CIMATEC',
+    startYear: 2028, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'St George Mining', origin: 'Austrália',
+    project: 'Araxá', location: { city: 'Araxá', state: 'MG' },
+    capex: 350, capexDetail: 'US$ 350M (~R$ 2B)',
+    stage: 3, forecast: 'Nb em 2028 · REE em 2029', capacity: '5.000 t Nb + 15.000 t REE/ano',
+    licensing: 'LP em análise · Incentivo fiscal MG concedido',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'US$ 105M', type: 'Rocha Dura',
+    highlights: '+75% recursos confirmados · Técnicas Reunidas · Offtake REAlloys · Planta piloto CEFET',
+    startYear: 2028, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Aclara Resources', origin: 'Canadá',
+    project: 'Carina', location: { city: 'Aparecida de Goiânia', state: 'GO' },
+    capex: 781, capexDetail: 'US$ 780,9M',
+    stage: 5, forecast: 'Construção H2/26 · Produção H2/28', capacity: '4.378 t/ano REO',
+    licensing: 'FS completo (Abr/26) · LI obtida',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes'],
+    opportunity: 'US$ 234M', type: 'Argila Iônica',
+    highlights: 'Refino em Louisiana (EUA) · Hochschild + CAP + DFC · 18 anos vida útil',
+    startYear: 2028, depositType: 'iacSaprolite'
+  },
+  {
+    priority: 'high', company: 'Rainbow REE + Mosaic', origin: 'Internacional',
+    project: 'Uberaba', location: { city: 'Uberaba', state: 'MG' },
+    capex: 279, capexDetail: 'US$ 279M',
+    stage: 3, forecast: 'Construção 2027 · Produção 2030', capacity: '2,7 Mt/ano fosfogesso',
+    licensing: 'PEA concluído · PFS em andamento',
+    machines: ['Empilhadeiras', 'Correias Transportadoras', 'Tratores de Esteira', 'Carregadeiras', 'Bombas'],
+    opportunity: 'US$ 84M', type: 'Fosfogesso',
+    highlights: 'JV Mosaic 51% / Rainbow 49% · Recuperação de resíduo · Vida útil 30 anos',
+    startYear: 2030, depositType: 'reprocessing'
+  },
+  {
+    priority: 'high', company: 'Terra Brasil Minerals', origin: 'Brasil',
+    project: 'Alto Paranaíba', location: { city: 'Patos de Minas / Pres. Olegário', state: 'MG' },
+    capex: 500, capexDetail: 'R$ 2,5B (~US$ 500M)',
+    stage: 3, forecast: 'Construção 2027 · Produção 2030', capacity: '10.000 t/ano REE + 1 Mt/ano fosfato',
+    licensing: 'LP em análise · JV internacional em negociação',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Britadores', 'Motoniveladoras'],
+    opportunity: 'US$ 150M', type: 'Rocha (Kamafugito)',
+    highlights: 'Interesse EUA/Japão/Austrália · 15 anos de pesquisas · Área já antropizada',
+    startYear: 2030, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Resouro Strategic Metals', origin: 'Canadá',
+    project: 'Tiros', location: { city: 'Tiros', state: 'MG' },
+    capex: 100, capexDetail: 'R$ 500M (~US$ 100M)',
+    stage: 2, forecast: 'Operação 2026', capacity: '1B t minério',
+    licensing: 'LP em processo · Pesquisa mineral avançada',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'US$ 30M', type: 'Rocha Dura',
+    highlights: 'Refino: Rare Earth Technologies (EUA) · 28 concessões · 500 km²',
+    startYear: 2026, depositType: 'hardRock'
+  },
+  {
+    priority: 'medium', company: 'Power Minerals', origin: 'Austrália',
+    project: 'Morro do Ferro / Santa Anna', location: { city: 'Poços de Caldas + Catalão', state: 'MG' },
+    capex: 80, capexDetail: 'US$ 50-80M (estimativa inicial)',
+    stage: 2, forecast: 'Aceleração pesquisas', capacity: '6.000 t/ano óxidos (potencial)',
+    licensing: 'LP em andamento · Aquisição MTR concluída Abr/26',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras'],
+    opportunity: 'US$ 24M', type: 'Argila Iônica + Nióbio',
+    highlights: 'Maior recurso estimado do Brasil (3,5Mt @ 3,95%) · Protocolo intenções MG',
+    startYear: null, depositType: 'iacSaprolite'
+  },
+  {
+    priority: 'medium', company: 'Cabo Verde Mineração', origin: 'Brasil',
+    project: 'Alvo Botelhos / Caconde', location: { city: 'Cabo Verde / Botelhos / Muzambinho', state: 'MG' },
+    capex: 370, capexDetail: 'US$ 370M (complexo industrial)',
+    stage: 1, forecast: '~7 anos para produção', capacity: '500M+ t potencial',
+    licensing: 'Pesquisa mineral em andamento',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões', 'Carregadeiras'],
+    opportunity: 'US$ 111M', type: 'Argila Iônica',
+    highlights: '91.000 ha · 57 direitos minerários · Busca parceiros internacionais',
+    startYear: null, depositType: 'iacSaprolite'
+  },
+  {
+    priority: 'medium', company: 'ADL Mineração', origin: 'Brasil',
+    project: 'Buena (Monazita)', location: { city: 'Buena', state: 'RJ' },
+    capex: 30, capexDetail: 'US$ 30M (expansão)',
+    stage: 6, forecast: 'Produzindo · Expansão até 2028', capacity: '500-3.000 t monazita/ano',
+    licensing: 'Em operação · CNEN licenciado',
+    machines: ['Empilhadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Equipamentos de processo'],
+    opportunity: 'US$ 9M', type: 'Monazita',
+    highlights: '1ª exportação privada (Abr/26) · Parceria INB · Cloreto de REE em estudo',
+    startYear: 2026, depositType: 'hardRock'
+  },
+  {
+    priority: 'medium', company: 'Brazilian Critical Minerals', origin: 'Austrália',
+    project: 'EMA / Apuí', location: { city: 'Apuí', state: 'AM' },
+    capex: 40, capexDetail: 'R$ 200M (~US$ 40M)',
+    stage: 3, forecast: 'Produção 2027-2028', capacity: '1,017 Mt REE · 793 ppm TREO',
+    licensing: 'Licenciamento IPAAM em andamento (desde Fev/26)',
+    machines: ['Perfuratrizes', 'Tratores de Esteira', 'Carregadeiras', 'Bombas (ISR)'],
+    opportunity: 'US$ 12M', type: 'Argila Iônica (ISR)',
+    highlights: 'Parceria Southern Alliance Mining (Malásia) · Lixiviação in-situ · Refino futuro em Manaus',
+    startYear: 2027, depositType: 'exploration'
+  },
+  {
+    priority: 'low', company: 'Origen Resources', origin: 'Canadá',
+    project: 'Piauí/Bahia', location: { city: 'Fronteira PI/BA', state: 'PI' },
+    capex: 5, capexDetail: 'US$ 5M (exploração inicial)',
+    stage: 1, forecast: 'Due diligence 150 dias', capacity: '33.075 ha',
+    licensing: 'LOI assinado · Due diligence em andamento',
+    machines: ['Perfuratrizes', 'Equipamentos de sondagem'],
+    opportunity: 'US$ 2M', type: 'Argila Iônica',
+    highlights: '68.000 ha totais · Estágio muito inicial',
+    startYear: null, depositType: 'exploration'
+  },
+  {
+    priority: 'low', company: 'Terras Raras Brasil (TRB)', origin: 'Brasil',
+    project: 'Atlas / Argus / Ceres / Íris', location: { city: 'Araxá, Catalão, Itamarati, Jequié', state: 'MG' },
+    capex: 10, capexDetail: 'US$ 5-10M (early stage)',
+    stage: 1, forecast: 'Pré-prospecção', capacity: 'Portfólio de pesquisa',
+    licensing: 'Direitos minerários adquiridos',
+    machines: ['Perfuratrizes', 'Equipamentos de sondagem', 'Tratores'],
+    opportunity: 'US$ 3M', type: 'Múltiplos alvos',
+    highlights: 'Empresa brasileira junior · Portfólio em MG, GO, BA · Busca parceiros',
+    startYear: null, depositType: 'exploration'
+  },
+  {
+    priority: 'low', company: 'Taboca / CNMC (China)', origin: 'China',
+    project: 'Pitinga', location: { city: 'Presidente Figueiredo', state: 'AM' },
+    capex: 100, capexDetail: 'US$ 100M (até 2028, grupo)',
+    stage: 1, forecast: 'Pesquisa mineral', capacity: 'Estanho + potencial REE',
+    licensing: 'Estudos internos',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Equipamentos de processo'],
+    opportunity: 'US$ 30M', type: 'Primário + REE associado',
+    highlights: 'Produtora de estanho, Nb, Ta · Mina de Pitinga · Potencial REE em estudo',
+    startYear: null, depositType: 'exploration'
+  },
+  {
+    priority: 'low', company: 'Belo Sun Mining', origin: 'Canadá',
+    project: 'Volta Grande', location: { city: 'Margens do Rio Xingu', state: 'PA' },
+    capex: 150, capexDetail: 'US$ 150M+ (estimado)',
+    stage: 1, forecast: 'Decisão judicial pendente', capacity: 'Ouro (potencial REE associado)',
+    licensing: 'Licença de mineração obtida · Disputa judicial',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Perfuratrizes', 'Carregadeiras'],
+    opportunity: 'US$ 45M', type: 'Ouro (greenstone)',
+    highlights: 'Projeto de ouro Volta Grande · Estudos técnicos retomados (G Mining Services) · Decisão tribunal Mai/26',
+    startYear: null, depositType: 'exploration'
+  }
+]; // __DATA_END_PROJECTS__
+
+const statesData = {};
+
+// Frota de referência Viridis (baseline para IAC/saprolito)
+const VIRIDIS_FLEET = { trucks: 15, excavators: 5, loaders: 2, dozers: 8, support1: 2, support2: 3 };
+
+function estimateFleet(data) {
+  let result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, support1: 0, support2: 0, total: 0 };
+  data.forEach(p => {
+    const dt = p.depositType || 'exploration';
+    if (dt === 'iacSaprolite') {
+      const scale = p.capex / 560;
+      result.trucks += Math.round(VIRIDIS_FLEET.trucks * scale);
+      result.excavators += Math.round(VIRIDIS_FLEET.excavators * scale);
+      result.loaders += Math.round(VIRIDIS_FLEET.loaders * scale);
+      result.dozers += Math.round(VIRIDIS_FLEET.dozers * scale);
+      result.support1 += Math.round(VIRIDIS_FLEET.support1 * scale);
+      result.support2 += Math.round(VIRIDIS_FLEET.support2 * scale);
+    } else if (dt === 'hardRock') {
+      const scale = p.capex / 720;
+      result.trucks += Math.round(20 * scale);
+      result.excavators += Math.round(6 * scale);
+      result.loaders += Math.round(4 * scale);
+      result.dozers += Math.round(6 * scale);
+      result.support1 += Math.round(3 * scale);
+      result.support2 += Math.round(2 * scale);
+    } else if (dt === 'reprocessing') {
+      const scale = p.capex / 280;
+      result.trucks += Math.round(4 * scale);
+      result.excavators += Math.round(3 * scale);
+      result.loaders += Math.round(4 * scale);
+      result.dozers += Math.round(3 * scale);
+      result.support1 += Math.round(2 * scale);
+      result.support2 += Math.round(3 * scale);
+    } else {
+      // exploration: frota mínima
+      result.trucks += 1;
+      result.excavators += 1;
+      result.loaders += 1;
+      result.dozers += 1;
+      result.support1 += 0;
+      result.support2 += 1;
+    }
+  });
+  result.total = result.trucks + result.excavators + result.loaders + result.dozers + result.support1 + result.support2;
+  return result;
+}
+
+function init() {
+  document.getElementById('totalProjetos').textContent = projects.length;
+  const totalCapex = projects.reduce((a, p) => a + p.capex, 0);
+  document.getElementById('totalCapex').innerHTML = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
+
+  const states = [...new Set(projects.map(p => p.location.state))];
+  document.getElementById('totalEstados').textContent = states.length;
+
+  const machineEst = estimateFleet(projects);
+  document.getElementById('totalMachine').textContent = Math.round(machineEst.total);
+  document.getElementById('machTrucks').innerHTML = machineEst.trucks + ' <small>unidades</small>';
+  document.getElementById('machExcavators').innerHTML = machineEst.excavators + ' <small>unidades</small>';
+  document.getElementById('machLoaders').innerHTML = machineEst.loaders + ' <small>unidades</small>';
+  document.getElementById('machDozers').innerHTML = machineEst.dozers + ' <small>unidades</small>';
+  document.getElementById('machSupport1').innerHTML = machineEst.support1 + ' <small>unidades</small>';
+  document.getElementById('machSupport2').innerHTML = machineEst.support2 + ' <small>unidades</small>';
+
+  const totalOpp = projects.reduce((a, p) => {
+    const val = parseInt(p.opportunity.replace(/[^0-9]/g, ''));
+    return a + (isNaN(val) ? 0 : val);
+  }, 0);
+  document.getElementById('totalOpportunity').textContent = 'US$ ' + (totalOpp >= 1000 ? (totalOpp/1000).toFixed(1) + ' Bi' : totalOpp + ' Mi');
+
+  // Filters
+  const stateFilter = document.getElementById('stateFilter');
+  states.sort().forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    stateFilter.appendChild(opt);
+  });
+
+  const stageFilter = document.getElementById('stageFilter');
+  stageNames.forEach((name, i) => {
+    const opt = document.createElement('option');
+    opt.value = i + 1; opt.textContent = name;
+    stageFilter.appendChild(opt);
+  });
+
+  renderTable(projects);
+  renderPipeline(projects);
+  renderTimeline(projects);
+  document.getElementById('badgeCount').textContent = projects.length;
+}
+
+function scrollSummary(dir) {
+  const el = document.getElementById('summaryCarousel');
+  if (el) el.scrollBy({ left: dir * 220, behavior: 'smooth' });
+}
+
+function formatOppUSD(str) {
+  const num = parseInt(str.replace(/[^0-9]/g, ''));
+  if (isNaN(num)) return str;
+  return 'US$ ' + (num >= 1000 ? (num/1000).toFixed(1) + ' Bi' : num + ' Mi');
+}
+
+const stageClassMap = { 1:'tag-s1',2:'tag-s2',3:'tag-s3',4:'tag-s4',5:'tag-s5',6:'tag-s6' };
+const stageShort = { 1:'S1 · Prospecção',2:'S2 · Recursos Est.',3:'S3 · Lic. Prévia',4:'S4 · Lic. Instalação',5:'S5 · Construção',6:'S6 · Operação' };
+const stageTag = { 1:'S1',2:'S2',3:'S3',4:'S4',5:'S5',6:'S6' };
+
+function renderTable(data) {
+  const tbody = document.getElementById('tableBody');
+  const priorityMap = { critical:'Crítica', high:'Alta', medium:'Média', low:'Baixa' };
+  const priorityDot = { critical:'priority-critical', high:'priority-high', medium:'priority-medium', low:'priority-low' };
+
+  const depositLabel = { iacSaprolite:'IAC', hardRock:'Rocha Dura', reprocessing:'Fosfogesso', exploration:'Exploração' };
+  const depositColor = { iacSaprolite:'', hardRock:'', reprocessing:'', exploration:'' };
+
+  tbody.innerHTML = data.map(p => `
+    <tr>
+      <td><span class="priority-dot ${priorityDot[p.priority]}"></span>${priorityMap[p.priority]}</td>
+      <td>
+        <span class="company">${p.company}</span>
+        <span class="project">${p.origin} · ${depositLabel[p.depositType] || p.type}</span>
+      </td>
+      <td>
+        <span class="company">${p.project}</span>
+        <span class="project">${p.capacity || ''}</span>
+      </td>
+      <td>
+        <div class="location">
+          <span>${p.location.city}</span>
+          <span class="state">${p.location.state}</span>
+        </div>
+      </td>
+      <td class="capex">US$ ${p.capex}M <small>${p.capexDetail.split('·')[0]}</small></td>
+      <td><span class="tag ${stageClassMap[p.stage]}">${stageShort[p.stage]}</span></td>
+      <td style="font-size:12px;color:var(--cat-text-muted)">${p.forecast}</td>
+      <td style="font-size:11px;color:var(--cat-text-muted);max-width:160px">${p.licensing}</td>
+      <td>
+        <div class="machine-tags">
+          <span class="m-tag" style="background:rgba(255,205,0,0.15);color:var(--cat-yellow);font-weight:700;">${depositLabel[p.depositType] || p.type}</span>
+          ${p.machines.slice(0, 3).map(m => `<span class="m-tag ${p.priority === 'critical' ? 'high' : ''}">${m}</span>`).join('')}
+          ${p.machines.length > 3 ? `<span class="m-tag">+${p.machines.length-3}</span>` : ''}
+        </div>
+      </td>
+      <td style="font-weight:700;color:var(--cat-yellow);font-size:14px;">${formatOppUSD(p.opportunity)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderPipeline(data) {
+  const flow = document.getElementById('pipelineFlow');
+  const stages = [1,2,3,4,5,6];
+  const stageColors = ['stage-s1','stage-s2','stage-s3','stage-s4','stage-s5','stage-s6'];
+
+  flow.innerHTML = stages.map(s => {
+    const projs = data.filter(p => p.stage === s);
+    return `
+      <div class="pipe-stage ${stageColors[s-1]}">
+        <div class="ps-header">
+          <div class="ps-num">${s}</div>
+          <div class="ps-name">${stageNames[s-1]}</div>
+          <div class="ps-count">${projs.length} projeto${projs.length !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="ps-desc">${stageDescriptions[s-1]}</div>
+        <ul class="ps-projects">
+          ${projs.map(p => `
+            <li>
+              <span class="psp-co">${p.company}</span>
+              <span class="psp-st">${p.project} · ${p.location.state}</span>
+            </li>
+          `).join('')}
+          ${projs.length === 0 ? '<li style="color:var(--cat-text-muted);font-style:italic;">—</li>' : ''}
+        </ul>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderStates(data) {
+  const stateMap = {};
+  data.forEach(p => {
+    const st = p.location.state;
+    if (!stateMap[st]) stateMap[st] = { projects: [], totalCapex: 0 };
+    stateMap[st].projects.push(p);
+    stateMap[st].totalCapex += p.capex;
+  });
+
+  const grid = document.getElementById('stateGrid');
+  grid.innerHTML = Object.entries(stateMap).sort((a,b) => b[1].totalCapex - a[1].totalCapex).map(([state, info]) => `
+    <div class="state-card">
+      <div class="state-header">
+        <span class="state-name">${state}</span>
+        <span class="state-count">${info.projects.length} projetos</span>
+      </div>
+      <ul class="state-projects">
+        ${info.projects.map(p => `
+          <li>
+            <span class="sp-company">${p.company} - ${p.project}</span>
+            <span class="sp-value">US$ ${p.capex}M</span>
+          </li>
+        `).join('')}
+      </ul>
+      <div class="state-total">
+        <span>Total</span>
+        <span class="st-value">US$ ${info.totalCapex}M</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTimeline(data) {
+  const timeline = document.getElementById('timeline');
+  const years = [2026, 2027, 2028, 2029, 2030, 2031];
+  timeline.innerHTML = years.map(year => {
+    const yearProjects = data.filter(p => p.startYear === year || (p.startYear === null && year === 2027));
+    const exact = data.filter(p => p.startYear === year);
+    return `
+      <div class="timeline-item">
+        <div class="year">${year}</div>
+        ${exact.map(p => `
+          <div class="tl-content" style="margin-bottom: 6px;">
+            <div class="tl-company">${p.company}</div>
+            <div class="tl-desc">${p.project}</div>
+          </div>
+        `).join('')}
+        ${exact.length === 0 ? '<div style="color:var(--cat-text-muted);font-size:11px;padding:10px;">—</div>' : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function applyFilters() {
+  const state = document.getElementById('stateFilter').value;
+  const stage = document.getElementById('stageFilter').value;
+  const priority = document.getElementById('priorityFilter').value;
+  const deposit = document.getElementById('depositFilter').value;
+  let filtered = projects.filter(p => {
+    if (state !== 'all' && p.location.state !== state) return false;
+    if (stage !== 'all' && p.stage !== parseInt(stage)) return false;
+    if (priority !== 'all' && p.priority !== priority) return false;
+    if (deposit !== 'all' && p.depositType !== deposit) return false;
+    return true;
+  });
+  renderTable(filtered);
+  document.getElementById('badgeCount').textContent = filtered.length;
+}
+
+let sortDir = {};
+function sortTable(col) {
+  const keys = ['priority', 'company', 'project', 'location', 'capex', 'stage', 'forecast'];
+  const key = keys[col] || 'capex';
+  sortDir[col] = !(sortDir[col] || false);
+  const dir = sortDir[col] ? 1 : -1;
+  const sorted = [...projects].sort((a, b) => {
+    let va = a[key], vb = b[key];
+    if (key === 'capex') { va = a.capex; vb = b.capex; }
+    else if (key === 'location') { va = a.location.state + a.location.city; vb = b.location.state + b.location.city; }
+    else if (key === 'priority') { const ord = { critical:0, high:1, medium:2, low:3 }; va = ord[a.priority]; vb = ord[b.priority]; }
+    else if (key === 'stage') { va = a.stage; vb = b.stage; }
+    else { va = String(va).toLowerCase(); vb = String(vb).toLowerCase(); }
+    if (va < vb) return -1 * dir;
+    if (va > vb) return 1 * dir;
+    return 0;
+  });
+  renderTable(sorted);
+}
+
+// ── THEME TOGGLE ──
+function toggleTheme() {
+  const html = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  if (isLight) {
+    html.removeAttribute('data-theme');
+    document.getElementById('themeBtn').textContent = '🌙';
+    localStorage.setItem('cat-theme', 'dark');
+  } else {
+    html.setAttribute('data-theme', 'light');
+    document.getElementById('themeBtn').textContent = '☀️';
+    localStorage.setItem('cat-theme', 'light');
+  }
+}
+// Restore saved theme
+(function() {
+  const saved = localStorage.getItem('cat-theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('themeBtn').textContent = '☀️';
+  }
+})();
+
+// ── TAB SWITCHING ──
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+}
+
+// ── RESUMO EXECUTIVO ──
+function renderExecutiveSummary() {
+  const stateData = {};
+  projects.forEach(p => {
+    if (!stateData[p.location.state]) stateData[p.location.state] = { projects: [], totalCapex: 0 };
+    stateData[p.location.state].projects.push(p);
+    stateData[p.location.state].totalCapex += p.capex;
+  });
+
+  // State descriptions
+  const stateDesc = {
+    'AM': ['Amazonas', 'Exploração inicial de terras raras associadas a rochas alcalinas e carbonatitos. Desafios logísticos e ambientais.'],
+    'PA': ['Pará', 'Exploração. Região com registros geológicos favoráveis. Novas campanhas de prospecção em curso.'],
+    'PI': ['Piauí', 'Exploração inicial. Terras raras em argila iônica na fronteira com a Bahia. Estágio muito inicial.'],
+    'BA': ['Bahia', 'Projetos de rocha dura com alto teor. BRE (Monte Alto) em licenciamento com parceria internacional.'],
+    'GO': ['Goiás', 'Desenvolvimento avançado. Aclara (Carina) em construção com refino planejado nos EUA.'],
+    'MG': ['Minas Gerais', 'Desenvolvimento avançado. Meteoric (Caldeira), Viridis (Colossus) e outros projetos em infraestrutura.'],
+    'RJ': ['Rio de Janeiro', 'Operação comercial. ADL Mineração produz monazita com licença CNEN e exportação privada.'],
+  };
+
+  // Status color for each state based on max project stage
+  const stateStatus = {};
+  Object.entries(stateData).forEach(([st, info]) => {
+    const maxStage = Math.max(...info.projects.map(p => p.stage));
+    if (maxStage >= 6) stateStatus[st] = 'status-green';
+    else if (maxStage >= 3) stateStatus[st] = 'status-yellow';
+    else stateStatus[st] = 'status-black';
+  });
+  const stateStatusLabel = {};
+  Object.entries(stateData).forEach(([st, info]) => {
+    const maxStage = Math.max(...info.projects.map(p => p.stage));
+    if (maxStage >= 6) stateStatusLabel[st] = 'OPERAÇÃO';
+    else if (maxStage >= 4) stateStatusLabel[st] = 'DESENV. AVANÇADO';
+    else if (maxStage >= 3) stateStatusLabel[st] = 'DESENVOLVIMENTO';
+    else stateStatusLabel[st] = 'EXPLORAÇÃO / ESTUDOS';
+  });
+
+  // Build state cards array sorted by CAPEX desc
+  const stateCards = Object.entries(stateData).sort((a,b) => b[1].totalCapex - a[1].totalCapex).map(([st, info]) => {
+    const desc = stateDesc[st] || [st, ''];
+    return { state: st, name: desc[0], desc: desc[1], info, status: stateStatus[st], statusLabel: stateStatusLabel[st] };
+  });
+
+  // Split into left (3) and right (rest)
+  const leftCards = stateCards.slice(0, 3);
+  const rightCards = stateCards.slice(3);
+
+  // Render left column
+  document.getElementById('reMapLeft').innerHTML = leftCards.map(c => `
+    <div class="opp-status-card">
+      <div class="osc-header">
+        <div class="osc-dot ${c.status}"></div>
+        <span class="osc-state">${c.name} (${c.state})</span>
+        <span class="osc-badge" style="color:${c.status === 'status-green' ? 'var(--cat-green)' : c.status === 'status-yellow' ? 'var(--cat-yellow)' : 'var(--cat-text-muted)'};">${c.statusLabel}</span>
+      </div>
+      <div class="osc-text">${c.desc}</div>
+    </div>
+  `).join('');
+
+  // Render right column
+  document.getElementById('reMapRight').innerHTML = rightCards.map(c => `
+    <div class="opp-status-card">
+      <div class="osc-header">
+        <div class="osc-dot ${c.status}"></div>
+        <span class="osc-state">${c.name} (${c.state})</span>
+        <span class="osc-badge" style="color:${c.status === 'status-green' ? 'var(--cat-green)' : c.status === 'status-yellow' ? 'var(--cat-yellow)' : 'var(--cat-text-muted)'};">${c.statusLabel}</span>
+      </div>
+      <div class="osc-text">${c.desc}</div>
+    </div>
+  `).join('');
+
+  // Brazil SVG map using D3.js
+  renderBrazilMap(stateData);
+
+  // ── PIPELINE TABLE ──
+  const topProjects = projects.filter(p => p.stage >= 3).sort((a,b) => b.priority === 'critical' ? 1 : -1);
+  const pipelineRows = topProjects.slice(0, 4).map(p => {
+    const stageLabel = stageShort[p.stage];
+    const statusColor = p.stage >= 6 ? 'var(--cat-green)' : p.stage >= 3 ? 'var(--cat-yellow)' : 'var(--cat-text-muted)';
+    const statusText = p.stage >= 6 ? 'OPERAÇÃO' : p.stage >= 4 ? 'DESENV. AVANÇADO' : p.stage >= 3 ? 'DESENVOLVIMENTO' : 'EXPLORAÇÃO';
+    const milestones = p.highlights ? p.highlights.split('·')[0].trim() : p.forecast;
+    const isMeteoric = p.project === 'Caldeira';
+    return { company: p.company, project: p.project, state: p.location.state, stage: stageLabel, milestones, city: p.location.city, statusColor, statusText, isMeteoric, p };
+  });
+
+  // Add "others" row
+  const othersCount = projects.filter(p => p.stage < 3).length;
+
+  const contactMap = {
+    'Meteoric Resources': 'Marcelo de Carvalho',
+    'Viridis Mining & Minerals': 'Leandro Abreu',
+    'Serra Verde': 'Ricardo Grossi'
+  };
+  const statusMap = {
+    'Viridis Mining & Minerals': 'Proposta Orçamentária Enviada'
+  };
+
+  document.getElementById('rePipelineBody').innerHTML = pipelineRows.map(r => {
+    const contact = contactMap[r.company] || 'Em mapeamento';
+    const statusText = statusMap[r.company] || 'Prospecção inicial';
+    return `
+    <tr>
+      <td data-label="Projeto / Empresa">
+        <span class="pe-company">${r.company}</span>
+        <span class="pe-project">${r.project}${r.isMeteoric ? '<span class="pe-badge-new">NOVO</span>' : ''}</span>
+      </td>
+      <td data-label="Localização"><div class="pe-location"><span>${r.city}</span><span class="pe-state">${r.state}</span></div></td>
+      <td data-label="Fase Atual"><div class="pe-status"><div class="pe-dot" style="background:${r.statusColor};"></div>${r.stage}</div></td>
+      <td data-label="Próximos Marcos" style="font-size:11px;color:var(--cat-text-muted);max-width:200px;">${r.milestones}</td>
+      <td data-label="Contato" style="font-size:12px;color:var(--cat-text-muted)">${contact}</td>
+      <td data-label="Status"><div class="pe-status"><div class="pe-dot" style="background:${r.statusColor};"></div>${statusText}</div></td>
+    </tr>
+  `}).join('') + (othersCount > 0 ? `
+    <tr>
+      <td data-label="Projeto / Empresa"><span class="pe-company">Outros projetos emergentes</span><span class="pe-project">${othersCount} projetos em estágios iniciais</span></td>
+      <td data-label="Localização"><div class="pe-location"><span>GO / AM / PA / MG</span></div></td>
+      <td data-label="Fase Atual"><div class="pe-status"><div class="pe-dot" style="background:var(--cat-text-muted);"></div>EXPLORAÇÃO / ESTUDOS</div></td>
+      <td data-label="Próximos Marcos" style="font-size:11px;color:var(--cat-text-muted);">Geração de dados e avaliações iniciais</td>
+      <td data-label="Contato" style="font-size:12px;color:var(--cat-text-muted)">Em mapeamento</td>
+      <td data-label="Status"><div class="pe-status"><div class="pe-dot" style="background:var(--cat-text-muted);"></div>Prospecção inicial</div></td>
+    </tr>
+  ` : '');
+
+  // ── METRIC CARDS ──
+  const totalCapex = projects.reduce((a, p) => a + p.capex, 0);
+  const fe = estimateFleet(projects);
+
+  document.getElementById('reMetricGrid').innerHTML = `
+    <div class="metric-card">
+      <div class="mc-icon">📋</div>
+      <div class="mc-body">
+        <div class="mc-value">${projects.length}</div>
+        <div class="mc-label">Projetos em andamento em exploração ou desenvolvimento avançado no Brasil</div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-icon">💰</div>
+      <div class="mc-body">
+        <div class="mc-value">US$ ${(totalCapex/1000).toFixed(1)} Bi</div>
+        <div class="mc-label"><span class="hl">Investimentos previstos</span> para os projetos mapeados</div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-icon">🚛</div>
+      <div class="mc-body">
+        <div class="mc-value" style="font-size:24px;">US$ 1,44 Bi</div>
+        <div class="mc-label"><span class="hl">~${fe.total} equipamentos CAT</span> · 30% de conversão estimada do total da oportunidade em vendas realizáveis pela Sotreq, calculada por perfil de depósito (baseline Viridis para IAC, frota robusta para rocha dura, manuseio para reprocessamento)</div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="mc-icon">📈</div>
+      <div class="mc-body">
+        <div class="mc-value">15–20%</div>
+        <div class="mc-label">Crescimento anual projetado para demanda global até 2030, segundo IEA</div>
+      </div>
+    </div>
+  `;
+}
+
+// ── BRAZIL SVG MAP (D3.js) ──
+let mapRendered = false;
+
+function renderBrazilMap(stateData) {
+  const container = document.getElementById('brazilSvgMap');
+  if (!container || mapRendered) return;
+
+  const tooltip = document.getElementById('mapTooltip');
+  const width = 500;
+  const height = 420;
+
+  const projection = d3.geoMercator()
+    .center([-54, -14])
+    .scale(520)
+    .translate([width / 2, height / 2 + 20]);
+
+  const pathGen = d3.geoPath().projection(projection);
+
+  d3.select('#brazilSvgMap').selectAll('svg').remove();
+
+  const svgEl = d3.select('#brazilSvgMap')
+    .insert('svg', '#mapTooltip')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%')
+    .style('height', 'auto')
+    .style('display', 'block');
+
+  d3.json('./mapa/uf.json')
+    .then(function(geo) {
+      svgEl.selectAll('path')
+        .data(geo.features)
+        .enter()
+        .append('path')
+        .attr('d', pathGen)
+        .attr('fill', function(d) {
+          const abbr = d.properties.UF_05;
+          return stateData[abbr] ? '#FFCD00' : '#2a2a2a';
+        })
+        .attr('stroke', '#0d0d0d')
+        .attr('stroke-width', 0.5)
+        .attr('vector-effect', 'non-scaling-stroke')
+        .style('cursor', function(d) {
+          const abbr = d.properties.UF_05;
+          return stateData[abbr] ? 'pointer' : 'default';
+        })
+        .on('mouseenter', function(e, d) {
+          const abbr = d.properties.UF_05;
+          d3.select(this)
+            .attr('fill', stateData[abbr] ? '#e6b800' : '#3a3a3a')
+            .attr('stroke', '#FFCD00')
+            .attr('stroke-width', 1.2);
+          tooltip.style.opacity = '1';
+          const estadoName = {
+            'AC':'Acre','AL':'Alagoas','AP':'Amapa','AM':'Amazonas','BA':'Bahia',
+            'CE':'Ceara','DF':'Distrito Federal','ES':'Espirito Santo','GO':'Goias',
+            'MA':'Maranhao','MT':'Mato Grosso','MS':'Mato Grosso do Sul','MG':'Minas Gerais',
+            'PA':'Para','PB':'Paraiba','PR':'Parana','PE':'Pernambuco','PI':'Piaui',
+            'RJ':'Rio de Janeiro','RN':'Rio Grande do Norte','RS':'Rio Grande do Sul',
+            'RO':'Rondonia','RR':'Roraima','SC':'Santa Catarina','SP':'Sao Paulo',
+            'SE':'Sergipe','TO':'Tocantins'
+          }[abbr] || abbr;
+          tooltip.textContent = estadoName + (stateData[abbr] ? ' — ' + stateData[abbr].projects.length + ' projeto(s)' : '');
+        })
+        .on('mousemove', function(e) {
+          const ct = container.getBoundingClientRect();
+          tooltip.style.left = (e.clientX - ct.left + 12) + 'px';
+          tooltip.style.top = (e.clientY - ct.top - 10) + 'px';
+        })
+        .on('mouseleave', function(e, d) {
+          const abbr = d.properties.UF_05;
+          d3.select(this)
+            .attr('fill', stateData[abbr] ? '#FFCD00' : '#2a2a2a')
+            .attr('stroke', '#111')
+            .attr('stroke-width', 0.5);
+          tooltip.style.opacity = '0';
+        });
+      mapRendered = true;
+    })
+    .catch(function() {
+      container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--cat-text-muted);font-size:13px;">Mapa indisponível — verifique sua conexão.</div>';
+    });
+}
+
+// ── PIPELINE DETALHADO ──
+function renderPipelineDetail() {
+  const totalCapex = projects.reduce((a, p) => a + p.capex, 0);
+  const stageProj = {}; const stageCapex = {};
+  for (let i = 1; i <= 6; i++) { stageProj[i] = []; stageCapex[i] = 0; }
+  projects.forEach(p => { stageProj[p.stage] = stageProj[p.stage] || []; stageProj[p.stage].push(p); stageCapex[p.stage] = (stageCapex[p.stage] || 0) + p.capex; });
+  const sLabels = ['S1 · Prospecção Inicial','S2 · Recursos Estimados','S3 · Licença Prévia (LP)','S4 · Licença Instalação (LI)','S5 · Construção','S6 · Operação Comercial'];
+  const sColors = ['var(--cat-orange)','#ffaa33','var(--cat-blue)','#66d9ff','var(--cat-yellow)','var(--cat-green)'];
+  const maxCapex = Math.max(...[1,2,3,4,5,6].map(s => stageCapex[s] || 0));
+
+  document.getElementById('pipeDetailGrid').innerHTML = [1,2,3,4,5,6].map(s => {
+    const projs = stageProj[s] || []; const cap = stageCapex[s] || 0; const pct = maxCapex > 0 ? (cap / maxCapex) * 100 : 0;
+    return `<div class="pipe-detail-card" style="border-left:4px solid ${sColors[s-1]};">
+      <div class="pdc-header"><span class="pdc-stage">${sLabels[s-1]}</span><span class="pdc-count" style="background:rgba(255,205,0,0.15);color:var(--cat-yellow);">${projs.length} projeto${projs.length !== 1 ? 's' : ''}</span></div>
+      <div class="pdc-bar"><div class="pdc-fill" style="width:${pct}%;background:${sColors[s-1]};"></div></div>
+      <div class="pdc-stats">CAPEX: <strong>US$ ${cap}M</strong><br>Equip. 30%: <strong style="color:var(--cat-yellow);">US$ ${Math.round(cap * 0.30)}M</strong><br>${projs.length > 0 ? `% do Total: <strong>${((cap/totalCapex)*100).toFixed(1)}%</strong>` : ''}</div>
+      <div class="pdc-projects">${projs.map(p => `<div class="pdc-proj"><span class="pdc-pname">${p.company}</span><span class="pdc-pcapex">US$ ${p.capex}M</span></div>`).join('')}${projs.length === 0 ? '<div style="color:var(--cat-text-muted);font-style:italic;font-size:12px;">Nenhum projeto neste estágio</div>' : ''}</div>
+    </div>`;
+  }).join('');
+
+  const fe = estimateFleet(projects);
+  const equipTotal = totalCapex * 0.30;
+  document.getElementById('pipeMetrics').innerHTML = `
+    <div class="exe-kpi ek-green"><div class="ek-label">CAPEX Total no Pipeline</div><div class="ek-value">US$ ${(totalCapex/1000).toFixed(1)} Bi</div><div class="ek-sub">16 projetos</div></div>
+    <div class="exe-kpi ek-orange"><div class="ek-label">Equip. 30% Total</div><div class="ek-value">US$ ${(equipTotal/1000).toFixed(2)} Bi</div><div class="ek-sub">Aquisição + Infraestrutura</div></div>
+    <div class="exe-kpi"><div class="ek-label">Máquinas Estimadas</div><div class="ek-value">~${fe.total}</div><div class="ek-sub">Frota total potencial (por perfil de depósito)</div></div>
+    <div class="exe-kpi ek-blue"><div class="ek-label">Estágio + Avançado</div><div class="ek-value">S5</div><div class="ek-sub">Aclara Carina em construção</div></div>
+  `;
+}
+
+// ── NOTÍCIAS ──
+const newsData = [ // __DATA_BEGIN_NEWS__
+  { date: 'Mai/2026', source: 'Notícias da Mineração', company: 'Viridis',
+    title: 'Viridis já mira construção do projeto Colossus',
+    text: 'Viridis Mining & Minerals finalizou o DFS do projeto Colossus, em Poços de Caldas (MG), e protocolou a Licença de Instalação (LI) junto à FEAM. CAPEX estimado de US$ 560M e produção prevista de ~13.500 t/ano de REO. FID prevista para o 2S/2026.',
+    tags: ['Viridis', 'Colossus', 'MG', 'DFS'],
+    link: 'https://www.noticiasdemineracao.com/metais-basicos/news-articles/4531694/viridis-ja-mira-construcao-projeto-colossus' },
+  { date: 'Abr/2026', source: 'BNamericas', company: 'Meteoric',
+    title: 'Meteoric levanta novos recursos para projeto Caldeira',
+    text: 'A Meteoric Resources levantou A$ 40M (US$ 30M) via colocação privada para avançar o projeto Caldeira (MG). Recursos vão para DFS, licenciamento ambiental e operação da planta-piloto. FID prevista para 2026.',
+    tags: ['Meteoric', 'Caldeira', 'MG', 'Financiamento'],
+    link: 'https://www.bnamericas.com/pt/noticias/meteoric-vai-levantar-novos-recursos-para-seu-projeto-de-terras-raras-de-us450-milhoes-no-brasil' },
+  { date: 'Abr/2026', source: 'Brasil Mineral', company: 'BRE',
+    title: 'BRE poderá investir até R$ 3,6 bilhões para implantar polo de produção na Bahia',
+    text: 'A Brazilian Rare Earths prevê investir até R$ 3,6 bi no projeto Monte Alto (BA), maior teor global de terras raras (>15% TREO). Parceria com Carester (França). Primeira fase de R$ 600 mi com mina e planta de concentração.',
+    tags: ['BRE', 'Monte Alto', 'BA', 'Investimento'],
+    link: 'https://www.brasilmineral.com.br/noticias/bre-podera-investir-ate-r-36-bilhoes-para-implantar-polo-de-producao-na-bahia' },
+  { date: 'Abr/2026', source: 'Tribuna do Planalto', company: 'Aclara',
+    title: 'Aclara prevê início da produção comercial de terras raras em Goiás em 2028',
+    text: 'A Aclara Resources concluiu o FS do projeto Carina (GO) com CAPEX de US$ 781M. Início das obras no H2/26 e produção no H2/28. VPL de US$ 1,7 bi e TIR de 26,9%. Capacidade de 4.378 t/ano de REO.',
+    tags: ['Aclara', 'Carina', 'GO', 'FS'],
+    link: 'https://tribunadoplanalto.com.br/aclara-preve-inicio-da-producao-comercial-de-terras-raras-em-goias-em-2028/' },
+  { date: 'Mar/2026', source: 'Reuters · UOL', company: 'St George',
+    title: 'St George avança com projeto de terras raras em Araxá',
+    text: 'A St George Mining avança na estruturação financeira do projeto Araxá (MG) com estimativa de US$ 350M em investimentos. Sondagens elevaram em 75% os recursos de terras raras, para 70,91 Mt @ 4,06% TREO.',
+    tags: ['St George', 'Araxá', 'MG', 'Recursos'],
+    link: 'https://economia.uol.com.br/noticias/reuters/2026/03/05/st-george-avanca-com-projeto-de-terras-raras-em-minas-ve-maior-demanda-com-guerra.htm' },
+  { date: 'Abr/2026', source: 'Brasil Mineral', company: 'Power Minerals',
+    title: 'Australiana Power Minerals adquire a Mineração Terras Raras',
+    text: 'A Power Minerals concluiu a aquisição da MTR por A$ 22,5 mi (US$ 16 mi), dona do projeto Morro do Ferro em Poços de Caldas (MG). Área de 3,5 Mt @ 3,95% TREO. Protocolo de intenções assinado com governo de MG.',
+    tags: ['Power Minerals', 'MTR', 'MG', 'Aquisição'],
+    link: 'https://www.brasilmineral.com.br/noticias/australiana-power-minerals-adquire-a-mineracao-terras-raras-por-a-225-milhoes' },
+  { date: 'Abr/2026', source: 'TeféNews', company: 'BCM',
+    title: 'BCM firma parceria internacional para explorar terras raras no Amazonas',
+    text: 'A Brazilian Critical Minerals firmou acordo com a Southern Alliance Mining (Malásia) para o projeto EMA em Apuí (AM). Licenciamento em andamento no IPAAM. Método de lixiviação in-situ (ISR). Previsão de início em 2027.',
+    tags: ['BCM', 'EMA', 'AM', 'Parceria'],
+    link: 'https://tefenews.com.br/amazonas/empresa-australiana-firma-parceria-internacional-para-explorar-terras-raras-no-sul-do-amazonas' },
+  { date: 'Abr/2026', source: 'Forbes', company: 'ADL',
+    title: 'ADL Mineração realiza primeira exportação privada de terras raras do Brasil',
+    text: 'A ADL Mineração embarcou o primeiro container de monazita para o Canadá, retomando a exportação privada de terras raras após 7 anos. Meta de 500-1.000 t em 2026 e 3.000 t/ano até 2028. Projeto Buena (RJ).',
+    tags: ['ADL', 'Buena', 'RJ', 'Exportação'],
+    link: 'https://forbes.com.br/forbes-money/2026/04/marco-historico-jovem-ceo-lidera-retomada-da-exportacao-de-terras-raras-pelo-brasil/' },
+  { date: 'Mar/2026', source: 'BNamericas', company: 'Rainbow',
+    title: 'Mosaic e Rainbow avaliam projeto de terras raras de US$ 279 mi no Brasil',
+    text: 'Rainbow REE e Mosaic concluíram avaliação econômica do projeto Uberaba (MG) — recuperação de REE a partir de fosfogesso. Processamento de 2,7 Mt/ano com vida útil de 30 anos. VPL de US$ 916 mi e TIR de 45%.',
+    tags: ['Rainbow', 'Uberaba', 'Fosfogesso', 'PFS'],
+    link: 'https://www.bnamericas.com/pt/noticias/mosaic-e-rainbow-avaliam-projeto-de-terras-raras-de-us279-milhoes-no-brasil' },
+  { date: 'Mar/2026', source: 'BNamericas', company: 'Meteoric',
+    title: 'Meteoric busca licença para projeto Caldeira de US$ 443 mi',
+    text: 'A Meteoric Resources protocolou o pedido de Licença de Instalação (LI) do projeto Caldeira junto à FEAM/MG. LP obtida em dez/2025. CAPEX estimado de US$ 443 mi. Projeto integra mina e planta de separação.',
+    tags: ['Meteoric', 'Caldeira', 'MG', 'LI'],
+    link: 'https://www.bnamericas.com/pt/noticias/meteoric-busca-licenca-para-projeto-de-terras-raras-de-us443-milhoes-no-brasil' },
+  { date: 'Mai/2026', source: 'BNamericas', company: 'Viridis',
+    title: 'Viridis avança Colossus em direção à construção após protocolo da LI',
+    text: 'A Viridis Mining apresentou o pedido de LI para o projeto Colossus junto à FEAM. Financiamento em andamento com BNDES, Export Finance Australia e investidores privados. FID prevista para o 2S/2026.',
+    tags: ['Viridis', 'Colossus', 'MG', 'LI'],
+    link: 'https://www.bnamericas.com/pt/noticias/viridis-avanca-projeto-colossus-de-terras-raras-em-direcao-a-construcao-apos-protocolo-da-licenca-de-instalacao' },
+  { date: 'Abr/2026', source: 'Jornal de Patrocínio', company: 'Terra Brasil',
+    title: 'Indústria de terras raras e fertilizantes no Alto Paranaíba pode sair do papel',
+    text: 'A Terra Brasil Minerals negocia JV internacional para o projeto integrado de terras raras e fertilizantes no Alto Paranaíba (MG). Investimento de R$ 2,5 bi. Produção prevista de 10.000 t/ano REE e 1 Mt/ano fosfato.',
+    tags: ['Terra Brasil', 'Alto Paranaíba', 'MG', 'JV'],
+    link: 'https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel' },
+]; // __DATA_END_NEWS__
+
+let newsFilter = 'all';
+
+function scrollNews(dir) {
+  const grid = document.getElementById('newsGrid');
+  grid.scrollBy({ left: dir * 400, behavior: 'smooth' });
+}
+
+function renderNoticias() {
+  const grid = document.getElementById('newsGrid');
+  const filtersEl = document.getElementById('newsFilters');
+
+  const companies = [...new Set(newsData.map(n => n.company))].sort();
+  filtersEl.innerHTML = '<button class="active" data-filter="all" onclick="setNewsFilter(\'all\')">Todas</button>' +
+    companies.map(c => `<button data-filter="${c}" onclick="setNewsFilter('${c}')">${c}</button>`).join('');
+
+  const filtered = newsFilter === 'all' ? newsData : newsData.filter(n => n.company === newsFilter);
+  grid.innerHTML = filtered.map(n => `
+    <div class="news-card">
+      <div class="nc-date">${n.date}</div>
+      <div class="nc-source">Fonte: <strong>${n.source}</strong></div>
+      <h4><a href="${n.link}" target="_blank" rel="noopener">${n.title}</a></h4>
+      <p>${n.text}</p>
+      <div class="nc-tags">${n.tags.map(t => `<span>${t}</span>`).join('')}</div>
+      <div class="nc-link"><a href="${n.link}" target="_blank" rel="noopener">Ler notícia original →</a></div>
+    </div>
+  `).join('');
+}
+
+function setNewsFilter(filter) {
+  newsFilter = filter;
+  document.querySelectorAll('#newsFilters button').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+  renderNoticias();
+}
+
+init();
+renderExecutiveSummary();
+renderPipelineDetail();
+renderNoticias();
+</script>
+</body>
+</html>
