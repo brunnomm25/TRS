@@ -1,0 +1,622 @@
+{
+  "projects": [
+    {
+      "priority": "critical",
+      "company": "Meteoric Resources",
+      "origin": "Austrália",
+      "project": "Caldeira",
+      "location": {
+        "city": "Poços de Caldas / Caldas",
+        "state": "MG"
+      },
+      "capex": 740,
+      "capexDetail": "US$ 440M (mina) + US$ 300M (separação)",
+      "stage": 4,
+      "forecast": "Produção 2028",
+      "capacity": "14.000 t/ano REO",
+      "licensing": "LP obtida (Dez/25) · LI protocolada (Mar/26) · Piloto operacional",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras Hidráulicas",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes",
+        "Motoniveladoras"
+      ],
+      "opportunity": "US$ 222M",
+      "type": "Argila Iônica",
+      "highlights": "Offtake: Ucore + Neo Materials (40%) · US$300M EXIM Bank · FID previsto Out/26",
+      "startYear": 2028,
+      "depositType": "iacSaprolite"
+    },
+    {
+      "priority": "critical",
+      "company": "Viridis Mining & Minerals",
+      "origin": "Austrália",
+      "project": "Colossus",
+      "location": {
+        "city": "Poços de Caldas",
+        "state": "MG"
+      },
+      "capex": 560,
+      "capexDetail": "US$ 360M (mina) + US$ 200M (separação)",
+      "stage": 4,
+      "forecast": "Produção 2028",
+      "capacity": "~13.500 t/ano REO",
+      "licensing": "LP obtida (Dez/25) · LI protocolada (Mai/26) · DF concluído",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras Hidráulicas",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes",
+        "Motoniveladoras"
+      ],
+      "opportunity": "US$ 168M",
+      "type": "Argila Iônica",
+      "highlights": "US$50M Export Finance Australia · US$30M BNDES · Plataforma BIP Gov.Federal · JV Viridion reciclagem",
+      "startYear": 2028,
+      "depositType": "iacSaprolite"
+    },
+    {
+      "priority": "critical",
+      "company": "Brazilian Rare Earths (BRE)",
+      "origin": "Austrália",
+      "project": "Monte Alto",
+      "location": {
+        "city": "Jiquiriçá/Ubaíra + Camaçari",
+        "state": "BA"
+      },
+      "capex": 720,
+      "capexDetail": "R$ 600M (fase 1) a R$ 3,6B (total) ~ US$ 720M",
+      "stage": 3,
+      "forecast": "Scoping Q3/26 · Piloto Set/26",
+      "capacity": "Maior teor global (>15% TREO)",
+      "licensing": "Licença Lavra Experimental (Mar/26) · LP em andamento",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras Hidráulicas",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes",
+        "Britadores Móveis",
+        "Motoniveladoras"
+      ],
+      "opportunity": "US$ 216M",
+      "type": "Rocha Dura",
+      "highlights": "Parceria Carester (França) · Hancock Prospecting · US$160M em caixa · SENAI CIMATEC",
+      "startYear": 2028,
+      "depositType": "hardRock"
+    },
+    {
+      "priority": "high",
+      "company": "St George Mining",
+      "origin": "Austrália",
+      "project": "Araxá",
+      "location": {
+        "city": "Araxá",
+        "state": "MG"
+      },
+      "capex": 350,
+      "capexDetail": "US$ 350M (~R$ 2B)",
+      "stage": 3,
+      "forecast": "Nb em 2028 · REE em 2029",
+      "capacity": "5.000 t Nb + 15.000 t REE/ano",
+      "licensing": "LP em análise · Incentivo fiscal MG concedido",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras Hidráulicas",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes",
+        "Motoniveladoras"
+      ],
+      "opportunity": "US$ 105M",
+      "type": "Rocha Dura",
+      "highlights": "+75% recursos confirmados · Técnicas Reunidas · Offtake REAlloys · Planta piloto CEFET",
+      "startYear": 2028,
+      "depositType": "hardRock"
+    },
+    {
+      "priority": "high",
+      "company": "Aclara Resources",
+      "origin": "Canadá",
+      "project": "Carina",
+      "location": {
+        "city": "Aparecida de Goiânia",
+        "state": "GO"
+      },
+      "capex": 781,
+      "capexDetail": "US$ 780,9M",
+      "stage": 5,
+      "forecast": "Construção H2/26 · Produção H2/28",
+      "capacity": "4.378 t/ano REO",
+      "licensing": "FS completo (Abr/26) · LI obtida",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras Hidráulicas",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes"
+      ],
+      "opportunity": "US$ 234M",
+      "type": "Argila Iônica",
+      "highlights": "Refino em Louisiana (EUA) · Hochschild + CAP + DFC · 18 anos vida útil",
+      "startYear": 2028,
+      "depositType": "iacSaprolite"
+    },
+    {
+      "priority": "high",
+      "company": "Rainbow REE + Mosaic",
+      "origin": "Internacional",
+      "project": "Uberaba",
+      "location": {
+        "city": "Uberaba",
+        "state": "MG"
+      },
+      "capex": 279,
+      "capexDetail": "US$ 279M",
+      "stage": 3,
+      "forecast": "Construção 2027 · Produção 2030",
+      "capacity": "2,7 Mt/ano fosfogesso",
+      "licensing": "PEA concluído · PFS em andamento",
+      "machines": [
+        "Empilhadeiras",
+        "Correias Transportadoras",
+        "Tratores de Esteira",
+        "Carregadeiras",
+        "Bombas"
+      ],
+      "opportunity": "US$ 84M",
+      "type": "Fosfogesso",
+      "highlights": "JV Mosaic 51% / Rainbow 49% · Recuperação de resíduo · Vida útil 30 anos",
+      "startYear": 2030,
+      "depositType": "reprocessing"
+    },
+    {
+      "priority": "high",
+      "company": "Terra Brasil Minerals",
+      "origin": "Brasil",
+      "project": "Alto Paranaíba",
+      "location": {
+        "city": "Patos de Minas / Pres. Olegário",
+        "state": "MG"
+      },
+      "capex": 500,
+      "capexDetail": "R$ 2,5B (~US$ 500M)",
+      "stage": 3,
+      "forecast": "Construção 2027 · Produção 2030",
+      "capacity": "10.000 t/ano REE + 1 Mt/ano fosfato",
+      "licensing": "LP em análise · JV internacional em negociação",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes",
+        "Britadores",
+        "Motoniveladoras"
+      ],
+      "opportunity": "US$ 150M",
+      "type": "Rocha (Kamafugito)",
+      "highlights": "Interesse EUA/Japão/Austrália · 15 anos de pesquisas · Área já antropizada",
+      "startYear": 2030,
+      "depositType": "hardRock"
+    },
+    {
+      "priority": "high",
+      "company": "Resouro Strategic Metals",
+      "origin": "Canadá",
+      "project": "Tiros",
+      "location": {
+        "city": "Tiros",
+        "state": "MG"
+      },
+      "capex": 100,
+      "capexDetail": "R$ 500M (~US$ 100M)",
+      "stage": 2,
+      "forecast": "Operação 2026",
+      "capacity": "1B t minério",
+      "licensing": "LP em processo · Pesquisa mineral avançada",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras",
+        "Tratores de Esteira",
+        "Pás Carregadeiras",
+        "Perfuratrizes",
+        "Motoniveladoras"
+      ],
+      "opportunity": "US$ 30M",
+      "type": "Rocha Dura",
+      "highlights": "Refino: Rare Earth Technologies (EUA) · 28 concessões · 500 km²",
+      "startYear": 2026,
+      "depositType": "hardRock"
+    },
+    {
+      "priority": "medium",
+      "company": "Power Minerals",
+      "origin": "Austrália",
+      "project": "Morro do Ferro / Santa Anna",
+      "location": {
+        "city": "Poços de Caldas + Catalão",
+        "state": "MG"
+      },
+      "capex": 80,
+      "capexDetail": "US$ 50-80M (estimativa inicial)",
+      "stage": 2,
+      "forecast": "Aceleração pesquisas",
+      "capacity": "6.000 t/ano óxidos (potencial)",
+      "licensing": "LP em andamento · Aquisição MTR concluída Abr/26",
+      "machines": [
+        "Perfuratrizes",
+        "Escavadeiras",
+        "Tratores de Esteira",
+        "Carregadeiras"
+      ],
+      "opportunity": "US$ 24M",
+      "type": "Argila Iônica + Nióbio",
+      "highlights": "Maior recurso estimado do Brasil (3,5Mt @ 3,95%) · Protocolo intenções MG",
+      "startYear": null,
+      "depositType": "iacSaprolite"
+    },
+    {
+      "priority": "medium",
+      "company": "Cabo Verde Mineração",
+      "origin": "Brasil",
+      "project": "Alvo Botelhos / Caconde",
+      "location": {
+        "city": "Cabo Verde / Botelhos / Muzambinho",
+        "state": "MG"
+      },
+      "capex": 370,
+      "capexDetail": "US$ 370M (complexo industrial)",
+      "stage": 1,
+      "forecast": "~7 anos para produção",
+      "capacity": "500M+ t potencial",
+      "licensing": "Pesquisa mineral em andamento",
+      "machines": [
+        "Perfuratrizes",
+        "Escavadeiras",
+        "Tratores de Esteira",
+        "Caminhões",
+        "Carregadeiras"
+      ],
+      "opportunity": "US$ 111M",
+      "type": "Argila Iônica",
+      "highlights": "91.000 ha · 57 direitos minerários · Busca parceiros internacionais",
+      "startYear": null,
+      "depositType": "iacSaprolite"
+    },
+    {
+      "priority": "medium",
+      "company": "ADL Mineração",
+      "origin": "Brasil",
+      "project": "Buena (Monazita)",
+      "location": {
+        "city": "Buena",
+        "state": "RJ"
+      },
+      "capex": 30,
+      "capexDetail": "US$ 30M (expansão)",
+      "stage": 6,
+      "forecast": "Produzindo · Expansão até 2028",
+      "capacity": "500-3.000 t monazita/ano",
+      "licensing": "Em operação · CNEN licenciado",
+      "machines": [
+        "Empilhadeiras",
+        "Tratores de Esteira",
+        "Carregadeiras",
+        "Equipamentos de processo"
+      ],
+      "opportunity": "US$ 9M",
+      "type": "Monazita",
+      "highlights": "1ª exportação privada (Abr/26) · Parceria INB · Cloreto de REE em estudo",
+      "startYear": 2026,
+      "depositType": "hardRock"
+    },
+    {
+      "priority": "medium",
+      "company": "Brazilian Critical Minerals",
+      "origin": "Austrália",
+      "project": "EMA / Apuí",
+      "location": {
+        "city": "Apuí",
+        "state": "AM"
+      },
+      "capex": 40,
+      "capexDetail": "R$ 200M (~US$ 40M)",
+      "stage": 3,
+      "forecast": "Produção 2027-2028",
+      "capacity": "1,017 Mt REE · 793 ppm TREO",
+      "licensing": "Licenciamento IPAAM em andamento (desde Fev/26)",
+      "machines": [
+        "Perfuratrizes",
+        "Tratores de Esteira",
+        "Carregadeiras",
+        "Bombas (ISR)"
+      ],
+      "opportunity": "US$ 12M",
+      "type": "Argila Iônica (ISR)",
+      "highlights": "Parceria Southern Alliance Mining (Malásia) · Lixiviação in-situ · Refino futuro em Manaus",
+      "startYear": 2027,
+      "depositType": "exploration"
+    },
+    {
+      "priority": "low",
+      "company": "Origen Resources",
+      "origin": "Canadá",
+      "project": "Piauí/Bahia",
+      "location": {
+        "city": "Fronteira PI/BA",
+        "state": "PI"
+      },
+      "capex": 5,
+      "capexDetail": "US$ 5M (exploração inicial)",
+      "stage": 1,
+      "forecast": "Due diligence 150 dias",
+      "capacity": "33.075 ha",
+      "licensing": "LOI assinado · Due diligence em andamento",
+      "machines": [
+        "Perfuratrizes",
+        "Equipamentos de sondagem"
+      ],
+      "opportunity": "US$ 2M",
+      "type": "Argila Iônica",
+      "highlights": "68.000 ha totais · Estágio muito inicial",
+      "startYear": null,
+      "depositType": "exploration"
+    },
+    {
+      "priority": "low",
+      "company": "Terras Raras Brasil (TRB)",
+      "origin": "Brasil",
+      "project": "Atlas / Argus / Ceres / Íris",
+      "location": {
+        "city": "Araxá, Catalão, Itamarati, Jequié",
+        "state": "MG"
+      },
+      "capex": 10,
+      "capexDetail": "US$ 5-10M (early stage)",
+      "stage": 1,
+      "forecast": "Pré-prospecção",
+      "capacity": "Portfólio de pesquisa",
+      "licensing": "Direitos minerários adquiridos",
+      "machines": [
+        "Perfuratrizes",
+        "Equipamentos de sondagem",
+        "Tratores"
+      ],
+      "opportunity": "US$ 3M",
+      "type": "Múltiplos alvos",
+      "highlights": "Empresa brasileira junior · Portfólio em MG, GO, BA · Busca parceiros",
+      "startYear": null,
+      "depositType": "exploration"
+    },
+    {
+      "priority": "low",
+      "company": "Taboca / CNMC (China)",
+      "origin": "China",
+      "project": "Pitinga",
+      "location": {
+        "city": "Presidente Figueiredo",
+        "state": "AM"
+      },
+      "capex": 100,
+      "capexDetail": "US$ 100M (até 2028, grupo)",
+      "stage": 1,
+      "forecast": "Pesquisa mineral",
+      "capacity": "Estanho + potencial REE",
+      "licensing": "Estudos internos",
+      "machines": [
+        "Perfuratrizes",
+        "Escavadeiras",
+        "Tratores de Esteira",
+        "Equipamentos de processo"
+      ],
+      "opportunity": "US$ 30M",
+      "type": "Primário + REE associado",
+      "highlights": "Produtora de estanho, Nb, Ta · Mina de Pitinga · Potencial REE em estudo",
+      "startYear": null,
+      "depositType": "exploration"
+    },
+    {
+      "priority": "low",
+      "company": "Belo Sun Mining",
+      "origin": "Canadá",
+      "project": "Volta Grande",
+      "location": {
+        "city": "Margens do Rio Xingu",
+        "state": "PA"
+      },
+      "capex": 150,
+      "capexDetail": "US$ 150M+ (estimado)",
+      "stage": 1,
+      "forecast": "Decisão judicial pendente",
+      "capacity": "Ouro (potencial REE associado)",
+      "licensing": "Licença de mineração obtida · Disputa judicial",
+      "machines": [
+        "Caminhões Fora de Estrada",
+        "Escavadeiras",
+        "Tratores de Esteira",
+        "Perfuratrizes",
+        "Carregadeiras"
+      ],
+      "opportunity": "US$ 45M",
+      "type": "Ouro (greenstone)",
+      "highlights": "Projeto de ouro Volta Grande · Estudos técnicos retomados (G Mining Services) · Decisão tribunal Mai/26",
+      "startYear": null,
+      "depositType": "exploration"
+    }
+  ],
+  "news": [
+    {
+      "date": "Mai/2026",
+      "source": "Notícias da Mineração",
+      "company": "Viridis",
+      "title": "Viridis já mira construção do projeto Colossus",
+      "text": "Viridis Mining & Minerals finalizou o DFS do projeto Colossus, em Poços de Caldas (MG), e protocolou a Licença de Instalação (LI) junto à FEAM. CAPEX estimado de US$ 560M e produção prevista de ~13.500 t/ano de REO. FID prevista para o 2S/2026.",
+      "tags": [
+        "Viridis",
+        "Colossus",
+        "MG",
+        "DFS"
+      ],
+      "link": "https://www.noticiasdemineracao.com/metais-basicos/news-articles/4531694/viridis-ja-mira-construcao-projeto-colossus"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "BNamericas",
+      "company": "Meteoric",
+      "title": "Meteoric levanta novos recursos para projeto Caldeira",
+      "text": "A Meteoric Resources levantou A$ 40M (US$ 30M) via colocação privada para avançar o projeto Caldeira (MG). Recursos vão para DFS, licenciamento ambiental e operação da planta-piloto. FID prevista para 2026.",
+      "tags": [
+        "Meteoric",
+        "Caldeira",
+        "MG",
+        "Financiamento"
+      ],
+      "link": "https://www.bnamericas.com/pt/noticias/meteoric-vai-levantar-novos-recursos-para-seu-projeto-de-terras-raras-de-us450-milhoes-no-brasil"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "Brasil Mineral",
+      "company": "BRE",
+      "title": "BRE poderá investir até R$ 3,6 bilhões para implantar polo de produção na Bahia",
+      "text": "A Brazilian Rare Earths prevê investir até R$ 3,6 bi no projeto Monte Alto (BA), maior teor global de terras raras (>15% TREO). Parceria com Carester (França). Primeira fase de R$ 600 mi com mina e planta de concentração.",
+      "tags": [
+        "BRE",
+        "Monte Alto",
+        "BA",
+        "Investimento"
+      ],
+      "link": "https://www.brasilmineral.com.br/noticias/bre-podera-investir-ate-r-36-bilhoes-para-implantar-polo-de-producao-na-bahia"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "Tribuna do Planalto",
+      "company": "Aclara",
+      "title": "Aclara prevê início da produção comercial de terras raras em Goiás em 2028",
+      "text": "A Aclara Resources concluiu o FS do projeto Carina (GO) com CAPEX de US$ 781M. Início das obras no H2/26 e produção no H2/28. VPL de US$ 1,7 bi e TIR de 26,9%. Capacidade de 4.378 t/ano de REO.",
+      "tags": [
+        "Aclara",
+        "Carina",
+        "GO",
+        "FS"
+      ],
+      "link": "https://tribunadoplanalto.com.br/aclara-preve-inicio-da-producao-comercial-de-terras-raras-em-goias-em-2028/"
+    },
+    {
+      "date": "Mar/2026",
+      "source": "Reuters · UOL",
+      "company": "St George",
+      "title": "St George avança com projeto de terras raras em Araxá",
+      "text": "A St George Mining avança na estruturação financeira do projeto Araxá (MG) com estimativa de US$ 350M em investimentos. Sondagens elevaram em 75% os recursos de terras raras, para 70,91 Mt @ 4,06% TREO.",
+      "tags": [
+        "St George",
+        "Araxá",
+        "MG",
+        "Recursos"
+      ],
+      "link": "https://economia.uol.com.br/noticias/reuters/2026/03/05/st-george-avanca-com-projeto-de-terras-raras-em-minas-ve-maior-demanda-com-guerra.htm"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "Brasil Mineral",
+      "company": "Power Minerals",
+      "title": "Australiana Power Minerals adquire a Mineração Terras Raras",
+      "text": "A Power Minerals concluiu a aquisição da MTR por A$ 22,5 mi (US$ 16 mi), dona do projeto Morro do Ferro em Poços de Caldas (MG). Área de 3,5 Mt @ 3,95% TREO. Protocolo de intenções assinado com governo de MG.",
+      "tags": [
+        "Power Minerals",
+        "MTR",
+        "MG",
+        "Aquisição"
+      ],
+      "link": "https://www.brasilmineral.com.br/noticias/australiana-power-minerals-adquire-a-mineracao-terras-raras-por-a-225-milhoes"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "TeféNews",
+      "company": "BCM",
+      "title": "BCM firma parceria internacional para explorar terras raras no Amazonas",
+      "text": "A Brazilian Critical Minerals firmou acordo com a Southern Alliance Mining (Malásia) para o projeto EMA em Apuí (AM). Licenciamento em andamento no IPAAM. Método de lixiviação in-situ (ISR). Previsão de início em 2027.",
+      "tags": [
+        "BCM",
+        "EMA",
+        "AM",
+        "Parceria"
+      ],
+      "link": "https://tefenews.com.br/amazonas/empresa-australiana-firma-parceria-internacional-para-explorar-terras-raras-no-sul-do-amazonas"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "Forbes",
+      "company": "ADL",
+      "title": "ADL Mineração realiza primeira exportação privada de terras raras do Brasil",
+      "text": "A ADL Mineração embarcou o primeiro container de monazita para o Canadá, retomando a exportação privada de terras raras após 7 anos. Meta de 500-1.000 t em 2026 e 3.000 t/ano até 2028. Projeto Buena (RJ).",
+      "tags": [
+        "ADL",
+        "Buena",
+        "RJ",
+        "Exportação"
+      ],
+      "link": "https://forbes.com.br/forbes-money/2026/04/marco-historico-jovem-ceo-lidera-retomada-da-exportacao-de-terras-raras-pelo-brasil/"
+    },
+    {
+      "date": "Mar/2026",
+      "source": "BNamericas",
+      "company": "Rainbow",
+      "title": "Mosaic e Rainbow avaliam projeto de terras raras de US$ 279 mi no Brasil",
+      "text": "Rainbow REE e Mosaic concluíram avaliação econômica do projeto Uberaba (MG) — recuperação de REE a partir de fosfogesso. Processamento de 2,7 Mt/ano com vida útil de 30 anos. VPL de US$ 916 mi e TIR de 45%.",
+      "tags": [
+        "Rainbow",
+        "Uberaba",
+        "Fosfogesso",
+        "PFS"
+      ],
+      "link": "https://www.bnamericas.com/pt/noticias/mosaic-e-rainbow-avaliam-projeto-de-terras-raras-de-us279-milhoes-no-brasil"
+    },
+    {
+      "date": "Mar/2026",
+      "source": "BNamericas",
+      "company": "Meteoric",
+      "title": "Meteoric busca licença para projeto Caldeira de US$ 443 mi",
+      "text": "A Meteoric Resources protocolou o pedido de Licença de Instalação (LI) do projeto Caldeira junto à FEAM/MG. LP obtida em dez/2025. CAPEX estimado de US$ 443 mi. Projeto integra mina e planta de separação.",
+      "tags": [
+        "Meteoric",
+        "Caldeira",
+        "MG",
+        "LI"
+      ],
+      "link": "https://www.bnamericas.com/pt/noticias/meteoric-busca-licenca-para-projeto-de-terras-raras-de-us443-milhoes-no-brasil"
+    },
+    {
+      "date": "Mai/2026",
+      "source": "BNamericas",
+      "company": "Viridis",
+      "title": "Viridis avança Colossus em direção à construção após protocolo da LI",
+      "text": "A Viridis Mining apresentou o pedido de LI para o projeto Colossus junto à FEAM. Financiamento em andamento com BNDES, Export Finance Australia e investidores privados. FID prevista para o 2S/2026.",
+      "tags": [
+        "Viridis",
+        "Colossus",
+        "MG",
+        "LI"
+      ],
+      "link": "https://www.bnamericas.com/pt/noticias/viridis-avanca-projeto-colossus-de-terras-raras-em-direcao-a-construcao-apos-protocolo-da-licenca-de-instalacao"
+    },
+    {
+      "date": "Abr/2026",
+      "source": "Jornal de Patrocínio",
+      "company": "Terra Brasil",
+      "title": "Indústria de terras raras e fertilizantes no Alto Paranaíba pode sair do papel",
+      "text": "A Terra Brasil Minerals negocia JV internacional para o projeto integrado de terras raras e fertilizantes no Alto Paranaíba (MG). Investimento de R$ 2,5 bi. Produção prevista de 10.000 t/ano REE e 1 Mt/ano fosfato.",
+      "tags": [
+        "Terra Brasil",
+        "Alto Paranaíba",
+        "MG",
+        "JV"
+      ],
+      "link": "https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel"
+    }
+  ],
+  "exportedAt": "2026-05-25T16:56:46.833Z"
+}

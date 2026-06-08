@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sotreq CAT | Oportunidades Terras Raras Brasil</title>
+<title>Sotreq CAT | Terras Raras e Green Field no Brasil</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
   :root {
@@ -293,7 +294,8 @@
     border-radius: 10px; padding: 16px; text-align: center; transition: all 0.2s;
   }
   .machine-card:hover { border-color: var(--cat-yellow); }
-  .machine-card .m-icon { font-size: 32px; margin-bottom: 8px; }
+  .machine-card .m-icon { font-size: 32px; margin-bottom: 8px; display: flex; justify-content: center; }
+  .machine-card .m-icon img { height: 55px; width: auto; }
   .machine-card .m-name { font-weight: 600; color: var(--cat-fg); font-size: 13px; }
   .machine-card .m-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 4px; }
   .machine-card .m-demand { font-size: 18px; font-weight: 800; color: var(--cat-yellow); margin-top: 8px; }
@@ -480,6 +482,15 @@
   ::-webkit-scrollbar-thumb { background: var(--cat-gray-light); border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--cat-text-muted); }
 
+  i.bi { vertical-align: -0.125em; display: inline-block; }
+  .m-icon i.bi { font-size: 22px; color: var(--cat-yellow); }
+  .mc-icon i.bi { font-size: 24px; color: var(--cat-yellow); }
+  .tab-btn i.bi { margin-right: 4px; }
+  .ap-tab i.bi, .ap-btn i.bi { margin-right: 4px; }
+  #adminBtn i.bi { font-size: 24px; }
+  .insight-icon i.bi { font-size: 28px; color: var(--cat-yellow); }
+  .re-cal i.bi { font-size: 18px; vertical-align: -0.2em; }
+
   /* TABS */
   .tab-bar {
     display: flex; gap: 0; border-bottom: 2px solid var(--cat-gray-light);
@@ -637,6 +648,12 @@
   .opp-status-card .osc-header .osc-badge { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
   .opp-status-card .osc-header .osc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .opp-status-card .osc-text { font-size: 11px; color: var(--cat-text-muted); line-height: 1.5; }
+  .opp-status-card .osc-companies { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--cat-gray-light); }
+  .opp-status-card .osc-company { display: flex; align-items: center; gap: 4px; font-size: 11px; padding: 2px 0; }
+  .opp-status-card .osc-co-name { font-weight: 600; color: var(--cat-fg); }
+  .opp-status-card .osc-co-project { color: var(--cat-text-muted); font-size: 10px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .opp-status-card .osc-co-capex { color: var(--cat-yellow); font-weight: 600; white-space: nowrap; }
+  .opp-status-card .osc-total { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--cat-fg); padding-top: 4px; margin-top: 4px; border-top: 1px dashed var(--cat-gray-light); }
 
   .insight-bar {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
@@ -815,9 +832,74 @@
   }
   .news-filters button:hover { border-color: var(--cat-yellow); color: var(--cat-fg); }
   .news-filters button.active { background: var(--cat-yellow); color: var(--cat-black); border-color: var(--cat-yellow); font-weight: 700; }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  @media (max-width: 1000px) { .chart-grid { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 12px; padding: 20px; transition: all 0.2s;
+  }
+  .chart-card:hover { border-color: var(--cat-yellow); }
+  .chart-card .chart-title {
+    font-size: 13px; font-weight: 700; color: var(--cat-fg);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+  }
+  .chart-card .chart-sub {
+    font-size: 11px; color: var(--cat-text-muted); margin-bottom: 16px;
+  }
+  .chart-card svg { display: block; width: 100%; height: auto; }
+  .chart-card svg text { font-family: 'Inter', sans-serif; }
+  .chart-card .chart-body { min-height: 220px; }
+  .chart-tooltip {
+    position: absolute; background: var(--cat-black); color: var(--cat-fg);
+    padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 500;
+    pointer-events: none; border: 1px solid var(--cat-yellow); opacity: 0;
+    transition: opacity 0.15s; z-index: 20; white-space: nowrap;
+    line-height: 1.5; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .chart-card .legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+  .chart-card .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--cat-text-muted); }
+  .chart-card .legend-item .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .chart-card-full { grid-column: 1 / -1; }
 </style>
 </head>
 <body>
+
+<div id="loginOverlay" style="position:fixed;inset:0;z-index:9999;background:var(--cat-dark);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;transition:opacity 0.5s;">
+  <div style="text-align:center;">
+    <img src="Logo%20Sotreq.png" alt="Sotreq" style="height:72px;width:auto;margin-bottom:12px;">
+    <h2 style="color:var(--cat-fg);font-size:20px;font-weight:700;">Inteligência de Mercado</h2>
+    <p style="color:var(--cat-text-muted);font-size:13px;margin-top:4px;">Acesso restrito · Digite a senha para continuar</p>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <input type="password" id="loginPass" placeholder="Senha" onkeydown="if(event.key==='Enter')checkPass()" style="padding:12px 16px;border-radius:8px;border:1px solid var(--cat-gray-light);background:var(--cat-black);color:var(--cat-fg);font-size:15px;width:220px;outline:none;">
+    <button onclick="checkPass()" style="padding:12px 20px;border-radius:8px;background:var(--cat-yellow);color:var(--cat-black);border:none;font-weight:700;font-size:15px;cursor:pointer;">Entrar</button>
+  </div>
+  <div id="loginError" style="color:var(--cat-red);font-size:12px;display:none;">Senha incorreta. Tente novamente.</div>
+</div>
+
+<script>
+var _p = 'U290cmVxMjY=';
+function checkPass() {
+  if (btoa(document.getElementById('loginPass').value) === _p) {
+    document.getElementById('loginOverlay').style.opacity = '0';
+    setTimeout(function() { document.getElementById('loginOverlay').style.display = 'none'; }, 500);
+    sessionStorage.setItem('sotreq_logged', '1');
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginPass').focus();
+  }
+}
+if (sessionStorage.getItem('sotreq_logged') === '1') {
+  document.getElementById('loginOverlay').style.display = 'none';
+}
+</script>
 
 <div class="top-bar">
   <div class="logo">
@@ -831,23 +913,22 @@
   <div class="tagline">
     <div>
       <div class="title">Inteligência de Mercado</div>
-      <div class="sub">Terras Raras Brasil · 2026-2030</div>
+      <div class="sub">Terras Raras · 2026-2030</div>
     </div>
-    <button class="theme-btn" onclick="toggleTheme()" title="Alternar tema claro/escuro" id="themeBtn">🌙</button>
+    <button class="theme-btn" onclick="toggleTheme()" title="Alternar tema claro/escuro" id="themeBtn"><i class="bi bi-moon-stars-fill"></i></button>
   </div>
 </div>
 
 <section class="hero">
   <div class="container">
-    <h2>Oportunidades em <em>Terras Raras</em> no Brasil</h2>
-    <p>Análise estratégica completa dos projetos greenfield de terras raras no Brasil — incluindo Minas Gerais, Bahia, Goiás, Amazonas, Pará e outros — para identificação de oportunidades de negócio para a Sotreq no fornecimento de máquinas e soluções Cat para mineração. As estimativas de equipamentos foram recalibradas para refletir o perfil operacional mais provável de cada depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (manuseio/pátio) ou exploração.</p>
-    <div class="tags">
-      <span>16 Projetos Mapeados</span>
-      <span>US$ 5,1 Bi em CAPEX</span>
-      <span>6 Estados</span>
-      <span>MG · BA · GO · AM · PA · RJ</span>
-      <span>Argila Iônica · Rocha Dura · Fosfogesso</span>
-      <span>Janela 2026-2030</span>
+    <h2>Oportunidades de Projetos <em>Terras Raras</em> e <em style="color:var(--cat-green);font-style:normal;">Green Field</em> no Brasil</h2>
+    <div class="tags" id="heroTags">
+      <span id="heroProjetos">—</span>
+      <span id="heroCapex">—</span>
+      <span id="heroEstados">—</span>
+      <span id="heroEstadosLista">MG · BA · GO · AM · PA · RJ</span>
+      <span id="heroTipos">Argila Iônica · Rocha Dura · Fosfogesso</span>
+      <span id="heroJanela">Janela 2026-2030</span>
     </div>
   </div>
 </section>
@@ -895,10 +976,10 @@
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-  <button class="tab-btn" onclick="switchTab('resumo')">📋 Resumo Executivo</button>
-  <button class="tab-btn" onclick="switchTab('pipeline')">🔷 Pipeline Detalhado</button>
-  <button class="tab-btn" onclick="switchTab('noticias')">📰 Notícias do Mês</button>
+  <button class="tab-btn active" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
+  <button class="tab-btn" onclick="switchTab('resumo')"><i class="bi bi-file-text"></i> Resumo Executivo</button>
+  <button class="tab-btn" onclick="switchTab('pipeline')"><i class="bi bi-diagram-3"></i> Pipeline Detalhado</button>
+  <button class="tab-btn" onclick="switchTab('noticias')"><i class="bi bi-newspaper"></i> Notícias</button>
 </div>
 
 <div class="main-content">
@@ -911,10 +992,39 @@
       <h3>Funil de Maturidade dos Projetos</h3>
     </div>
     <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
-      Classificação própria em 6 estágios, do greenfield inicial à operação comercial.
+      Classificação própria em 6 estágios, do projeto inicial à operação comercial.
     </p>
     <div class="pipeline-flow" id="pipelineFlow"></div>
   </div>
+
+  <!-- DASHBOARD CHARTS -->
+  <div class="section-header" style="margin-top:40px;">
+    <h3>Dashboard Analítico</h3>
+  </div>
+  <div class="chart-grid" id="chartGrid">
+    <div class="chart-card" id="chartCapexByState">
+      <div class="chart-title">CAPEX por Estado</div>
+      <div class="chart-sub">Investimento total acumulado (US$ M) por estado</div>
+    </div>
+    <div class="chart-card" id="chartStageDistribution">
+      <div class="chart-title">Projetos por Estágio</div>
+      <div class="chart-sub">Quantidade de projetos em cada estágio de maturidade</div>
+    </div>
+    <div class="chart-card" id="chartDepositType">
+      <div class="chart-title">Distribuição por Tipo de Depósito</div>
+      <div class="chart-sub">Participação de cada tipo de depósito no CAPEX total</div>
+    </div>
+    <div class="chart-card" id="chartPriority">
+      <div class="chart-title">CAPEX por Prioridade</div>
+      <div class="chart-sub">Investimento alocado por nível de prioridade</div>
+    </div>
+    <div class="chart-card chart-card-full" id="chartCompanyCapex">
+      <div class="chart-title">CAPEX por Empresa</div>
+      <div class="chart-sub">Comparativo de investimento entre as empresas do portfólio</div>
+    </div>
+  </div>
+  <div class="chart-tooltip" id="chartTooltip"></div>
+  <div id="chartFilterInfo" style="display:none;align-items:center;gap:8px;margin-top:12px;padding:10px 16px;background:var(--cat-black);border:1px solid var(--cat-yellow);border-radius:8px;font-size:13px;font-weight:600;color:var(--cat-yellow);"></div>
 
   <!-- PROJECT TABLE -->
   <div style="margin-top: 40px;">
@@ -971,37 +1081,37 @@
     </div>
     <div class="machine-grid">
       <div class="machine-card">
-        <div class="m-icon">🚛</div>
+        <div class="m-icon"><img src="Icones Equipamentos/caminhao.png" alt="Caminhão"></div>
         <div class="m-name">Caminhões articulados e rígidos menores</div>
         <div class="m-desc">Modelos: CAT 740 GC, CAT 745, CAT 707 · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
         <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
       </div>
       <div class="machine-card">
-        <div class="m-icon">⛏️</div>
+        <div class="m-icon"><img src="Icones Equipamentos/escavadeira.png" alt="Escavadeira"></div>
         <div class="m-name">Escavadeiras hidráulicas médias/grandes</div>
         <div class="m-desc">Modelos: CAT 349, CAT 350, CAT 352 · Aplicação: lavra seletiva, carregamento de caminhões 40–66 t, abertura de frentes e manuseio de material</div>
         <div class="m-demand" id="machExcavators">0 <small>unidades</small></div>
       </div>
       <div class="machine-card">
-        <div class="m-icon">🔄</div>
+        <div class="m-icon"><img src="Icones Equipamentos/carregadeira.png" alt="Carregadeira"></div>
         <div class="m-name">Carregadeiras de rodas</div>
         <div class="m-desc">Modelos: CAT 972, CAT 982, CAT 988 High Lift · Aplicação: alimentação de planta, pátios, pilhas, carregamento e apoio operacional</div>
         <div class="m-demand" id="machLoaders">0 <small>unidades</small></div>
       </div>
       <div class="machine-card">
-        <div class="m-icon">📐</div>
+        <div class="m-icon"><img src="Icones Equipamentos/trator_de_esteira.png" alt="Trator de Esteira"></div>
         <div class="m-name">Tratores de esteira</div>
         <div class="m-desc">Modelos: CAT D6, D8, D9 · Aplicação: acessos, limpeza, recomposição, pilhas, infraestrutura e apoio à lavra</div>
         <div class="m-demand" id="machDozers">0 <small>unidades</small></div>
       </div>
       <div class="machine-card">
-        <div class="m-icon">⚙️</div>
+        <div class="m-icon"><img src="Icones Equipamentos/motoniveladora.png" alt="Motoniveladora"></div>
         <div class="m-name">Motoniveladoras e compactadores</div>
         <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16, CAT 815, CAT 825 · Aplicação: manutenção de vias, plataformas, compactação, drenagem e estabilidade operacional</div>
         <div class="m-demand" id="machSupport1">0 <small>unidades</small></div>
       </div>
       <div class="machine-card">
-        <div class="m-icon">🔩</div>
+        <div class="m-icon"><img src="Icones Equipamentos/equipamento_de_apoio.png" alt="Equipamento de Apoio"></div>
         <div class="m-name">Equipamentos de apoio</div>
         <div class="m-desc">Modelos: CAT 318, CAT 250, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, pequenas movimentações e operação de pátio</div>
         <div class="m-demand" id="machSupport2">0 <small>unidades</small></div>
@@ -1022,7 +1132,7 @@
 
   <!-- METHODOLOGY -->
   <div class="methodology">
-    <h3><span class="m-icon">📐</span> Metodologia de Dimensionamento de Máquinas</h3>
+    <h3><span class="m-icon"><i class="bi bi-calculator"></i></span> Metodologia de Dimensionamento de Máquinas</h3>
     <div class="meth-grid">
       <div class="meth-item">
         <h4>1. Classificação por Tipo de Depósito</h4>
@@ -1065,11 +1175,11 @@
   <!-- HEADER -->
   <div class="re-header">
     <div class="re-h-left">
-      <h1>TERRAS RARAS NO BRASIL</h1>
-      <p>Resumo executivo de oportunidades, projetos, investimentos e pipeline para Sotreq.</p>
+      <h1>TERRAS RARAS E GREEN FIELD NO BRASIL</h1>
+      <p>Resumo executivo de oportunidades, investimentos e pipeline para Sotreq.</p>
     </div>
     <div class="re-h-right">
-      <div class="re-date"><span class="re-cal">📅</span> MAIO 2026</div>
+      <div class="re-date"><span class="re-cal"><i class="bi bi-calendar-event"></i></span> <span id="reDateSpan">MAIO 2026</span></div>
       <div class="re-logos">
         <div class="re-logo-s"><img src="Logo%20Sotreq.png" alt="Sotreq" style="height:32px;width:auto;"></div>
         <div class="re-logo-c"><img src="Logo%20Cat.png" alt="CAT" style="height:32px;width:auto;"></div>
@@ -1100,18 +1210,21 @@
 
   </div>
 
-  <div class="insight-bar">
-    <div class="insight-icon">💡</div>
-    <div class="insight-text">
-      <strong>INSIGHT ESTRATÉGICO:</strong> O Brasil avança para além da mineração: projetos como Caldeira (Meteoric) colocam o país na rota do refino e da separação de terras raras, abrindo oportunidade para desenvolvimento de toda a cadeia de valor. O dimensionamento de equipamentos considera o perfil de cada depósito — argila iônica (frota seletiva, baseline Viridis), rocha dura (equipamentos robustos), reprocessamento (manuseio/pátio) e exploração (sem frota completa).
-    </div>
+  <!-- ============================================================ -->
+  <!-- SEÇÃO 02: INDICADORES-CHAVE                                   -->
+  <!-- ============================================================ -->
+  <div style="margin-top: 40px;">
+    <div class="section-badge"><span class="badge-num">02</span><h3>INDICADORES-CHAVE</h3></div>
+    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:4px;">Estimativas 2026 — todos os valores em USD</p>
+
+    <div class="metric-grid" id="reMetricGrid"></div>
   </div>
 
   <!-- ============================================================ -->
-  <!-- SEÇÃO 02: PIPELINE DE PROJETOS                                -->
+  <!-- SEÇÃO 03: PIPELINE DE PROJETOS                                -->
   <!-- ============================================================ -->
   <div style="margin-top: 40px;">
-    <div class="section-badge"><span class="badge-num">02</span><h3>PIPELINE DE PROJETOS</h3></div>
+    <div class="section-badge"><span class="badge-num">03</span><h3>PIPELINE DE PROJETOS</h3></div>
 
     <div class="table-wrapper">
       <table class="pipe-exec-table">
@@ -1130,14 +1243,94 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- SEÇÃO 03: INDICADORES-CHAVE                                   -->
-  <!-- ============================================================ -->
-  <div style="margin-top: 40px;">
-    <div class="section-badge"><span class="badge-num">03</span><h3>INDICADORES-CHAVE</h3></div>
-    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:4px;">Estimativas 2026 — todos os valores em USD</p>
+  <!-- INFO SOBRE TERRAS RARAS -->
+  <div class="methodology" style="margin-top:32px;">
+    <h3><span class="m-icon"><i class="bi bi-gem"></i></span> O que são Terras Raras?</h3>
+    <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:16px;">
+      Terras raras são um grupo de <strong style="color:var(--cat-fg);">17 elementos químicos</strong> (Escândio, Ítrio e os 15 lantanídeos) — essenciais para tecnologias limpa e de defesa. Apesar do nome, <strong>não são raras na crosta terrestre</strong>; o desafio está em concentrá-las e separá-las economicamente.
+    </p>
+    <div class="meth-grid">
+      <div class="meth-item">
+        <h4><i class="bi bi-car-front-fill" style="margin-right:6px;"></i> Mobilidade Elétrica</h4>
+        <p>Motores e baterias de veículos elétricos usam <strong>neodímio, disprósio e lantânio</strong>. Cada carro elétrico leva ~1,5 kg de ímãs de terras raras.</p>
+      </div>
+      <div class="meth-item">
+        <h4><i class="bi bi-wind" style="margin-right:6px;"></i> Energia Eólica</h4>
+        <p>Turbinas eólicas <em>offshore</em> usam ímãs permanentes de <strong>neodímio-praseodímio (NdPr)</strong>. Uma turbina de 5 MW leva ~600 kg de ímãs.</p>
+      </div>
+      <div class="meth-item">
+        <h4><i class="bi bi-phone" style="margin-right:6px;"></i> Eletrônicos & Defesa</h4>
+        <p>Celulares, telas, lasers, fibra óptica, sistemas de guiamento e <strong>mísseis</strong> dependem de elementos como <strong>ítrio, európio e térbio</strong>.</p>
+      </div>
+      <div class="meth-item">
+        <h4><i class="bi bi-globe-americas" style="margin-right:6px;"></i> Oportunidade Brasil</h4>
+        <p>O Brasil tem <strong>~23% das reservas globais</strong> (~22 Mt de REO) — atrás apenas da China (~35%) — mas produz &lt;1% do mercado global. <strong style="color:var(--cat-yellow);">Janela de oportunidade histórica</strong> para novos projetos.</p>
+      </div>
+    </div>
+  </div>
 
-    <div class="metric-grid" id="reMetricGrid"></div>
+  <div class="methodology" style="margin-top:20px;">
+    <h3><span class="m-icon"><i class="bi bi-pick"></i></span> Como funciona a mineração de Terras Raras?</h3>
+    <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:12px;">
+      Cada projeto passa por estágios regulatórios e construtivos. Monitoramos <strong>6 estágios</strong> que vão da prospecção à operação comercial:
+    </p>
+    <div style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);">
+        <div style="width:16px;height:16px;border-radius:50%;background:#6c757d;margin:0 auto 4px;"></div>
+        <strong>S1 — Prospecção</strong><br><span style="font-size:9px;">Estudos geológicos, alvos, primeiras amostras</span>
+      </div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);">
+        <div style="width:16px;height:16px;border-radius:50%;background:#6c757d;margin:0 auto 4px;"></div>
+        <strong>S2 — Recursos</strong><br><span style="font-size:9px;">Estimativa de recursos, viabilidade econômica</span>
+      </div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);">
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--cat-yellow);margin:0 auto 4px;"></div>
+        <strong>S3 — LP</strong><br><span style="font-size:9px;">Licença Prévia obtida, estudos ambientais</span>
+      </div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);">
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--cat-yellow);margin:0 auto 4px;"></div>
+        <strong>S4 — LI</strong><br><span style="font-size:9px;">Licença Instalação protocolada ou obtida</span>
+      </div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);">
+        <div style="width:16px;height:16px;border-radius:50%;background:#fd7e14;margin:0 auto 4px;"></div>
+        <strong>S5 — Construção</strong><br><span style="font-size:9px;">Mobilização, obras civis, montagem</span>
+      </div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);">
+        <div style="width:16px;height:16px;border-radius:50%;background:var(--cat-green);margin:0 auto 4px;"></div>
+        <strong>S6 — Operação</strong><br><span style="font-size:9px;">Produção comercial, expansão</span>
+      </div>
+    </div>
+
+    <div class="meth-grid">
+      <div class="meth-item" style="text-align:center;">
+        <h4><img src="Icones Equipamentos/escavadeira.png" style="height:40px;width:auto;vertical-align:middle;margin-right:6px;"> Argila Iônica (IAC)</h4>
+        <p>Lavra seletiva em cava rasa, baixo desmonte mecânico. Frota de <strong>caminhões articulados, escavadeiras médias e tratores</strong>. Ex: Viridis (Colossus), Meteoric (Caldeira), Serra Verde.</p>
+      </div>
+      <div class="meth-item" style="text-align:center;">
+        <h4>
+          <img src="Icones Equipamentos/equipamento_de_apoio.png" style="height:36px;width:auto;vertical-align:middle;" title="Perfuratriz">
+          <img src="Icones Equipamentos/caminhao.png" style="height:36px;width:auto;vertical-align:middle;margin-left:4px;" title="Caminhão">
+          Rocha Dura
+        </h4>
+        <p>Carbonatito/alcalino, requer perfuração, desmonte, britagem. Frota de <strong>caminhões fora-de-estrada, escavadeiras grandes, carregadeiras</strong>. Ex: BRE (Monte Alto), St George.</p>
+      </div>
+      <div class="meth-item" style="text-align:center;">
+        <h4><img src="Icones Equipamentos/equipamento_de_apoio.png" style="height:40px;width:auto;vertical-align:middle;margin-right:6px;"> Reprocessamento</h4>
+        <p>Aproveitamento de resíduos/fosfogesso. Foco em <strong>pátio, carregamento, empilhadeiras e alimentação de planta</strong>. Ex: Mosaic + Rainbow, fosfogesso de Catalão.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="methodology" style="margin-top:20px;" id="sotreqSummarySection">
+    <h3><span class="m-icon"><i class="bi bi-link-45deg"></i></span> Conexão com a Sotreq</h3>
+    <div id="sotreqSummaryContent"></div>
+  </div>
+
+  <div class="insight-bar">
+    <div class="insight-icon"><i class="bi bi-lightbulb-fill"></i></div>
+    <div class="insight-text">
+      <strong>INSIGHT ESTRATÉGICO:</strong> O Brasil avança na mineração de terras raras: projetos como Caldeira (Meteoric), Monte Alto (BRE) e Volta Grande (Belo Sun) colocam o país na rota de novos investimentos minerais. O dimensionamento de equipamentos considera o perfil de cada depósito — argila iônica (frota seletiva, baseline Viridis), rocha dura (equipamentos robustos), reprocessamento (manuseio/pátio) e exploração (sem frota completa).
+    </div>
   </div>
 
 </div><!-- end tab-resumo -->
@@ -1167,7 +1360,7 @@
 <div id="tab-noticias" class="tab-page">
 
   <div class="section-header">
-    <h3>Notícias do Mês — Maio 2026</h3>
+    <h3>Notícias da Semana — Maio 2026</h3>
   </div>
   <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
     Principais fatos e comunicados ao mercado que embasam as estimativas deste relatório. Clique no título para acessar a notícia original.
@@ -1182,7 +1375,7 @@
   </div>
 
   <div class="methodology" style="margin-top: 24px;">
-    <h3><span class="m-icon">📌</span> Sobre esta seção</h3>
+    <h3><span class="m-icon"><i class="bi bi-pin-angle"></i></span> Sobre esta seção</h3>
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;">
       As notícias listadas são eventos reais coletados de comunicados oficiais ao mercado (ASX, TSX, SEC),
       relatórios setoriais (Ibram, BNDES, ANM) e imprensa especializada (Valor Econômico, BNamericas,
@@ -1227,6 +1420,17 @@ const stageDescriptions = [
   'Mobilização, terraplenagem, implantação de planta, comissionamento.',
   'Produção comercial, rampeamento, expansão futura.'
 ];
+
+const EQUIP_FAMILIES = [
+  { key: 'trucks', label: 'Caminhões' },
+  { key: 'excavators', label: 'Escavadeiras' },
+  { key: 'loaders', label: 'Carregadeiras' },
+  { key: 'dozers', label: 'Tratores de Esteira' },
+  { key: 'support1', label: 'Apoio 1' },
+  { key: 'support2', label: 'Apoio 2' },
+  { key: 'other', label: 'Outros' }
+];
+function famLabel(key) { const f = EQUIP_FAMILIES.find(e => e.key === key); return f ? f.label : key; }
 
 const equipmentProfiles = {
   iacSaprolite: {
@@ -1292,7 +1496,34 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
     opportunity: 'US$ 168M', type: 'Argila Iônica',
     highlights: 'US$50M Export Finance Australia · US$30M BNDES · Plataforma BIP Gov.Federal · JV Viridion reciclagem',
-    startYear: 2028, depositType: 'iacSaprolite'
+    startYear: 2028, depositType: 'iacSaprolite',
+    quote: [
+      { model: 'CAT 707', family: 'trucks', desc: 'Caminhão Rígido 66 Ton (equiv. SANY SAT40C)', qty: 15, unitPrice: 350000, currency: 'USD' },
+      { model: 'CAT 988', family: 'loaders', desc: 'Carregadeira de Rodas High Lift', qty: 2, unitPrice: 1800000, currency: 'USD' },
+      { model: 'CAT D9', family: 'dozers', desc: 'Trator de Esteiras', qty: 4, unitPrice: 1400000, currency: 'USD' },
+      { model: 'CAT 16', family: 'support1', desc: 'Motoniveladora', qty: 1, unitPrice: 1700000, currency: 'USD' },
+      { model: 'CAT 825', family: 'support1', desc: 'Compactador de Solo', qty: 1, unitPrice: 1100000, currency: 'USD' },
+      { model: 'CAT D8', family: 'dozers', desc: 'Trator de Esteiras (nacional)', qty: 4, unitPrice: 4100000, currency: 'BRL' },
+      { model: 'CAT 350', family: 'excavators', desc: 'Escavadeira Hidráulica c/ caçamba 2,7 m³', qty: 4, unitPrice: 2700000, currency: 'BRL' },
+      { model: 'CAT 318', family: 'excavators', desc: 'Escavadeira Hidráulica', qty: 1, unitPrice: 1752300, currency: 'BRL' },
+      { model: 'CAT 250', family: 'support2', desc: 'Minicarregadeira', qty: 2, unitPrice: 390000, currency: 'BRL' }
+    ]
+  },
+  {
+    priority: 'critical', company: 'Serra Verde Group (USA Rare Earth)', origin: 'Brasil / EUA',
+    project: 'Pela Ema', location: { city: 'Minaçu', state: 'GO' },
+    capex: 250, capexDetail: 'US$ 1.1B investido (total) · Aquisição US$ 2.8B · US$ 565M DFC',
+    stage: 6, forecast: 'Produzindo · Expansão Fase I até 2027 · Fase II até 2030', capacity: '5.000 t/ano TREO atuais → 6.400 t/ano (2027)',
+    licensing: 'LO obtida · Licença de operação plena',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Motoniveladoras', 'Equipamentos de processo'],
+    opportunity: 'US$ 75M', type: 'Argila Iônica',
+    highlights: 'Único produtor de terras raras fora da Ásia · Adquirida USA Rare Earth (Abr/26) · Contrato 15 anos com preço mínimo · DFC US$ 565M · Expansão planejada',
+    startYear: 2024, depositType: 'iacSaprolite',
+    quote: [
+      { model: 'CAT 707', family: 'trucks', desc: 'Caminhão Rígido 66 Ton', qty: 15, unitPrice: 350000, currency: 'USD' },
+      { model: 'CAT 374', family: 'excavators', desc: 'Escavadeira Hidráulica 70 Ton', qty: 2, unitPrice: 790000, currency: 'USD' },
+      { model: 'CAT 982', family: 'loaders', desc: 'Pá Carregadeira de Médio Porte', qty: 2, unitPrice: 680000, currency: 'USD' }
+    ]
   },
   {
     priority: 'critical', company: 'Brazilian Rare Earths (BRE)', origin: 'Austrália',
@@ -1452,37 +1683,38 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
 
 const statesData = {};
 
-// Frota de referência Viridis (baseline para IAC/saprolito)
-const VIRIDIS_FLEET = { trucks: 15, excavators: 5, loaders: 2, dozers: 8, support1: 2, support2: 3 };
-
 function estimateFleet(data) {
+  const c = sotreqConfig;
+  const fi = c.fleetIac || { refCapex: 560, trucks: 15, excavators: 5, loaders: 2, dozers: 8, support1: 2, support2: 3 };
+  const fh = c.fleetHardRock || { refCapex: 720, trucks: 20, excavators: 6, loaders: 4, dozers: 6, support1: 3, support2: 2 };
+  const fr = c.fleetReprocessing || { refCapex: 280, trucks: 4, excavators: 3, loaders: 4, dozers: 3, support1: 2, support2: 3 };
   let result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, support1: 0, support2: 0, total: 0 };
   data.forEach(p => {
     const dt = p.depositType || 'exploration';
     if (dt === 'iacSaprolite') {
-      const scale = p.capex / 560;
-      result.trucks += Math.round(VIRIDIS_FLEET.trucks * scale);
-      result.excavators += Math.round(VIRIDIS_FLEET.excavators * scale);
-      result.loaders += Math.round(VIRIDIS_FLEET.loaders * scale);
-      result.dozers += Math.round(VIRIDIS_FLEET.dozers * scale);
-      result.support1 += Math.round(VIRIDIS_FLEET.support1 * scale);
-      result.support2 += Math.round(VIRIDIS_FLEET.support2 * scale);
+      const scale = p.capex / fi.refCapex;
+      result.trucks += Math.round(fi.trucks * scale);
+      result.excavators += Math.round(fi.excavators * scale);
+      result.loaders += Math.round(fi.loaders * scale);
+      result.dozers += Math.round(fi.dozers * scale);
+      result.support1 += Math.round(fi.support1 * scale);
+      result.support2 += Math.round(fi.support2 * scale);
     } else if (dt === 'hardRock') {
-      const scale = p.capex / 720;
-      result.trucks += Math.round(20 * scale);
-      result.excavators += Math.round(6 * scale);
-      result.loaders += Math.round(4 * scale);
-      result.dozers += Math.round(6 * scale);
-      result.support1 += Math.round(3 * scale);
-      result.support2 += Math.round(2 * scale);
+      const scale = p.capex / fh.refCapex;
+      result.trucks += Math.round(fh.trucks * scale);
+      result.excavators += Math.round(fh.excavators * scale);
+      result.loaders += Math.round(fh.loaders * scale);
+      result.dozers += Math.round(fh.dozers * scale);
+      result.support1 += Math.round(fh.support1 * scale);
+      result.support2 += Math.round(fh.support2 * scale);
     } else if (dt === 'reprocessing') {
-      const scale = p.capex / 280;
-      result.trucks += Math.round(4 * scale);
-      result.excavators += Math.round(3 * scale);
-      result.loaders += Math.round(4 * scale);
-      result.dozers += Math.round(3 * scale);
-      result.support1 += Math.round(2 * scale);
-      result.support2 += Math.round(3 * scale);
+      const scale = p.capex / fr.refCapex;
+      result.trucks += Math.round(fr.trucks * scale);
+      result.excavators += Math.round(fr.excavators * scale);
+      result.loaders += Math.round(fr.loaders * scale);
+      result.dozers += Math.round(fr.dozers * scale);
+      result.support1 += Math.round(fr.support1 * scale);
+      result.support2 += Math.round(fr.support2 * scale);
     } else {
       // exploration: frota mínima
       result.trucks += 1;
@@ -1498,27 +1730,47 @@ function estimateFleet(data) {
 }
 
 function init() {
+  const meses = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
+  const agora = new Date();
+  document.getElementById('reDateSpan').textContent = meses[agora.getMonth()] + ' ' + agora.getFullYear();
+
+  const rawCapex = projects.reduce((a, p) => a + p.capex, 0);
+  const states = [...new Set(projects.map(p => p.location.state))];
+  const c = sotreqConfig;
+  const rate = c.conversao / 100;
+
+  const totalCapex = rawCapex;
+  const machineEst = estimateFleet(projects);
+  const sm = {};
+  Object.keys(machineEst).forEach(k => { sm[k] = Math.round(machineEst[k] * rate); });
+
+  const oppAdj = totalCapex * rate;
+
+  // Hero tags dinâmicos
+  document.getElementById('heroProjetos').textContent = projects.length + ' Projetos Mapeados';
+  document.getElementById('heroCapex').textContent = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
+  document.getElementById('heroEstados').textContent = states.length + ' Estado' + (states.length !== 1 ? 's' : '');
+  document.getElementById('heroEstadosLista').textContent = states.join(' · ') || '—';
+  const tipos = [...new Set(projects.map(p => p.type))];
+  document.getElementById('heroTipos').textContent = tipos.join(' · ') || '—';
+  document.getElementById('heroJanela').textContent = 'Janela ' + c.anoInicio + '-' + c.anoFim;
+
   document.getElementById('totalProjetos').textContent = projects.length;
-  const totalCapex = projects.reduce((a, p) => a + p.capex, 0);
   document.getElementById('totalCapex').innerHTML = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
 
-  const states = [...new Set(projects.map(p => p.location.state))];
   document.getElementById('totalEstados').textContent = states.length;
 
-  const machineEst = estimateFleet(projects);
-  document.getElementById('totalMachine').textContent = Math.round(machineEst.total);
-  document.getElementById('machTrucks').innerHTML = machineEst.trucks + ' <small>unidades</small>';
-  document.getElementById('machExcavators').innerHTML = machineEst.excavators + ' <small>unidades</small>';
-  document.getElementById('machLoaders').innerHTML = machineEst.loaders + ' <small>unidades</small>';
-  document.getElementById('machDozers').innerHTML = machineEst.dozers + ' <small>unidades</small>';
-  document.getElementById('machSupport1').innerHTML = machineEst.support1 + ' <small>unidades</small>';
-  document.getElementById('machSupport2').innerHTML = machineEst.support2 + ' <small>unidades</small>';
+  document.getElementById('totalMachine').textContent = sm.total;
+  document.getElementById('machTrucks').innerHTML = sm.trucks + ' <small>unidades</small>';
+  document.getElementById('machExcavators').innerHTML = sm.excavators + ' <small>unidades</small>';
+  document.getElementById('machLoaders').innerHTML = sm.loaders + ' <small>unidades</small>';
+  document.getElementById('machDozers').innerHTML = sm.dozers + ' <small>unidades</small>';
+  document.getElementById('machSupport1').innerHTML = sm.support1 + ' <small>unidades</small>';
+  document.getElementById('machSupport2').innerHTML = sm.support2 + ' <small>unidades</small>';
 
-  const totalOpp = projects.reduce((a, p) => {
-    const val = parseInt(p.opportunity.replace(/[^0-9]/g, ''));
-    return a + (isNaN(val) ? 0 : val);
-  }, 0);
-  document.getElementById('totalOpportunity').textContent = 'US$ ' + (totalOpp >= 1000 ? (totalOpp/1000).toFixed(1) + ' Bi' : totalOpp + ' Mi');
+  const oppEl = document.getElementById('totalOpportunity');
+  oppEl.textContent = 'US$ ' + (oppAdj >= 1000 ? (oppAdj/1000).toFixed(2).replace('.', ',') + ' Bi' : oppAdj.toFixed(0) + ' Mi');
+  oppEl.parentElement.querySelector('.sub').textContent = '~' + sm.total + ' equipamentos CAT · ' + c.conversao + '% do CAPEX Total';
 
   // Filters
   const stateFilter = document.getElementById('stateFilter');
@@ -1689,6 +1941,13 @@ function applyFilters() {
     if (stage !== 'all' && p.stage !== parseInt(stage)) return false;
     if (priority !== 'all' && p.priority !== priority) return false;
     if (deposit !== 'all' && p.depositType !== deposit) return false;
+    if (chartFilter) {
+      if (chartFilter.type === 'state' && p.location.state !== chartFilter.value) return false;
+      if (chartFilter.type === 'stage' && p.stage !== chartFilter.value) return false;
+      if (chartFilter.type === 'depositType' && (p.depositType || 'unknown') !== chartFilter.value) return false;
+      if (chartFilter.type === 'priority' && p.priority !== chartFilter.value) return false;
+      if (chartFilter.type === 'company' && p.company !== chartFilter.value) return false;
+    }
     return true;
   });
   renderTable(filtered);
@@ -1718,23 +1977,25 @@ function sortTable(col) {
 // ── THEME TOGGLE ──
 function toggleTheme() {
   const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
   const isLight = html.getAttribute('data-theme') === 'light';
   if (isLight) {
     html.removeAttribute('data-theme');
-    document.getElementById('themeBtn').textContent = '🌙';
+    btn.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
     localStorage.setItem('cat-theme', 'dark');
   } else {
     html.setAttribute('data-theme', 'light');
-    document.getElementById('themeBtn').textContent = '☀️';
+    btn.innerHTML = '<i class="bi bi-sun-fill"></i>';
     localStorage.setItem('cat-theme', 'light');
   }
 }
 // Restore saved theme
 (function() {
   const saved = localStorage.getItem('cat-theme');
+  const btn = document.getElementById('themeBtn');
   if (saved === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');
-    document.getElementById('themeBtn').textContent = '☀️';
+    btn.innerHTML = '<i class="bi bi-sun-fill"></i>';
   }
 })();
 
@@ -1794,7 +2055,9 @@ function renderExecutiveSummary() {
   const rightCards = stateCards.slice(3);
 
   // Render left column
-  document.getElementById('reMapLeft').innerHTML = leftCards.map(c => `
+  document.getElementById('reMapLeft').innerHTML = leftCards.map(c => {
+    const projs = c.info.projects.sort((a,b) => b.capex - a.capex);
+    return `
     <div class="opp-status-card">
       <div class="osc-header">
         <div class="osc-dot ${c.status}"></div>
@@ -1802,11 +2065,26 @@ function renderExecutiveSummary() {
         <span class="osc-badge" style="color:${c.status === 'status-green' ? 'var(--cat-green)' : c.status === 'status-yellow' ? 'var(--cat-yellow)' : 'var(--cat-text-muted)'};">${c.statusLabel}</span>
       </div>
       <div class="osc-text">${c.desc}</div>
-    </div>
-  `).join('');
+      <div class="osc-companies">
+        ${projs.map(p => `
+          <div class="osc-company">
+            <span class="osc-co-name">${p.company}</span>
+            <span class="osc-co-project">${p.project}</span>
+            <span class="osc-co-capex">US$ ${p.capex}M</span>
+          </div>
+        `).join('')}
+        <div class="osc-total">
+          <span>Total ${c.name}</span>
+          <span>US$ ${c.info.totalCapex}M</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 
   // Render right column
-  document.getElementById('reMapRight').innerHTML = rightCards.map(c => `
+  document.getElementById('reMapRight').innerHTML = rightCards.map(c => {
+    const projs = c.info.projects.sort((a,b) => b.capex - a.capex);
+    return `
     <div class="opp-status-card">
       <div class="osc-header">
         <div class="osc-dot ${c.status}"></div>
@@ -1814,8 +2092,21 @@ function renderExecutiveSummary() {
         <span class="osc-badge" style="color:${c.status === 'status-green' ? 'var(--cat-green)' : c.status === 'status-yellow' ? 'var(--cat-yellow)' : 'var(--cat-text-muted)'};">${c.statusLabel}</span>
       </div>
       <div class="osc-text">${c.desc}</div>
-    </div>
-  `).join('');
+      <div class="osc-companies">
+        ${projs.map(p => `
+          <div class="osc-company">
+            <span class="osc-co-name">${p.company}</span>
+            <span class="osc-co-project">${p.project}</span>
+            <span class="osc-co-capex">US$ ${p.capex}M</span>
+          </div>
+        `).join('')}
+        <div class="osc-total">
+          <span>Total ${c.name}</span>
+          <span>US$ ${c.info.totalCapex}M</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 
   // Brazil SVG map using D3.js
   renderBrazilMap(stateData);
@@ -1870,35 +2161,42 @@ function renderExecutiveSummary() {
   ` : '');
 
   // ── METRIC CARDS ──
-  const totalCapex = projects.reduce((a, p) => a + p.capex, 0);
+  const rawCapex2 = projects.reduce((a, p) => a + p.capex, 0);
   const fe = estimateFleet(projects);
+  const c2 = sotreqConfig;
+  const rate2 = c2.conversao / 100;
+  const totalCapex2 = rawCapex2;
+  const sm2 = {};
+  Object.keys(fe).forEach(k => { sm2[k] = Math.round(fe[k] * rate2); });
+  const oppAdj2 = rawCapex2 * rate2;
+  const oppStr2 = 'US$ ' + (oppAdj2 >= 1000 ? (oppAdj2/1000).toFixed(2).replace('.', ',') + ' Bi' : oppAdj2.toFixed(0) + ' Mi');
 
   document.getElementById('reMetricGrid').innerHTML = `
     <div class="metric-card">
-      <div class="mc-icon">📋</div>
+      <div class="mc-icon"><i class="bi bi-file-text"></i></div>
       <div class="mc-body">
         <div class="mc-value">${projects.length}</div>
         <div class="mc-label">Projetos em andamento em exploração ou desenvolvimento avançado no Brasil</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="mc-icon">💰</div>
+      <div class="mc-icon"><i class="bi bi-cash-coin"></i></div>
       <div class="mc-body">
-        <div class="mc-value">US$ ${(totalCapex/1000).toFixed(1)} Bi</div>
+        <div class="mc-value">US$ ${(totalCapex2/1000).toFixed(1)} Bi</div>
         <div class="mc-label"><span class="hl">Investimentos previstos</span> para os projetos mapeados</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="mc-icon">🚛</div>
+      <div class="mc-icon"><i class="bi bi-truck"></i></div>
       <div class="mc-body">
-        <div class="mc-value" style="font-size:24px;">US$ 1,44 Bi</div>
-        <div class="mc-label"><span class="hl">~${fe.total} equipamentos CAT</span> · 30% de conversão estimada do total da oportunidade em vendas realizáveis pela Sotreq, calculada por perfil de depósito (baseline Viridis para IAC, frota robusta para rocha dura, manuseio para reprocessamento)</div>
+        <div class="mc-value" style="font-size:24px;">${oppStr2}</div>
+        <div class="mc-label"><span class="hl">~${sm2.total} equipamentos CAT</span> · ${c2.conversao}% do CAPEX Total</div>
       </div>
     </div>
     <div class="metric-card">
-      <div class="mc-icon">📈</div>
+      <div class="mc-icon"><i class="bi bi-graph-up-arrow"></i></div>
       <div class="mc-body">
-        <div class="mc-value">15–20%</div>
+        <div class="mc-value">${c2.taxaCrescimento}</div>
         <div class="mc-label">Crescimento anual projetado para demanda global até 2030, segundo IEA</div>
       </div>
     </div>
@@ -1982,6 +2280,64 @@ function renderBrazilMap(stateData) {
             .attr('stroke-width', 0.5);
           tooltip.style.opacity = '0';
         });
+
+      // ── Permanent labels: project count per state with leader lines ──
+      const defaultLineLen = 110;
+      const labelOffsets = {
+        'MG': { dx: -0.3, dy: 1 },
+        'BA': { dx: 1, dy: 0.3, len: 75 },
+        'GO': { dx: -1, dy: 0.2 },
+        'AM': { dx: 0, dy: -1 },
+        'PA': { dx: 0.6, dy: -0.8 },
+        'RJ': { dx: 0.5, dy: 1, len: 70 },
+        'PI': { dx: 1, dy: -0.3 },
+      };
+      svgEl.selectAll('.state-label')
+        .data(geo.features.filter(d => stateData[d.properties.UF_05]))
+        .enter()
+        .append('g')
+        .attr('class', 'state-label')
+        .each(function(d) {
+          const abbr = d.properties.UF_05;
+          const info = stateData[abbr];
+          const centroid = pathGen.centroid(d);
+          const cx = centroid[0], cy = centroid[1];
+          const off = labelOffsets[abbr] || { dx: 1, dy: 0 };
+          const norm = Math.sqrt(off.dx * off.dx + off.dy * off.dy);
+          const dirX = off.dx / norm, dirY = off.dy / norm;
+          const ll = off.len || defaultLineLen;
+          const lx = cx + dirX * ll;
+          const ly = cy + dirY * ll;
+          const g = d3.select(this);
+          g.append('line')
+            .attr('x1', cx).attr('y1', cy)
+            .attr('x2', lx).attr('y2', ly)
+            .attr('stroke', '#FFCD00').attr('stroke-width', 1.2)
+            .attr('stroke-dasharray', '3,3').attr('opacity', 0.7);
+          g.append('circle')
+            .attr('cx', cx).attr('cy', cy)
+            .attr('r', 3).attr('fill', '#FFCD00');
+          const label = abbr + ': ' + info.projects.length;
+          const anchor = dirX > 0.3 ? 'start' : dirX < -0.3 ? 'end' : 'middle';
+          const textX = dirX > 0.3 ? lx + 6 : dirX < -0.3 ? lx - 6 : lx;
+          const textY = dirY > 0.3 ? ly + 14 : dirY < -0.3 ? ly - 6 : ly + 4;
+          g.append('text')
+            .attr('x', textX).attr('y', textY)
+            .attr('text-anchor', anchor)
+            .style('fill', 'var(--cat-fg)').attr('font-size', '12px')
+            .attr('font-weight', '700')
+            .style('paint-order', 'stroke')
+            .style('stroke', '#0d0d0d').style('stroke-width', '3px')
+            .style('stroke-linecap', 'round').style('stroke-linejoin', 'round')
+            .text(label);
+          g.append('text')
+            .attr('x', textX).attr('y', textY + 13)
+            .attr('text-anchor', anchor)
+            .style('fill', 'var(--cat-text-muted)').attr('font-size', '10px')
+            .attr('font-weight', '600')
+            .text(info.projects.length > 1 ? 'projetos' : 'projeto');
+        });
+
       mapRendered = true;
     })
     .catch(function() {
@@ -2021,67 +2377,289 @@ function renderPipelineDetail() {
 
 // ── NOTÍCIAS ──
 const newsData = [ // __DATA_BEGIN_NEWS__
-  { date: 'Mai/2026', source: 'Notícias da Mineração', company: 'Viridis',
+  { date: '26 Mai/2026', source: 'Notícias da Mineração', company: 'Viridis',
     title: 'Viridis já mira construção do projeto Colossus',
     text: 'Viridis Mining & Minerals finalizou o DFS do projeto Colossus, em Poços de Caldas (MG), e protocolou a Licença de Instalação (LI) junto à FEAM. CAPEX estimado de US$ 560M e produção prevista de ~13.500 t/ano de REO. FID prevista para o 2S/2026.',
     tags: ['Viridis', 'Colossus', 'MG', 'DFS'],
     link: 'https://www.noticiasdemineracao.com/metais-basicos/news-articles/4531694/viridis-ja-mira-construcao-projeto-colossus' },
-  { date: 'Abr/2026', source: 'BNamericas', company: 'Meteoric',
+  { date: '22 Abr/2026', source: 'BNamericas', company: 'Meteoric',
     title: 'Meteoric levanta novos recursos para projeto Caldeira',
     text: 'A Meteoric Resources levantou A$ 40M (US$ 30M) via colocação privada para avançar o projeto Caldeira (MG). Recursos vão para DFS, licenciamento ambiental e operação da planta-piloto. FID prevista para 2026.',
     tags: ['Meteoric', 'Caldeira', 'MG', 'Financiamento'],
     link: 'https://www.bnamericas.com/pt/noticias/meteoric-vai-levantar-novos-recursos-para-seu-projeto-de-terras-raras-de-us450-milhoes-no-brasil' },
-  { date: 'Abr/2026', source: 'Brasil Mineral', company: 'BRE',
+  { date: '15 Abr/2026', source: 'Brasil Mineral', company: 'BRE',
     title: 'BRE poderá investir até R$ 3,6 bilhões para implantar polo de produção na Bahia',
     text: 'A Brazilian Rare Earths prevê investir até R$ 3,6 bi no projeto Monte Alto (BA), maior teor global de terras raras (>15% TREO). Parceria com Carester (França). Primeira fase de R$ 600 mi com mina e planta de concentração.',
     tags: ['BRE', 'Monte Alto', 'BA', 'Investimento'],
     link: 'https://www.brasilmineral.com.br/noticias/bre-podera-investir-ate-r-36-bilhoes-para-implantar-polo-de-producao-na-bahia' },
-  { date: 'Abr/2026', source: 'Tribuna do Planalto', company: 'Aclara',
+  { date: '10 Abr/2026', source: 'Tribuna do Planalto', company: 'Aclara',
     title: 'Aclara prevê início da produção comercial de terras raras em Goiás em 2028',
     text: 'A Aclara Resources concluiu o FS do projeto Carina (GO) com CAPEX de US$ 781M. Início das obras no H2/26 e produção no H2/28. VPL de US$ 1,7 bi e TIR de 26,9%. Capacidade de 4.378 t/ano de REO.',
     tags: ['Aclara', 'Carina', 'GO', 'FS'],
     link: 'https://tribunadoplanalto.com.br/aclara-preve-inicio-da-producao-comercial-de-terras-raras-em-goias-em-2028/' },
-  { date: 'Mar/2026', source: 'Reuters · UOL', company: 'St George',
+  { date: '20 Mar/2026', source: 'Reuters · UOL', company: 'St George',
     title: 'St George avança com projeto de terras raras em Araxá',
     text: 'A St George Mining avança na estruturação financeira do projeto Araxá (MG) com estimativa de US$ 350M em investimentos. Sondagens elevaram em 75% os recursos de terras raras, para 70,91 Mt @ 4,06% TREO.',
     tags: ['St George', 'Araxá', 'MG', 'Recursos'],
     link: 'https://economia.uol.com.br/noticias/reuters/2026/03/05/st-george-avanca-com-projeto-de-terras-raras-em-minas-ve-maior-demanda-com-guerra.htm' },
-  { date: 'Abr/2026', source: 'Brasil Mineral', company: 'Power Minerals',
+  { date: '08 Abr/2026', source: 'Brasil Mineral', company: 'Power Minerals',
     title: 'Australiana Power Minerals adquire a Mineração Terras Raras',
     text: 'A Power Minerals concluiu a aquisição da MTR por A$ 22,5 mi (US$ 16 mi), dona do projeto Morro do Ferro em Poços de Caldas (MG). Área de 3,5 Mt @ 3,95% TREO. Protocolo de intenções assinado com governo de MG.',
     tags: ['Power Minerals', 'MTR', 'MG', 'Aquisição'],
     link: 'https://www.brasilmineral.com.br/noticias/australiana-power-minerals-adquire-a-mineracao-terras-raras-por-a-225-milhoes' },
-  { date: 'Abr/2026', source: 'TeféNews', company: 'BCM',
+  { date: '05 Abr/2026', source: 'TeféNews', company: 'BCM',
     title: 'BCM firma parceria internacional para explorar terras raras no Amazonas',
     text: 'A Brazilian Critical Minerals firmou acordo com a Southern Alliance Mining (Malásia) para o projeto EMA em Apuí (AM). Licenciamento em andamento no IPAAM. Método de lixiviação in-situ (ISR). Previsão de início em 2027.',
     tags: ['BCM', 'EMA', 'AM', 'Parceria'],
     link: 'https://tefenews.com.br/amazonas/empresa-australiana-firma-parceria-internacional-para-explorar-terras-raras-no-sul-do-amazonas' },
-  { date: 'Abr/2026', source: 'Forbes', company: 'ADL',
+  { date: '02 Abr/2026', source: 'Forbes', company: 'ADL',
     title: 'ADL Mineração realiza primeira exportação privada de terras raras do Brasil',
     text: 'A ADL Mineração embarcou o primeiro container de monazita para o Canadá, retomando a exportação privada de terras raras após 7 anos. Meta de 500-1.000 t em 2026 e 3.000 t/ano até 2028. Projeto Buena (RJ).',
     tags: ['ADL', 'Buena', 'RJ', 'Exportação'],
     link: 'https://forbes.com.br/forbes-money/2026/04/marco-historico-jovem-ceo-lidera-retomada-da-exportacao-de-terras-raras-pelo-brasil/' },
-  { date: 'Mar/2026', source: 'BNamericas', company: 'Rainbow',
+  { date: '15 Mar/2026', source: 'BNamericas', company: 'Rainbow',
     title: 'Mosaic e Rainbow avaliam projeto de terras raras de US$ 279 mi no Brasil',
     text: 'Rainbow REE e Mosaic concluíram avaliação econômica do projeto Uberaba (MG) — recuperação de REE a partir de fosfogesso. Processamento de 2,7 Mt/ano com vida útil de 30 anos. VPL de US$ 916 mi e TIR de 45%.',
     tags: ['Rainbow', 'Uberaba', 'Fosfogesso', 'PFS'],
     link: 'https://www.bnamericas.com/pt/noticias/mosaic-e-rainbow-avaliam-projeto-de-terras-raras-de-us279-milhoes-no-brasil' },
-  { date: 'Mar/2026', source: 'BNamericas', company: 'Meteoric',
+  { date: '25 Mar/2026', source: 'BNamericas', company: 'Meteoric',
     title: 'Meteoric busca licença para projeto Caldeira de US$ 443 mi',
     text: 'A Meteoric Resources protocolou o pedido de Licença de Instalação (LI) do projeto Caldeira junto à FEAM/MG. LP obtida em dez/2025. CAPEX estimado de US$ 443 mi. Projeto integra mina e planta de separação.',
     tags: ['Meteoric', 'Caldeira', 'MG', 'LI'],
     link: 'https://www.bnamericas.com/pt/noticias/meteoric-busca-licenca-para-projeto-de-terras-raras-de-us443-milhoes-no-brasil' },
-  { date: 'Mai/2026', source: 'BNamericas', company: 'Viridis',
+  { date: '24 Mai/2026', source: 'BNamericas', company: 'Viridis',
     title: 'Viridis avança Colossus em direção à construção após protocolo da LI',
     text: 'A Viridis Mining apresentou o pedido de LI para o projeto Colossus junto à FEAM. Financiamento em andamento com BNDES, Export Finance Australia e investidores privados. FID prevista para o 2S/2026.',
     tags: ['Viridis', 'Colossus', 'MG', 'LI'],
     link: 'https://www.bnamericas.com/pt/noticias/viridis-avanca-projeto-colossus-de-terras-raras-em-direcao-a-construcao-apos-protocolo-da-licenca-de-instalacao' },
-  { date: 'Abr/2026', source: 'Jornal de Patrocínio', company: 'Terra Brasil',
+  { date: '12 Abr/2026', source: 'Jornal de Patrocínio', company: 'Terra Brasil',
     title: 'Indústria de terras raras e fertilizantes no Alto Paranaíba pode sair do papel',
     text: 'A Terra Brasil Minerals negocia JV internacional para o projeto integrado de terras raras e fertilizantes no Alto Paranaíba (MG). Investimento de R$ 2,5 bi. Produção prevista de 10.000 t/ano REE e 1 Mt/ano fosfato.',
     tags: ['Terra Brasil', 'Alto Paranaíba', 'MG', 'JV'],
     link: 'https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel' },
 ]; // __DATA_END_NEWS__
+
+// ── DATA PERSISTENCE ──
+function sotreqLoadData() {
+  // Save defaults before any localStorage override
+  const defaultProjects = JSON.parse(JSON.stringify(projects));
+  const defaultNews = JSON.parse(JSON.stringify(newsData));
+
+  const saved = localStorage.getItem('sotreq_data');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      if (Array.isArray(data.projects) && data.projects.length > 0) {
+        projects.length = 0; projects.push(...data.projects);
+      }
+      if (Array.isArray(data.news) && data.news.length > 0) {
+        newsData.length = 0; newsData.push(...data.news);
+      }
+    } catch(e) { console.warn('Falha ao carregar dados salvos'); }
+  }
+
+  // Migrate old date format "Mon/YYYY" → "01 Mon/YYYY"
+  let changed = false;
+
+  // Migrate: copy new fields (like quote) from default projects into saved ones
+  for (const dp of defaultProjects) {
+    const sp = projects.find(p => p.company === dp.company && p.project === dp.project);
+    if (sp) {
+      if (dp.quote && !sp.quote) { sp.quote = JSON.parse(JSON.stringify(dp.quote)); changed = true; }
+    }
+  }
+
+  for (const n of newsData) {
+    if (/^(Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez)\/\d{4}$/.test(n.date)) {
+      n.date = '01 ' + n.date;
+      changed = true;
+    }
+  }
+
+  // Merge any new default projects that don't exist in saved data
+  for (const dp of defaultProjects) {
+    const exists = projects.some(p => p.company === dp.company && p.project === dp.project);
+    if (!exists) { projects.push(dp); changed = true; }
+  }
+  // Merge any new default news that don't exist in saved data
+  for (const dn of defaultNews) {
+    const exists = newsData.some(n => n.title === dn.title);
+    if (!exists) { newsData.push(dn); changed = true; }
+  }
+  if (changed) sotreqSaveData();
+}
+function sotreqSaveData() {
+  localStorage.setItem('sotreq_data', JSON.stringify({ projects, news: newsData }));
+}
+
+// ── CONFIGURAÇÕES DOS INDICADORES ──
+let sotreqConfig = {
+  conversao: 30,           // % do CAPEX Total que vira Oportunidade Sotreq
+  anoInicio: 2026,
+  anoFim: 2030,
+  taxaCrescimento: '15–20%',
+  capMaxTabela: 200,       // max CAPEX p/ escala visual
+  fleetIac: { refCapex: 560, trucks: 15, excavators: 5, loaders: 2, dozers: 8, support1: 2, support2: 3 },
+  fleetHardRock: { refCapex: 720, trucks: 20, excavators: 6, loaders: 4, dozers: 6, support1: 3, support2: 2 },
+  fleetReprocessing: { refCapex: 280, trucks: 4, excavators: 3, loaders: 4, dozers: 3, support1: 2, support2: 3 },
+  brlRate: 5.0,
+};
+
+function sotreqLoadConfig() {
+  const saved = localStorage.getItem('sotreq_config');
+  if (saved) {
+    let c;
+    try { c = JSON.parse(saved); Object.assign(sotreqConfig, c); } catch(e) { c = {}; }
+    // Migrate old fleet keys to new structure
+    if (c && c.viridisFleet && !c.fleetIac) {
+      const old = c.viridisFleet;
+      sotreqConfig.fleetIac = { refCapex: c.baselineCapex || 560, trucks: old.trucks||15, excavators: old.excavators||5, loaders: old.loaders||2, dozers: old.dozers||8, support1: old.support1||2, support2: old.support2||3 };
+    }
+    if (c && c.hardRockBaseline && !c.fleetHardRock) {
+      const old = c.hardRockBaseline;
+      sotreqConfig.fleetHardRock = { refCapex: 720, trucks: old.trucks||20, excavators: old.excavators||6, loaders: old.loaders||4, dozers: old.dozers||6, support1: old.support1||3, support2: old.support2||2 };
+    }
+    if (c && c.reprocessingBaseline && !c.fleetReprocessing) {
+      const old = c.reprocessingBaseline;
+      sotreqConfig.fleetReprocessing = { refCapex: 280, trucks: old.trucks||4, excavators: old.excavators||3, loaders: old.loaders||4, dozers: old.dozers||3, support1: old.support1||2, support2: old.support2||3 };
+    }
+  }
+}
+function sotreqSaveConfig() {
+  localStorage.setItem('sotreq_config', JSON.stringify(sotreqConfig));
+}
+
+// ── NEWS FETCH (Google News RSS via rss2json — funciona no navegador, sem chave) ──
+async function sotreqFetchNews() {
+  const queries = [
+    'terras+raras+brasil',
+    'mineração+terras+raras+investimento',
+    'rare+earth+brazil',
+    'Meteoric+Caldeira+terras+raras',
+    'Viridis+Colossus',
+    'Serra+Verde+terras+raras',
+    'Aclara+Carina+terras+raras',
+    'Belo+Sun+Volta+Grande+ouro'
+  ];
+  const all = [];
+
+  for (const q of queries) {
+    const rssUrl = `https://news.google.com/rss/search?q=${q}&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      if (data.status === 'ok' && data.items) all.push(...data.items);
+    } catch (e) { /* ignore */ }
+  }
+
+  // Deduplicate by title and link
+  const seenTitles = new Set(newsData.map(n => n.title.toLowerCase().trim()));
+  const seenLinks = new Set(newsData.map(n => n.link).filter(Boolean));
+  const batchUrls = new Set();
+  const results = [];
+
+  for (const item of all) {
+    const rawTitle = (item.title || '').trim();
+    if (!rawTitle || rawTitle.length < 10) continue;
+
+    // Extract source from title: "Title - Source" or "Title — Source"
+    let source = 'Google News';
+    let title = rawTitle;
+    const srcMatch = rawTitle.match(/\s+[—–-]\s+(.+)$/);
+    if (srcMatch) {
+      source = srcMatch[1].trim();
+      title = rawTitle.slice(0, rawTitle.lastIndexOf(srcMatch[0])).trim();
+    }
+
+    const link = item.link || '';
+
+    const titleKey = title.toLowerCase();
+
+    // Check if already exists (title or link match)
+    if (seenTitles.has(titleKey)) continue;
+    if (link && seenLinks.has(link)) continue;
+    // Check within this batch
+    if (link && batchUrls.has(link)) continue;
+    // Fuzzy duplicate
+    const titleSlug = titleKey.replace(/[^a-z0-9]/g, '');
+    let isFuzzyDup = false;
+    for (const existing of [...newsData, ...results]) {
+      const existingSlug = existing.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const shorter = titleSlug.length < existingSlug.length ? titleSlug : existingSlug;
+      const longer = titleSlug.length < existingSlug.length ? existingSlug : titleSlug;
+      if (shorter.length > 20 && longer.includes(shorter)) { isFuzzyDup = true; break; }
+    }
+    if (isFuzzyDup) continue;
+
+    seenTitles.add(titleKey);
+    if (link) { seenLinks.add(link); batchUrls.add(link); }
+
+    // Filter out negative/ideological content — only informative articles about new projects and investments
+    const negativeTerms = ['imperialismo','imperialist','submissão','submissao','dominação','dominacao','exploração imperialista',
+      'crítica','critica ao','problema','problemas','ameaça','ameaca','fracasso','polêmica','polemica',
+      'denúncia','denuncia','protesto','contra o projeto','contra a mineração','prejuízo','prejuizos'];
+    const checkText = (title + ' ' + source).toLowerCase();
+    let isNegative = false;
+    for (const term of negativeTerms) {
+      if (checkText.includes(term)) { isNegative = true; break; }
+    }
+    if (isNegative) continue;
+
+    // Extract company from title + source
+    const companyKeywords = {
+      'Meteoric': 'Meteoric', 'Caldeira': 'Meteoric', 'Viridis': 'Viridis', 'Colossus': 'Viridis',
+      'BRE': 'BRE', 'Brazilian Rare Earths': 'BRE', 'Monte Alto': 'BRE',
+      'St George': 'St George', 'Aclara': 'Aclara', 'Carina': 'Aclara',
+      'Rainbow': 'Rainbow', 'Mosaic': 'Mosaic', 'Power Minerals': 'Power Minerals',
+      'BCM': 'BCM', 'ADL': 'ADL', 'Terra Brasil': 'Terra Brasil', 'Belo Sun': 'Belo Sun',
+      'Volta Grande': 'Belo Sun',
+      'Serra Verde': 'Serra Verde', 'USA Rare Earth': 'Serra Verde', 'Pela Ema': 'Serra Verde',
+      'Sotreq': 'Sotreq', 'Caterpillar': 'Cat', 'Cat': 'Cat',
+      'Ibram': 'Ibram', 'BNDES': 'BNDES', 'ANM': 'ANM', 'Vale': 'Vale', 'Samarco': 'Samarco',
+      'Anglo American': 'Anglo American', 'GSX': 'GSX', 'Rio Tinto': 'Rio Tinto'
+    };
+    let company = 'Geral';
+    const text = title + ' ' + source;
+    for (const [k, v] of Object.entries(companyKeywords)) {
+      if (text.includes(k)) { company = v; break; }
+    }
+
+    const tags = ['Notícia'];
+    const tl = title.toLowerCase();
+    if (tl.includes('terras raras') || tl.includes('rare earth') || tl.includes('terras-raras')) tags.push('Terras Raras');
+    if (tl.includes('mineração') || tl.includes('mining') || tl.includes('mineração') || tl.includes('greenfield')) tags.push('Mineração');
+    if (tl.includes('investimento') || tl.includes('capex') || tl.includes('financiamento') || tl.includes('investe') || tl.includes('aquisição') || tl.includes('aquire')) tags.push('Investimento');
+    if (tl.includes('licença') || tl.includes('licenciamento') || tl.includes('ambiental') || tl.includes('licensing')) tags.push('Licenciamento');
+    if (tl.includes('construção') || tl.includes('construcion') || tl.includes('engineering') || tl.includes('engenharia')) tags.push('Construção');
+    const brazilStates = ['MG','BA','GO','AM','PA','RJ','SP','ES','PR','SC','RS','MT','MS','DF','CE','PE','PI','MA','RN','PB','AL','SE','RO','AC','RR','AP','TO'];
+    for (const st of brazilStates) { if (text.includes(st)) { tags.push(st); break; } }
+
+    const pub = item.pubDate ? new Date(item.pubDate) : new Date();
+    const monthNames = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+    const dateStr = String(pub.getDate()).padStart(2, '0') + ' ' + monthNames[pub.getMonth()] + '/' + pub.getFullYear();
+
+    results.push({
+      date: dateStr,
+      source,
+      company,
+      title,
+      text: (item.description || '').replace(/<[^>]*>/g, '').replace(/—.*$/, '').substring(0, 200) || title,
+      tags: [...new Set(tags)],
+      link
+    });
+  }
+
+  return results;
+}
+
+// Aplica config nas constantes do sistema
+function sotreqApplyConfig() {
+  const c = sotreqConfig;
+  // Atualiza VIRIDIS_FLEET (mas é const, então usamos os valores nas funções)
+  // As funções que usam as baselines vão ler de sotreqConfig agora
+}
 
 let newsFilter = 'all';
 
@@ -2117,10 +2695,1837 @@ function setNewsFilter(filter) {
   renderNoticias();
 }
 
-init();
-renderExecutiveSummary();
-renderPipelineDetail();
-renderNoticias();
+function renderSotreqSummary() {
+  const el = document.getElementById('sotreqSummaryContent');
+  if (!el) return;
+  const rawCapex = projects.reduce((a, p) => a + p.capex, 0);
+  const states = [...new Set(projects.map(p => p.location.state))];
+  const c = sotreqConfig;
+  const rate = c.conversao / 100;
+  const fe = estimateFleet(projects);
+  const sm = {};
+  Object.keys(fe).forEach(k => { sm[k] = Math.round(fe[k] * rate); });
+  const opp = rawCapex * rate;
+  const qtdProjetosCotados = projects.filter(p => p.quote && p.quote.length > 0).length;
+  el.innerHTML = `
+    <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:12px;">
+      A Sotreq possui hoje <strong style="color:var(--cat-fg);">${projects.length} projetos de terras raras</strong> mapeados no Brasil, distribuídos em <strong style="color:var(--cat-fg);">${states.length} estado${states.length !== 1 ? 's' : ''}</strong> (${states.join(', ')}), com um CAPEX total combinado de <strong style="color:var(--cat-yellow);">US$ ${(rawCapex/1000).toFixed(1)} Bi</strong>.
+    </p>
+    <div class="meth-grid">
+      <div class="meth-item">
+        <h4><i class="bi bi-cash-coin"></i> CAPEX Total (bruto)</h4>
+        <p><strong style="font-size:22px;color:var(--cat-yellow);">US$ ${(rawCapex/1000).toFixed(2)} Bi</strong></p>
+        <p style="font-size:11px;">Soma do CAPEX de todos os projetos mapeados</p>
+      </div>
+      <div class="meth-item">
+        <h4><i class="bi bi-currency-dollar"></i> Oportunidade Sotreq</h4>
+        <p><strong style="font-size:22px;color:var(--cat-yellow);">US$ ${(opp/1000).toFixed(2)} Bi</strong></p>
+        <p style="font-size:11px;">${c.conversao}% do CAPEX total · Máquinas estimadas: <strong>${sm.total}</strong></p>
+      </div>
+      <div class="meth-item">
+        <h4><i class="bi bi-truck"></i> Equipamentos Estimados</h4>
+        <p style="font-size:11px;">
+          Caminhões: <strong>${sm.trucks}</strong> · Escavadeiras: <strong>${sm.excavators}</strong><br>
+          Carregadeiras: <strong>${sm.loaders}</strong> · Tratores: <strong>${sm.dozers}</strong><br>
+          Apoio 1: <strong>${sm.support1}</strong> · Apoio 2: <strong>${sm.support2}</strong>
+        </p>
+      </div>
+      <div class="meth-item">
+        <h4><i class="bi bi-file-text"></i> Cotações Enviadas</h4>
+        <p><strong style="font-size:22px;color:var(--cat-yellow);">${qtdProjetosCotados}</strong> ${qtdProjetosCotados === 1 ? 'projeto' : 'projetos'} com cotações</p>
+        <p style="font-size:11px;">${projects.filter(p => p.quote && p.quote.length > 0).reduce((a, p) => a + p.quote.length, 0)} equipamentos cotados no total</p>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-top:12px;border-top:1px solid var(--cat-gray-light);padding-top:12px;">
+      O objetivo é <strong>antecipar a demanda</strong> de equipamentos CAT, preparar propostas técnicas e comerciais com agilidade, e posicionar a Sotreq como <strong>fornecedora preferencial</strong> de equipamentos Caterpillar nesses projetos de terras raras no Brasil.
+    </p>
+  `;
+}
+
+// ── DASHBOARD CHARTS (D3.js) ──
+let chartFilter = null;
+
+function chartFilteredProjects() {
+  if (!chartFilter) return projects;
+  return projects.filter(p => {
+    if (chartFilter.type === 'state') return p.location.state === chartFilter.value;
+    if (chartFilter.type === 'stage') return p.stage === chartFilter.value;
+    if (chartFilter.type === 'depositType') return (p.depositType || 'unknown') === chartFilter.value;
+    if (chartFilter.type === 'priority') return p.priority === chartFilter.value;
+    if (chartFilter.type === 'company') return p.company === chartFilter.value;
+    return true;
+  });
+}
+
+function chartFilterLabel() {
+  if (!chartFilter) return '';
+  if (chartFilter.type === 'state') return 'Estado: ' + chartFilter.value;
+  if (chartFilter.type === 'stage') return 'Estágio: ' + (stageShort[chartFilter.value] || 'S' + chartFilter.value);
+  if (chartFilter.type === 'depositType') {
+    const m = { iacSaprolite: 'Argila Iônica', hardRock: 'Rocha Dura', reprocessing: 'Fosfogesso', exploration: 'Exploração' };
+    return 'Tipo: ' + (m[chartFilter.value] || chartFilter.value);
+  }
+  if (chartFilter.type === 'priority') {
+    const m = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
+    return 'Prioridade: ' + (m[chartFilter.value] || chartFilter.value);
+  }
+  if (chartFilter.type === 'company') return 'Empresa: ' + chartFilter.value;
+  return '';
+}
+
+function chartSetFilter(type, value) {
+  if (chartFilter && chartFilter.type === type && chartFilter.value === value) {
+    chartFilter = null;
+  } else {
+    chartFilter = { type, value };
+  }
+  renderCharts();
+  document.getElementById('stateFilter').value = 'all';
+  document.getElementById('stageFilter').value = 'all';
+  document.getElementById('priorityFilter').value = 'all';
+  document.getElementById('depositFilter').value = 'all';
+  applyFilters();
+  const fi = document.getElementById('chartFilterInfo');
+  if (chartFilter) {
+    fi.style.display = 'flex';
+    fi.innerHTML = `<i class="bi bi-funnel-fill"></i> Filtro: ${chartFilterLabel()} <button onclick="chartSetFilter(null,null)" style="background:transparent;border:none;color:#FFCD00;cursor:pointer;font-size:16px;margin-left:8px;" title="Limpar filtro"><i class="bi bi-x-lg"></i></button>`;
+  } else {
+    fi.style.display = 'none';
+  }
+}
+
+function renderCharts() {
+  renderChartCapexByState();
+  renderChartStageDistribution();
+  renderChartDepositType();
+  renderChartPriority();
+  renderChartCompanyCapex();
+}
+
+function chartWidth(container) {
+  return Math.max(container.clientWidth - 40, 260);
+}
+
+function chartTooltip(container) {
+  const el = d3.select('#chartTooltip');
+  return {
+    show(html) { el.style('opacity', 1).html(html); },
+    move(e) {
+      const ct = container.getBoundingClientRect();
+      el.style('left', (e.clientX - ct.left + 14) + 'px')
+        .style('top', (e.clientY - ct.top - 36) + 'px');
+    },
+    hide() { el.style('opacity', 0); }
+  };
+}
+
+function renderChartCapexByState() {
+  const container = document.getElementById('chartCapexByState');
+  const data = chartFilteredProjects();
+  const stateData = {};
+  data.forEach(p => {
+    const st = p.location.state;
+    stateData[st] = (stateData[st] || 0) + p.capex;
+  });
+  const chartData = Object.entries(stateData).sort((a, b) => b[1] - a[1]);
+  if (!chartData.length) return;
+
+  const cw = Math.max(chartWidth(container), chartData.length * 50);
+  const margin = { top: 24, right: 20, bottom: 80, left: 56 };
+  const h = 300;
+  const iw = cw - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const isFiltered = chartFilter && chartFilter.type === 'state';
+
+  d3.select(container).selectAll('svg').remove();
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const maxV = d3.max(chartData, d => d[1]) || 1;
+  const x = d3.scaleBand().domain(chartData.map(d => d[0])).range([0, iw]).padding(0.25);
+  const y = d3.scaleLinear().domain([0, maxV * 1.15]).range([ih, 0]);
+
+  const tt = chartTooltip(container);
+
+  g.selectAll('.bar').data(chartData).enter().append('rect')
+    .attr('x', d => x(d[0]))
+    .attr('width', x.bandwidth())
+    .attr('y', d => y(d[1]))
+    .attr('height', d => ih - y(d[1]))
+    .attr('fill', d => isFiltered && d[0] === chartFilter.value ? '#FFCD00' : isFiltered ? '#3a3a3a' : '#FFCD00')
+    .attr('opacity', d => isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85)
+    .attr('rx', 4).attr('ry', 4)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('opacity', 1);
+      tt.show(`<span style="font-size:13px;color:#FFCD00;">${d[0]}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d[1]}M</span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('opacity', isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('state', d[0]); });
+
+  g.selectAll('.label').data(chartData).enter().append('text')
+    .attr('x', d => x(d[0]) + x.bandwidth() / 2)
+    .attr('y', d => y(d[1]) - 6)
+    .attr('text-anchor', 'middle')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '500')
+    .text(d => 'US$ ' + d[1] + 'M');
+
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => 'US$' + d + 'M').tickSize(0).tickPadding(6))
+    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
+  g.selectAll('.domain').attr('stroke', 'none');
+
+  g.append('g').attr('transform', `translate(0,${ih})`)
+    .call(d3.axisBottom(x).tickSize(0).tickPadding(8))
+    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600')
+    .attr('transform', 'rotate(-30)').style('text-anchor', 'end');
+}
+
+function renderChartStageDistribution() {
+  const container = document.getElementById('chartStageDistribution');
+  const data = chartFilteredProjects();
+  const stageCount = {};
+  data.forEach(p => { stageCount[p.stage] = (stageCount[p.stage] || 0) + 1; });
+  const chartData = [];
+  for (let i = 1; i <= 6; i++) {
+    chartData.push({ stage: i, label: stageShort[i] || 'S' + i, count: stageCount[i] || 0 });
+  }
+
+  const cw = Math.max(chartWidth(container), 400);
+  const margin = { top: 24, right: 20, bottom: 70, left: 44 };
+  const h = 300;
+  const iw = cw - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const isFiltered = chartFilter && chartFilter.type === 'stage';
+
+  const colors = ['#FF8800', '#ffaa33', '#33b5e5', '#66d9ff', '#FFCD00', '#00C851'];
+
+  d3.select(container).selectAll('svg').remove();
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const maxV = d3.max(chartData, d => d.count) || 1;
+  const x = d3.scaleBand().domain(chartData.map(d => d.label)).range([0, iw]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, Math.max(maxV * 1.3, 5)]).range([ih, 0]);
+
+  const tt = chartTooltip(container);
+
+  g.selectAll('.bar').data(chartData).enter().append('rect')
+    .attr('x', d => x(d.label))
+    .attr('width', x.bandwidth())
+    .attr('y', d => y(d.count))
+    .attr('height', d => ih - y(d.count))
+    .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? '#3a3a3a' : colors[i])
+    .attr('opacity', d => isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.85)
+    .attr('rx', 4).attr('ry', 4)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('opacity', 1);
+      tt.show(`<span style="font-size:13px;">${d.label}</span><br><span style="font-size:15px;font-weight:800;">${d.count} projeto${d.count !== 1 ? 's' : ''}</span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('opacity', isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.85);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('stage', d.stage); });
+
+  g.selectAll('.label').data(chartData).enter().append('text')
+    .attr('x', d => x(d.label) + x.bandwidth() / 2)
+    .attr('y', d => y(d.count) - 6)
+    .attr('text-anchor', 'middle')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '600')
+    .text(d => d.count + ' projeto' + (d.count !== 1 ? 's' : ''));
+
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('d')).tickSize(0).tickPadding(6))
+    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
+  g.selectAll('.domain').attr('stroke', 'none');
+
+  g.append('g').attr('transform', `translate(0,${ih})`)
+    .call(d3.axisBottom(x).tickSize(0).tickPadding(8))
+    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+}
+
+function renderChartDepositType() {
+  const container = document.getElementById('chartDepositType');
+  const data = chartFilteredProjects();
+  const depData = {};
+  data.forEach(p => {
+    const dt = p.depositType || 'unknown';
+    depData[dt] = (depData[dt] || 0) + p.capex;
+  });
+  const labels = {
+    iacSaprolite: 'Argila Iônica',
+    hardRock: 'Rocha Dura',
+    reprocessing: 'Fosfogesso',
+    exploration: 'Exploração',
+    unknown: 'Outros'
+  };
+  const colors = { iacSaprolite: '#FFCD00', hardRock: '#FF8800', reprocessing: '#33b5e5', exploration: '#888', unknown: '#666' };
+  const chartData = Object.entries(depData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: v }));
+  const total = chartData.reduce((a, d) => a + d.value, 0);
+  if (!total) return;
+
+  const cw = chartWidth(container);
+  const h = Math.max(cw * 0.6, 260);
+  const r = Math.min(cw, h) / 2 * 0.55;
+  const isFiltered = chartFilter && chartFilter.type === 'depositType';
+
+  d3.select(container).selectAll('svg, .legend').remove();
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${cw/2},${h/2})`);
+
+  const pie = d3.pie().value(d => d.value).sort(null);
+  const arc = d3.arc().innerRadius(r * 0.5).outerRadius(r);
+  const arcH = d3.arc().innerRadius(r * 0.5).outerRadius(r * 1.1);
+  const labelArc = d3.arc().innerRadius(r * 1.15).outerRadius(r * 1.15);
+
+  const tt = chartTooltip(container);
+
+  g.selectAll('path').data(pie(chartData)).enter().append('path')
+    .attr('d', arc)
+    .attr('fill', d => isFiltered && d.data.key === chartFilter.value ? colors[d.data.key] : isFiltered ? '#2a2a2a' : colors[d.data.key])
+    .attr('opacity', d => isFiltered && d.data.key !== chartFilter.value ? 0.25 : 1)
+    .attr('stroke', 'var(--cat-dark)')
+    .attr('stroke-width', 2)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('d', arcH);
+      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d.data.value}M</span><br><span style="font-size:12px;color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do total</span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('d', arc);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('depositType', d.data.key); });
+
+  // Labels on each arc
+  pie(chartData).forEach(function(d) {
+    const pos = labelArc.centroid(d);
+    const midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+    const labelRadius = r * 1.18;
+    const x = Math.cos(midAngle - Math.PI / 2) * labelRadius;
+    const y = Math.sin(midAngle - Math.PI / 2) * labelRadius;
+
+    g.append('text')
+      .attr('transform', `translate(${x},${y})`)
+      .attr('text-anchor', midAngle > Math.PI ? 'end' : 'start')
+      .style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '600')
+      .text(d.data.value >= 20 ? (d.data.value/total*100).toFixed(1) + '%' : '');
+  });
+
+  g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.3em')
+    .style('fill', 'var(--cat-fg)').attr('font-size', '22px').attr('font-weight', '800')
+    .text('US$ ' + (total / 1000).toFixed(1) + 'B');
+  g.append('text').attr('text-anchor', 'middle').attr('dy', '1.3em')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .text('CAPEX Total');
+
+  const legend = d3.select(container).append('div').attr('class', 'legend');
+  chartData.forEach(d => {
+    const item = legend.append('div').attr('class', 'legend-item');
+    item.append('span').attr('class', 'ldot').style('background', colors[d.key] || '#666');
+    item.append('span').html(`<strong>${d.label}</strong> ${(d.value/total*100).toFixed(1)}% <span style="color:var(--cat-text-muted);">(US$ ${d.value}M)</span>`);
+  });
+}
+
+function renderChartPriority() {
+  const container = document.getElementById('chartPriority');
+  const data = chartFilteredProjects();
+  const prioData = {};
+  data.forEach(p => {
+    prioData[p.priority] = (prioData[p.priority] || 0) + p.capex;
+  });
+  const labels = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
+  const colors = { critical: '#ff4444', high: '#FF8800', medium: '#FFCD00', low: '#888' };
+  const chartData = Object.entries(prioData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: v }));
+  const total = chartData.reduce((a, d) => a + d.value, 0);
+  if (!total) return;
+
+  const cw = chartWidth(container);
+  const h = Math.max(cw * 0.6, 260);
+  const r = Math.min(cw, h) / 2 * 0.55;
+  const isFiltered = chartFilter && chartFilter.type === 'priority';
+
+  d3.select(container).selectAll('svg, .legend').remove();
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${cw/2},${h/2})`);
+
+  const pie = d3.pie().value(d => d.value).sort(null);
+  const arc = d3.arc().innerRadius(r * 0.5).outerRadius(r);
+  const arcH = d3.arc().innerRadius(r * 0.5).outerRadius(r * 1.1);
+  const labelArc = d3.arc().innerRadius(r * 1.15).outerRadius(r * 1.15);
+
+  const tt = chartTooltip(container);
+
+  g.selectAll('path').data(pie(chartData)).enter().append('path')
+    .attr('d', arc)
+    .attr('fill', d => isFiltered && d.data.key === chartFilter.value ? colors[d.data.key] : isFiltered ? '#2a2a2a' : colors[d.data.key])
+    .attr('opacity', d => isFiltered && d.data.key !== chartFilter.value ? 0.25 : 1)
+    .attr('stroke', 'var(--cat-dark)')
+    .attr('stroke-width', 2)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('d', arcH);
+      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d.data.value}M</span><br><span style="font-size:12px;color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do total</span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('d', arc);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('priority', d.data.key); });
+
+  // Labels on each arc
+  pie(chartData).forEach(function(d) {
+    const midAngle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+    const labelRadius = r * 1.18;
+    const x = Math.cos(midAngle - Math.PI / 2) * labelRadius;
+    const y = Math.sin(midAngle - Math.PI / 2) * labelRadius;
+
+    g.append('text')
+      .attr('transform', `translate(${x},${y})`)
+      .attr('text-anchor', midAngle > Math.PI ? 'end' : 'start')
+      .style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '600')
+      .text(d.data.value >= 20 ? (d.data.value/total*100).toFixed(1) + '%' : '');
+  });
+
+  g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.3em')
+    .style('fill', 'var(--cat-fg)').attr('font-size', '22px').attr('font-weight', '800')
+    .text('US$ ' + (total / 1000).toFixed(1) + 'B');
+  g.append('text').attr('text-anchor', 'middle').attr('dy', '1.3em')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .text('CAPEX Total');
+
+  const legend = d3.select(container).append('div').attr('class', 'legend');
+  chartData.forEach(d => {
+    const item = legend.append('div').attr('class', 'legend-item');
+    item.append('span').attr('class', 'ldot').style('background', colors[d.key] || '#666');
+    item.append('span').html(`<strong>${d.label}</strong> ${(d.value/total*100).toFixed(1)}% <span style="color:var(--cat-text-muted);">(US$ ${d.value}M)</span>`);
+  });
+}
+
+function renderChartCompanyCapex() {
+  const container = document.getElementById('chartCompanyCapex');
+  const data = chartFilteredProjects();
+  const compData = {};
+  const compFull = {};
+  data.forEach(p => {
+    const key = p.company.length > 22 ? p.company.substring(0, 20) + '…' : p.company;
+    compFull[key] = p.company;
+    compData[key] = (compData[key] || 0) + p.capex;
+  });
+  const chartData = Object.entries(compData).sort((a, b) => b[1] - a[1]);
+
+  const cw = chartWidth(container);
+  const margin = { top: 20, right: 80, bottom: 20, left: 160 };
+  const h = Math.max(chartData.length * 38 + margin.top + margin.bottom, 260);
+  const iw = cw - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const isFiltered = chartFilter && chartFilter.type === 'company';
+
+  d3.select(container).selectAll('svg').remove();
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const maxV = d3.max(chartData, d => d[1]) || 1;
+  const x = d3.scaleLinear().domain([0, maxV * 1.12]).range([0, iw]);
+  const y = d3.scaleBand().domain(chartData.map(d => d[0])).range([0, ih]).padding(0.25);
+
+  const tt = chartTooltip(container);
+  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#FF8800']);
+
+  g.selectAll('.bar').data(chartData).enter().append('rect')
+    .attr('y', d => y(d[0]))
+    .attr('height', y.bandwidth())
+    .attr('x', 0)
+    .attr('width', d => x(d[1]))
+    .attr('fill', (d, i) => isFiltered && d[0] === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
+    .attr('opacity', d => isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85)
+    .attr('rx', 4).attr('ry', 4)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('opacity', 1);
+      tt.show(`<span style="font-size:13px;">${d[0]}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d[1]}M</span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('opacity', isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('company', compFull[d[0]] || d[0]); });
+
+  g.selectAll('.label').data(chartData).enter().append('text')
+    .attr('x', d => x(d[1]) + 6)
+    .attr('y', d => y(d[0]) + y.bandwidth() / 2)
+    .attr('dy', '0.32em').style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .text(d => 'US$ ' + d[1] + 'M');
+
+  g.append('g').call(d3.axisLeft(y).tickSize(0).tickPadding(8))
+    .selectAll('text').attr('font-size', '11px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+  g.selectAll('.domain, .tick line').attr('stroke', 'none');
+}
+
+// ── INIT ──
+sotreqLoadData();
+sotreqLoadConfig();
+sotreqApplyConfig();
+try { init(); } catch(e) { console.error('init() falhou:', e); }
+try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
+try { renderPipelineDetail(); } catch(e) { console.error('renderPipelineDetail() falhou:', e); }
+try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
+try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
+try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- ADMIN PANEL                                                    -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<style>
+#adminBtn {
+  position:fixed; bottom:24px; right:24px; z-index:9000;
+  width:48px; height:48px; border-radius:50%;
+  background:var(--cat-yellow); color:var(--cat-black);
+  border:none; font-size:22px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px rgba(255,205,0,0.3);
+  transition:all 0.2s;
+}
+#adminBtn:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(255,205,0,0.5); }
+#adminBtn .ab-label {
+  position:absolute; right:56px; background:var(--cat-black);
+  color:var(--cat-fg); font-size:12px; font-weight:600; padding:4px 12px;
+  border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none;
+  transition:opacity 0.2s; border:1px solid var(--cat-gray-light);
+}
+#adminBtn:hover .ab-label { opacity:1; }
+
+#adminOverlay {
+  position:fixed; inset:0; z-index:9500; background:rgba(0,0,0,0.7);
+  display:none; align-items:center; justify-content:center;
+  backdrop-filter:blur(4px); padding:20px;
+}
+#adminOverlay.open { display:flex; }
+
+#adminPanel {
+  background:var(--cat-dark); border:1px solid var(--cat-gray-light);
+  border-radius:16px; width:100%; max-width:1100px; max-height:90vh;
+  display:flex; flex-direction:column; overflow:hidden;
+  animation:fadeInUp 0.25s ease-out;
+}
+#adminPanel .ap-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px; border-bottom:2px solid var(--cat-gray-light); flex-shrink:0;
+}
+#adminPanel .ap-header h2 {
+  font-size:18px; font-weight:800; color:var(--cat-yellow); letter-spacing:-0.3px;
+  display:flex; align-items:center; gap:10px;
+}
+#adminPanel .ap-header h2 small { font-size:11px; color:var(--cat-text-muted); font-weight:400; }
+#adminPanel .ap-close {
+  width:36px; height:36px; border-radius:50%; background:var(--cat-gray);
+  border:1px solid var(--cat-gray-light); color:var(--cat-text-muted);
+  font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+#adminPanel .ap-close:hover { background:var(--cat-red); color:#fff; border-color:var(--cat-red); }
+
+#adminPanel .ap-tabs {
+  display:flex; gap:0; border-bottom:1px solid var(--cat-gray-light); padding:0 24px; flex-shrink:0;
+}
+#adminPanel .ap-tab {
+  background:transparent; border:none; border-bottom:3px solid transparent;
+  color:var(--cat-text-muted); padding:12px 20px; font-family:inherit;
+  font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s;
+  text-transform:uppercase; letter-spacing:0.5px; margin-bottom:-1px;
+}
+#adminPanel .ap-tab:hover { color:var(--cat-text); }
+#adminPanel .ap-tab.active { color:var(--cat-yellow); border-bottom-color:var(--cat-yellow); }
+
+#adminPanel .ap-body { flex:1; overflow-y:auto; padding:20px 24px; }
+#adminPanel .ap-page { display:none; }
+#adminPanel .ap-page.active { display:block; }
+
+.ap-toolbar {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; flex-wrap:wrap; gap:8px;
+}
+.ap-toolbar .ap-btn {
+  background:var(--cat-yellow); color:var(--cat-black); border:none;
+  padding:8px 18px; border-radius:8px; font-size:13px; font-weight:700;
+  cursor:pointer; font-family:inherit; transition:all 0.2s; display:inline-flex; align-items:center; gap:6px;
+}
+.ap-toolbar .ap-btn:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(255,205,0,0.3); }
+.ap-toolbar .ap-btn.sec {
+  background:var(--cat-gray); color:var(--cat-text); border:1px solid var(--cat-gray-light);
+}
+.ap-toolbar .ap-btn.sec:hover { border-color:var(--cat-yellow); box-shadow:none; }
+.ap-toolbar .ap-btn.danger { background:var(--cat-red); color:#fff; }
+.ap-toolbar .ap-btn.danger:hover { box-shadow:0 4px 12px rgba(255,68,68,0.3); }
+.ap-toolbar .ap-info { font-size:12px; color:var(--cat-text-muted); }
+
+.ap-card {
+  background:var(--cat-black); border:1px solid var(--cat-gray-light);
+  border-radius:10px; padding:16px; margin-bottom:12px; transition:all 0.15s;
+}
+.ap-card:hover { border-color:var(--cat-yellow); }
+.ap-card .apc-header {
+  display:flex; align-items:flex-start; justify-content:space-between; gap:8px;
+}
+.ap-card .apc-header .apc-title { font-weight:700; color:var(--cat-fg); font-size:14px; }
+.ap-card .apc-header .apc-sub { font-size:11px; color:var(--cat-text-muted); display:block; margin-top:2px; }
+.ap-card .apc-actions { display:flex; gap:4px; flex-shrink:0; }
+.ap-card .apc-actions button {
+  background:var(--cat-gray); border:1px solid var(--cat-gray-light); color:var(--cat-text-muted);
+  width:30px; height:30px; border-radius:6px; cursor:pointer; font-size:14px;
+  display:flex; align-items:center; justify-content:center; transition:all 0.15s;
+}
+.ap-card .apc-actions button i.bi { font-size: 14px; }
+.ap-card .apc-body { margin-top:8px; display:flex; flex-wrap:wrap; gap:4px; }
+.ap-card .apc-body .apc-tag {
+  background:rgba(255,205,0,0.08); border:1px solid rgba(255,205,0,0.15);
+  padding:2px 8px; border-radius:4px; font-size:10px; color:var(--cat-yellow);
+}
+.ap-card .apc-body .apc-field { font-size:11px; color:var(--cat-text-muted); margin-right:12px; }
+.ap-card .apc-body .apc-field strong { color:var(--cat-fg); }
+
+/* MODAL */
+#adminModal {
+  position:fixed; inset:0; z-index:9800; background:rgba(0,0,0,0.6);
+  display:none; align-items:center; justify-content:center;
+  backdrop-filter:blur(3px); padding:20px;
+}
+#adminModal.open { display:flex; }
+#adminModal .am-panel {
+  background:var(--cat-dark); border:1px solid var(--cat-gray-light);
+  border-radius:14px; width:100%; max-width:640px; max-height:90vh;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+#adminModal .am-panel--wide { max-width:1100px; width:98vw; }
+#adminModal .am-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px; border-bottom:1px solid var(--cat-gray-light); flex-shrink:0;
+}
+#adminModal .am-header h3 { font-size:16px; font-weight:700; color:var(--cat-fg); }
+#adminModal .am-close {
+  width:30px; height:30px; border-radius:50%; background:var(--cat-gray);
+  border:1px solid var(--cat-gray-light); color:var(--cat-text-muted);
+  font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+#adminModal .am-close:hover { color:var(--cat-red); border-color:var(--cat-red); }
+#adminModal .am-body { flex:1; overflow-y:auto; padding:20px; }
+
+.am-form { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.am-form .am-full { grid-column:1/-1; }
+.am-form label { display:block; font-size:11px; font-weight:600; color:var(--cat-text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+.am-form input, .am-form select, .am-form textarea {
+  width:100%; background:var(--cat-black); border:1px solid var(--cat-gray-light);
+  color:var(--cat-fg); padding:8px 12px; border-radius:6px; font-size:13px;
+  font-family:inherit; outline:none; transition:border-color 0.2s;
+}
+.am-form input:focus, .am-form select:focus, .am-form textarea:focus { border-color:var(--cat-yellow); }
+.am-form textarea { min-height:60px; resize:vertical; }
+.am-form select option { background:var(--cat-black); }
+
+.am-footer {
+  display:flex; gap:8px; justify-content:flex-end; padding:16px 20px;
+  border-top:1px solid var(--cat-gray-light); flex-shrink:0;
+}
+.am-footer button {
+  padding:8px 20px; border-radius:8px; font-size:13px; font-weight:600;
+  font-family:inherit; cursor:pointer; transition:all 0.15s; border:none;
+}
+.am-footer .am-cancel { background:var(--cat-gray); color:var(--cat-text-muted); border:1px solid var(--cat-gray-light); }
+.am-footer .am-cancel:hover { border-color:var(--cat-text-muted); }
+.am-footer .am-save { background:var(--cat-yellow); color:var(--cat-black); font-weight:700; }
+.am-footer .am-save:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(255,205,0,0.3); }
+
+.ap-search { width:100%; max-width:320px; }
+.ap-search input {
+  width:100%; background:var(--cat-black); border:1px solid var(--cat-gray-light);
+  color:var(--cat-fg); padding:8px 14px; border-radius:8px; font-size:13px;
+  font-family:inherit; outline:none; transition:border-color 0.2s;
+}
+.ap-search input:focus { border-color:var(--cat-yellow); }
+
+@media (max-width:768px) {
+  #adminBtn { bottom:16px; right:16px; width:42px; height:42px; font-size:18px; }
+  #adminBtn .ab-label { display:none; }
+  #adminOverlay { padding:12px; }
+  #adminPanel { max-height:95vh; border-radius:12px; }
+  #adminPanel .ap-header { padding:14px 16px; }
+  #adminPanel .ap-header h2 { font-size:15px; }
+  #adminPanel .ap-tabs { padding:0 12px; overflow-x:auto; }
+  #adminPanel .ap-tab { padding:10px 12px; font-size:11px; }
+  #adminPanel .ap-body { padding:14px 16px; }
+  .am-form { grid-template-columns:1fr; }
+  #apConfigForm { grid-template-columns:1fr !important; }
+  #apIndicatorsSummary { grid-template-columns:1fr !important; }
+  #apFleetForm { grid-template-columns:1fr !important; }
+  .ap-toolbar { flex-direction:column; align-items:stretch; }
+  .ap-toolbar .ap-btn { justify-content:center; }
+  .ap-search { max-width:100%; }
+  #adminModal .am-panel { max-height:95vh; border-radius:12px; }
+  #adminModal .am-body { padding:14px 16px; }
+}
+</style>
+
+<button id="adminBtn" onclick="toggleAdmin()" title="Painel Administrativo">
+  <span class="ab-label">Admin</span>
+  <i class="bi bi-gear-fill"></i>
+</button>
+
+<div id="adminOverlay" onclick="if(event.target===this)closeAdmin()">
+  <div id="adminPanel">
+    <div class="ap-header">
+      <h2><i class="bi bi-gear-fill"></i> Painel Administrativo <small>Editar dados do dashboard</small></h2>
+      <button class="ap-close" onclick="closeAdmin()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="ap-tabs">
+      <button class="ap-tab active" onclick="switchAdminTab('projects')"><i class="bi bi-file-text"></i> Projetos</button>
+      <button class="ap-tab" onclick="switchAdminTab('indicators')"><i class="bi bi-bar-chart-fill"></i> Indicadores</button>
+      <button class="ap-tab" onclick="switchAdminTab('news')"><i class="bi bi-newspaper"></i> Notícias</button>
+      <button class="ap-tab" onclick="switchAdminTab('data')"><i class="bi bi-save"></i> Dados</button>
+    </div>
+    <div class="ap-body">
+      <!-- PROJECTS TAB -->
+      <div id="apPage-projects" class="ap-page active">
+        <div class="ap-toolbar">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="ap-btn" onclick="adminAddProject()"><i class="bi bi-plus-lg"></i> Novo Projeto</button>
+            <button class="ap-btn sec" onclick="adminDeepResearch()"><i class="bi bi-search-heart"></i> Pesquisa Profunda</button>
+            <span class="ap-info" id="apProjCount"></span>
+            <button class="ap-btn sec" onclick="adminToggleProjView()" id="apViewToggle" style="font-size:11px;"><i class="bi bi-table"></i> Visão Tabela</button>
+          </div>
+          <div class="ap-search">
+            <input type="text" placeholder="Buscar projeto..." oninput="adminRenderProjects(this.value)" id="apProjSearch">
+          </div>
+        </div>
+        <div id="apProjList"></div>
+      </div>
+      <!-- INDICATORS TAB -->
+      <div id="apPage-indicators" class="ap-page">
+        <div class="ap-toolbar">
+          <h4 style="color:var(--cat-fg);font-size:15px;"><i class="bi bi-bar-chart-fill"></i> Parâmetros dos Indicadores</h4>
+          <button class="ap-btn" onclick="adminSaveConfig()"><i class="bi bi-save"></i> Salvar Config</button>
+        </div>
+        <p style="color:var(--cat-text-muted);font-size:12px;margin-bottom:16px;">
+          Altere os parâmetros abaixo para recalcular todos os indicadores do dashboard. As fórmulas são atualizadas automaticamente.
+        </p>
+        <div id="apConfigForm" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+
+        <h4 style="color:var(--cat-fg);font-size:15px;margin-top:24px;margin-bottom:12px;"><i class="bi bi-graph-up-arrow"></i> Resumo dos Indicadores</h4>
+        <p style="color:var(--cat-text-muted);font-size:12px;margin-bottom:12px;">
+          Abaixo estão os indicadores calculados com base nos parâmetros atuais e nos dados dos projetos.
+        </p>
+        <div id="apIndicatorsSummary" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;"></div>
+
+        <h4 style="color:var(--cat-fg);font-size:15px;margin-top:24px;margin-bottom:12px;"><i class="bi bi-truck"></i> Frotas Base por Tipo de Depósito</h4>
+        <div id="apFleetForm" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;"></div>
+
+        <h4 style="color:var(--cat-fg);font-size:15px;margin-top:24px;margin-bottom:12px;"><i class="bi bi-currency-dollar"></i> Comparativo de Oportunidades por Projeto</h4>
+        <p style="color:var(--cat-text-muted);font-size:12px;margin-bottom:12px;">
+          Abaixo estão as oportunidades reais (baseadas em cotações enviadas) vs esperadas (CAPEX × taxa de conversão) para cada projeto que possui cotação.
+          Gerencie as cotações na aba <strong>Projetos</strong> — botão "Cotação" em cada projeto.
+        </p>
+        <div id="apQuoteComparison" style="display:grid;gap:12px;"></div>
+      </div>
+
+      <!-- NEWS TAB -->
+      <div id="apPage-news" class="ap-page">
+        <div class="ap-toolbar">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="ap-btn" onclick="adminAddNews()"><i class="bi bi-plus-lg"></i> Nova Notícia</button>
+            <button class="ap-btn sec" onclick="adminFetchNewsAI()" id="apFetchNewsBtn" style="position:relative;"><i class="bi bi-robot"></i> Buscar com IA</button>
+            <span class="ap-info" id="apNewsCount"></span>
+          </div>
+          <div class="ap-search">
+            <input type="text" placeholder="Buscar notícia..." oninput="adminRenderNews(this.value)" id="apNewsSearch">
+          </div>
+        </div>
+        <div id="apNewsFetchStatus" style="font-size:12px;color:var(--cat-yellow);margin-bottom:8px;display:none;"></div>
+        <div id="apNewsList"></div>
+      </div>
+      <!-- DATA TAB -->
+      <div id="apPage-data" class="ap-page">
+        <div class="ap-toolbar">
+          <h4 style="color:var(--cat-fg);font-size:15px;"><i class="bi bi-save"></i> Exportar / Importar Dados</h4>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div class="ap-card" style="padding:14px;">
+            <div class="apc-header">
+              <div>
+                <div class="apc-title" style="font-size:13px;"><i class="bi bi-robot"></i> Busca de Notícias</div>
+                <span class="apc-sub">O botão "Buscar com IA" usa <strong>Google News RSS</strong> via rss2json.com — funciona direto no navegador, sem necessidade de chave de API.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="ap-card" style="cursor:pointer;" onclick="adminExport()">
+            <div class="apc-header">
+              <div>
+                <div class="apc-title"><i class="bi bi-download"></i> Exportar JSON</div>
+                <span class="apc-sub">Baixar todos os dados (projetos + notícias) como arquivo JSON para backup</span>
+              </div>
+            </div>
+          </div>
+          <div class="ap-card" style="cursor:pointer;" onclick="document.getElementById('apImportInput').click()">
+            <div class="apc-header">
+              <div>
+                <div class="apc-title"><i class="bi bi-upload"></i> Importar JSON</div>
+                <span class="apc-sub">Restaurar dados de um arquivo JSON previamente exportado</span>
+              </div>
+            </div>
+            <input type="file" id="apImportInput" accept=".json" style="display:none;" onchange="adminImport(event)">
+          </div>
+          <div class="ap-card" style="cursor:pointer;" onclick="adminReset()">
+            <div class="apc-header">
+              <div>
+                <div class="apc-title" style="color:var(--cat-red);"><i class="bi bi-arrow-counterclockwise"></i> Restaurar Padrão</div>
+                <span class="apc-sub">Voltar aos dados originais de fábrica (remove todas as alterações)</span>
+              </div>
+            </div>
+          </div>
+          <div class="ap-card" style="cursor:pointer;" onclick="adminSave()">
+            <div class="apc-header">
+              <div>
+                <div class="apc-title" style="color:var(--cat-green);"><i class="bi bi-save"></i> Salvar no Navegador</div>
+                <span class="apc-sub">Salvar alterações atuais no armazenamento local do navegador</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="apDataMsg" style="margin-top:16px;font-size:13px;color:var(--cat-green);display:none;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE EDIÇÃO -->
+<div id="adminModal">
+  <div class="am-panel">
+    <div class="am-header">
+      <h3 id="amTitle">Editar Projeto</h3>
+      <button class="am-close" onclick="closeAdminModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="am-body">
+      <form class="am-form" id="amForm"></form>
+    </div>
+    <div class="am-footer">
+      <button class="am-cancel" onclick="closeAdminModal()">Cancelar</button>
+      <button class="am-save" onclick="adminSaveForm()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let adminEditing = null;
+let adminType = 'project';
+
+function toggleAdmin() {
+  const o = document.getElementById('adminOverlay');
+  o.classList.toggle('open');
+  if (o.classList.contains('open')) {
+    adminRenderProjects();
+    adminRenderNews();
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('adminOverlay').classList.remove('open');
+}
+
+function switchAdminTab(tab) {
+  document.querySelectorAll('#adminPanel .ap-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ap-page').forEach(p => p.classList.remove('active'));
+  document.querySelector(`#adminPanel .ap-tab[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById(`apPage-${tab}`).classList.add('active');
+  if (tab === 'projects') adminRenderProjects();
+  if (tab === 'indicators') adminRenderIndicators();
+  if (tab === 'news') adminRenderNews();
+  if (tab === 'data') {
+    const el = document.getElementById('apGnewsKey');
+    if (el) el.value = sotreqGnewsKey;
+  }
+}
+
+function fullRefresh() {
+  document.getElementById('tableBody').innerHTML = '';
+  document.getElementById('pipelineFlow').innerHTML = '';
+  document.getElementById('timeline').innerHTML = '';
+  init();
+  renderExecutiveSummary();
+  renderPipelineDetail();
+  renderNoticias();
+  renderSotreqSummary();
+  try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
+}
+
+function sotreqMsg(text, type) {
+  const el = document.getElementById('apDataMsg');
+  el.style.display = 'block';
+  el.style.color = type === 'warning' ? 'var(--cat-yellow)' : type ? 'var(--cat-red)' : 'var(--cat-green)';
+  el.innerHTML = text;
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+// ── PROJECTS ADMIN ──
+
+function adminRenderProjects(query) {
+  query = (query || document.getElementById('apProjSearch').value || '').toLowerCase();
+  const list = document.getElementById('apProjList');
+  const filtered = query ? projects.filter(p =>
+    p.company.toLowerCase().includes(query) ||
+    p.project.toLowerCase().includes(query) ||
+    p.location.state.toLowerCase().includes(query)
+  ) : projects;
+  document.getElementById('apProjCount').textContent = `${filtered.length} de ${projects.length} projetos`;
+
+  if (adminProjView === 'table') {
+    list.innerHTML = `<div style="overflow-x:auto;border:1px solid var(--cat-gray-light);border-radius:8px;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:900px;">
+        <thead><tr style="background:var(--cat-gray);">
+          <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Empresa</th>
+          <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Projeto</th>
+          <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Estado</th>
+          <th style="padding:8px 10px;text-align:right;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">CAPEX</th>
+          <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Estágio</th>
+          <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Prioridade</th>
+          <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Depósito</th>
+          <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Ações</th>
+        </tr></thead>
+        <tbody>${filtered.map(p => {
+          const idx = projects.indexOf(p);
+          return `<tr style="border-bottom:1px solid var(--cat-gray-light);">
+            <td style="padding:8px 10px;font-weight:600;color:var(--cat-fg);">${escHtml(p.company)}</td>
+            <td style="padding:8px 10px;color:var(--cat-text);">${escHtml(p.project)}</td>
+            <td style="padding:8px 10px;">${p.location.state}</td>
+            <td style="padding:8px 10px;text-align:right;color:var(--cat-yellow);font-weight:600;">US$ ${p.capex}M</td>
+            <td style="padding:8px 10px;text-align:center;">S${p.stage}</td>
+            <td style="padding:8px 10px;text-align:center;">${p.priority}</td>
+            <td style="padding:8px 10px;text-align:center;font-size:10px;">${p.depositType}</td>
+            <td style="padding:8px 10px;text-align:center;white-space:nowrap;">
+              <button onclick="adminManageQuote(${idx})" style="background:transparent;border:none;cursor:pointer;font-size:12px;color:var(--cat-yellow);" title="Cotação"><i class="bi bi-cart"></i></button>
+              <button onclick="adminEditProject(${idx})" style="background:transparent;border:none;cursor:pointer;font-size:14px;"><i class="bi bi-pencil-fill"></i></button>
+              <button onclick="adminDeleteProject(${idx})" style="background:transparent;border:none;cursor:pointer;font-size:14px;"><i class="bi bi-trash3-fill"></i></button>
+            </td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>`;
+  } else {
+    list.innerHTML = filtered.map((p, i) => {
+      const idx = projects.indexOf(p);
+      return `<div class="ap-card">
+        <div class="apc-header">
+          <div>
+            <div class="apc-title">${p.company} — ${p.project}</div>
+            <span class="apc-sub">${p.location.city}, ${p.location.state} · US$ ${p.capex}M · ${stageShort[p.stage]} · ${p.type}</span>
+          </div>
+          <div class="apc-actions">
+            <button class="apc-edit" onclick="adminManageQuote(${idx})" title="Cotação" style="background:transparent;border:none;cursor:pointer;font-size:12px;color:var(--cat-yellow);"><i class="bi bi-cart"></i></button>
+            <button class="apc-edit" onclick="adminEditProject(${idx})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
+            <button class="apc-del" onclick="adminDeleteProject(${idx})" title="Excluir"><i class="bi bi-trash3-fill"></i></button>
+          </div>
+        </div>
+        <div class="apc-body">
+          <span class="apc-field"><strong>Prioridade:</strong> ${p.priority}</span>
+          <span class="apc-field"><strong>CAPEX:</strong> US$ ${p.capex}M</span>
+          <span class="apc-field"><strong>Estágio:</strong> S${p.stage}</span>
+          <span class="apc-field"><strong>Depósito:</strong> ${p.depositType}</span>
+          <span class="apc-field"><strong>Previsão:</strong> ${p.forecast}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function adminEditProject(idx) {
+  adminEditing = idx;
+  adminType = 'project';
+  const p = projects[idx];
+  const q = p.quote || [];
+  document.querySelector('#adminModal .am-panel').classList.add('am-panel--wide');
+  document.getElementById('amTitle').innerHTML = '<i class="bi bi-pencil-fill"></i> Editar: ' + escHtml(p.company) + ' — ' + escHtml(p.project);
+  document.getElementById('amForm').innerHTML = `
+    <label>Empresa <input name="company" value="${escHtml(p.company)}"></label>
+    <label>Projeto <input name="project" value="${escHtml(p.project)}"></label>
+    <label>Origem <input name="origin" value="${escHtml(p.origin)}"></label>
+    <label>Prioridade
+      <select name="priority">
+        ${['critical','high','medium','low'].map(o =>
+          `<option value="${o}"${p.priority===o?' selected':''}>${o}</option>`
+        ).join('')}
+      </select>
+    </label>
+    <label>Cidade <input name="city" value="${escHtml(p.location.city)}"></label>
+    <label>Estado <input name="state" value="${escHtml(p.location.state)}" maxlength="2"></label>
+    <label>CAPEX (US$ M) <input name="capex" type="number" value="${p.capex}"></label>
+    <label>CAPEX Detalhe <input name="capexDetail" value="${escHtml(p.capexDetail)}"></label>
+    <label class="am-full">Estágio (1-6)
+      <select name="stage">${[1,2,3,4,5,6].map(s =>
+        `<option value="${s}"${p.stage===s?' selected':''}>S${s} · ${stageNames[s-1]}</option>`
+      ).join('')}</select>
+    </label>
+    <label>Previsão <input name="forecast" value="${escHtml(p.forecast)}"></label>
+    <label>Capacidade <input name="capacity" value="${escHtml(p.capacity||'')}"></label>
+    <label class="am-full">Licenciamento <textarea name="licensing">${escHtml(p.licensing)}</textarea></label>
+    <label>Tipo Depósito
+      <select name="depositType">
+        ${Object.entries(equipmentProfiles).map(([k,v]) =>
+          `<option value="${k}"${p.depositType===k?' selected':''}>${escHtml(v.label)}</option>`
+        ).join('')}
+      </select>
+    </label>
+    <label>Tipo <input name="type" value="${escHtml(p.type)}"></label>
+    <label class="am-full">Highlights <textarea name="highlights">${escHtml(p.highlights||'')}</textarea></label>
+    <label>Ano Início
+      <select name="startYear">
+        <option value="">—</option>
+        ${[2026,2027,2028,2029,2030,2031].map(y =>
+          `<option value="${y}"${p.startYear===y?' selected':''}>${y}</option>`
+        ).join('')}
+      </select>
+    </label>
+    <label>Máquinas (separadas por vírgula) <textarea name="machines" style="min-height:40px;">${p.machines.join(', ')}</textarea></label>
+    <!-- QUOTE SECTION -->
+    <div class="am-full" style="margin-top:20px;border-top:2px solid var(--cat-gray-light);padding-top:16px;">
+      <h4 style="color:var(--cat-yellow);font-size:14px;margin:0 0 8px 0;"><i class="bi bi-cart"></i> Equipamentos Cotados</h4>
+      <div id="qAddForm" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;padding:10px;background:var(--cat-gray-light);border-radius:8px;margin-bottom:12px;align-items:end;">
+        <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);">Modelo<br>
+        <input type="text" id="qa_model" placeholder="ex: CAT 773" style="width:100%;padding:4px 6px;font-size:11px;border:1px solid var(--cat-gray);border-radius:4px;"></label>
+        <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);">Família<br>
+        <select id="qa_family" style="width:100%;padding:4px 6px;font-size:11px;border:1px solid var(--cat-gray);border-radius:4px;">
+        <option value="">Selecione...</option>` + EQUIP_FAMILIES_LIST + `
+        </select></label>
+        <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);">Descrição<br>
+        <input type="text" id="qa_desc" placeholder="opcional" style="width:100%;padding:4px 6px;font-size:11px;border:1px solid var(--cat-gray);border-radius:4px;"></label>
+        <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);">Qtd.<br>
+        <input type="number" id="qa_qty" value="1" min="1" style="width:60px;padding:4px 6px;font-size:11px;border:1px solid var(--cat-gray);border-radius:4px;"></label>
+        <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);">Preço Unit.<br>
+        <input type="number" id="qa_price" value="" min="0" step="0.01" placeholder="0.00" style="width:90px;padding:4px 6px;font-size:11px;border:1px solid var(--cat-gray);border-radius:4px;"></label>
+        <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);">Moeda<br>
+        <select id="qa_currency" style="width:100%;padding:4px 6px;font-size:11px;border:1px solid var(--cat-gray);border-radius:4px;">
+        <option value="USD">USD</option><option value="BRL">BRL</option></select></label>
+        <button type="button" onclick="adminAddQuoteLine()" style="padding:5px 12px;font-size:11px;background:var(--cat-yellow);color:#000;border:none;border-radius:4px;cursor:pointer;font-weight:600;height:fit-content;"><i class="bi bi-plus-lg"></i> Adicionar</button>
+      </div>
+      <div id="qTableWrap" style="overflow-x:auto;"></div>
+      <div id="qTotal" style="margin-top:12px;padding:12px;background:rgba(255,205,0,0.08);border-radius:8px;"></div>
+    </div>
+  `;
+  adminRenderQuoteTable();
+  openAdminModal();
+}
+
+function adminAddProject() {
+  adminEditing = null;
+  adminType = 'project';
+  document.getElementById('amTitle').textContent = '＋ Novo Projeto';
+  document.getElementById('amForm').innerHTML = `
+    <label>Empresa <input name="company"></label>
+    <label>Projeto <input name="project"></label>
+    <label>Origem <input name="origin" value="Brasil"></label>
+    <label>Prioridade
+      <select name="priority">
+        <option value="medium">medium</option>
+        <option value="high">high</option>
+        <option value="critical">critical</option>
+        <option value="low">low</option>
+      </select>
+    </label>
+    <label>Cidade <input name="city"></label>
+    <label>Estado <input name="state" maxlength="2"></label>
+    <label>CAPEX (US$ M) <input name="capex" type="number" value="100"></label>
+    <label>CAPEX Detalhe <input name="capexDetail"></label>
+    <label class="am-full">Estágio (1-6)
+      <select name="stage">
+        <option value="1">S1 · Prospecção Inicial</option>
+        <option value="2">S2 · Recursos Estimados</option>
+        <option value="3">S3 · Licença Prévia</option>
+        <option value="4">S4 · Licença Instalação</option>
+        <option value="5">S5 · Construção</option>
+        <option value="6">S6 · Operação Comercial</option>
+      </select>
+    </label>
+    <label>Previsão <input name="forecast"></label>
+    <label>Capacidade <input name="capacity"></label>
+    <label class="am-full">Licenciamento <textarea name="licensing"></textarea></label>
+    <label>Tipo Depósito
+      <select name="depositType">
+        <option value="iacSaprolite">Argila iônica / saprolito / IAC</option>
+        <option value="hardRock">Rocha dura / carbonatito</option>
+        <option value="reprocessing">Reprocessamento</option>
+        <option value="exploration">Exploração</option>
+      </select>
+    </label>
+    <label>Tipo <input name="type" value="Argila Iônica"></label>
+    <label class="am-full">Highlights <textarea name="highlights"></textarea></label>
+    <label>Ano Início
+      <select name="startYear">
+        <option value="">—</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+        <option value="2030">2030</option>
+      </select>
+    </label>
+    <label>Máquinas <textarea name="machines" style="min-height:40px;"></textarea></label>
+  `;
+  openAdminModal();
+}
+
+function adminDeleteProject(idx) {
+  if (!confirm(`Excluir "${projects[idx].project}" (${projects[idx].company})?`)) return;
+  projects.splice(idx, 1);
+  sotreqSaveData();
+  fullRefresh();
+  adminRenderProjects();
+}
+
+// ── NEWS ADMIN ──
+
+function adminRenderNews(query) {
+  query = (query || document.getElementById('apNewsSearch').value || '').toLowerCase();
+  const list = document.getElementById('apNewsList');
+  const filtered = query ? newsData.filter(n =>
+    n.title.toLowerCase().includes(query) ||
+    n.company.toLowerCase().includes(query) ||
+    n.source.toLowerCase().includes(query)
+  ) : newsData;
+  document.getElementById('apNewsCount').textContent = `${filtered.length} de ${newsData.length} notícias`;
+  list.innerHTML = filtered.map((n, i) => {
+    const idx = newsData.indexOf(n);
+    return `<div class="ap-card">
+      <div class="apc-header">
+        <div>
+          <div class="apc-title">${escHtml(n.title)}</div>
+          <span class="apc-sub">${n.date} · ${n.source} · ${n.company}</span>
+        </div>
+        <div class="apc-actions">
+          <button class="apc-edit" onclick="adminEditNews(${idx})" title="Editar"><i class="bi bi-pencil-fill"></i></button>
+          <button class="apc-del" onclick="adminDeleteNews(${idx})" title="Excluir"><i class="bi bi-trash3-fill"></i></button>
+        </div>
+      </div>
+      <div class="apc-body">
+        <span class="apc-field"><strong>Link:</strong> ${n.link ? '<i class="bi bi-check-lg" style="color:var(--cat-green);"></i>' : '<i class="bi bi-x-lg" style="color:var(--cat-red);"></i>'}</span>
+        <span class="apc-field"><strong>Tags:</strong> ${n.tags.join(', ')}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function adminEditNews(idx) {
+  adminEditing = idx;
+  adminType = 'news';
+  const n = newsData[idx];
+  document.getElementById('amTitle').innerHTML = '<i class="bi bi-pencil-fill"></i> Editar Not\u00EDcia';
+  document.getElementById('amForm').innerHTML = `
+    <label>Data <input name="date" value="${escHtml(n.date)}"></label>
+    <label>Fonte <input name="source" value="${escHtml(n.source)}"></label>
+    <label>Empresa <input name="company" value="${escHtml(n.company)}"></label>
+    <label class="am-full">Título <textarea name="title" style="min-height:50px;">${escHtml(n.title)}</textarea></label>
+    <label class="am-full">Texto <textarea name="text" style="min-height:80px;">${escHtml(n.text)}</textarea></label>
+    <label class="am-full">Link <input name="link" value="${escHtml(n.link||'')}"></label>
+    <label class="am-full">Tags (separadas por vírgula) <input name="tags" value="${n.tags.join(', ')}"></label>
+  `;
+  openAdminModal();
+}
+
+function adminAddNews() {
+  adminEditing = null;
+  adminType = 'news';
+  document.getElementById('amTitle').textContent = '＋ Nova Notícia';
+  document.getElementById('amForm').innerHTML = `
+    <label>Data <input name="date" value="26 Mai/2026"></label>
+    <label>Fonte <input name="source"></label>
+    <label>Empresa <input name="company"></label>
+    <label class="am-full">Título <textarea name="title" style="min-height:50px;"></textarea></label>
+    <label class="am-full">Texto <textarea name="text" style="min-height:80px;"></textarea></label>
+    <label class="am-full">Link <input name="link"></label>
+    <label class="am-full">Tags <input name="tags"></label>
+  `;
+  openAdminModal();
+}
+
+function adminDeleteNews(idx) {
+  if (!confirm(`Excluir notícia "${newsData[idx].title.substring(0,50)}..."?`)) return;
+  newsData.splice(idx, 1);
+  sotreqSaveData();
+  fullRefresh();
+  adminRenderNews();
+}
+
+// ── FORM SAVE ──
+
+function adminSaveForm() {
+  if (adminType === 'project') adminRecalcQuote();
+  const form = document.getElementById('amForm');
+  const fd = new FormData(form);
+  const vals = Object.fromEntries(fd.entries());
+
+  if (adminType === 'project') {
+    const obj = {
+      priority: vals.priority || 'medium',
+      company: vals.company || 'Nova Empresa',
+      origin: vals.origin || 'Brasil',
+      project: vals.project || 'Novo Projeto',
+      location: { city: vals.city || '', state: (vals.state || '').toUpperCase() },
+      capex: parseFloat(vals.capex) || 0,
+      capexDetail: vals.capexDetail || '',
+      stage: parseInt(vals.stage) || 1,
+      forecast: vals.forecast || '',
+      capacity: vals.capacity || '',
+      licensing: vals.licensing || '',
+      machines: vals.machines ? vals.machines.split(',').map(s => s.trim()).filter(Boolean) : [],
+      opportunity: 'US$ ' + Math.round((parseFloat(vals.capex) || 0) * (sotreqConfig.conversao || 30) / 100) + 'M',
+      type: vals.type || 'Argila Iônica',
+      highlights: vals.highlights || '',
+      startYear: vals.startYear ? parseInt(vals.startYear) : null,
+      depositType: vals.depositType || 'iacSaprolite'
+    };
+
+    if (adminEditing !== null) {
+      const oldQ = projects[adminEditing].quote;
+      projects[adminEditing] = obj;
+      if (oldQ) obj.quote = oldQ;
+    } else {
+      projects.push(obj);
+    }
+  } else if (adminType === 'news') {
+    const obj = {
+      date: vals.date || '26 Mai/2026',
+      source: vals.source || '',
+      company: vals.company || '',
+      title: vals.title || '',
+      text: vals.text || '',
+      tags: vals.tags ? vals.tags.split(',').map(s => s.trim()).filter(Boolean) : [],
+      link: vals.link || ''
+    };
+
+    if (adminEditing !== null) {
+      newsData[adminEditing] = obj;
+    } else {
+      newsData.unshift(obj);
+      // Keep max 12 news
+      if (newsData.length > 12) {
+        newsData.sort((a, b) => {
+          const ma = {Jan:0,Fev:1,Mar:2,Abr:3,Mai:4,Jun:5,Jul:6,Ago:7,Set:8,Out:9,Nov:10,Dez:11};
+          const ps = s => { const p = s.split('/'); const m = p[0].split(' '); return { d: parseInt(m[0])||1, m: ma[m[m.length-1]]||0, y: parseInt(p[1])||0 }; };
+          const pa = ps(a.date), pb = ps(b.date);
+          return (pb.y - pa.y) || (pb.m - pa.m) || (pb.d - pa.d);
+        });
+        newsData.splice(12, newsData.length - 12);
+      }
+    }
+  }
+
+  sotreqSaveData();
+  closeAdminModal();
+  fullRefresh();
+  if (adminType === 'project') adminRenderProjects();
+  else adminRenderNews();
+  sotreqMsg('<i class="bi bi-check-lg"></i> Dados salvos com sucesso!');
+}
+
+// ── DATA MANAGEMENT ──
+
+function adminExport() {
+  const data = { projects, news: newsData, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `sotreq-dados-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  sotreqMsg('<i class="bi bi-check-lg"></i> Arquivo exportado com sucesso!');
+}
+
+function adminImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (Array.isArray(data.projects)) { projects.length = 0; projects.push(...data.projects); }
+      if (Array.isArray(data.news)) { newsData.length = 0; newsData.push(...data.news); }
+      sotreqSaveData();
+      closeAdmin();
+      fullRefresh();
+      adminRenderProjects();
+      adminRenderNews();
+      sotreqMsg('<i class="bi bi-check-lg"></i> Dados importados com sucesso!');
+    } catch(err) {
+      sotreqMsg('<i class="bi bi-x-lg"></i> Erro ao importar: arquivo inv\u00E1lido', true);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function adminReset() {
+  if (!confirm('Tem certeza? Todos os dados alterados ser\u00E3o perdidos e os originais restaurados.')) return;
+  localStorage.removeItem('sotreq_data');
+  location.reload();
+}
+
+function adminSave() {
+  sotreqSaveData();
+  sotreqMsg('<i class="bi bi-check-lg"></i> Dados salvos no navegador!');
+}
+
+// ── INDICATORS / CONFIG ──
+
+let adminProjView = 'card'; // 'card' or 'table'
+
+function adminToggleProjView() {
+  adminProjView = adminProjView === 'card' ? 'table' : 'card';
+  document.getElementById('apViewToggle').innerHTML = adminProjView === 'card' ? '<i class="bi bi-table"></i> Vis\u00E3o Tabela' : '<i class="bi bi-card-list"></i> Vis\u00E3o Cards';
+  adminRenderProjects();
+}
+
+function adminRenderIndicators() {
+  // Render config form (only on first open, not on preview updates)
+  const cf = document.getElementById('apConfigForm');
+  cf.innerHTML = `
+    <label>Oportunidade Sotreq (% do CAPEX Total)<br><small style="color:var(--cat-text-muted);font-weight:400;">Percentual do CAPEX total que representa a oportunidade Sotreq</small>
+      <input type="number" id="cfg_conversao" value="${sotreqConfig.conversao}" min="0" max="50" onchange="adminPreviewConfig()"></label>
+    <label>Ano Início da Janela
+      <input type="number" id="cfg_anoInicio" value="${sotreqConfig.anoInicio}" min="2020" max="2050" onchange="adminPreviewConfig()"></label>
+    <label>Ano Fim da Janela
+      <input type="number" id="cfg_anoFim" value="${sotreqConfig.anoFim}" min="2020" max="2050" onchange="adminPreviewConfig()"></label>
+    <label>Taxa de Crescimento Anual (%)
+      <input id="cfg_taxaCrescimento" value="${sotreqConfig.taxaCrescimento}" onchange="adminPreviewConfig()"></label>
+    <label>CAPEX Máx. Visual (US$M)
+      <input type="number" id="cfg_capMaxTabela" value="${sotreqConfig.capMaxTabela}" min="1" onchange="adminPreviewConfig()"></label>
+    <label>Taxa BRL/USD (Cotações)<br><small style="color:var(--cat-text-muted);font-weight:400;">Usada para converter preços em Real nas cotações</small>
+      <input type="number" id="cfg_brlRate" value="${sotreqConfig.brlRate}" min="0.1" step="0.1" onchange="adminPreviewConfig()"></label>
+  `;
+  adminRenderIndicatorsSummary();
+  adminRenderQuoteComparison();
+}
+
+function adminRenderIndicatorsSummary() {
+  const c = sotreqConfig;
+  const rate = c.conversao / 100;
+  const rawCapex = projects.reduce((a, p) => a + p.capex, 0);
+  const totalCapex = rawCapex * rate;
+  const states = [...new Set(projects.map(p => p.location.state))];
+  const fe = estimateFleet(projects);
+  const sm = {};
+  Object.keys(fe).forEach(k => { sm[k] = Math.round(fe[k] * rate); });
+  const totalOpp = rawCapex * rate;
+  const is_ = document.getElementById('apIndicatorsSummary');
+  is_.innerHTML = `
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-file-text"></i> Projetos Mapeados</div>
+      <span class="apc-sub">Soma de todos os projetos cadastrados</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>Contagem:</strong> ${projects.length} projetos</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>projects.length</strong> = ${projects.length}
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-cash-coin"></i> CAPEX Total</div>
+      <span class="apc-sub">Soma do CAPEX de todos os projetos (bruto)</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>Valor:</strong> US$ ${(rawCapex/1000).toFixed(2)} Bi</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>∑ project.capex</strong> = US$ ${rawCapex}M
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-map-fill"></i> Estados</div>
+      <span class="apc-sub">Estados com pelo menos 1 projeto</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>Total:</strong> ${states.length} estados</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>unique(project.location.state)</strong> = ${states.join(', ')}
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-truck"></i> Máquinas Estimadas</div>
+      <span class="apc-sub">Frota total estimada por perfil de depósito</span>
+    </div></div>
+    <div class="apc-body">
+      <span class="apc-field"><strong>Caminhões:</strong> ${sm.trucks}</span>
+      <span class="apc-field"><strong>Escavadeiras:</strong> ${sm.excavators}</span>
+      <span class="apc-field"><strong>Carregadeiras:</strong> ${sm.loaders}</span>
+      <span class="apc-field"><strong>Tratores:</strong> ${sm.dozers}</span>
+      <span class="apc-field"><strong>Apoio 1:</strong> ${sm.support1}</span>
+      <span class="apc-field"><strong>Apoio 2:</strong> ${sm.support2}</span>
+      <span class="apc-field"><strong>Total:</strong> ${sm.total}</span>
+    </div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>∑ baseline × (CAPEX projeto ÷ CAPEX referência)</strong> por tipo de depósito<br>
+      IAC → Fleet IAC × (capex / ${(c.fleetIac||{refCapex:560}).refCapex})<br>
+      Rocha Dura → Fleet HardRock × (capex / ${(c.fleetHardRock||{refCapex:720}).refCapex})<br>
+      Reprocessamento → Fleet Repro × (capex / ${(c.fleetReprocessing||{refCapex:280}).refCapex})<br>
+      Exploração → frota mínima fixa
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-currency-dollar"></i> Oportunidade Sotreq</div>
+      <span class="apc-sub">Receita estimada · ${c.conversao}% do CAPEX Total</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>Total:</strong> US$ ${totalOpp >= 1000 ? (totalOpp/1000).toFixed(1) + ' Bi' : totalOpp + ' Mi'}</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>CAPEX total × ${c.conversao}%</strong> = US$ ${totalOpp.toFixed(0)}M
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-graph-up-arrow"></i> Crescimento Anual</div>
+      <span class="apc-sub">Demanda global de REE (IEA)</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>Taxa:</strong> ${c.taxaCrescimento}</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fonte: IEA (International Energy Agency) — configurável no campo "Taxa de Crescimento"
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-pie-chart"></i> Pipeline Equipamentos</div>
+      <span class="apc-sub">Oportunidade Sotreq a ${c.conversao}% do CAPEX</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>${c.conversao}% do CAPEX:</strong> US$ ${(totalCapex/1000).toFixed(2)} Bi</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>rawCapex × ${c.conversao}%</strong> = US$ ${totalCapex.toFixed(0)}M<br>
+      Taxa configurável no campo "Oportunidade Sotreq"
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-clock-fill"></i> Janela de Oportunidade</div>
+      <span class="apc-sub">Período crítico dos projetos</span>
+    </div></div>
+    <div class="apc-body"><span class="apc-field"><strong>Período:</strong> ${c.anoInicio}–${c.anoFim}</span></div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Configurável nos campos "Ano Início" e "Ano Fim" acima
+    </div></div>
+  `;
+
+  // Render fleet baselines
+  const ff = document.getElementById('apFleetForm');
+  ff.innerHTML = [['fleetIac','Argila Iônica'],['fleetHardRock','Rocha Dura'],['fleetReprocessing','Reprocessamento']].map(([key, label]) => {
+    const fleet = c[key] || { refCapex: key==='fleetIac'?560:key==='fleetHardRock'?720:280, trucks:0, excavators:0, loaders:0, dozers:0, support1:0, support2:0 };
+    return `<div class="ap-card" style="padding:14px;">
+      <div class="apc-header"><div>
+        <div class="apc-title" style="font-size:13px;">${label}</div>
+      </div></div>
+      <div style="margin:8px 0;"><label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);display:flex;align-items:center;gap:6px;">
+        <span style="min-width:70px;">CAPEX ref (US$M):</span>
+        <input type="number" value="${fleet.refCapex}" min="1" style="width:70px;padding:4px 6px;font-size:12px;"
+          onchange="adminUpdateFleet('${key}','refCapex',this.value)">
+      </label></div>
+      <div class="apc-body" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        ${Object.entries(fleet).filter(([k])=>k!=='refCapex').map(([k,v]) => `
+          <label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);display:flex;align-items:center;gap:6px;">
+            <span style="min-width:70px;">${k}:</span>
+            <input type="number" value="${v}" min="0" style="width:60px;padding:4px 6px;font-size:12px;"
+              onchange="adminUpdateFleet('${key}','${k}',this.value)">
+          </label>
+        `).join('')}
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:var(--cat-text-muted);font-family:monospace;">
+        Fórmula: <strong>baseline × (CAPEX projeto ÷ ${fleet.refCapex})</strong>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function adminPreviewConfig() {
+  const c = sotreqConfig;
+  c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 30, 50);
+  c.anoInicio = parseInt(document.getElementById('cfg_anoInicio').value) || 2026;
+  c.anoFim = parseInt(document.getElementById('cfg_anoFim').value) || 2030;
+  c.taxaCrescimento = document.getElementById('cfg_taxaCrescimento').value || '15–20%';
+  c.capMaxTabela = parseFloat(document.getElementById('cfg_capMaxTabela').value) || 200;
+  c.brlRate = parseFloat(document.getElementById('cfg_brlRate').value) || 5.0;
+  adminRenderIndicatorsSummary();
+}
+function adminSaveConfig() {
+  const c = sotreqConfig;
+  c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 30, 50);
+  c.anoInicio = parseInt(document.getElementById('cfg_anoInicio').value) || 2026;
+  c.anoFim = parseInt(document.getElementById('cfg_anoFim').value) || 2030;
+  c.taxaCrescimento = document.getElementById('cfg_taxaCrescimento').value || '15–20%';
+  c.capMaxTabela = parseFloat(document.getElementById('cfg_capMaxTabela').value) || 200;
+  c.brlRate = parseFloat(document.getElementById('cfg_brlRate').value) || 5.0;
+  sotreqSaveConfig();
+  console.log('[SAVE] conversao:', c.conversao, 'taxaCrescimento:', c.taxaCrescimento);
+  fullRefresh();
+  adminRenderIndicators();
+  sotreqMsg('<i class="bi bi-check-lg"></i> Configura\u00E7\u00F5es salvas e dashboard atualizado!');
+}
+
+function adminUpdateFleet(key, field, value) {
+  const v = parseFloat(value) || 0;
+  if (sotreqConfig[key]) {
+    sotreqConfig[key][field] = v;
+    sotreqSaveConfig();
+    adminRenderIndicatorsSummary();
+  }
+}
+
+// ── QUOTE MANAGEMENT (per project) ──
+const EQUIP_FAMILIES_LIST = EQUIP_FAMILIES.map(f => `<option value="${f.key}">${f.label}</option>`).join('');
+function adminManageQuote(idx) {
+  adminEditProject(idx);
+}
+function adminRenderQuoteTable() {
+  const p = projects[adminEditing];
+  const q = p.quote || [];
+  const wrap = document.getElementById('qTableWrap');
+  if (!wrap) return;
+  const brl = sotreqConfig.brlRate || 5.0;
+  let totalUSD = 0;
+  if (q.length === 0) {
+    wrap.innerHTML = '<div style="text-align:center;padding:20px;color:var(--cat-text-muted);font-size:12px;">Nenhum equipamento cotado ainda. Preencha os campos acima e clique em "Adicionar".</div>';
+  } else {
+    let html = '<table style="width:100%;border-collapse:collapse;font-size:11px;border:1px solid var(--cat-gray-light);border-radius:8px;overflow:hidden;">' +
+      '<thead><tr style="background:var(--cat-gray);">' +
+      '<th style="padding:6px 8px;text-align:left;">Modelo</th>' +
+      '<th style="padding:6px 8px;text-align:left;">Fam\u00EDlia</th>' +
+      '<th style="padding:6px 8px;text-align:left;">Descri\u00E7\u00E3o</th>' +
+      '<th style="padding:6px 8px;text-align:center;width:40px;">Qtd.</th>' +
+      '<th style="padding:6px 8px;text-align:right;width:90px;">Pre\u00E7o Unit.</th>' +
+      '<th style="padding:6px 8px;text-align:center;width:45px;">Moeda</th>' +
+      '<th style="padding:6px 8px;text-align:right;">Total (USD)</th>' +
+      '<th style="padding:6px 8px;text-align:center;width:36px;"></th>' +
+      '</tr></thead><tbody>';
+    q.forEach(function(item, i) {
+      var lineUSD = item.currency === 'USD' ? item.qty * item.unitPrice : (item.qty * item.unitPrice) / brl;
+      totalUSD += lineUSD;
+      html += '<tr style="border-bottom:1px solid var(--cat-gray-light);">' +
+        '<td style="padding:4px 6px;"><input type="text" id="ql_model_' + i + '" value="' + escHtml(item.model) + '" style="width:80px;padding:3px 4px;font-size:11px;border:1px solid var(--cat-gray-light);border-radius:4px;" onchange="adminRecalcQuote()"></td>' +
+        '<td style="padding:4px 6px;"><select id="ql_family_' + i + '" style="width:100px;padding:3px 4px;font-size:11px;border:1px solid var(--cat-gray-light);border-radius:4px;" onchange="adminRecalcQuote()">' +
+        '<option value="">—</option>' + EQUIP_FAMILIES.map(function(f) { return '<option value="' + f.key + '"' + (item.family===f.key?' selected':'') + '>' + f.label + '</option>'; }).join('') +
+        '</select></td>' +
+        '<td style="padding:4px 6px;"><input type="text" id="ql_desc_' + i + '" value="' + escHtml(item.desc||'') + '" style="width:110px;padding:3px 4px;font-size:11px;border:1px solid var(--cat-gray-light);border-radius:4px;" onchange="adminRecalcQuote()"></td>' +
+        '<td style="padding:4px 6px;text-align:center;"><input type="number" id="ql_qty_' + i + '" value="' + item.qty + '" min="0" style="width:40px;padding:3px 4px;font-size:11px;text-align:center;border:1px solid var(--cat-gray-light);border-radius:4px;" onchange="adminRecalcQuote()"></td>' +
+        '<td style="padding:4px 6px;text-align:right;"><input type="number" id="ql_price_' + i + '" value="' + item.unitPrice + '" min="0" step="0.01" style="width:80px;padding:3px 4px;font-size:11px;text-align:right;border:1px solid var(--cat-gray-light);border-radius:4px;" onchange="adminRecalcQuote()"></td>' +
+        '<td style="padding:4px 6px;text-align:center;">' +
+        '<select id="ql_curr_' + i + '" style="padding:3px 4px;font-size:11px;border:1px solid var(--cat-gray-light);border-radius:4px;" onchange="adminRecalcQuote()">' +
+        '<option value="USD"' + (item.currency==='USD'?' selected':'') + '>USD</option>' +
+        '<option value="BRL"' + (item.currency==='BRL'?' selected':'') + '>BRL</option>' +
+        '</select></td>' +
+        '<td style="padding:4px 6px;text-align:right;color:var(--cat-yellow);font-weight:600;">US$ ' + lineUSD.toLocaleString('en-US',{maximumFractionDigits:0}) + '</td>' +
+        '<td style="padding:4px 6px;text-align:center;"><button onclick="adminDelQuoteLine(' + i + ')" style="background:transparent;border:none;cursor:pointer;color:var(--cat-red);font-size:12px;"><i class="bi bi-x-circle"></i></button></td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+  }
+  var totalEl = document.getElementById('qTotal');
+  if (totalEl) {
+    var expectedOpp = projects[adminEditing].capex * (sotreqConfig.conversao / 100) * 1e6;
+    var diff = totalUSD - expectedOpp;
+    var diffPct = expectedOpp > 0 ? (diff / expectedOpp) * 100 : 0;
+    totalEl.innerHTML =
+      '<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:12px;">' +
+      '<div><strong>Total Real (Cota\u00E7\u00E3o):</strong> <span style="color:var(--cat-blue);font-size:16px;">US$ ' + (totalUSD/1e6).toFixed(2) + ' Mi</span></div>' +
+      '<div><strong>Esperado (' + sotreqConfig.conversao + '% \u00D7 CAPEX):</strong> <span style="color:var(--cat-yellow);font-size:16px;">US$ ' + (expectedOpp/1e6).toFixed(2) + ' Mi</span></div>' +
+      '<div><strong>Diferen\u00E7a:</strong> <span style="color:' + (diff >= 0 ? 'var(--cat-green)' : 'var(--cat-red)') + ';font-size:16px;">' + (diff >= 0 ? '+' : '') + 'US$ ' + (diff/1e6).toFixed(2) + ' Mi</span> (' + (diffPct >= 0 ? '+' : '') + diffPct.toFixed(1) + '%)</div>' +
+      '</div>';
+  }
+}
+function adminAddQuoteLine() {
+  var model = document.getElementById('qa_model').value.trim();
+  if (!model) { sotreqMsg('<i class="bi bi-exclamation-triangle"></i> Informe o modelo do equipamento.', 'warning'); return; }
+  var family = document.getElementById('qa_family').value;
+  if (!family) { sotreqMsg('<i class="bi bi-exclamation-triangle"></i> Selecione a fam\u00EDlia do equipamento.', 'warning'); return; }
+  var desc = document.getElementById('qa_desc').value.trim();
+  var qty = parseInt(document.getElementById('qa_qty').value) || 1;
+  var price = parseFloat(document.getElementById('qa_price').value);
+  if (!price || price <= 0) { sotreqMsg('<i class="bi bi-exclamation-triangle"></i> Informe o pre\u00E7o unit\u00E1rio.', 'warning'); return; }
+  var currency = document.getElementById('qa_currency').value;
+  var p = projects[adminEditing];
+  var q = p.quote || [];
+  q.push({ model: model, family: family, desc: desc, qty: qty, unitPrice: price, currency: currency });
+  p.quote = q;
+  document.getElementById('qa_model').value = '';
+  document.getElementById('qa_family').value = '';
+  document.getElementById('qa_desc').value = '';
+  document.getElementById('qa_qty').value = '1';
+  document.getElementById('qa_price').value = '';
+  document.getElementById('qa_currency').value = 'USD';
+  adminRenderQuoteTable();
+  sotreqMsg('<i class="bi bi-check-lg"></i> ' + model + ' adicionado!');
+}
+function adminDelQuoteLine(i) {
+  var p = projects[adminEditing];
+  var q = p.quote || [];
+  if (i >= 0 && i < q.length) q.splice(i, 1);
+  p.quote = q;
+  adminRenderQuoteTable();
+}
+function adminRecalcQuote() {
+  var p = projects[adminEditing];
+  var q = p.quote || [];
+  q.forEach(function(item, i) {
+    var modelEl = document.getElementById('ql_model_' + i);
+    if (modelEl) item.model = modelEl.value;
+    var famEl = document.getElementById('ql_family_' + i);
+    if (famEl) item.family = famEl.value;
+    var descEl = document.getElementById('ql_desc_' + i);
+    if (descEl) item.desc = descEl.value;
+    var qtyEl = document.getElementById('ql_qty_' + i);
+    if (qtyEl) item.qty = parseInt(qtyEl.value) || 0;
+    var priceEl = document.getElementById('ql_price_' + i);
+    if (priceEl) item.unitPrice = parseFloat(priceEl.value) || 0;
+    var currEl = document.getElementById('ql_curr_' + i);
+    if (currEl) item.currency = currEl.value;
+  });
+  p.quote = q;
+  adminRenderQuoteTable();
+}
+function adminRenderQuoteComparison() {
+  var el = document.getElementById('apQuoteComparison');
+  if (!el) return;
+  var c = sotreqConfig;
+  var rate = c.conversao / 100;
+  var brl = c.brlRate || 5.0;
+  var grandTotalReal = 0, grandTotalExpected = 0;
+  var cards = '';
+  projects.forEach(function(p) {
+    var q = p.quote || [];
+    if (q.length === 0) return;
+    var expectedUSD = p.capex * rate * 1e6;
+    var realUSD = 0;
+    var famTotals = {};
+    q.forEach(function(item) {
+      var lineUSD = item.currency === 'USD' ? item.qty * item.unitPrice : (item.qty * item.unitPrice) / brl;
+      realUSD += lineUSD;
+      var fk = item.family || 'other';
+      famTotals[fk] = (famTotals[fk] || 0) + lineUSD;
+    });
+    grandTotalReal += realUSD;
+    grandTotalExpected += expectedUSD;
+    var diff = realUSD - expectedUSD;
+    var diffPct = expectedUSD > 0 ? (diff / expectedUSD) * 100 : 0;
+    var famHTML = Object.keys(famTotals).sort().map(function(k) {
+      return '<span style="font-size:10px;background:var(--cat-gray-light);padding:2px 8px;border-radius:4px;display:inline-block;margin:2px;">' + famLabel(k) + ': US$ ' + (famTotals[k]/1e6).toFixed(2) + ' Mi</span>';
+    }).join(' ');
+    cards += '<div class="ap-card" style="padding:12px;">' +
+      '<div class="apc-header"><div>' +
+      '<div class="apc-title" style="font-size:13px;">' + escHtml(p.company) + ' \u2014 ' + escHtml(p.project) + '</div>' +
+      '<span class="apc-sub">CAPEX: US$ ' + p.capex + 'M \u00B7 ' + q.length + ' equipamentos cotados</span>' +
+      '</div></div>' +
+      '<div class="apc-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:8px;">' +
+      '<div><strong style="color:var(--cat-blue);">Real:</strong> US$ ' + (realUSD/1e6).toFixed(2) + ' Mi</div>' +
+      '<div><strong style="color:var(--cat-yellow);">Esperado:</strong> US$ ' + (expectedUSD/1e6).toFixed(2) + ' Mi</div>' +
+      '<div><strong style="color:' + (diff >= 0 ? 'var(--cat-green)' : 'var(--cat-red)') + ';">Diferen\u00E7a:</strong> ' + (diff >= 0 ? '+' : '') + 'US$ ' + (diff/1e6).toFixed(2) + ' Mi (' + (diffPct >= 0 ? '+' : '') + diffPct.toFixed(1) + '%)</div>' +
+      '</div>' +
+      '<div style="margin-top:6px;">' + famHTML + '</div></div>';
+  });
+  el.innerHTML = cards ||
+    '<div style="text-align:center;padding:20px;color:var(--cat-text-muted);font-size:12px;">Nenhuma cota\u00E7\u00E3o cadastrada ainda. V\u00E1 em <strong>Projetos</strong> e clique em "Cota\u00E7\u00E3o" em um projeto para adicionar.</div>';
+  if (grandTotalReal > 0 || grandTotalExpected > 0) {
+    var grandDiff = grandTotalReal - grandTotalExpected;
+    var grandDiffPct = grandTotalExpected > 0 ? (grandDiff / grandTotalExpected) * 100 : 0;
+    el.innerHTML +=
+      '<div class="ap-card" style="padding:16px;border:2px solid var(--cat-yellow);margin-top:12px;">' +
+      '<div class="apc-header"><div>' +
+      '<div class="apc-title" style="font-size:14px;">Total Geral (Todos os Projetos com Cota\u00E7\u00E3o)</div>' +
+      '</div></div>' +
+      '<div class="apc-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:8px;">' +
+      '<div><strong style="color:var(--cat-blue);font-size:16px;">Real Total:</strong><br><span style="font-size:22px;font-weight:700;">US$ ' + (grandTotalReal/1e6).toFixed(2) + ' Mi</span></div>' +
+      '<div><strong style="color:var(--cat-yellow);font-size:16px;">Esperado Total:</strong><br><span style="font-size:22px;font-weight:700;">US$ ' + (grandTotalExpected/1e6).toFixed(2) + ' Mi</span></div>' +
+      '<div><strong style="color:' + (grandDiff >= 0 ? 'var(--cat-green)' : 'var(--cat-red)') + ';font-size:16px;">Diferen\u00E7a Total:</strong><br><span style="font-size:22px;font-weight:700;color:' + (grandDiff >= 0 ? 'var(--cat-green)' : 'var(--cat-red)') + ';">' + (grandDiff >= 0 ? '+' : '') + 'US$ ' + (grandDiff/1e6).toFixed(2) + ' Mi</span><br><span style="font-size:13px;">' + (grandDiffPct >= 0 ? '+' : '') + grandDiffPct.toFixed(1) + '%</span></div>' +
+      '</div></div>';
+  }
+}
+
+// ── HELPERS ──
+
+function adminSaveGnewsKey() {
+  const el = document.getElementById('apGnewsKey');
+  if (el) { sotreqGnewsKey = el.value.trim(); localStorage.setItem('sotreq_gnews_key', sotreqGnewsKey); }
+  sotreqMsg('<i class="bi bi-check-lg"></i> Chave salva!');
+}
+
+
+async function adminFetchNewsAI() {
+  const btn = document.getElementById('apFetchNewsBtn');
+  const status = document.getElementById('apNewsFetchStatus');
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Buscando...';
+  status.style.display = 'block';
+  status.style.color = 'var(--cat-yellow)';
+  status.innerHTML = '<i class="bi bi-hourglass-split"></i> Buscando notícias no Google News...';
+
+  try {
+    const results = await sotreqFetchNews();
+    const added = results.length;
+
+    // Insert at the beginning (newest first)
+    newsData.unshift(...results);
+
+    // Sort by date (newest first) for consistency
+    newsData.sort((a, b) => {
+      const ma = {Jan:0,Fev:1,Mar:2,Abr:3,Mai:4,Jun:5,Jul:6,Ago:7,Set:8,Out:9,Nov:10,Dez:11};
+      const ps = s => { const p = s.split('/'); const m = p[0].split(' '); return { d: parseInt(m[0])||1, m: ma[m[m.length-1]]||0, y: parseInt(p[1])||0 }; };
+      const pa = ps(a.date), pb = ps(b.date);
+      return (pb.y - pa.y) || (pb.m - pa.m) || (pb.d - pa.d);
+    });
+
+    // Keep max 12
+    if (newsData.length > 12) {
+      newsData.splice(12, newsData.length - 12);
+    }
+
+    sotreqSaveData();
+    adminRenderNews();
+    renderNoticias();
+    renderSotreqSummary();
+
+    status.style.color = 'var(--cat-green)';
+    if (added > 0) {
+      status.innerHTML = '<i class="bi bi-check-lg"></i> ' + added + ' nova' + (added > 1 ? 's' : '') + ' notícia' + (added > 1 ? 's' : '') + ' adicionada' + (added > 1 ? 's' : '') + '! (Máx. 12)';
+    } else {
+      status.innerHTML = '<i class="bi bi-info-circle"></i> Nenhuma notícia nova encontrada. As existentes já estão atualizadas.';
+    }
+
+  } catch (err) {
+    status.style.color = 'var(--cat-red)';
+    status.innerHTML = '<i class="bi bi-x-lg"></i> Erro na busca: ' + err.message;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-robot"></i> Buscar com IA';
+}
+
+async function adminDeepResearch() {
+  openAdminModal();
+  document.getElementById('amTitle').innerHTML = '<i class="bi bi-search-heart"></i> Pesquisa Profunda — Novos Projetos';
+  document.getElementById('amForm').innerHTML = '<div style="text-align:center;padding:30px;"><i class="bi bi-hourglass-split" style="font-size:32px;color:var(--cat-yellow);"></i><p style="margin-top:12px;color:var(--cat-text-muted);">Buscando novos projetos de mineração de terras raras no Brasil...</p></div>';
+  const footer = document.querySelector('#adminModal .am-footer');
+  footer.querySelector('.am-save').style.display = 'none';
+  footer.querySelector('.am-cancel').textContent = 'Fechar';
+
+  try {
+    const queries = [
+      'novo projeto mineração terras raras Brasil investimento',
+      'rare earth mining Brazil new project investment',
+      'projeto mineração Brasil investimento bilhões',
+      'terras raras Brasil projeto mineração CAPEX'
+    ];
+    const allItems = [];
+    for (const q of queries) {
+      const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(
+        'https://news.google.com/rss/search?q=' + encodeURIComponent(q) + '&hl=pt-BR&gl=BR&ceid=BR:pt'
+      );
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data.items) allItems.push(...data.items);
+    }
+
+    const seen = new Set();
+    const items = allItems.filter(i => {
+      const k = i.title.toLowerCase().trim();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+
+    const results = items.map(item => {
+      const text = item.title + ' ' + (item.description || '');
+      let capex = null;
+      const pats = [
+        /US\$\s*([\d,.]+)\s*(?:bilhão|bilhões|bi)/i,
+        /([\d,.]+)\s*(?:bilhão|bilhões|bi)\s*(?:em investimento|de capex)/i,
+        /investimento\s*(?:de\s*)?(?:US\$)?\s*([\d,.]+)\s*(?:bilhão|bilhões|bi)/i
+      ];
+      for (const pat of pats) {
+        const m = text.match(pat);
+        if (m) {
+          const v = parseFloat(m[1].replace('.', '').replace(',', '.'));
+          if (v > 0 && v < 100) { capex = v; break; }
+        }
+      }
+      return {
+        title: item.title,
+        link: item.link,
+        snippet: (item.description || '').replace(/<[^>]+>/g, '').substring(0, 200),
+        capex
+      };
+    });
+
+    const promising = results.filter(r => r.capex !== null || /terras raras|rare earth|mineração|mining.*brazil/i.test(r.title));
+
+    document.getElementById('amForm').innerHTML = `
+      <p style="color:var(--cat-text-muted);font-size:12px;margin-bottom:12px;">
+        <strong>${items.length}</strong> resultados encontrados · <strong>${promising.length}</strong> com possível CAPEX ou menção a terras raras
+      </p>
+      <div style="display:grid;gap:8px;max-height:420px;overflow-y:auto;">
+        ${promising.slice(0, 20).map(r => `
+          <div style="border:1px solid var(--cat-gray-light);border-radius:8px;padding:10px;font-size:12px;">
+            <div style="font-weight:600;color:var(--cat-fg);margin-bottom:4px;">${escHtml(r.title)}</div>
+            <div style="color:var(--cat-text-muted);margin-bottom:4px;font-size:11px;">${escHtml(r.snippet)}</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              ${r.capex ? '<span style="background:rgba(255,205,0,0.12);padding:2px 8px;border-radius:4px;color:var(--cat-yellow);font-weight:600;">CAPEX ~US$ ' + r.capex.toFixed(1) + ' Bi</span>' : ''}
+              <a href="${r.link}" target="_blank" style="color:var(--cat-blue);font-size:11px;">Ler matéria</a>
+            </div>
+          </div>
+        `).join('')}
+        ${promising.length === 0 ? '<div style="text-align:center;padding:20px;color:var(--cat-text-muted);"><i class="bi bi-info-circle"></i> Nenhum resultado promissor. Adicione manualmente.</div>' : ''}
+      </div>
+      <p style="color:var(--cat-text-muted);font-size:11px;margin-top:12px;border-top:1px solid var(--cat-gray-light);padding-top:12px;">
+        <i class="bi bi-info-circle"></i> CAPEX extraído automaticamente das matérias — confirme antes de adicionar.
+        Use <strong>"Novo Projeto"</strong> para adicionar manualmente projetos encontrados nesta pesquisa.
+      </p>
+    `;
+  } catch (err) {
+    document.getElementById('amForm').innerHTML = `
+      <div style="text-align:center;padding:30px;color:var(--cat-red);">
+        <i class="bi bi-x-circle" style="font-size:32px;"></i>
+        <p style="margin-top:12px;">Erro na pesquisa: ${escHtml(err.message)}</p>
+        <p style="font-size:12px;color:var(--cat-text-muted);margin-top:8px;">Adicione projetos manualmente usando "Novo Projeto".</p>
+      </div>
+    `;
+  }
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function openAdminModal() {
+  document.getElementById('adminModal').classList.add('open');
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('open');
+  document.querySelector('#adminModal .am-panel').classList.remove('am-panel--wide');
+  const footer = document.querySelector('#adminModal .am-footer');
+  if (footer) {
+    footer.querySelector('.am-cancel').textContent = 'Cancelar';
+    footer.querySelector('.am-save').style.display = '';
+  }
+}
+</script>
+
 </body>
 </html>
