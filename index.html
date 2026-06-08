@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -103,40 +103,37 @@
     padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--cat-yellow);
   }
 
-  .summary-carousel-wrapper { position: relative; max-width: 1400px; margin: -24px auto 0; padding: 0 32px; z-index: 2; }
+  .summary-carousel-wrapper {
+    position: sticky; top: 72px; z-index: 50;
+    background: var(--cat-dark);
+    max-width: 1400px; margin: -24px auto 0; padding: 12px 32px;
+    transition: padding 0.25s;
+  }
+  .summary-carousel-wrapper.stuck { padding: 4px 32px; }
   .summary-card {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
-    border-radius: 12px; padding: 20px 24px; transition: all 0.2s;
+    border-radius: 12px; padding: 14px 16px; transition: all 0.25s;
   }
+  .stuck .summary-card { padding: 6px 10px; border-radius: 8px; }
   .summary-carousel .summary-card:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
-  .summary-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--cat-text-muted); font-weight: 600; margin-bottom: 4px; }
-  .summary-card .value { font-size: 28px; font-weight: 800; color: var(--cat-fg); letter-spacing: -1px; }
+  .summary-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--cat-text-muted); font-weight: 600; margin-bottom: 4px; transition: font-size 0.25s, margin 0.25s; }
+  .stuck .summary-card .label { font-size: 9px; margin-bottom: 2px; }
+  .summary-card .value { font-size: 20px; font-weight: 800; color: var(--cat-fg); letter-spacing: -0.5px; transition: font-size 0.25s; }
+  .stuck .summary-card .value { font-size: 14px; }
   .summary-card .value.yellow { color: var(--cat-yellow); }
   .summary-card .value.green { color: var(--cat-green); }
   .summary-card .value.blue { color: var(--cat-blue); }
   .summary-card .value.orange { color: var(--cat-orange); }
   .summary-card .value.purple { color: var(--cat-purple); }
-  .summary-card .sub { font-size: 12px; color: var(--cat-text-muted); margin-top: 2px; }
+  .summary-card .sub { font-size: 11px; color: var(--cat-text-muted); margin-top: 2px; transition: font-size 0.25s; }
+  .stuck .summary-card .sub { font-size: 9px; }
   .summary-card .value.purple { color: var(--cat-purple); }
 
-  .summary-carousel-wrapper { position: relative; max-width: 1400px; margin: -24px auto 0; padding: 0 32px; z-index: 2; }
   .summary-carousel {
-    display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 4px;
-    scrollbar-width: none; -ms-overflow-style: none;
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
+    overflow: visible;
   }
-  .summary-carousel::-webkit-scrollbar { display: none; }
-  .summary-carousel .summary-card { flex: 0 0 200px; min-width: 0; }
-  .summary-carousel-btn {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--cat-gray); border: 1px solid var(--cat-gray-light);
-    color: var(--cat-fg); font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .summary-carousel-btn:hover { background: var(--cat-yellow); color: var(--cat-black); border-color: var(--cat-yellow); }
-  .summary-carousel-btn.prev { left: 2px; }
-  .summary-carousel-btn.next { right: 2px; }
+  .summary-carousel-btn { display: none; }
 
   .main-content { max-width: 1400px; margin: 0 auto; padding: 40px 32px; }
 
@@ -406,8 +403,8 @@
     .hero { padding: 24px 16px 32px; }
     .hero h2 { font-size: 22px; }
     .hero p { font-size: 14px; }
-    .summary-carousel-wrapper { padding: 0 12px; margin-top: -28px; }
-    .summary-carousel .summary-card { flex: 0 0 140px; }
+    .summary-carousel-wrapper { padding: 8px 12px; margin-top: -28px; position: static; }
+    .summary-carousel { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
     .summary-card { padding: 12px; }
     .summary-card .value { font-size: 20px; }
     .main-content { padding: 20px 12px; }
@@ -422,7 +419,6 @@
     .tab-bar { padding: 0 12px; overflow-x: auto; overflow-y: hidden; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
     .tab-btn { padding: 10px 16px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
     .machine-grid { grid-template-columns: 1fr; }
-    .summary-carousel-btn { display: none; }
     .news-card { flex: 0 0 300px; }
     footer { padding: 20px 16px; }
     footer .footer-logos { flex-wrap: wrap; gap: 12px; }
@@ -443,7 +439,7 @@
     .hero h2 { font-size: 18px; }
     .hero p { font-size: 13px; }
     .hero .tags span { font-size: 10px; padding: 3px 10px; }
-    .summary-carousel .summary-card { flex: 0 0 120px; }
+    .summary-carousel { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; }
     .summary-card { padding: 10px; }
     .summary-card .value { font-size: 17px; }
     .summary-card .label { font-size: 9px; }
@@ -933,8 +929,13 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   </div>
 </section>
 
+<div id="sumSentinel"></div>
+<script>
+new IntersectionObserver(function(entries) {
+  document.querySelector('.summary-carousel-wrapper').classList.toggle('stuck', !entries[0].isIntersecting);
+}).observe(document.getElementById('sumSentinel'));
+</script>
 <div class="summary-carousel-wrapper">
-  <button class="summary-carousel-btn prev" onclick="scrollSummary(-1)">‹</button>
   <div class="summary-carousel" id="summaryCarousel">
     <div class="summary-card">
       <div class="label">Projetos Mapeados</div>
@@ -972,13 +973,11 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="sub">Demanda global de REE até 2030</div>
     </div>
   </div>
-  <button class="summary-carousel-btn next" onclick="scrollSummary(1)">›</button>
 </div>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
   <button class="tab-btn" onclick="switchTab('resumo')"><i class="bi bi-file-text"></i> Resumo Executivo</button>
-  <button class="tab-btn" onclick="switchTab('pipeline')"><i class="bi bi-diagram-3"></i> Pipeline Detalhado</button>
   <button class="tab-btn" onclick="switchTab('noticias')"><i class="bi bi-newspaper"></i> Notícias</button>
 </div>
 
@@ -1334,25 +1333,6 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   </div>
 
 </div><!-- end tab-resumo -->
-
-<!-- ============================================================ -->
-<!-- TAB: PIPELINE DETALHADO                                       -->
-<!-- ============================================================ -->
-<div id="tab-pipeline" class="tab-page">
-
-  <div class="section-header">
-    <h3>Pipeline Detalhado por Estágio</h3>
-  </div>
-  <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
-    Distribuição dos 16 projetos nos 6 estágios de maturidade, com CAPEX acumulado e estimativa de equipamentos por perfil de depósito (argila iônica, rocha dura, reprocessamento ou exploração).
-  </p>
-
-  <div class="pipe-detail-grid" id="pipeDetailGrid"></div>
-
-  <!-- Métricas Agregadas -->
-  <div style="margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;" id="pipeMetrics"></div>
-
-</div><!-- end tab-pipeline -->
 
 <!-- ============================================================ -->
 <!-- TAB: NOTÍCIAS                                                -->
@@ -1793,11 +1773,6 @@ function init() {
   document.getElementById('badgeCount').textContent = projects.length;
 }
 
-function scrollSummary(dir) {
-  const el = document.getElementById('summaryCarousel');
-  if (el) el.scrollBy({ left: dir * 220, behavior: 'smooth' });
-}
-
 function formatOppUSD(str) {
   const num = parseInt(str.replace(/[^0-9]/g, ''));
   if (isNaN(num)) return str;
@@ -1980,12 +1955,12 @@ function toggleTheme() {
   const btn = document.getElementById('themeBtn');
   const isLight = html.getAttribute('data-theme') === 'light';
   if (isLight) {
-    html.removeAttribute('data-theme');
-    btn.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
+    html.setAttribute('data-theme', 'dark');
+    btn.innerHTML = '<i class="bi bi-sun-fill"></i>';
     localStorage.setItem('cat-theme', 'dark');
   } else {
     html.setAttribute('data-theme', 'light');
-    btn.innerHTML = '<i class="bi bi-sun-fill"></i>';
+    btn.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
     localStorage.setItem('cat-theme', 'light');
   }
 }
@@ -1993,8 +1968,8 @@ function toggleTheme() {
 (function() {
   const saved = localStorage.getItem('cat-theme');
   const btn = document.getElementById('themeBtn');
-  if (saved === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
     btn.innerHTML = '<i class="bi bi-sun-fill"></i>';
   }
 })();
@@ -2238,11 +2213,11 @@ function renderBrazilMap(stateData) {
         .enter()
         .append('path')
         .attr('d', pathGen)
-        .attr('fill', function(d) {
+        .style('fill', function(d) {
           const abbr = d.properties.UF_05;
-          return stateData[abbr] ? '#FFCD00' : '#2a2a2a';
+          return stateData[abbr] ? '#FFCD00' : 'var(--cat-gray)';
         })
-        .attr('stroke', '#0d0d0d')
+        .style('stroke', '#0d0d0d')
         .attr('stroke-width', 0.5)
         .attr('vector-effect', 'non-scaling-stroke')
         .style('cursor', function(d) {
@@ -2252,8 +2227,8 @@ function renderBrazilMap(stateData) {
         .on('mouseenter', function(e, d) {
           const abbr = d.properties.UF_05;
           d3.select(this)
-            .attr('fill', stateData[abbr] ? '#e6b800' : '#3a3a3a')
-            .attr('stroke', '#FFCD00')
+            .style('fill', stateData[abbr] ? '#e6b800' : 'var(--cat-gray-light)')
+            .style('stroke', 'var(--cat-yellow)')
             .attr('stroke-width', 1.2);
           tooltip.style.opacity = '1';
           const estadoName = {
@@ -2275,8 +2250,8 @@ function renderBrazilMap(stateData) {
         .on('mouseleave', function(e, d) {
           const abbr = d.properties.UF_05;
           d3.select(this)
-            .attr('fill', stateData[abbr] ? '#FFCD00' : '#2a2a2a')
-            .attr('stroke', '#111')
+            .style('fill', stateData[abbr] ? '#FFCD00' : 'var(--cat-gray)')
+            .style('stroke', '#0d0d0d')
             .attr('stroke-width', 0.5);
           tooltip.style.opacity = '0';
         });
@@ -2312,11 +2287,11 @@ function renderBrazilMap(stateData) {
           g.append('line')
             .attr('x1', cx).attr('y1', cy)
             .attr('x2', lx).attr('y2', ly)
-            .attr('stroke', '#FFCD00').attr('stroke-width', 1.2)
+            .style('stroke', 'var(--cat-yellow)').attr('stroke-width', 1.2)
             .attr('stroke-dasharray', '3,3').attr('opacity', 0.7);
           g.append('circle')
             .attr('cx', cx).attr('cy', cy)
-            .attr('r', 3).attr('fill', '#FFCD00');
+            .attr('r', 3).style('fill', 'var(--cat-yellow)');
           const label = abbr + ': ' + info.projects.length;
           const anchor = dirX > 0.3 ? 'start' : dirX < -0.3 ? 'end' : 'middle';
           const textX = dirX > 0.3 ? lx + 6 : dirX < -0.3 ? lx - 6 : lx;
@@ -2327,7 +2302,7 @@ function renderBrazilMap(stateData) {
             .style('fill', 'var(--cat-fg)').attr('font-size', '12px')
             .attr('font-weight', '700')
             .style('paint-order', 'stroke')
-            .style('stroke', '#0d0d0d').style('stroke-width', '3px')
+            .style('stroke', 'var(--cat-dark)').style('stroke-width', '3px')
             .style('stroke-linecap', 'round').style('stroke-linejoin', 'round')
             .text(label);
           g.append('text')
@@ -2346,35 +2321,6 @@ function renderBrazilMap(stateData) {
 }
 
 // ── PIPELINE DETALHADO ──
-function renderPipelineDetail() {
-  const totalCapex = projects.reduce((a, p) => a + p.capex, 0);
-  const stageProj = {}; const stageCapex = {};
-  for (let i = 1; i <= 6; i++) { stageProj[i] = []; stageCapex[i] = 0; }
-  projects.forEach(p => { stageProj[p.stage] = stageProj[p.stage] || []; stageProj[p.stage].push(p); stageCapex[p.stage] = (stageCapex[p.stage] || 0) + p.capex; });
-  const sLabels = ['S1 · Prospecção Inicial','S2 · Recursos Estimados','S3 · Licença Prévia (LP)','S4 · Licença Instalação (LI)','S5 · Construção','S6 · Operação Comercial'];
-  const sColors = ['var(--cat-orange)','#ffaa33','var(--cat-blue)','#66d9ff','var(--cat-yellow)','var(--cat-green)'];
-  const maxCapex = Math.max(...[1,2,3,4,5,6].map(s => stageCapex[s] || 0));
-
-  document.getElementById('pipeDetailGrid').innerHTML = [1,2,3,4,5,6].map(s => {
-    const projs = stageProj[s] || []; const cap = stageCapex[s] || 0; const pct = maxCapex > 0 ? (cap / maxCapex) * 100 : 0;
-    return `<div class="pipe-detail-card" style="border-left:4px solid ${sColors[s-1]};">
-      <div class="pdc-header"><span class="pdc-stage">${sLabels[s-1]}</span><span class="pdc-count" style="background:rgba(255,205,0,0.15);color:var(--cat-yellow);">${projs.length} projeto${projs.length !== 1 ? 's' : ''}</span></div>
-      <div class="pdc-bar"><div class="pdc-fill" style="width:${pct}%;background:${sColors[s-1]};"></div></div>
-      <div class="pdc-stats">CAPEX: <strong>US$ ${cap}M</strong><br>Equip. 30%: <strong style="color:var(--cat-yellow);">US$ ${Math.round(cap * 0.30)}M</strong><br>${projs.length > 0 ? `% do Total: <strong>${((cap/totalCapex)*100).toFixed(1)}%</strong>` : ''}</div>
-      <div class="pdc-projects">${projs.map(p => `<div class="pdc-proj"><span class="pdc-pname">${p.company}</span><span class="pdc-pcapex">US$ ${p.capex}M</span></div>`).join('')}${projs.length === 0 ? '<div style="color:var(--cat-text-muted);font-style:italic;font-size:12px;">Nenhum projeto neste estágio</div>' : ''}</div>
-    </div>`;
-  }).join('');
-
-  const fe = estimateFleet(projects);
-  const equipTotal = totalCapex * 0.30;
-  document.getElementById('pipeMetrics').innerHTML = `
-    <div class="exe-kpi ek-green"><div class="ek-label">CAPEX Total no Pipeline</div><div class="ek-value">US$ ${(totalCapex/1000).toFixed(1)} Bi</div><div class="ek-sub">16 projetos</div></div>
-    <div class="exe-kpi ek-orange"><div class="ek-label">Equip. 30% Total</div><div class="ek-value">US$ ${(equipTotal/1000).toFixed(2)} Bi</div><div class="ek-sub">Aquisição + Infraestrutura</div></div>
-    <div class="exe-kpi"><div class="ek-label">Máquinas Estimadas</div><div class="ek-value">~${fe.total}</div><div class="ek-sub">Frota total potencial (por perfil de depósito)</div></div>
-    <div class="exe-kpi ek-blue"><div class="ek-label">Estágio + Avançado</div><div class="ek-value">S5</div><div class="ek-sub">Aclara Carina em construção</div></div>
-  `;
-}
-
 // ── NOTÍCIAS ──
 const newsData = [ // __DATA_BEGIN_NEWS__
   { date: '26 Mai/2026', source: 'Notícias da Mineração', company: 'Viridis',
@@ -3191,7 +3137,6 @@ sotreqLoadConfig();
 sotreqApplyConfig();
 try { init(); } catch(e) { console.error('init() falhou:', e); }
 try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
-try { renderPipelineDetail(); } catch(e) { console.error('renderPipelineDetail() falhou:', e); }
 try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
 try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
 try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
@@ -3575,7 +3520,6 @@ function fullRefresh() {
   document.getElementById('timeline').innerHTML = '';
   init();
   renderExecutiveSummary();
-  renderPipelineDetail();
   renderNoticias();
   renderSotreqSummary();
   try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
