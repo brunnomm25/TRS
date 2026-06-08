@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sotreq CAT | Terras Raras e Green Field no Brasil</title>
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -327,26 +328,42 @@
   }
   .state-card .state-total .st-value { color: var(--cat-yellow); }
 
-  .timeline { display: flex; gap: 0; overflow-x: auto; padding: 16px 0; position: relative; }
-  .timeline::before {
-    content: ''; position: absolute; top: 50%; left: 0; right: 0;
-    height: 2px; background: var(--cat-gray-light); transform: translateY(-50%);
+  .timeline {
+    display: flex; gap: 0; overflow-x: auto; padding: 24px 0 16px;
+    position: relative; scroll-snap-type: x mandatory;
   }
-  .timeline-item { flex: 0 0 200px; position: relative; padding: 0 12px; }
+  .timeline::before {
+    content: ''; position: absolute; top: 52px; left: 24px; right: 24px;
+    height: 3px; background: linear-gradient(90deg, var(--cat-yellow), var(--cat-blue), var(--cat-green));
+    border-radius: 2px; opacity: 0.5;
+  }
+  .timeline-item {
+    flex: 0 0 200px; position: relative; padding: 0 16px;
+    display: flex; flex-direction: column; align-items: center; scroll-snap-align: start;
+  }
   .timeline-item .year {
     background: var(--cat-yellow); color: var(--cat-black); font-weight: 800;
-    font-size: 13px; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px;
+    font-size: 13px; padding: 4px 16px; border-radius: 20px; display: inline-block;
+    position: relative; z-index: 2; margin-bottom: 8px;
+  }
+  .timeline-item .year-dot {
+    width: 14px; height: 14px; border-radius: 50%; background: var(--cat-yellow);
+    border: 3px solid var(--cat-dark); position: relative; z-index: 2; margin-bottom: 8px;
+    flex-shrink: 0;
   }
   .timeline-item .tl-content {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
-    border-radius: 10px; padding: 14px; position: relative;
+    border-radius: 10px; padding: 12px 14px; position: relative; width: 100%;
+    transition: all 0.2s;
   }
-  .timeline-item .tl-content::before {
-    content: ''; position: absolute; top: -6px; left: 20px;
-    width: 10px; height: 10px; background: var(--cat-yellow); border-radius: 50%;
+  .timeline-item .tl-content:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
+  .timeline-item .tl-content .tl-company { font-weight: 700; font-size: 12px; color: var(--cat-fg); }
+  .timeline-item .tl-content .tl-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 2px; }
+  .timeline-item .tl-content .tl-stage {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    background: rgba(255,205,0,0.12); color: var(--cat-yellow);
+    padding: 1px 8px; border-radius: 10px; margin-top: 4px;
   }
-  .timeline-item .tl-content .tl-company { font-weight: 600; font-size: 12px; color: var(--cat-fg); }
-  .timeline-item .tl-content .tl-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 4px; }
 
   /* METHODOLOGY */
   .methodology {
@@ -1887,23 +1904,44 @@ function renderStates(data) {
 
 function renderTimeline(data) {
   const timeline = document.getElementById('timeline');
-  const years = [2026, 2027, 2028, 2029, 2030, 2031];
+  const yearsSet = new Set(data.filter(p => p.startYear !== null).map(p => p.startYear));
+  const minYear = Math.min(...yearsSet);
+  const maxYear = Math.max(...yearsSet);
+  const years = [];
+  for (let y = minYear; y <= maxYear; y++) years.push(y);
+
+  const nullProjects = data.filter(p => p.startYear === null);
+
   timeline.innerHTML = years.map(year => {
-    const yearProjects = data.filter(p => p.startYear === year || (p.startYear === null && year === 2027));
     const exact = data.filter(p => p.startYear === year);
     return `
       <div class="timeline-item">
         <div class="year">${year}</div>
+        <div class="year-dot"></div>
         ${exact.map(p => `
           <div class="tl-content" style="margin-bottom: 6px;">
             <div class="tl-company">${p.company}</div>
             <div class="tl-desc">${p.project}</div>
+            <div class="tl-stage">S${p.stage}</div>
           </div>
         `).join('')}
-        ${exact.length === 0 ? '<div style="color:var(--cat-text-muted);font-size:11px;padding:10px;">—</div>' : ''}
+        ${exact.length === 0 ? '<div style="color:var(--cat-text-muted);font-size:11px;padding:10px;text-align:center;">—</div>' : ''}
       </div>
     `;
-  }).join('');
+  }).join('') + (nullProjects.length > 0 ? `
+    <div class="timeline-item">
+      <div class="year" style="background:var(--cat-gray-light);color:var(--cat-text-muted);">Indefinido</div>
+      <div class="year-dot" style="background:var(--cat-gray-light);border-color:var(--cat-dark);"></div>
+      ${nullProjects.map(p => `
+        <div class="tl-content" style="margin-bottom: 6px;opacity:0.7;">
+          <div class="tl-company">${p.company}</div>
+          <div class="tl-desc">${p.project}</div>
+          <div class="tl-stage">S${p.stage}</div>
+        </div>
+      `).join('')}
+      <div style="color:var(--cat-text-muted);font-size:10px;padding:4px 0;text-align:center;">Sem previsão</div>
+    </div>
+  ` : '');
 }
 
 function applyFilters() {
@@ -2385,11 +2423,68 @@ const newsData = [ // __DATA_BEGIN_NEWS__
     link: 'https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel' },
 ]; // __DATA_END_NEWS__
 
+// ── SUPABASE CONFIG ──
+// Crie uma conta em https://supabase.com, crie um projeto, e cole abaixo a URL e a chave anon (pública).
+// Depois, execute o SQL de setup (veja o console do navegador após carregar a página).
+const SUPABASE_URL = 'https://eirwjznnbmkmrydossci.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_2C-9I9tRB4K23jBo_LTrew_V9_zuLAJ';
+let supabaseClient = null;
+if (SUPABASE_URL && SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.length > 10) {
+  try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) { console.warn('Supabase não configurado:', e.message); }
+}
+
+async function supaCarregarDados() {
+  if (!supabaseClient) return null;
+  try {
+    const { data, error } = await supabaseClient.from('site_data').select('*').limit(1).single();
+    if (error && error.code === '42P01') {
+      console.log('%c═══ SUPABASE SETUP ═══', 'font-size:16px;font-weight:bold;color:#FFCD00;');
+      console.log('1. Vá no SQL Editor do seu projeto Supabase');
+      console.log('2. Cole e execute este SQL:');
+      console.log(`CREATE TABLE site_data (
+  id bigint PRIMARY KEY DEFAULT 1,
+  projects jsonb DEFAULT '[]'::jsonb,
+  news jsonb DEFAULT '[]'::jsonb,
+  updated_at timestamptz DEFAULT now()
+);
+ALTER TABLE site_data ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "anon_select" ON site_data FOR SELECT USING (true);
+CREATE POLICY "anon_upsert" ON site_data FOR INSERT WITH CHECK (true);
+CREATE POLICY "anon_update" ON site_data FOR UPDATE USING (true);
+GRANT ALL ON site_data TO anon;`);
+      console.log('3. Depois recarregue esta página');
+      return null;
+    }
+    if (error) { console.warn('Supabase load:', error.message); return null; }
+    return data;
+  } catch(e) { console.warn('Supabase load exception:', e.message); return null; }
+}
+
+async function supaSalvarDados() {
+  if (!supabaseClient) return false;
+  try {
+    const payload = { projects: JSON.parse(JSON.stringify(projects)), news: JSON.parse(JSON.stringify(newsData)), updated_at: new Date().toISOString() };
+    const { error } = await supabaseClient.from('site_data').upsert({ id: 1, ...payload }, { onConflict: 'id' });
+    if (error) { console.warn('Supabase save:', error.message); return false; }
+    return true;
+  } catch(e) { console.warn('Supabase save exception:', e.message); return false; }
+}
+
 // ── DATA PERSISTENCE ──
-function sotreqLoadData() {
+async function sotreqLoadData() {
   // Save defaults before any localStorage override
   const defaultProjects = JSON.parse(JSON.stringify(projects));
   const defaultNews = JSON.parse(JSON.stringify(newsData));
+
+  // Try Supabase first
+  const supaData = await supaCarregarDados();
+  if (supaData && supaData.projects && supaData.projects.length > 0) {
+    projects.length = 0; projects.push(...supaData.projects);
+    if (supaData.news && supaData.news.length > 0) {
+      newsData.length = 0; newsData.push(...supaData.news);
+    }
+    return;
+  }
 
   const saved = localStorage.getItem('sotreq_data');
   if (saved) {
@@ -2436,6 +2531,7 @@ function sotreqLoadData() {
 }
 function sotreqSaveData() {
   localStorage.setItem('sotreq_data', JSON.stringify({ projects, news: newsData }));
+  supaSalvarDados();
 }
 
 // ── CONFIGURAÇÕES DOS INDICADORES ──
@@ -3132,14 +3228,16 @@ function renderChartCompanyCapex() {
 }
 
 // ── INIT ──
-sotreqLoadData();
-sotreqLoadConfig();
-sotreqApplyConfig();
-try { init(); } catch(e) { console.error('init() falhou:', e); }
-try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
-try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
-try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
-try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
+(async function() {
+  await sotreqLoadData();
+  sotreqLoadConfig();
+  sotreqApplyConfig();
+  try { init(); } catch(e) { console.error('init() falhou:', e); }
+  try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
+  try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
+  try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
+  try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
+})();
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════ -->
