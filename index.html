@@ -19,7 +19,7 @@
     --cat-text: #e0e0e0;
     --cat-text-muted: #888;
     --cat-green: #00C851;
-    --cat-red: #ff4444;
+gios de maturidade    --cat-red: #ff4444;
     --cat-blue: #33b5e5;
     --cat-orange: #FF8800;
     --cat-purple: #aa66cc;
@@ -147,6 +147,31 @@
     display: inline-block; background: var(--cat-yellow); color: var(--cat-black);
     font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-left: 8px; vertical-align: middle;
   }
+  .section-header h3 .anchor-link {
+    opacity: 0; font-size: 16px; margin-left: 6px; color: var(--cat-yellow);
+    text-decoration: none; transition: opacity 0.2s; font-weight: 400;
+  }
+  .section-header h3:hover .anchor-link { opacity: 1; }
+  .section-header h3 { scroll-margin-top: 140px; }
+  .sotreq-status {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px;
+  }
+  .sotreq-status.nao-iniciado { background: rgba(255,255,255,0.06); color: var(--cat-text-muted); }
+  .sotreq-status.proposta-enviada { background: rgba(255,205,0,0.12); color: var(--cat-yellow); }
+  .sotreq-status.em-negociacao { background: rgba(0,200,255,0.12); color: #00c8ff; }
+  .sotreq-status.fechado { background: rgba(0,255,100,0.12); color: #00ff64; }
+  .fleet-toggle { cursor: pointer; user-select: none; }
+  .fleet-toggle:hover { color: var(--cat-yellow); }
+  .fleet-detail {
+    display: none; margin-top: 8px; padding: 8px 10px;
+    background: rgba(255,255,255,0.03); border-radius: 6px;
+    font-size: 11px; line-height: 1.6;
+  }
+  .fleet-detail.open { display: block; }
+  .fleet-detail .fd-item { display: flex; justify-content: space-between; padding: 2px 0; }
+  .fleet-detail .fd-item .fd-label { color: var(--cat-text-muted); }
+  .fleet-detail .fd-item .fd-value { color: var(--cat-fg); font-weight: 600; }
   .section-header .filters { display: flex; gap: 8px; flex-wrap: wrap; }
   .section-header .filters select, .section-header .filters input {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
@@ -298,6 +323,25 @@
   .machine-card .m-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 4px; }
   .machine-card .m-demand { font-size: 18px; font-weight: 800; color: var(--cat-yellow); margin-top: 8px; }
   .machine-card .m-demand small { font-size: 11px; font-weight: 400; color: var(--cat-text-muted); }
+  .co-demand-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px; margin-top: 16px;
+  }
+  .co-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 14px; transition: all 0.2s;
+  }
+  .co-card:hover { border-color: var(--cat-yellow); }
+  .co-card .co-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .co-card .co-header .co-name { font-weight: 700; color: var(--cat-fg); font-size: 13px; }
+  .co-card .co-header .co-loc { font-size: 10px; color: var(--cat-text-muted); background: var(--cat-gray); padding: 1px 6px; border-radius: 3px; }
+  .co-card .co-header .co-total { font-size: 14px; font-weight: 800; color: var(--cat-yellow); }
+  .co-card .co-row { display: flex; align-items: center; gap: 6px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 11px; }
+  .co-card .co-row:last-child { border-bottom: none; }
+  .co-card .co-row .co-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .co-card .co-row .co-icon img { height: 24px; width: auto; }
+  .co-card .co-row .co-label { color: var(--cat-text-muted); flex: 1; }
+  .co-card .co-row .co-qty { color: var(--cat-fg); font-weight: 700; white-space: nowrap; }
 
   .state-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -984,6 +1028,11 @@ new IntersectionObserver(function(entries) {
       <div class="value green" id="totalOpportunity">0</div>
       <div class="sub">Receita estimada máquinas + serviços</div>
     </div>
+    <div class="summary-card" style="display:none;">
+      <div class="label">Valor Total Frota</div>
+      <div class="value blue" id="totalFleetValue">0</div>
+      <div class="sub" id="fleetValueDetail">Preço médio dos equipamentos × quantidade</div>
+    </div>
     <div class="summary-card">
       <div class="label">Crescimento Anual (IEA)</div>
       <div class="value purple">15–20%</div>
@@ -1005,7 +1054,7 @@ new IntersectionObserver(function(entries) {
   <!-- PIPELINE / FUNIL DE MATURIDADE -->
   <div class="pipeline">
     <div class="section-header">
-      <h3>Funil de Maturidade dos Projetos</h3>
+      <h3 id="funil">Funil de Maturidade dos Projetos <a href="#funil" class="anchor-link">#</a></h3>
     </div>
     <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
       Classificação própria em 6 estágios, do projeto inicial à operação comercial.
@@ -1015,28 +1064,31 @@ new IntersectionObserver(function(entries) {
 
   <!-- DASHBOARD CHARTS -->
   <div class="section-header" style="margin-top:40px;">
-    <h3>Dashboard Analítico</h3>
+    <h3 id="dashboard-analitico">Dashboard Analítico <a href="#dashboard-analitico" class="anchor-link">#</a></h3>
   </div>
   <div class="chart-grid" id="chartGrid">
+    <div class="chart-card chart-card-full" id="chartCompanyCapex">
+      <div class="chart-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span>Oportunidade Sotreq por Cliente</span>
+        <button onclick="toggleCapexView()" id="capexToggleBtn" style="background:var(--cat-gray-light);border:none;border-radius:6px;padding:4px 12px;font-size:11px;color:var(--cat-fg);cursor:pointer;white-space:nowrap;"><i class="bi bi-bar-chart-fill"></i> Ver CAPEX Total</button>
+      </div>
+      <div class="chart-sub">30% do CAPEX de cada empresa · fatia estimada de equipamentos CAT + serviços</div>
+    </div>
     <div class="chart-card" id="chartCapexByState">
-      <div class="chart-title">CAPEX por Estado</div>
-      <div class="chart-sub">Investimento total acumulado (US$ M) por estado</div>
+      <div class="chart-title">CAPEX Sotreq por Estado</div>
+      <div class="chart-sub">Oportunidade Sotreq por estado · 30% do CAPEX dos projetos</div>
     </div>
     <div class="chart-card" id="chartStageDistribution">
       <div class="chart-title">Projetos por Estágio</div>
       <div class="chart-sub">Quantidade de projetos em cada estágio de maturidade</div>
     </div>
     <div class="chart-card" id="chartDepositType">
-      <div class="chart-title">Distribuição por Tipo de Depósito</div>
-      <div class="chart-sub">Participação de cada tipo de depósito no CAPEX total</div>
+      <div class="chart-title">Oportunidade por Tipo de Depósito</div>
+      <div class="chart-sub">Distribuição da oportunidade Sotreq por tipo de depósito</div>
     </div>
     <div class="chart-card" id="chartPriority">
-      <div class="chart-title">CAPEX por Prioridade</div>
-      <div class="chart-sub">Investimento alocado por nível de prioridade</div>
-    </div>
-    <div class="chart-card chart-card-full" id="chartCompanyCapex">
-      <div class="chart-title">CAPEX por Empresa</div>
-      <div class="chart-sub">Comparativo de investimento entre as empresas do portfólio</div>
+      <div class="chart-title">Oportunidade por Prioridade</div>
+      <div class="chart-sub">Oportunidade Sotreq alocada por nível de prioridade</div>
     </div>
   </div>
   <div class="chart-tooltip" id="chartTooltip"></div>
@@ -1045,7 +1097,7 @@ new IntersectionObserver(function(entries) {
   <!-- PROJECT TABLE -->
   <div style="margin-top: 40px;">
     <div class="section-header">
-      <h3>Todos os Projetos <span class="badge" id="badgeCount">0</span></h3>
+      <h3 id="todos-projetos">Todos os Projetos <span class="badge" id="badgeCount">0</span> <a href="#todos-projetos" class="anchor-link">#</a></h3>
       <div class="filters">
         <select id="stateFilter" onchange="applyFilters()">
           <option value="all">Todos os Estados</option>
@@ -1067,6 +1119,13 @@ new IntersectionObserver(function(entries) {
           <option value="reprocessing">Fosfogesso / Resíduos</option>
           <option value="exploration">Exploração</option>
         </select>
+        <select id="statusFilter" onchange="applyFilters()">
+          <option value="all">Status Sotreq</option>
+          <option value="fechado">Fechado</option>
+          <option value="em-negociacao">Em Negociação</option>
+          <option value="proposta-enviada">Proposta Enviada</option>
+          <option value="nao-iniciado">Não Iniciado</option>
+        </select>
       </div>
     </div>
     <div class="table-wrapper">
@@ -1074,7 +1133,7 @@ new IntersectionObserver(function(entries) {
         <thead>
           <tr>
             <th onclick="sortTable(0)">Prioridade</th>
-            <th onclick="sortTable(1)">Empresa <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(1)">Cliente <span class="sort-icon">↕</span></th>
             <th onclick="sortTable(2)">Projeto <span class="sort-icon">↕</span></th>
             <th onclick="sortTable(3)">Localização <span class="sort-icon">↕</span></th>
             <th onclick="sortTable(4)">CAPEX <span class="sort-icon">↕</span></th>
@@ -1083,6 +1142,8 @@ new IntersectionObserver(function(entries) {
             <th>Licenciamento</th>
             <th>Máquinas Necessárias</th>
             <th>Oportunidade Sotreq</th>
+            <th>Status Sotreq</th>
+            <th>Frota CAT</th>
           </tr>
         </thead>
         <tbody id="tableBody"></tbody>
@@ -1093,7 +1154,7 @@ new IntersectionObserver(function(entries) {
   <!-- MACHINERY -->
   <div class="machinery-section" style="margin-top:40px;">
     <div class="section-header">
-      <h3>Análise de Demanda por Máquinas CAT</h3>
+      <h3 id="demanda-maquinas">Análise de Demanda por Máquinas CAT <a href="#demanda-maquinas" class="anchor-link">#</a></h3>
     </div>
     <div class="machine-grid">
       <div class="machine-card">
@@ -1101,47 +1162,58 @@ new IntersectionObserver(function(entries) {
         <div class="m-name">Caminhões articulados e rígidos menores</div>
         <div class="m-desc">Modelos: CAT 740 GC, CAT 745, CAT 707 · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
         <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
+        <div class="m-value" id="machValTrucks" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
       <div class="machine-card">
         <div class="m-icon"><img src="escavadeira.png" alt="Escavadeira"></div>
         <div class="m-name">Escavadeiras hidráulicas médias/grandes</div>
         <div class="m-desc">Modelos: CAT 349, CAT 350, CAT 352 · Aplicação: lavra seletiva, carregamento de caminhões 40–66 t, abertura de frentes e manuseio de material</div>
         <div class="m-demand" id="machExcavators">0 <small>unidades</small></div>
+        <div class="m-value" id="machValExcavators" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
       <div class="machine-card">
         <div class="m-icon"><img src="carregadeira.png" alt="Carregadeira"></div>
         <div class="m-name">Carregadeiras de rodas</div>
         <div class="m-desc">Modelos: CAT 972, CAT 982, CAT 988 High Lift · Aplicação: alimentação de planta, pátios, pilhas, carregamento e apoio operacional</div>
         <div class="m-demand" id="machLoaders">0 <small>unidades</small></div>
+        <div class="m-value" id="machValLoaders" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
       <div class="machine-card">
         <div class="m-icon"><img src="trator_de_esteira.png" alt="Trator de Esteira"></div>
         <div class="m-name">Tratores de esteira</div>
         <div class="m-desc">Modelos: CAT D6, D8, D9 · Aplicação: acessos, limpeza, recomposição, pilhas, infraestrutura e apoio à lavra</div>
         <div class="m-demand" id="machDozers">0 <small>unidades</small></div>
+        <div class="m-value" id="machValDozers" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
       <div class="machine-card">
         <div class="m-icon"><img src="motoniveladora.png" alt="Motoniveladora"></div>
-        <div class="m-name">Motoniveladoras e compactadores</div>
-        <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16, CAT 815, CAT 825 · Aplicação: manutenção de vias, plataformas, compactação, drenagem e estabilidade operacional</div>
+        <div class="m-name">Motoniveladoras</div>
+        <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16 · Aplicação: manutenção de vias, plataformas, drenagem e estabilidade operacional</div>
         <div class="m-demand" id="machSupport1">0 <small>unidades</small></div>
+        <div class="m-value" id="machValSupport1" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
       <div class="machine-card">
         <div class="m-icon"><img src="equipamento_de_apoio.png" alt="Equipamento de Apoio"></div>
         <div class="m-name">Equipamentos de apoio</div>
-        <div class="m-desc">Modelos: CAT 318, CAT 250, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, pequenas movimentações e operação de pátio</div>
+        <div class="m-desc">Modelos: CAT 318, CAT 250, CAT 815, CAT 825, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, compactação, pequenas movimentações e operação de pátio</div>
         <div class="m-demand" id="machSupport2">0 <small>unidades</small></div>
+        <div class="m-value" id="machValSupport2" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
     </div>
     <p style="color:var(--cat-text-muted);font-size:12px;margin-top:12px;border-left:3px solid var(--cat-yellow);padding-left:12px;"><strong style="color:var(--cat-fg);">Nova premissa:</strong> Terras raras ≠ sempre mineração pesada. O dimensionamento agora varia por tipo de depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (foco em manuseio/pátio) ou exploração (sem frota operacional completa).</p>
   </div>
 
-
+  <div class="machinery-section" style="margin-top:40px;">
+    <div class="section-header">
+      <h3 id="demanda-empresas">Demanda por Empresa <a href="#demanda-empresas" class="anchor-link">#</a></h3>
+    </div>
+    <div class="co-demand-grid" id="coDemandGrid"></div>
+  </div>
 
   <!-- TIMELINE -->
   <div class="timeline-section" style="margin-top:40px;">
     <div class="section-header">
-      <h3>Cronograma dos Principais Projetos</h3>
+      <h3 id="cronograma">Cronograma dos Principais Projetos <a href="#cronograma" class="anchor-link">#</a></h3>
     </div>
     <div class="timeline" id="timeline"></div>
   </div>
@@ -1155,16 +1227,27 @@ new IntersectionObserver(function(entries) {
         <p>Projetos de <strong>argila iônica / IAC / saprolito</strong> (ex: Viridis, Meteoric, Aclara) — lavra rasa, material argiloso, baixo desmonte, frota média e seletiva. Projetos de <strong>rocha dura / carbonatito</strong> (ex: BRE/Monte Alto, St George) — requerem britagem, perfuração e frota mais pesada. Projetos de <strong>reprocessamento / fosfogesso</strong> (ex: Rainbow/Mosaic) — foco em manuseio de material e pátio. Projetos em <strong>exploração</strong> — frota operacional completa não estimada.</p>
       </div>
       <div class="meth-item">
-        <h4>2. Baseline Viridis (Argila Iônica)</h4>
-        <p>Utilizamos como referência principal a cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX), com frota de: 15 caminhões CAT 707 (66 t), 2 carregadeiras CAT 988 High Lift, 4 tratores D9 + 4 D8, 4 escavadeiras CAT 350 + 1 CAT 318, 1 motoniveladora CAT 16, 1 compactador CAT 825 e 2 minicarregadeiras CAT 250. Projetos IAC são dimensionados proporcionalmente a este baseline.</p>
+        <h4>2. Estimativa por Alocação de CAPEX</h4>
+        <p>A frota é estimada aplicando um percentual do CAPEX de cada projeto sobre o preço médio unitário de cada família de equipamento. Os percentuais variam por tipo de depósito:</p>
+        <ul style="font-size:12px;color:var(--cat-text-muted);padding-left:20px;">
+          <li><strong>IAC:</strong> caminhões 7%, escavadeiras 2,5%, carregadeiras 1,8%, tratores 2,5%, motoniveladoras 0,8%, equip. apoio 1,2%</li>
+          <li><strong>Rocha dura:</strong> caminhões 7,5%, escavadeiras 3%, carregadeiras 2,5%, tratores 2,5%, motoniveladoras 1%, equip. apoio 1%</li>
+          <li><strong>Reprocessamento:</strong> caminhões 5%, escavadeiras 2%, carregadeiras 2,5%, tratores 1,5%, motoniveladoras 0,6%, equip. apoio 1,2%</li>
+          <li><strong>Exploração:</strong> alocação reduzida (1% caminhões, 0,5% demais)</li>
+        </ul>
+        <p>Preços médios unitários e percentuais são configuráveis no painel administrativo.</p>
       </div>
       <div class="meth-item">
-        <h4>3. Composição de Frota por Perfil</h4>
-        <p><strong>Argila iônica:</strong> caminhões articulados CAT 740 GC / CAT 745 ou rígidos CAT 707 (36–66 t), escavadeiras CAT 349–352, carregadeiras CAT 972–988, tratores D6–D9, motoniveladoras CAT 140–16, compactadores CAT 815/825 e equipamentos de apoio.<br><br>
+        <h4>3. Baseline Viridis (Argila Iônica) — Referência Real</h4>
+        <p>Cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX): 15 caminhões CAT 707 (66 t), 2 carregadeiras CAT 988 High Lift, 4 tratores D9 + 4 D8, 4 escavadeiras CAT 350 + 1 CAT 318, 1 motoniveladora CAT 16, 1 compactador CAT 825 e 2 minicarregadeiras CAT 250. Usada como referência de validação da metodologia de alocação.</p>
+      </div>
+      <div class="meth-item">
+        <h4>4. Composição de Frota por Perfil</h4>
+        <p><strong>Argila iônica:</strong> caminhões articulados CAT 740 GC / CAT 745 ou rígidos CAT 707 (36–66 t), escavadeiras CAT 349–352, carregadeiras CAT 972–988, tratores D6–D9, motoniveladoras CAT 140–16 e equipamentos de apoio (compactadores CAT 815/825, manipuladores, etc.).<br><br>
         <strong>Rocha dura:</strong> caminhões CAT 745/770/772/773 (60–100+ t), escavadeiras CAT 352–395, carregadeiras CAT 988–992, tratores D8–D10, perfuratrizes e britadores.<br><br>
-        <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, compactadores e motoniveladoras.<br><br>
+        <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, motoniveladoras e equipamentos de apoio.<br><br>
         <strong>Exploração:</strong> apenas equipamentos leves, sondagem e abertura de acessos — sem frota operacional completa.</p>
-        <div class="formula">Frota estimada por projeto = Baseline × (CAPEX do projeto ÷ CAPEX de referência)</div>
+        <div class="formula">Frota estimada por projeto = CAPEX × % alocação ÷ preço médio do equipamento</div>
       </div>
       <div class="meth-item">
         <h4>4. Fases do Projeto</h4>
@@ -1246,7 +1329,7 @@ new IntersectionObserver(function(entries) {
       <table class="pipe-exec-table">
         <thead>
           <tr>
-            <th>Projeto / Empresa</th>
+            <th>Projeto / Cliente</th>
             <th>Localização</th>
             <th>Fase Atual</th>
             <th>Próximos Marcos (2026)</th>
@@ -1423,11 +1506,19 @@ const EQUIP_FAMILIES = [
   { key: 'excavators', label: 'Escavadeiras' },
   { key: 'loaders', label: 'Carregadeiras' },
   { key: 'dozers', label: 'Tratores de Esteira' },
-  { key: 'support1', label: 'Apoio 1' },
-  { key: 'support2', label: 'Apoio 2' },
+  { key: 'support1', label: 'Motoniveladoras' },
+  { key: 'support2', label: 'Equip. Apoio' },
   { key: 'other', label: 'Outros' }
 ];
 function famLabel(key) { const f = EQUIP_FAMILIES.find(e => e.key === key); return f ? f.label : key; }
+
+// % do CAPEX alocado a cada família de equipamento por tipo de depósito
+const EQUIP_ALLOC = {
+  iacSaprolite: { trucks: 0.07, excavators: 0.08, loaders: 0.065, dozers: 0.045, support1: 0.013, support2: 0.018 },
+  hardRock:     { trucks: 0.075, excavators: 0.085, loaders: 0.07, dozers: 0.045, support1: 0.014, support2: 0.02 },
+  reprocessing: { trucks: 0.05, excavators: 0.055, loaders: 0.05, dozers: 0.03, support1: 0.01, support2: 0.013 },
+  exploration:  { trucks: 0.01, excavators: 0.005, loaders: 0.005, dozers: 0.003, support1: 0.001, support2: 0.002 }
+};
 
 const equipmentProfiles = {
   iacSaprolite: {
@@ -1437,7 +1528,7 @@ const equipmentProfiles = {
     excavators: ['CAT 349', 'CAT 350', 'CAT 352'],
     loaders: ['CAT 972', 'CAT 982', 'CAT 988'],
     dozers: ['CAT D6', 'CAT D8', 'CAT D9'],
-    support: ['CAT 16', 'CAT 825', 'CAT 318', 'CAT 250'],
+    support: ['CAT 16', 'CAT 318', 'CAT 250'],
     sizingLogic: 'Frota média, lavra seletiva, cava rasa, baixo desmonte e transporte moderado.'
   },
   hardRock: {
@@ -1457,7 +1548,7 @@ const equipmentProfiles = {
     excavators: ['CAT 330', 'CAT 349'],
     loaders: ['CAT 966', 'CAT 972', 'CAT 982', 'CAT 988'],
     dozers: ['CAT D6', 'CAT D8'],
-    support: ['Empilhadeiras', 'Correias', 'Compactadores', 'Motoniveladoras'],
+    support: ['Empilhadeiras', 'Correias', 'Motoniveladoras'],
     sizingLogic: 'Foco em pátio, manuseio, carregamento e alimentação de planta.'
   },
   exploration: {
@@ -1482,7 +1573,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
     opportunity: 'US$ 222M', type: 'Argila Iônica',
     highlights: 'Offtake: Ucore + Neo Materials (40%) · US$300M EXIM Bank · FID previsto Out/26',
-    startYear: 2028, depositType: 'iacSaprolite'
+    startYear: 2028, depositType: 'iacSaprolite', sotreqStatus: 'nao-iniciado'
   },
   {
     priority: 'critical', company: 'Viridis Mining & Minerals', origin: 'Austrália',
@@ -1499,7 +1590,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
       { model: 'CAT 988', family: 'loaders', desc: 'Carregadeira de Rodas High Lift', qty: 2, unitPrice: 1800000, currency: 'USD' },
       { model: 'CAT D9', family: 'dozers', desc: 'Trator de Esteiras', qty: 4, unitPrice: 1400000, currency: 'USD' },
       { model: 'CAT 16', family: 'support1', desc: 'Motoniveladora', qty: 1, unitPrice: 1700000, currency: 'USD' },
-      { model: 'CAT 825', family: 'support1', desc: 'Compactador de Solo', qty: 1, unitPrice: 1100000, currency: 'USD' },
+      { model: 'CAT 825', family: 'support2', desc: 'Compactador de Solo', qty: 1, unitPrice: 1100000, currency: 'USD' },
       { model: 'CAT D8', family: 'dozers', desc: 'Trator de Esteiras (nacional)', qty: 4, unitPrice: 4100000, currency: 'BRL' },
       { model: 'CAT 350', family: 'excavators', desc: 'Escavadeira Hidráulica c/ caçamba 2,7 m³', qty: 4, unitPrice: 2700000, currency: 'BRL' },
       { model: 'CAT 318', family: 'excavators', desc: 'Escavadeira Hidráulica', qty: 1, unitPrice: 1752300, currency: 'BRL' },
@@ -1515,7 +1606,8 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Motoniveladoras', 'Equipamentos de processo'],
     opportunity: 'US$ 75M', type: 'Argila Iônica',
     highlights: 'Único produtor de terras raras fora da Ásia · Adquirida USA Rare Earth (Abr/26) · Contrato 15 anos com preço mínimo · DFC US$ 565M · Expansão planejada',
-    startYear: 2024, depositType: 'iacSaprolite',
+    startYear: 2024, depositType: 'iacSaprolite', sotreqStatus: 'fechado',
+    realFleet: { trucks: 18, excavators: 6, loaders: 4, dozers: 9, support1: 3, support2: 4 },
     quote: [
       { model: 'CAT 707', family: 'trucks', desc: 'Caminhão Rígido 66 Ton', qty: 15, unitPrice: 350000, currency: 'USD' },
       { model: 'CAT 374', family: 'excavators', desc: 'Escavadeira Hidráulica 70 Ton', qty: 2, unitPrice: 790000, currency: 'USD' },
@@ -1619,7 +1711,8 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     machines: ['Empilhadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Equipamentos de processo'],
     opportunity: 'US$ 9M', type: 'Monazita',
     highlights: '1ª exportação privada (Abr/26) · Parceria INB · Cloreto de REE em estudo',
-    startYear: 2026, depositType: 'hardRock'
+    startYear: 2026, depositType: 'hardRock', sotreqStatus: 'fechado',
+    realFleet: { trucks: 3, excavators: 2, loaders: 2, dozers: 1, support1: 1, support2: 2 }
   },
   {
     priority: 'medium', company: 'Brazilian Critical Minerals', origin: 'Austrália',
@@ -1651,7 +1744,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     licensing: 'Direitos minerários adquiridos',
     machines: ['Perfuratrizes', 'Equipamentos de sondagem', 'Tratores'],
     opportunity: 'US$ 3M', type: 'Múltiplos alvos',
-    highlights: 'Empresa brasileira junior · Portfólio em MG, GO, BA · Busca parceiros',
+    highlights: 'Cliente brasileira junior · Portfólio em MG, GO, BA · Busca parceiros',
     startYear: null, depositType: 'exploration'
   },
   {
@@ -1681,49 +1774,105 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
 const statesData = {};
 
 function estimateFleet(data) {
-  const c = sotreqConfig;
-  const fi = c.fleetIac || { refCapex: 560, trucks: 15, excavators: 5, loaders: 2, dozers: 8, support1: 2, support2: 3 };
-  const fh = c.fleetHardRock || { refCapex: 720, trucks: 20, excavators: 6, loaders: 4, dozers: 6, support1: 3, support2: 2 };
-  const fr = c.fleetReprocessing || { refCapex: 280, trucks: 4, excavators: 3, loaders: 4, dozers: 3, support1: 2, support2: 3 };
+  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
   let result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, support1: 0, support2: 0, total: 0 };
-  data.forEach(p => {
-    const dt = p.depositType || 'exploration';
-    if (dt === 'iacSaprolite') {
-      const scale = p.capex / fi.refCapex;
-      result.trucks += Math.round(fi.trucks * scale);
-      result.excavators += Math.round(fi.excavators * scale);
-      result.loaders += Math.round(fi.loaders * scale);
-      result.dozers += Math.round(fi.dozers * scale);
-      result.support1 += Math.round(fi.support1 * scale);
-      result.support2 += Math.round(fi.support2 * scale);
-    } else if (dt === 'hardRock') {
-      const scale = p.capex / fh.refCapex;
-      result.trucks += Math.round(fh.trucks * scale);
-      result.excavators += Math.round(fh.excavators * scale);
-      result.loaders += Math.round(fh.loaders * scale);
-      result.dozers += Math.round(fh.dozers * scale);
-      result.support1 += Math.round(fh.support1 * scale);
-      result.support2 += Math.round(fh.support2 * scale);
-    } else if (dt === 'reprocessing') {
-      const scale = p.capex / fr.refCapex;
-      result.trucks += Math.round(fr.trucks * scale);
-      result.excavators += Math.round(fr.excavators * scale);
-      result.loaders += Math.round(fr.loaders * scale);
-      result.dozers += Math.round(fr.dozers * scale);
-      result.support1 += Math.round(fr.support1 * scale);
-      result.support2 += Math.round(fr.support2 * scale);
-    } else {
-      // exploration: frota mínima
-      result.trucks += 1;
-      result.excavators += 1;
-      result.loaders += 1;
-      result.dozers += 1;
-      result.support1 += 0;
-      result.support2 += 1;
-    }
+  const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, support1: 1.5, support2: 0.7 };
+  data.forEach(proj => {
+    const dt = proj.depositType || 'exploration';
+    const a = EQUIP_ALLOC[dt] || EQUIP_ALLOC.exploration;
+    keys.forEach(k => {
+      result[k] += Math.round(proj.capex * (a[k] || 0) / price[k]);
+    });
   });
   result.total = result.trucks + result.excavators + result.loaders + result.dozers + result.support1 + result.support2;
   return result;
+}
+
+function estimateProjectFleet(p) {
+  if (p.realFleet) return p.realFleet;
+  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, support1: 1.5, support2: 0.7 };
+  const dt = p.depositType || 'exploration';
+  const a = EQUIP_ALLOC[dt] || EQUIP_ALLOC.exploration;
+  const result = { total: 0 };
+  keys.forEach(k => {
+    result[k] = Math.round(p.capex * (a[k] || 0) / price[k]);
+  });
+  return result;
+}
+
+function calcFleetValue(fleet) {
+  const prices = sotreqConfig.equipPrices || { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 };
+  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  let total = 0;
+  const breakdown = {};
+  keys.forEach(k => {
+    const val = (fleet[k] || 0) * (prices[k] || 0);
+    breakdown[k] = val;
+    total += val;
+  });
+  breakdown.total = total;
+  return breakdown;
+}
+
+function calcProjectFleetValue(p) {
+  const f = estimateProjectFleet(p);
+  return calcFleetValue(f);
+}
+
+function toggleFleet(el) {
+  const detail = el.parentElement.querySelector('.fleet-detail');
+  detail.classList.toggle('open');
+  el.innerHTML = detail.classList.contains('open') ? el.innerHTML.replace('▾', '▴') : el.innerHTML.replace('▴', '▾');
+}
+
+function renderCompanyDemand() {
+  const equipKeys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const equipMeta = {
+    trucks:    { label: 'Caminhões',           img: 'caminhao.png' },
+    excavators:{ label: 'Escavadeiras',        img: 'escavadeira.png' },
+    loaders:   { label: 'Carregadeiras',       img: 'carregadeira.png' },
+    dozers:    { label: 'Tratores de Esteira', img: 'trator_de_esteira.png' },
+    support1:  { label: 'Motoniveladoras',     img: 'motoniveladora.png' },
+    support2:  { label: 'Equip. Apoio',        img: 'equipamento_de_apoio.png' }
+  };
+
+  const byCo = {};
+  projects.forEach(p => {
+    if (!byCo[p.company]) byCo[p.company] = { company: p.company, location: p.location.state, total: 0, equip: {} };
+    const f = estimateProjectFleet(p);
+    equipKeys.forEach(k => {
+      const qty = f[k] || 0;
+      if (qty > 0) {
+        byCo[p.company].equip[k] = (byCo[p.company].equip[k] || 0) + qty;
+        byCo[p.company].total += qty;
+      }
+    });
+  });
+
+  const sorted = Object.values(byCo).sort((a, b) => b.total - a.total);
+  const grid = document.getElementById('coDemandGrid');
+  if (!grid) return;
+
+  grid.innerHTML = sorted.map(co => {
+    const rows = equipKeys
+      .filter(k => co.equip[k])
+      .map(k =>
+        '<div class="co-row">' +
+          '<div class="co-icon"><img src="' + equipMeta[k].img + '" alt="' + equipMeta[k].label + '"></div>' +
+          '<span class="co-label">' + equipMeta[k].label + '</span>' +
+          '<span class="co-qty">' + co.equip[k] + ' unid.</span>' +
+        '</div>'
+      ).join('');
+    return '<div class="co-card">' +
+      '<div class="co-header">' +
+        '<span class="co-name">' + co.company + '</span>' +
+        '<span class="co-loc">' + co.location + '</span>' +
+        '<span class="co-total">' + co.total + '</span>' +
+      '</div>' +
+      rows +
+    '</div>';
+  }).join('');
 }
 
 function init() {
@@ -1739,9 +1888,11 @@ function init() {
   const totalCapex = rawCapex;
   const machineEst = estimateFleet(projects);
   const sm = {};
-  Object.keys(machineEst).forEach(k => { sm[k] = Math.round(machineEst[k] * rate); });
+  Object.keys(machineEst).forEach(k => { sm[k] = machineEst[k]; });
 
   const oppAdj = totalCapex * rate;
+
+  const fleetVal = calcFleetValue(machineEst);
 
   // Hero tags dinâmicos
   document.getElementById('heroProjetos').textContent = projects.length + ' Projetos Mapeados';
@@ -1765,9 +1916,21 @@ function init() {
   document.getElementById('machSupport1').innerHTML = sm.support1 + ' <small>unidades</small>';
   document.getElementById('machSupport2').innerHTML = sm.support2 + ' <small>unidades</small>';
 
+  Object.entries(fleetVal).forEach(([k,v]) => {
+    const el = document.getElementById('machVal' + k.charAt(0).toUpperCase() + k.slice(1));
+    if (el && k !== 'total') el.innerHTML = 'US$ ' + (v/1e6).toFixed(0) + ' Mi';
+  });
+
+  renderCompanyDemand();
+
   const oppEl = document.getElementById('totalOpportunity');
   oppEl.textContent = 'US$ ' + (oppAdj >= 1000 ? (oppAdj/1000).toFixed(2).replace('.', ',') + ' Bi' : oppAdj.toFixed(0) + ' Mi');
-  oppEl.parentElement.querySelector('.sub').textContent = '~' + sm.total + ' equipamentos CAT · ' + c.conversao + '% do CAPEX Total';
+  oppEl.parentElement.querySelector('.sub').textContent = '~' + sm.total + ' equipamentos CAT estimados · ' + c.conversao + '% oportunidade Sotreq';
+
+  document.getElementById('totalFleetValue').innerHTML = 'US$ ' + (fleetVal.total >= 1e9 ? (fleetVal.total/1e9).toFixed(2) + ' Bi' : (fleetVal.total/1e6).toFixed(0) + ' Mi');
+  document.getElementById('fleetValueDetail').innerHTML = Object.entries({trucks:'Caminhões',excavators:'Escavadeiras',loaders:'Carregadeiras',dozers:'Tratores',support1:'Motoniveladoras',support2:'Equip. Apoio'}).map(([k,label]) =>
+    `<span class="stat-item"><strong>${label}:</strong> US$ ${(fleetVal[k]/1e6).toFixed(0)} Mi</span>`
+  ).join('') + `<span class="stat-item"><strong>Total Frota:</strong> US$ ${fleetVal.total >= 1e9 ? (fleetVal.total/1e9).toFixed(2) + ' Bi' : (fleetVal.total/1e6).toFixed(0) + ' Mi'}</span>`;
 
   // Filters
   const stateFilter = document.getElementById('stateFilter');
@@ -1808,7 +1971,11 @@ function renderTable(data) {
   const depositLabel = { iacSaprolite:'IAC', hardRock:'Rocha Dura', reprocessing:'Fosfogesso', exploration:'Exploração' };
   const depositColor = { iacSaprolite:'', hardRock:'', reprocessing:'', exploration:'' };
 
-  tbody.innerHTML = data.map(p => `
+  tbody.innerHTML = data.map(p => {
+    const f = estimateProjectFleet(p);
+    const fv = calcProjectFleetValue(p).total;
+    const statusLabel = { 'nao-iniciado':'Não Iniciado','proposta-enviada':'Proposta Enviada','em-negociacao':'Em Negociação','fechado':'Fechado' };
+    return `
     <tr>
       <td><span class="priority-dot ${priorityDot[p.priority]}"></span>${priorityMap[p.priority]}</td>
       <td>
@@ -1837,8 +2004,20 @@ function renderTable(data) {
         </div>
       </td>
       <td style="font-weight:700;color:var(--cat-yellow);font-size:14px;">${formatOppUSD(p.opportunity)}</td>
-    </tr>
-  `).join('');
+      <td><span class="sotreq-status ${p.sotreqStatus || 'nao-iniciado'}">${statusLabel[p.sotreqStatus] || 'Não Iniciado'}</span></td>
+      <td><span class="fleet-toggle" onclick="toggleFleet(this)">🚜 ${f.total} unid. ▾</span>
+        <div class="fleet-detail">
+          <div class="fd-item"><span class="fd-label">Caminhões</span><span class="fd-value">${f.trucks}</span></div>
+          <div class="fd-item"><span class="fd-label">Escavadeiras</span><span class="fd-value">${f.excavators}</span></div>
+          <div class="fd-item"><span class="fd-label">Carregadeiras</span><span class="fd-value">${f.loaders}</span></div>
+          <div class="fd-item"><span class="fd-label">Tratores</span><span class="fd-value">${f.dozers}</span></div>
+          <div class="fd-item"><span class="fd-label">Motonivelad.</span><span class="fd-value">${f.support1}</span></div>
+          <div class="fd-item"><span class="fd-label">Apoio</span><span class="fd-value">${f.support2}</span></div>
+          <div class="fd-item" style="border-top:1px solid var(--cat-gray-light);padding-top:4px;margin-top:4px;"><span class="fd-label" style="font-weight:700;">Valor Frota</span><span class="fd-value" style="color:var(--cat-blue);">US$ ${fv >= 1e9 ? (fv/1e9).toFixed(2) + ' Bi' : (fv/1e6).toFixed(0) + ' Mi'}</span></div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 function renderPipeline(data) {
@@ -1949,11 +2128,13 @@ function applyFilters() {
   const stage = document.getElementById('stageFilter').value;
   const priority = document.getElementById('priorityFilter').value;
   const deposit = document.getElementById('depositFilter').value;
+  const status = document.getElementById('statusFilter').value;
   let filtered = projects.filter(p => {
     if (state !== 'all' && p.location.state !== state) return false;
     if (stage !== 'all' && p.stage !== parseInt(stage)) return false;
     if (priority !== 'all' && p.priority !== priority) return false;
     if (deposit !== 'all' && p.depositType !== deposit) return false;
+    if (status !== 'all' && (p.sotreqStatus || 'nao-iniciado') !== status) return false;
     if (chartFilter) {
       if (chartFilter.type === 'state' && p.location.state !== chartFilter.value) return false;
       if (chartFilter.type === 'stage' && p.stage !== chartFilter.value) return false;
@@ -2152,7 +2333,7 @@ function renderExecutiveSummary() {
     const statusText = statusMap[r.company] || 'Prospecção inicial';
     return `
     <tr>
-      <td data-label="Projeto / Empresa">
+      <td data-label="Projeto / Cliente">
         <span class="pe-company">${r.company}</span>
         <span class="pe-project">${r.project}${r.isMeteoric ? '<span class="pe-badge-new">NOVO</span>' : ''}</span>
       </td>
@@ -2164,7 +2345,7 @@ function renderExecutiveSummary() {
     </tr>
   `}).join('') + (othersCount > 0 ? `
     <tr>
-      <td data-label="Projeto / Empresa"><span class="pe-company">Outros projetos emergentes</span><span class="pe-project">${othersCount} projetos em estágios iniciais</span></td>
+      <td data-label="Projeto / Cliente"><span class="pe-company">Outros projetos emergentes</span><span class="pe-project">${othersCount} projetos em estágios iniciais</span></td>
       <td data-label="Localização"><div class="pe-location"><span>GO / AM / PA / MG</span></div></td>
       <td data-label="Fase Atual"><div class="pe-status"><div class="pe-dot" style="background:var(--cat-text-muted);"></div>EXPLORAÇÃO / ESTUDOS</div></td>
       <td data-label="Próximos Marcos" style="font-size:11px;color:var(--cat-text-muted);">Geração de dados e avaliações iniciais</td>
@@ -2180,7 +2361,7 @@ function renderExecutiveSummary() {
   const rate2 = c2.conversao / 100;
   const totalCapex2 = rawCapex2;
   const sm2 = {};
-  Object.keys(fe).forEach(k => { sm2[k] = Math.round(fe[k] * rate2); });
+  Object.keys(fe).forEach(k => { sm2[k] = fe[k]; });
   const oppAdj2 = rawCapex2 * rate2;
   const oppStr2 = 'US$ ' + (oppAdj2 >= 1000 ? (oppAdj2/1000).toFixed(2).replace('.', ',') + ' Bi' : oppAdj2.toFixed(0) + ' Mi');
 
@@ -2541,9 +2722,10 @@ let sotreqConfig = {
   anoFim: 2030,
   taxaCrescimento: '15–20%',
   capMaxTabela: 200,       // max CAPEX p/ escala visual
-  fleetIac: { refCapex: 560, trucks: 15, excavators: 5, loaders: 2, dozers: 8, support1: 2, support2: 3 },
-  fleetHardRock: { refCapex: 720, trucks: 20, excavators: 6, loaders: 4, dozers: 6, support1: 3, support2: 2 },
-  fleetReprocessing: { refCapex: 280, trucks: 4, excavators: 3, loaders: 4, dozers: 3, support1: 2, support2: 3 },
+  fleetIac: { refCapex: 560, trucks: 45, excavators: 8, loaders: 6, dozers: 8, support1: 1, support2: 5 },
+  fleetHardRock: { refCapex: 720, trucks: 55, excavators: 10, loaders: 8, dozers: 8, support1: 2, support2: 4 },
+  fleetReprocessing: { refCapex: 280, trucks: 14, excavators: 5, loaders: 6, dozers: 3, support1: 1, support2: 5 },
+  equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 },
   brlRate: 5.0,
 };
 
@@ -2769,7 +2951,7 @@ function renderSotreqSummary() {
         <p style="font-size:11px;">
           Caminhões: <strong>${sm.trucks}</strong> · Escavadeiras: <strong>${sm.excavators}</strong><br>
           Carregadeiras: <strong>${sm.loaders}</strong> · Tratores: <strong>${sm.dozers}</strong><br>
-          Apoio 1: <strong>${sm.support1}</strong> · Apoio 2: <strong>${sm.support2}</strong>
+          Motonivelad.: <strong>${sm.support1}</strong> · Equip. Apoio: <strong>${sm.support2}</strong>
         </p>
       </div>
       <div class="meth-item">
@@ -2786,6 +2968,7 @@ function renderSotreqSummary() {
 
 // ── DASHBOARD CHARTS (D3.js) ──
 let chartFilter = null;
+let chartSotreqView = true;
 
 function chartFilteredProjects() {
   if (!chartFilter) return projects;
@@ -2811,7 +2994,7 @@ function chartFilterLabel() {
     const m = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
     return 'Prioridade: ' + (m[chartFilter.value] || chartFilter.value);
   }
-  if (chartFilter.type === 'company') return 'Empresa: ' + chartFilter.value;
+  if (chartFilter.type === 'company') return 'Cliente: ' + chartFilter.value;
   return '';
 }
 
@@ -2841,7 +3024,7 @@ function renderCharts() {
   renderChartStageDistribution();
   renderChartDepositType();
   renderChartPriority();
-  renderChartCompanyCapex();
+  if (chartSotreqView) { renderChartCompanyCapexSotreq(); } else { renderChartCompanyCapex(); }
 }
 
 function chartWidth(container) {
@@ -2864,10 +3047,11 @@ function chartTooltip(container) {
 function renderChartCapexByState() {
   const container = document.getElementById('chartCapexByState');
   const data = chartFilteredProjects();
+  const rate = (sotreqConfig.conversao || 30) / 100;
   const stateData = {};
   data.forEach(p => {
     const st = p.location.state;
-    stateData[st] = (stateData[st] || 0) + p.capex;
+    stateData[st] = Math.round(((stateData[st] || 0) + p.capex * rate) * 100) / 100;
   });
   const chartData = Object.entries(stateData).sort((a, b) => b[1] - a[1]);
   if (!chartData.length) return;
@@ -2888,7 +3072,7 @@ function renderChartCapexByState() {
 
   const maxV = d3.max(chartData, d => d[1]) || 1;
   const x = d3.scaleBand().domain(chartData.map(d => d[0])).range([0, iw]).padding(0.25);
-  const y = d3.scaleLinear().domain([0, maxV * 1.15]).range([ih, 0]);
+  const y = d3.scaleLinear().domain([0, maxV * 1.2]).range([ih, 0]);
 
   const tt = chartTooltip(container);
 
@@ -2903,7 +3087,7 @@ function renderChartCapexByState() {
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('opacity', 1);
-      tt.show(`<span style="font-size:13px;color:#FFCD00;">${d[0]}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d[1]}M</span>`);
+      tt.show(`<span style="font-size:13px;color:#FFCD00;">${d[0]}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d[1].toFixed(2)}M</span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function() {
@@ -2914,12 +3098,12 @@ function renderChartCapexByState() {
 
   g.selectAll('.label').data(chartData).enter().append('text')
     .attr('x', d => x(d[0]) + x.bandwidth() / 2)
-    .attr('y', d => y(d[1]) - 6)
+    .attr('y', d => Math.max(y(d[1]) - 6, 12))
     .attr('text-anchor', 'middle')
     .style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '500')
-    .text(d => 'US$ ' + d[1] + 'M');
+    .text(d => 'US$ ' + d[1].toFixed(2) + 'M');
 
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => 'US$' + d + 'M').tickSize(0).tickPadding(6))
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => 'US$' + d.toFixed(1) + 'M').tickSize(0).tickPadding(6))
     .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
   g.selectAll('.domain').attr('stroke', 'none');
 
@@ -3000,10 +3184,11 @@ function renderChartStageDistribution() {
 function renderChartDepositType() {
   const container = document.getElementById('chartDepositType');
   const data = chartFilteredProjects();
+  const rate = (sotreqConfig.conversao || 30) / 100;
   const depData = {};
   data.forEach(p => {
     const dt = p.depositType || 'unknown';
-    depData[dt] = (depData[dt] || 0) + p.capex;
+    depData[dt] = (depData[dt] || 0) + p.capex * rate;
   });
   const labels = {
     iacSaprolite: 'Argila Iônica',
@@ -3013,7 +3198,7 @@ function renderChartDepositType() {
     unknown: 'Outros'
   };
   const colors = { iacSaprolite: '#FFCD00', hardRock: '#FF8800', reprocessing: '#33b5e5', exploration: '#888', unknown: '#666' };
-  const chartData = Object.entries(depData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: v }));
+  const chartData = Object.entries(depData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: Math.round(v * 100) / 100 }));
   const total = chartData.reduce((a, d) => a + d.value, 0);
   if (!total) return;
 
@@ -3045,7 +3230,7 @@ function renderChartDepositType() {
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('d', arcH);
-      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d.data.value}M</span><br><span style="font-size:12px;color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do total</span>`);
+      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d.data.value.toFixed(1)}M</span><br><span style="font-size:12px;color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do total</span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function() {
@@ -3074,26 +3259,27 @@ function renderChartDepositType() {
     .text('US$ ' + (total / 1000).toFixed(1) + 'B');
   g.append('text').attr('text-anchor', 'middle').attr('dy', '1.3em')
     .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
-    .text('CAPEX Total');
+    .text('Oport. Sotreq');
 
   const legend = d3.select(container).append('div').attr('class', 'legend');
   chartData.forEach(d => {
     const item = legend.append('div').attr('class', 'legend-item');
     item.append('span').attr('class', 'ldot').style('background', colors[d.key] || '#666');
-    item.append('span').html(`<strong>${d.label}</strong> ${(d.value/total*100).toFixed(1)}% <span style="color:var(--cat-text-muted);">(US$ ${d.value}M)</span>`);
+    item.append('span').html(`<strong>${d.label}</strong> ${(d.value/total*100).toFixed(1)}% <span style="color:var(--cat-text-muted);">(US$ ${d.value.toFixed(1)}M)</span>`);
   });
 }
 
 function renderChartPriority() {
   const container = document.getElementById('chartPriority');
   const data = chartFilteredProjects();
+  const rate = (sotreqConfig.conversao || 30) / 100;
   const prioData = {};
   data.forEach(p => {
-    prioData[p.priority] = (prioData[p.priority] || 0) + p.capex;
+    prioData[p.priority] = (prioData[p.priority] || 0) + p.capex * rate;
   });
   const labels = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
   const colors = { critical: '#ff4444', high: '#FF8800', medium: '#FFCD00', low: '#888' };
-  const chartData = Object.entries(prioData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: v }));
+  const chartData = Object.entries(prioData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: Math.round(v * 100) / 100 }));
   const total = chartData.reduce((a, d) => a + d.value, 0);
   if (!total) return;
 
@@ -3125,7 +3311,7 @@ function renderChartPriority() {
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('d', arcH);
-      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d.data.value}M</span><br><span style="font-size:12px;color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do total</span>`);
+      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d.data.value.toFixed(1)}M</span><br><span style="font-size:12px;color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do total</span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function() {
@@ -3153,13 +3339,13 @@ function renderChartPriority() {
     .text('US$ ' + (total / 1000).toFixed(1) + 'B');
   g.append('text').attr('text-anchor', 'middle').attr('dy', '1.3em')
     .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
-    .text('CAPEX Total');
+    .text('Oport. Sotreq');
 
   const legend = d3.select(container).append('div').attr('class', 'legend');
   chartData.forEach(d => {
     const item = legend.append('div').attr('class', 'legend-item');
     item.append('span').attr('class', 'ldot').style('background', colors[d.key] || '#666');
-    item.append('span').html(`<strong>${d.label}</strong> ${(d.value/total*100).toFixed(1)}% <span style="color:var(--cat-text-muted);">(US$ ${d.value}M)</span>`);
+    item.append('span').html(`<strong>${d.label}</strong> ${(d.value/total*100).toFixed(1)}% <span style="color:var(--cat-text-muted);">(US$ ${d.value.toFixed(1)}M)</span>`);
   });
 }
 
@@ -3225,6 +3411,127 @@ function renderChartCompanyCapex() {
   g.append('g').call(d3.axisLeft(y).tickSize(0).tickPadding(8))
     .selectAll('text').attr('font-size', '11px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
   g.selectAll('.domain, .tick line').attr('stroke', 'none');
+}
+
+function renderChartCompanyCapexSotreq() {
+  const container = document.getElementById('chartCompanyCapex');
+  const data = chartFilteredProjects();
+  const compData = {};
+  const compFull = {};
+  data.forEach(p => {
+    const key = p.company.length > 22 ? p.company.substring(0, 20) + '…' : p.company;
+    compFull[key] = p.company;
+    compData[key] = (compData[key] || 0) + p.capex;
+  });
+  const chartData = Object.entries(compData).sort((a, b) => b[1] - a[1]).map(d => {
+    const conv = sotreqConfig.conversao || 30;
+    return { company: d[0], capex: d[1], sotreq: Math.round(d[1] * conv / 100) };
+  });
+
+  const cw = chartWidth(container);
+  const margin = { top: 20, right: 80, bottom: 20, left: 160 };
+  const h = Math.max(chartData.length * 38 + margin.top + margin.bottom, 260);
+  const iw = cw - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const isFiltered = chartFilter && chartFilter.type === 'company';
+
+  d3.select(container).selectAll('svg').remove();
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const maxV = d3.max(chartData, d => d.capex) || 1;
+  const x = d3.scaleLinear().domain([0, maxV * 1.12]).range([0, iw]);
+  const y = d3.scaleBand().domain(chartData.map(d => d.company)).range([0, ih]).padding(0.25);
+
+  const tt = chartTooltip(container);
+  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#FF8800']);
+
+  // Background bar (total CAPEX)
+  g.selectAll('.bar').data(chartData).enter().append('rect')
+    .attr('y', d => y(d.company))
+    .attr('height', y.bandwidth())
+    .attr('x', 0)
+    .attr('width', d => x(d.capex))
+    .attr('fill', (d, i) => isFiltered && d.company === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
+    .attr('opacity', d => isFiltered && d.company !== chartFilter.value ? 0.25 : 0.25)
+    .attr('rx', 4).attr('ry', 4)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('opacity', 0.4);
+      tt.show(`<span style="font-size:13px;">${d.company}</span><br><span style="font-size:13px;">CAPEX Total: <strong>US$ ${d.capex}M</strong></span><br><span style="font-size:13px;">CAPEX Sotreq: <strong style="color:#00cc66;">US$ ${d.sotreq}M</strong></span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('opacity', isFiltered && d.company !== chartFilter.value ? 0.25 : 0.25);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('company', compFull[d.company] || d.company); });
+
+  // Sotreq segment bar (inside the main bar)
+  g.selectAll('.sotreq-bar').data(chartData).enter().append('rect')
+    .attr('y', d => y(d.company))
+    .attr('height', y.bandwidth())
+    .attr('x', 0)
+    .attr('width', d => x(d.sotreq))
+    .attr('fill', (d, i) => isFiltered && d.company === chartFilter.value ? '#00e676' : isFiltered ? '#1a3a1a' : '#00cc66')
+    .attr('opacity', d => isFiltered && d.company !== chartFilter.value ? 0.3 : 0.9)
+    .attr('rx', 4).attr('ry', 4)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('opacity', 1);
+      tt.show(`<span style="font-size:13px;">${d.company}</span><br><span style="font-size:13px;">CAPEX Total: <strong>US$ ${d.capex}M</strong></span><br><span style="font-size:13px;">CAPEX Sotreq: <strong style="color:#00cc66;">US$ ${d.sotreq}M</strong></span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function() {
+      d3.select(this).attr('opacity', isFiltered && d.company !== chartFilter.value ? 0.3 : 0.9);
+      tt.hide();
+    })
+    .on('click', function(e, d) { chartSetFilter('company', compFull[d.company] || d.company); });
+
+  // Sotreq value label
+  g.selectAll('.sotreq-label').data(chartData).enter().append('text')
+    .attr('x', d => {
+      const w = x(d.sotreq);
+      if (w > 60) return w - 6;
+      return w + 4;
+    })
+    .attr('y', d => y(d.company) + y.bandwidth() / 2)
+    .attr('dy', '0.32em')
+    .attr('text-anchor', d => x(d.sotreq) > 60 ? 'end' : 'start')
+    .style('fill', d => x(d.sotreq) > 60 ? '#fff' : '#00cc66')
+    .attr('font-size', '10px').attr('font-weight', '700')
+    .style('pointer-events', 'none')
+    .text(d => x(d.sotreq) > 60 ? 'Sotreq: US$ ' + d.sotreq + 'M' : 'US$ ' + d.sotreq + 'M');
+
+  // Total CAPEX label — at end of each bar, with gap from sotreq label
+  g.selectAll('.label').data(chartData).enter().append('text')
+    .attr('x', d => {
+      const w = x(d.sotreq);
+      const totalX = x(d.capex);
+      if (w > 60) return totalX + 6;
+      return Math.max(totalX + 6, w + 56);
+    })
+    .attr('y', d => y(d.company) + y.bandwidth() / 2)
+    .attr('dy', '0.32em')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .text(d => 'US$ ' + d.capex + 'M');
+
+  g.append('g').call(d3.axisLeft(y).tickSize(0).tickPadding(8))
+    .selectAll('text').attr('font-size', '11px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+  g.selectAll('.domain, .tick line').attr('stroke', 'none');
+}
+
+function toggleCapexView() {
+  chartSotreqView = !chartSotreqView;
+  document.getElementById('capexToggleBtn').innerHTML = chartSotreqView ? '<i class="bi bi-bar-chart-fill"></i> Ver CAPEX Total' : '<i class="bi bi-bar-chart-steps"></i> Ver CAPEX Sotreq';
+  if (chartSotreqView) {
+    renderChartCompanyCapexSotreq();
+  } else {
+    renderChartCompanyCapex();
+  }
 }
 
 // ── INIT ──
@@ -3647,13 +3954,14 @@ function adminRenderProjects(query) {
     list.innerHTML = `<div style="overflow-x:auto;border:1px solid var(--cat-gray-light);border-radius:8px;">
       <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:900px;">
         <thead><tr style="background:var(--cat-gray);">
-          <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Empresa</th>
+          <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Cliente</th>
           <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Projeto</th>
           <th style="padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Estado</th>
           <th style="padding:8px 10px;text-align:right;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">CAPEX</th>
           <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Estágio</th>
           <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Prioridade</th>
           <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Depósito</th>
+          <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Status Sotreq</th>
           <th style="padding:8px 10px;text-align:center;font-size:10px;text-transform:uppercase;color:var(--cat-text-muted);">Ações</th>
         </tr></thead>
         <tbody>${filtered.map(p => {
@@ -3666,6 +3974,7 @@ function adminRenderProjects(query) {
             <td style="padding:8px 10px;text-align:center;">S${p.stage}</td>
             <td style="padding:8px 10px;text-align:center;">${p.priority}</td>
             <td style="padding:8px 10px;text-align:center;font-size:10px;">${p.depositType}</td>
+            <td style="padding:8px 10px;text-align:center;"><span class="sotreq-status ${p.sotreqStatus||'nao-iniciado'}">${{'nao-iniciado':'Não Iniciado','proposta-enviada':'Proposta Enviada','em-negociacao':'Em Negociação','fechado':'Fechado'}[p.sotreqStatus]||'Não Iniciado'}</span></td>
             <td style="padding:8px 10px;text-align:center;white-space:nowrap;">
               <button onclick="adminManageQuote(${idx})" style="background:transparent;border:none;cursor:pointer;font-size:12px;color:var(--cat-yellow);" title="Cotação"><i class="bi bi-cart"></i></button>
               <button onclick="adminEditProject(${idx})" style="background:transparent;border:none;cursor:pointer;font-size:14px;"><i class="bi bi-pencil-fill"></i></button>
@@ -3710,7 +4019,7 @@ function adminEditProject(idx) {
   document.querySelector('#adminModal .am-panel').classList.add('am-panel--wide');
   document.getElementById('amTitle').innerHTML = '<i class="bi bi-pencil-fill"></i> Editar: ' + escHtml(p.company) + ' — ' + escHtml(p.project);
   document.getElementById('amForm').innerHTML = `
-    <label>Empresa <input name="company" value="${escHtml(p.company)}"></label>
+    <label>Cliente <input name="company" value="${escHtml(p.company)}"></label>
     <label>Projeto <input name="project" value="${escHtml(p.project)}"></label>
     <label>Origem <input name="origin" value="${escHtml(p.origin)}"></label>
     <label>Prioridade
@@ -3741,6 +4050,13 @@ function adminEditProject(idx) {
     </label>
     <label>Tipo <input name="type" value="${escHtml(p.type)}"></label>
     <label class="am-full">Highlights <textarea name="highlights">${escHtml(p.highlights||'')}</textarea></label>
+    <label>Status Sotreq
+      <select name="sotreqStatus">
+        ${['nao-iniciado','proposta-enviada','em-negociacao','fechado'].map(o =>
+          `<option value="${o}"${(p.sotreqStatus||'nao-iniciado')===o?' selected':''}>${{'nao-iniciado':'Não Iniciado','proposta-enviada':'Proposta Enviada','em-negociacao':'Em Negociação','fechado':'Fechado'}[o]}</option>`
+        ).join('')}
+      </select>
+    </label>
     <label>Ano Início
       <select name="startYear">
         <option value="">—</option>
@@ -3784,7 +4100,7 @@ function adminAddProject() {
   adminType = 'project';
   document.getElementById('amTitle').textContent = '＋ Novo Projeto';
   document.getElementById('amForm').innerHTML = `
-    <label>Empresa <input name="company"></label>
+    <label>Cliente <input name="company"></label>
     <label>Projeto <input name="project"></label>
     <label>Origem <input name="origin" value="Brasil"></label>
     <label>Prioridade
@@ -3885,7 +4201,7 @@ function adminEditNews(idx) {
   document.getElementById('amForm').innerHTML = `
     <label>Data <input name="date" value="${escHtml(n.date)}"></label>
     <label>Fonte <input name="source" value="${escHtml(n.source)}"></label>
-    <label>Empresa <input name="company" value="${escHtml(n.company)}"></label>
+    <label>Cliente <input name="company" value="${escHtml(n.company)}"></label>
     <label class="am-full">Título <textarea name="title" style="min-height:50px;">${escHtml(n.title)}</textarea></label>
     <label class="am-full">Texto <textarea name="text" style="min-height:80px;">${escHtml(n.text)}</textarea></label>
     <label class="am-full">Link <input name="link" value="${escHtml(n.link||'')}"></label>
@@ -3901,7 +4217,7 @@ function adminAddNews() {
   document.getElementById('amForm').innerHTML = `
     <label>Data <input name="date" value="26 Mai/2026"></label>
     <label>Fonte <input name="source"></label>
-    <label>Empresa <input name="company"></label>
+    <label>Cliente <input name="company"></label>
     <label class="am-full">Título <textarea name="title" style="min-height:50px;"></textarea></label>
     <label class="am-full">Texto <textarea name="text" style="min-height:80px;"></textarea></label>
     <label class="am-full">Link <input name="link"></label>
@@ -3929,7 +4245,7 @@ function adminSaveForm() {
   if (adminType === 'project') {
     const obj = {
       priority: vals.priority || 'medium',
-      company: vals.company || 'Nova Empresa',
+      company: vals.company || 'Novo Cliente',
       origin: vals.origin || 'Brasil',
       project: vals.project || 'Novo Projeto',
       location: { city: vals.city || '', state: (vals.state || '').toUpperCase() },
@@ -3943,6 +4259,7 @@ function adminSaveForm() {
       opportunity: 'US$ ' + Math.round((parseFloat(vals.capex) || 0) * (sotreqConfig.conversao || 30) / 100) + 'M',
       type: vals.type || 'Argila Iônica',
       highlights: vals.highlights || '',
+      sotreqStatus: vals.sotreqStatus || 'nao-iniciado',
       startYear: vals.startYear ? parseInt(vals.startYear) : null,
       depositType: vals.depositType || 'iacSaprolite'
     };
@@ -4063,6 +4380,18 @@ function adminRenderIndicators() {
       <input type="number" id="cfg_capMaxTabela" value="${sotreqConfig.capMaxTabela}" min="1" onchange="adminPreviewConfig()"></label>
     <label>Taxa BRL/USD (Cotações)<br><small style="color:var(--cat-text-muted);font-weight:400;">Usada para converter preços em Real nas cotações</small>
       <input type="number" id="cfg_brlRate" value="${sotreqConfig.brlRate}" min="0.1" step="0.1" onchange="adminPreviewConfig()"></label>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--cat-gray-light);">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--cat-yellow);"><i class="bi bi-cpu"></i> Preço Médio dos Equipamentos (USD)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        ${Object.entries({trucks:'Caminhão p/ Mineração',excavators:'Escavadeira Hidráulica',loaders:'Carregadeira',dozers:'Trator de Esteira',support1:'Motoniveladora',support2:'Equip. Apoio'}).map(([k,label]) =>
+          `<label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);display:flex;align-items:center;gap:6px;">
+            <span style="min-width:100px;">${label}:</span>
+            <input type="number" id="cfg_price_${k}" value="${(sotreqConfig.equipPrices||{})[k]||0}" min="0" step="10000" style="width:100px;padding:4px 6px;font-size:12px;" onchange="adminUpdatePrice('${k}',this.value)">
+          </label>`
+        ).join('')}
+      </div>
+      <div style="font-size:10px;color:var(--cat-text-muted);margin-top:6px;">O valor total da frota é calculado como <strong>∑ (quantidade de equipamentos × preço médio)</strong></div>
+    </div>
   `;
   adminRenderIndicatorsSummary();
   adminRenderQuoteComparison();
@@ -4112,20 +4441,20 @@ function adminRenderIndicatorsSummary() {
       <span class="apc-sub">Frota total estimada por perfil de depósito</span>
     </div></div>
     <div class="apc-body">
-      <span class="apc-field"><strong>Caminhões:</strong> ${sm.trucks}</span>
-      <span class="apc-field"><strong>Escavadeiras:</strong> ${sm.excavators}</span>
-      <span class="apc-field"><strong>Carregadeiras:</strong> ${sm.loaders}</span>
-      <span class="apc-field"><strong>Tratores:</strong> ${sm.dozers}</span>
-      <span class="apc-field"><strong>Apoio 1:</strong> ${sm.support1}</span>
-      <span class="apc-field"><strong>Apoio 2:</strong> ${sm.support2}</span>
+      <span class="apc-field"><strong>Caminhões:</strong> ${sm.trucks} × US$ ${((c.equipPrices||{}).trucks||0).toLocaleString('en-US')}</span>
+      <span class="apc-field"><strong>Escavadeiras:</strong> ${sm.excavators} × US$ ${((c.equipPrices||{}).excavators||0).toLocaleString('en-US')}</span>
+      <span class="apc-field"><strong>Carregadeiras:</strong> ${sm.loaders} × US$ ${((c.equipPrices||{}).loaders||0).toLocaleString('en-US')}</span>
+      <span class="apc-field"><strong>Tratores:</strong> ${sm.dozers} × US$ ${((c.equipPrices||{}).dozers||0).toLocaleString('en-US')}</span>
+      <span class="apc-field"><strong>Motonivelad.:</strong> ${sm.support1} × US$ ${((c.equipPrices||{}).support1||0).toLocaleString('en-US')}</span>
+      <span class="apc-field"><strong>Equip. Apoio:</strong> ${sm.support2} × US$ ${((c.equipPrices||{}).support2||0).toLocaleString('en-US')}</span>
       <span class="apc-field"><strong>Total:</strong> ${sm.total}</span>
     </div>
     <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
-      Fórmula: <strong>∑ baseline × (CAPEX projeto ÷ CAPEX referência)</strong> por tipo de depósito<br>
-      IAC → Fleet IAC × (capex / ${(c.fleetIac||{refCapex:560}).refCapex})<br>
-      Rocha Dura → Fleet HardRock × (capex / ${(c.fleetHardRock||{refCapex:720}).refCapex})<br>
-      Reprocessamento → Fleet Repro × (capex / ${(c.fleetReprocessing||{refCapex:280}).refCapex})<br>
-      Exploração → frota mínima fixa
+      Fórmula: <strong>∑ CAPEX (US$M) × % alocação ÷ preço (US$M)</strong> por tipo de depósito<br>
+      IAC → trucks: CAPEX × 7% ÷ US$ ${(((c.equipPrices||{}).trucks||800000)/1e6).toFixed(2)}M<br>
+      Rocha Dura → trucks: CAPEX × 7.5% ÷ US$ ${(((c.equipPrices||{}).trucks||800000)/1e6).toFixed(2)}M<br>
+      Reprocessamento → trucks: CAPEX × 5% ÷ US$ ${(((c.equipPrices||{}).trucks||800000)/1e6).toFixed(2)}M<br>
+      Exploração → alocação reduzida (1% trucks, ~0.3% demais)
     </div></div>
 
     <div class="ap-card"><div class="apc-header"><div>
@@ -4135,6 +4464,26 @@ function adminRenderIndicatorsSummary() {
     <div class="apc-body"><span class="apc-field"><strong>Total:</strong> US$ ${totalOpp >= 1000 ? (totalOpp/1000).toFixed(1) + ' Bi' : totalOpp + ' Mi'}</span></div>
     <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
       Fórmula: <strong>CAPEX total × ${c.conversao}%</strong> = US$ ${totalOpp.toFixed(0)}M
+    </div></div>
+
+    <div class="ap-card"><div class="apc-header"><div>
+      <div class="apc-title"><i class="bi bi-truck"></i> Valor Total da Frota</div>
+      <span class="apc-sub">Preço médio dos equipamentos × quantidade estimada</span>
+    </div></div>
+    <div class="apc-body">
+      ${(() => {
+        const fv = calcFleetValue(fe);
+        const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+        const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Motonivelad.','Equip. Apoio'];
+        return keys.map((k,i) =>
+          `<span class="apc-field"><strong>${labels[i]}:</strong> ${fe[k]} un × US$ ${((c.equipPrices||{})[k]||0).toLocaleString('en-US')} = <strong style="color:var(--cat-blue);">US$ ${(fv[k]/1e6).toFixed(0)} Mi</strong></span>`
+        ).join('') +
+        `<span class="apc-field" style="margin-top:6px;border-top:1px solid var(--cat-gray-light);padding-top:6px;"><strong>Total Frota:</strong> <span style="color:var(--cat-yellow);font-size:15px;">US$ ${fv.total >= 1e9 ? (fv.total/1e9).toFixed(2) + ' Bi' : (fv.total/1e6).toFixed(1) + ' Mi'}</span></span>`;
+      })()}
+    </div>
+    <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
+      Fórmula: <strong>∑ (quantidade × preço médio)</strong> por tipo de equipamento<br>
+      Preços configuráveis na seção "Preço Médio dos Equipamentos" acima
     </div></div>
 
     <div class="ap-card"><div class="apc-header"><div>
@@ -4189,7 +4538,8 @@ function adminRenderIndicatorsSummary() {
         `).join('')}
       </div>
       <div style="margin-top:6px;font-size:10px;color:var(--cat-text-muted);font-family:monospace;">
-        Fórmula: <strong>baseline × (CAPEX projeto ÷ ${fleet.refCapex})</strong>
+        <strong>Nota:</strong> a estimativa agora usa alocação por % do CAPEX ÷ preço unitário.<br>
+        Este baseline não é mais utilizado no cálculo.
       </div>
     </div>`;
   }).join('');
@@ -4203,6 +4553,11 @@ function adminPreviewConfig() {
   c.taxaCrescimento = document.getElementById('cfg_taxaCrescimento').value || '15–20%';
   c.capMaxTabela = parseFloat(document.getElementById('cfg_capMaxTabela').value) || 200;
   c.brlRate = parseFloat(document.getElementById('cfg_brlRate').value) || 5.0;
+  if (!c.equipPrices) c.equipPrices = {};
+  ['trucks','excavators','loaders','dozers','support1','support2'].forEach(k => {
+    const el = document.getElementById('cfg_price_' + k);
+    if (el) c.equipPrices[k] = parseFloat(el.value) || 0;
+  });
   adminRenderIndicatorsSummary();
 }
 function adminSaveConfig() {
@@ -4213,6 +4568,12 @@ function adminSaveConfig() {
   c.taxaCrescimento = document.getElementById('cfg_taxaCrescimento').value || '15–20%';
   c.capMaxTabela = parseFloat(document.getElementById('cfg_capMaxTabela').value) || 200;
   c.brlRate = parseFloat(document.getElementById('cfg_brlRate').value) || 5.0;
+  // Save equipment prices
+  if (!c.equipPrices) c.equipPrices = {};
+  ['trucks','excavators','loaders','dozers','support1','support2'].forEach(k => {
+    const el = document.getElementById('cfg_price_' + k);
+    if (el) c.equipPrices[k] = parseFloat(el.value) || 0;
+  });
   sotreqSaveConfig();
   console.log('[SAVE] conversao:', c.conversao, 'taxaCrescimento:', c.taxaCrescimento);
   fullRefresh();
@@ -4227,6 +4588,14 @@ function adminUpdateFleet(key, field, value) {
     sotreqSaveConfig();
     adminRenderIndicatorsSummary();
   }
+}
+
+function adminUpdatePrice(key, value) {
+  const v = parseFloat(value) || 0;
+  if (!sotreqConfig.equipPrices) sotreqConfig.equipPrices = {};
+  sotreqConfig.equipPrices[key] = v;
+  sotreqSaveConfig();
+  adminRenderIndicatorsSummary();
 }
 
 // ── QUOTE MANAGEMENT (per project) ──
