@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sotreq CAT | Terras Raras e Green Field no Brasil</title>
+<title>Mining Intelligence Portal</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛏</text></svg>">
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -64,8 +65,8 @@ gios de maturidade    --cat-red: #ff4444;
     height: 40px; width: auto;
   }
     .top-bar .logo .divider { width: 1px; height: 36px; background: var(--cat-gray-light); flex-shrink: 0; }
-  .top-bar .logo .brand-text h1 { font-size: 16px; font-weight: 700; color: var(--cat-fg); letter-spacing: -0.5px; }
-  .top-bar .logo .brand-text span { font-size: 11px; color: var(--cat-yellow); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+  .top-bar .logo .brand-text .subtitle { font-size: 14px; font-weight: 600; color: var(--cat-fg); letter-spacing: -0.3px; }
+  .top-bar .logo .brand-text span { font-size: 10px; color: var(--cat-text-muted); font-weight: 400; }
   .top-bar .tagline { text-align: right; display: flex; align-items: center; gap: 12px; }
   .top-bar .tagline .title { font-size: 14px; font-weight: 600; color: var(--cat-yellow); }
   .top-bar .tagline .sub { font-size: 11px; color: var(--cat-text-muted); }
@@ -74,6 +75,7 @@ gios de maturidade    --cat-red: #ff4444;
     width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center;
     justify-content: center; font-size: 18px; transition: all 0.2s; flex-shrink: 0;
   }
+  .theme-btn i { color: var(--cat-yellow); }
   .theme-btn:hover { border-color: var(--cat-yellow); transform: scale(1.1); }
 
   .hero {
@@ -95,39 +97,27 @@ gios de maturidade    --cat-red: #ff4444;
     opacity: 0.3;
   }
   .hero .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
-  .hero h2 { font-size: 36px; font-weight: 800; color: var(--cat-fg); margin-bottom: 8px; letter-spacing: -1px; }
-  .hero h2 em { color: var(--cat-yellow); font-style: normal; }
-  .hero p { font-size: 16px; color: var(--cat-text-muted); max-width: 700px; margin-bottom: 32px; }
-  .hero .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .hero .tags span {
-    background: rgba(255,205,0,0.1); border: 1px solid rgba(255,205,0,0.2);
-    padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--cat-yellow);
-  }
+  .hero h1 { font-size: 40px; font-weight: 800; color: var(--cat-fg); margin: 0; letter-spacing: -1px; }
 
   .summary-carousel-wrapper {
     position: sticky; top: 72px; z-index: 50;
     background: var(--cat-dark);
-    max-width: 1400px; margin: -24px auto 0; padding: 12px 32px;
-    transition: padding 0.25s;
+    max-width: 1400px; margin: -24px auto 0; padding: 4px 32px;
+    min-height: 62px;
   }
-  .summary-carousel-wrapper.stuck { padding: 4px 32px; }
   .summary-card {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
-    border-radius: 12px; padding: 14px 16px; transition: all 0.25s;
+    border-radius: 8px; padding: 6px 10px;
   }
-  .stuck .summary-card { padding: 6px 10px; border-radius: 8px; }
   .summary-carousel .summary-card:hover { border-color: var(--cat-yellow); transform: translateY(-2px); }
-  .summary-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--cat-text-muted); font-weight: 600; margin-bottom: 4px; transition: font-size 0.25s, margin 0.25s; }
-  .stuck .summary-card .label { font-size: 9px; margin-bottom: 2px; }
-  .summary-card .value { font-size: 20px; font-weight: 800; color: var(--cat-fg); letter-spacing: -0.5px; transition: font-size 0.25s; }
-  .stuck .summary-card .value { font-size: 14px; }
+  .summary-card .label { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: var(--cat-text-muted); font-weight: 600; margin-bottom: 2px; }
+  .summary-card .value { font-size: 14px; font-weight: 800; color: var(--cat-fg); letter-spacing: -0.5px; }
   .summary-card .value.yellow { color: var(--cat-yellow); }
   .summary-card .value.green { color: var(--cat-green); }
   .summary-card .value.blue { color: var(--cat-blue); }
   .summary-card .value.orange { color: var(--cat-orange); }
   .summary-card .value.purple { color: var(--cat-purple); }
-  .summary-card .sub { font-size: 11px; color: var(--cat-text-muted); margin-top: 2px; transition: font-size 0.25s; }
-  .stuck .summary-card .sub { font-size: 9px; }
+  .summary-card .sub { font-size: 9px; color: var(--cat-text-muted); margin-top: 2px; }
   .summary-card .value.purple { color: var(--cat-purple); }
 
   .summary-carousel {
@@ -462,7 +452,7 @@ gios de maturidade    --cat-red: #ff4444;
     .top-bar .tagline .title { font-size: 11px; }
     .top-bar .tagline .sub { font-size: 9px; }
     .hero { padding: 24px 16px 32px; }
-    .hero h2 { font-size: 22px; }
+    .hero h1 { font-size: 26px; }
     .hero p { font-size: 14px; }
     .summary-carousel-wrapper { padding: 8px 12px; margin-top: -28px; position: static; }
     .summary-carousel { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
@@ -493,13 +483,11 @@ gios de maturidade    --cat-red: #ff4444;
 
   @media (max-width: 480px) {
     .top-bar .logo { gap: 8px; }
-    .top-bar .logo .brand-text h1 { font-size: 13px; }
+    .top-bar .logo .brand-text .subtitle { font-size: 12px; }
     .top-bar .logo .brand-text span { font-size: 9px; }
     .top-bar .tagline .title { display: none; }
     .top-bar .tagline .sub { display: none; }
-    .hero h2 { font-size: 18px; }
-    .hero p { font-size: 13px; }
-    .hero .tags span { font-size: 10px; padding: 3px 10px; }
+    .hero h1 { font-size: 22px; }
     .summary-carousel { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; }
     .summary-card { padding: 10px; }
     .summary-card .value { font-size: 17px; }
@@ -923,6 +911,109 @@ gios de maturidade    --cat-red: #ff4444;
   .chart-card .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--cat-text-muted); }
   .chart-card .legend-item .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
   .chart-card-full { grid-column: 1 / -1; }
+  .chat-messages {
+    flex: 1; overflow-y: auto; padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+    min-height: 200px; max-height: 400px;
+  }
+  .chat-msg { display: flex; }
+  .chat-msg.user { justify-content: flex-end; }
+  .chat-msg.assistant { justify-content: flex-start; }
+  .chat-bubble {
+    max-width: 85%; padding: 10px 14px; border-radius: 12px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .chat-msg.user .chat-bubble {
+    background: var(--cat-yellow); color: var(--cat-black);
+    border-bottom-right-radius: 4px;
+  }
+  .chat-msg.assistant .chat-bubble {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-text); border-bottom-left-radius: 4px;
+  }
+  .chat-msg.assistant .chat-bubble p { margin: 0 0 6px; }
+  .chat-msg.assistant .chat-bubble p:last-child { margin-bottom: 0; }
+  .chat-msg.assistant .chat-bubble ul, .chat-msg.assistant .chat-bubble ol { margin: 4px 0; padding-left: 18px; }
+  .chat-msg.assistant .chat-bubble strong { color: var(--cat-fg); }
+  .chat-msg.assistant .chat-bubble code {
+    background: var(--cat-gray); padding: 1px 5px; border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .chat-input-bar {
+    display: flex; gap: 8px; padding: 10px 12px;
+    border-top: 1px solid var(--cat-gray-light); flex-shrink: 0;
+  }
+  .chat-input-bar textarea {
+    flex: 1; background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-fg); padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; font-family: inherit; outline: none; resize: none;
+    min-height: 20px; max-height: 80px; line-height: 1.4;
+  }
+  .chat-input-bar textarea:focus { border-color: var(--cat-yellow); }
+  .chat-input-bar button {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--cat-yellow); color: var(--cat-black);
+    border: none; font-size: 16px; cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .chat-input-bar button:hover { transform: scale(1.05); }
+  .chat-input-bar button:disabled { opacity: 0.5; cursor: default; transform: none; }
+  /* ── MinerAI Tab ── */
+  .mineria-card {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 16px; overflow: hidden;
+  }
+  .mineria-chat {
+    display: flex; flex-direction: column;
+    min-height: 400px; max-height: 55vh;
+  }
+  .mineria-chat .chat-messages {
+    flex: 1; overflow-y: auto; padding: 16px 20px;
+    display: flex; flex-direction: column; gap: 8px;
+    min-height: 200px; max-height: 300px;
+  }
+  @keyframes chatDot { 0%,80%,100% { transform: scale(0.4); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+  .chat-thinking { display: flex; align-items: center; gap: 4px; padding: 14px 18px; }
+  .chat-thinking .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cat-yellow); animation: chatDot 1.4s ease-in-out infinite both; }
+  .chat-thinking .dot:nth-child(1) { animation-delay: 0s; }
+  .chat-thinking .dot:nth-child(2) { animation-delay: 0.16s; }
+  .chat-thinking .dot:nth-child(3) { animation-delay: 0.32s; }
+  .mineria-chat .chat-input-bar {
+    display: flex; gap: 8px; padding: 12px 16px;
+    border-top: 1px solid var(--cat-gray-light); flex-shrink: 0;
+  }
+  .mineria-chat .chat-input-bar textarea {
+    flex: 1; background: var(--cat-dark); border: 1px solid var(--cat-gray-light);
+    color: var(--cat-fg); padding: 10px 14px; border-radius: 8px;
+    font-size: 13px; font-family: inherit; outline: none; resize: none;
+    min-height: 20px; max-height: 80px; line-height: 1.4;
+  }
+  .mineria-chat .chat-input-bar textarea:focus { border-color: var(--cat-yellow); }
+  .mineria-chat .chat-input-bar button {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--cat-yellow); color: var(--cat-black);
+    border: none; font-size: 16px; cursor: pointer; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .mineria-chat .chat-input-bar button:hover { transform: scale(1.05); }
+  .mineria-chat .chat-input-bar button:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  .ch-suggestions {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+  }
+  .ch-suggestion {
+    background: var(--cat-black); border: 1px solid var(--cat-gray-light);
+    border-radius: 10px; padding: 10px 16px; cursor: pointer;
+    font-size: 13px; color: var(--cat-text); transition: all 0.15s;
+    user-select: none;
+  }
+  .ch-suggestion:hover {
+    border-color: var(--cat-yellow); color: var(--cat-yellow);
+    background: rgba(255,205,0,0.05);
+  }
 </style>
 </head>
 <body>
@@ -963,8 +1054,8 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     <img src="logo-sotreq.png" alt="Sotreq" style="height:52px;width:auto;">
     <div class="divider"></div>
     <div class="brand-text">
-      <h1>Sotreq</h1>
-      <span>Dealer Caterpillar</span>
+      <span class="subtitle">Sotreq</span>
+      <span style="font-size:10px;color:var(--cat-text-muted);">Dealer Caterpillar</span>
     </div>
   </div>
   <div class="tagline">
@@ -978,24 +1069,13 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
 <section class="hero">
   <div class="container">
-    <h2>Oportunidades de Projetos <em>Terras Raras</em> e <em style="color:var(--cat-green);font-style:normal;">Green Field</em> no Brasil</h2>
-    <div class="tags" id="heroTags">
-      <span id="heroProjetos">—</span>
-      <span id="heroCapex">—</span>
-      <span id="heroEstados">—</span>
-      <span id="heroEstadosLista">MG · BA · GO · AM · PA · RJ</span>
-      <span id="heroTipos">Argila Iônica · Rocha Dura · Fosfogesso</span>
-      <span id="heroJanela">Janela 2026-2030</span>
-    </div>
+    <h1>Mining Intelligence Portal</h1>
+    <p style="margin:6px 0 0;font-size:15px;color:var(--cat-text-muted);font-weight:400;">Oportunidades de Projetos <em style="color:var(--cat-yellow);font-style:normal;">Terras Raras</em> e <em style="color:var(--cat-green);font-style:normal;">Green Field</em> no Brasil</p>
   </div>
 </section>
 
 <div id="sumSentinel"></div>
-<script>
-new IntersectionObserver(function(entries) {
-  document.querySelector('.summary-carousel-wrapper').classList.toggle('stuck', !entries[0].isIntersecting);
-}).observe(document.getElementById('sumSentinel'));
-</script>
+
 <div class="summary-carousel-wrapper">
   <div class="summary-carousel" id="summaryCarousel">
     <div class="summary-card">
@@ -1042,14 +1122,50 @@ new IntersectionObserver(function(entries) {
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
+  <button class="tab-btn active" onclick="switchTab('mineria')"><i class="bi bi-robot"></i> MinerAI</button>
+  <button class="tab-btn" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
   <button class="tab-btn" onclick="switchTab('resumo')"><i class="bi bi-file-text"></i> Resumo Executivo</button>
   <button class="tab-btn" onclick="switchTab('noticias')"><i class="bi bi-newspaper"></i> Notícias</button>
 </div>
 
 <div class="main-content">
 
-<div id="tab-dashboard" class="tab-page active">
+<div id="tab-mineria" class="tab-page active">
+
+  <div style="background:linear-gradient(135deg, rgba(255,205,0,0.08) 0%, var(--cat-black) 100%);border-radius:16px;padding:32px 36px;margin-bottom:24px;border:1px solid rgba(255,205,0,0.15);">
+    <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="width:64px;height:64px;border-radius:16px;background:var(--cat-yellow);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">🤖</div>
+      <div style="flex:1;">
+        <h2 style="font-size:24px;font-weight:800;color:var(--cat-fg);margin:0 0 4px;letter-spacing:-0.5px;">MinerAI <span style="color:var(--cat-yellow);">· Assistente do Portfólio</span></h2>
+        <p style="font-size:14px;color:var(--cat-text-muted);margin:0;">Treinado nos dados reais do portfólio · Pergunte sobre projetos, CAPEX, equipamentos e mais</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ch-suggestions" id="chSuggestions">
+    <div class="ch-suggestion" onclick="sendSuggestion('Qual o maior projeto do portfólio?')">📊 Qual o maior projeto do portfólio?</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Total de CAPEX de todos os projetos?')">💰 Total de CAPEX de todos os projetos?</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Oportunidade Sotreq total estimada?')">⚡ Oportunidade Sotreq total estimada?</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Quais projetos estão em Minas Gerais?')">📍 Projetos em Minas Gerais</div>
+  </div>
+
+  <div class="mineria-card">
+    <div class="mineria-chat" id="mineriaChat">
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg assistant">
+          <div class="chat-bubble">👋 Olá! Pergunte sobre os projetos, CAPEX, estágios e oportunidades do portfólio.</div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <textarea id="chatInput" placeholder="Pergunte sobre o portfólio..." onkeydown="chatKeyHandler(event)" rows="1"></textarea>
+        <button onclick="sendChat()" id="chatSendBtn"><i class="bi bi-send-fill"></i></button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end tab-mineria -->
+
+<div id="tab-dashboard" class="tab-page">
 
   <!-- PIPELINE / FUNIL DE MATURIDADE -->
   <div class="pipeline">
@@ -1446,6 +1562,11 @@ new IntersectionObserver(function(entries) {
     Principais fatos e comunicados ao mercado que embasam as estimativas deste relatório. Clique no título para acessar a notícia original.
   </p>
 
+  <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+    <button id="fetchNewsBtn" onclick="fetchNewsUI()" style="padding:8px 18px;font-size:12px;font-weight:600;border-radius:8px;border:1px solid var(--cat-yellow);background:var(--cat-yellow);color:var(--cat-black);cursor:pointer;display:flex;align-items:center;gap:6px;"><i class="bi bi-arrow-repeat"></i> Buscar Notícias</button>
+    <span id="fetchNewsStatus" style="font-size:12px;color:var(--cat-text-muted);"></span>
+  </div>
+
   <div class="news-filters" id="newsFilters"></div>
 
   <div class="news-carousel-wrapper">
@@ -1768,6 +1889,17 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     opportunity: 'US$ 45M', type: 'Ouro (greenstone)',
     highlights: 'Projeto de ouro Volta Grande · Estudos técnicos retomados (G Mining Services) · Decisão tribunal Mai/26',
     startYear: null, depositType: 'exploration'
+  },
+  {
+    priority: 'medium', company: 'Spark Energy Minerals', origin: 'Canadá',
+    project: 'Arapaima', location: { city: 'Vale do Jequitinhonha', state: 'MG' },
+    capex: 30, capexDetail: 'R$ 150M (~US$ 30M)',
+    stage: 1, forecast: 'Pesquisa mineral', capacity: 'Lítio, terras raras e gálio',
+    licensing: 'Protocolo de intenções com Governo de MG',
+    machines: ['Perfuratrizes', 'Equipamentos de sondagem'],
+    opportunity: 'US$ 9M', type: 'Minerais Críticos',
+    highlights: 'Spark Energy Minerals (Canadá) · Projeto Arapaima · R$150M em pesquisa · ~100 empregos diretos',
+    startYear: null, depositType: 'exploration'
   }
 ]; // __DATA_END_PROJECTS__
 
@@ -1894,14 +2026,7 @@ function init() {
 
   const fleetVal = calcFleetValue(machineEst);
 
-  // Hero tags dinâmicos
-  document.getElementById('heroProjetos').textContent = projects.length + ' Projetos Mapeados';
-  document.getElementById('heroCapex').textContent = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
-  document.getElementById('heroEstados').textContent = states.length + ' Estado' + (states.length !== 1 ? 's' : '');
-  document.getElementById('heroEstadosLista').textContent = states.join(' · ') || '—';
   const tipos = [...new Set(projects.map(p => p.type))];
-  document.getElementById('heroTipos').textContent = tipos.join(' · ') || '—';
-  document.getElementById('heroJanela').textContent = 'Janela ' + c.anoInicio + '-' + c.anoFim;
 
   document.getElementById('totalProjetos').textContent = projects.length;
   document.getElementById('totalCapex').innerHTML = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
@@ -2199,6 +2324,8 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
   document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
   document.getElementById(`tab-${tab}`).classList.add('active');
+  if (tab === 'mineria' && !chatInitialized) initChat();
+  if (tab === 'dashboard') renderCharts();
 }
 
 // ── RESUMO EXECUTIVO ──
@@ -2653,66 +2780,88 @@ async function supaSalvarDados() {
 
 // ── DATA PERSISTENCE ──
 async function sotreqLoadData() {
-  // Save defaults before any localStorage override
+  // Save defaults (the authoritative base)
   const defaultProjects = JSON.parse(JSON.stringify(projects));
   const defaultNews = JSON.parse(JSON.stringify(newsData));
 
-  // Try Supabase first
+  // Load saved data from Supabase or localStorage
+  let savedProjects = [];
+  let savedNews = [];
   const supaData = await supaCarregarDados();
   if (supaData && supaData.projects && supaData.projects.length > 0) {
-    projects.length = 0; projects.push(...supaData.projects);
-    if (supaData.news && supaData.news.length > 0) {
-      newsData.length = 0; newsData.push(...supaData.news);
+    savedProjects = supaData.projects;
+    if (supaData.news && supaData.news.length > 0) savedNews = supaData.news;
+  } else {
+    const saved = localStorage.getItem('sotreq_data');
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (Array.isArray(data.projects)) savedProjects = data.projects;
+        if (Array.isArray(data.news)) savedNews = data.news;
+      } catch(e) { console.warn('Falha ao carregar dados salvos'); }
     }
-    return;
   }
 
-  const saved = localStorage.getItem('sotreq_data');
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      if (Array.isArray(data.projects) && data.projects.length > 0) {
-        projects.length = 0; projects.push(...data.projects);
-      }
-      if (Array.isArray(data.news) && data.news.length > 0) {
-        newsData.length = 0; newsData.push(...data.news);
-      }
-    } catch(e) { console.warn('Falha ao carregar dados salvos'); }
-  }
+  // Filter out invalid saved projects
+  const invalid = ['Não especificada','Não especificado',''];
+  savedProjects = savedProjects.filter(p =>
+    p.company && !invalid.includes(p.company) &&
+    p.project && !invalid.includes(p.project) && p.capex > 0
+  );
 
-  // Migrate old date format "Mon/YYYY" → "01 Mon/YYYY"
-  let changed = false;
-
-  // Migrate: copy new fields (like quote) from default projects into saved ones
+  // Start from defaults, overlay safe fields from saved projects
+  projects.length = 0;
+  const safeFields = ['stage','forecast','licensing','highlights','capacity','sotreqStatus','machines'];
   for (const dp of defaultProjects) {
-    const sp = projects.find(p => p.company === dp.company && p.project === dp.project);
+    const sp = savedProjects.find(p => p.company === dp.company && p.project === dp.project);
     if (sp) {
-      if (dp.quote && !sp.quote) { sp.quote = JSON.parse(JSON.stringify(dp.quote)); changed = true; }
+      const merged = JSON.parse(JSON.stringify(dp));
+      for (const f of safeFields) {
+        if (sp[f] !== undefined && sp[f] !== null && sp[f] !== '') merged[f] = sp[f];
+      }
+      projects.push(merged);
+    } else {
+      projects.push(dp);
     }
   }
 
-  for (const n of newsData) {
-    if (/^(Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez)\/\d{4}$/.test(n.date)) {
-      n.date = '01 ' + n.date;
-      changed = true;
+  // Add genuinely new saved projects (not in defaults) — validated
+  for (const sp of savedProjects) {
+    const exact = projects.some(p => p.company === sp.company && p.project === sp.project);
+    if (exact) continue;
+    // Fuzzy check: same company (first 6 normalized chars) → likely duplicate
+    const spKey = (sp.company||'').toLowerCase().replace(/[^a-z0-9]/g,'').substring(0,6);
+    const fuzzyMatch = projects.some(p => {
+      const pk = (p.company||'').toLowerCase().replace(/[^a-z0-9]/g,'').substring(0,6);
+      return pk === spKey || pk.startsWith(spKey) || spKey.startsWith(pk);
+    });
+    if (!fuzzyMatch && sp.company && sp.capex > 0) {
+      projects.push(sp);
     }
   }
 
-  // Merge any new default projects that don't exist in saved data
-  for (const dp of defaultProjects) {
-    const exists = projects.some(p => p.company === dp.company && p.project === dp.project);
-    if (!exists) { projects.push(dp); changed = true; }
+  // News: use saved if available, else defaults
+  if (savedNews.length > 0) {
+    newsData.length = 0; newsData.push(...savedNews);
   }
-  // Merge any new default news that don't exist in saved data
+  // Merge any default news not in saved
+  let changed = false;
   for (const dn of defaultNews) {
     const exists = newsData.some(n => n.title === dn.title);
     if (!exists) { newsData.push(dn); changed = true; }
+  }
+  // Migrate old date format
+  for (const n of newsData) {
+    if (/^(Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez)\/\d{4}$/.test(n.date)) {
+      n.date = '01 ' + n.date; changed = true;
+    }
   }
   if (changed) sotreqSaveData();
 }
 function sotreqSaveData() {
   localStorage.setItem('sotreq_data', JSON.stringify({ projects, news: newsData }));
   supaSalvarDados();
+  resetChat();
 }
 
 // ── CONFIGURAÇÕES DOS INDICADORES ──
@@ -2751,6 +2900,7 @@ function sotreqLoadConfig() {
 }
 function sotreqSaveConfig() {
   localStorage.setItem('sotreq_config', JSON.stringify(sotreqConfig));
+  resetChat();
 }
 
 // ── NEWS FETCH (Google News RSS via rss2json — funciona no navegador, sem chave) ──
@@ -3020,6 +3170,8 @@ function chartSetFilter(type, value) {
 }
 
 function renderCharts() {
+  const dTab = document.getElementById('tab-dashboard');
+  if (!dTab || !dTab.classList.contains('active')) return;
   renderChartCapexByState();
   renderChartStageDistribution();
   renderChartDepositType();
@@ -3100,17 +3252,17 @@ function renderChartCapexByState() {
     .attr('x', d => x(d[0]) + x.bandwidth() / 2)
     .attr('y', d => Math.max(y(d[1]) - 6, 12))
     .attr('text-anchor', 'middle')
-    .style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '500')
-    .text(d => 'US$ ' + d[1].toFixed(2) + 'M');
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '9px').attr('font-weight', '500')
+    .text(d => 'US$' + Math.round(d[1]) + 'M');
 
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => 'US$' + d.toFixed(1) + 'M').tickSize(0).tickPadding(6))
-    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => 'US$' + Math.round(d) + 'M').tickSize(0).tickPadding(6))
+    .selectAll('text').attr('font-size', '9px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
   g.selectAll('.domain').attr('stroke', 'none');
 
   g.append('g').attr('transform', `translate(0,${ih})`)
     .call(d3.axisBottom(x).tickSize(0).tickPadding(8))
-    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600')
-    .attr('transform', 'rotate(-30)').style('text-anchor', 'end');
+    .selectAll('text').attr('font-size', '9px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600')
+    .attr('transform', 'rotate(-25)').style('text-anchor', 'end');
 }
 
 function renderChartStageDistribution() {
@@ -3169,16 +3321,16 @@ function renderChartStageDistribution() {
     .attr('x', d => x(d.label) + x.bandwidth() / 2)
     .attr('y', d => y(d.count) - 6)
     .attr('text-anchor', 'middle')
-    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '600')
-    .text(d => d.count + ' projeto' + (d.count !== 1 ? 's' : ''));
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '9px').attr('font-weight', '600')
+    .text(d => d.count);
 
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('d')).tickSize(0).tickPadding(6))
-    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => Math.round(d)).tickSize(0).tickPadding(6))
+    .selectAll('text').attr('font-size', '9px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
   g.selectAll('.domain').attr('stroke', 'none');
 
   g.append('g').attr('transform', `translate(0,${ih})`)
     .call(d3.axisBottom(x).tickSize(0).tickPadding(8))
-    .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+    .selectAll('text').attr('font-size', '9px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
 }
 
 function renderChartDepositType() {
@@ -3255,10 +3407,10 @@ function renderChartDepositType() {
   });
 
   g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.3em')
-    .style('fill', 'var(--cat-fg)').attr('font-size', '22px').attr('font-weight', '800')
+    .style('fill', 'var(--cat-fg)').attr('font-size', '16px').attr('font-weight', '800')
     .text('US$ ' + (total / 1000).toFixed(1) + 'B');
   g.append('text').attr('text-anchor', 'middle').attr('dy', '1.3em')
-    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '9px').attr('font-weight', '500')
     .text('Oport. Sotreq');
 
   const legend = d3.select(container).append('div').attr('class', 'legend');
@@ -3335,10 +3487,10 @@ function renderChartPriority() {
   });
 
   g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.3em')
-    .style('fill', 'var(--cat-fg)').attr('font-size', '22px').attr('font-weight', '800')
+    .style('fill', 'var(--cat-fg)').attr('font-size', '16px').attr('font-weight', '800')
     .text('US$ ' + (total / 1000).toFixed(1) + 'B');
   g.append('text').attr('text-anchor', 'middle').attr('dy', '1.3em')
-    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '9px').attr('font-weight', '500')
     .text('Oport. Sotreq');
 
   const legend = d3.select(container).append('div').attr('class', 'legend');
@@ -3405,11 +3557,11 @@ function renderChartCompanyCapex() {
   g.selectAll('.label').data(chartData).enter().append('text')
     .attr('x', d => x(d[1]) + 6)
     .attr('y', d => y(d[0]) + y.bandwidth() / 2)
-    .attr('dy', '0.32em').style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .attr('dy', '0.32em').style('fill', 'var(--cat-text-muted)').attr('font-size', '12px').attr('font-weight', '600')
     .text(d => 'US$ ' + d[1] + 'M');
 
   g.append('g').call(d3.axisLeft(y).tickSize(0).tickPadding(8))
-    .selectAll('text').attr('font-size', '11px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+    .selectAll('text').attr('font-size', '12px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
   g.selectAll('.domain, .tick line').attr('stroke', 'none');
 }
 
@@ -3502,7 +3654,7 @@ function renderChartCompanyCapexSotreq() {
     .attr('dy', '0.32em')
     .attr('text-anchor', d => x(d.sotreq) > 60 ? 'end' : 'start')
     .style('fill', d => x(d.sotreq) > 60 ? '#fff' : '#00cc66')
-    .attr('font-size', '10px').attr('font-weight', '700')
+    .attr('font-size', '12px').attr('font-weight', '700')
     .style('pointer-events', 'none')
     .text(d => x(d.sotreq) > 60 ? 'Sotreq: US$ ' + d.sotreq + 'M' : 'US$ ' + d.sotreq + 'M');
 
@@ -3510,17 +3662,17 @@ function renderChartCompanyCapexSotreq() {
   g.selectAll('.label').data(chartData).enter().append('text')
     .attr('x', d => {
       const w = x(d.sotreq);
-      const totalX = x(d.capex);
+      var totalX = Math.min(x(d.capex), iw - 10);
       if (w > 60) return totalX + 6;
       return Math.max(totalX + 6, w + 56);
     })
     .attr('y', d => y(d.company) + y.bandwidth() / 2)
     .attr('dy', '0.32em')
-    .style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '500')
+    .style('fill', 'var(--cat-text-muted)').attr('font-size', '12px').attr('font-weight', '600')
     .text(d => 'US$ ' + d.capex + 'M');
 
   g.append('g').call(d3.axisLeft(y).tickSize(0).tickPadding(8))
-    .selectAll('text').attr('font-size', '11px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+    .selectAll('text').attr('font-size', '12px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
   g.selectAll('.domain, .tick line').attr('stroke', 'none');
 }
 
@@ -3543,7 +3695,7 @@ function toggleCapexView() {
   try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
   try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
   try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
-  try { renderCharts(); } catch(e) { console.error('renderCharts() falhou:', e); }
+  // charts rendered lazily on tab switch
 })();
 </script>
 
@@ -4923,6 +5075,281 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── MinerAI Chat ──
+let chatHistory = [];
+let chatInitialized = false;
+let fullContextSent = false;
+
+function initChat() {
+  if (chatInitialized) return;
+  chatHistory.push({ role: 'system', content: buildChatContext() });
+  chatInitialized = true;
+  fullContextSent = false;
+}
+
+function resetChat() {
+  chatHistory = [];
+  chatInitialized = false;
+  fullContextSent = false;
+  const el = document.getElementById('chatMessages');
+  if (el) el.innerHTML = '';
+}
+
+function buildChatContext() {
+  const total = projects.reduce((a, p) => a + p.capex, 0);
+  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, taxaCrescimento: '15–20%', equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
+  const conv = c.conversao;
+  const opp = total * (conv / 100);
+
+  const famLabels = { trucks: 'Caminhões', excavators: 'Escavadeiras', loaders: 'Carregadeiras', dozers: 'Tratores de Esteira', support1: 'Motoniveladoras', support2: 'Equip. Apoio' };
+
+  const projLines = projects.map((p, i) =>
+    `${i+1}. ${p.company} - ${p.project} (${p.location.city},${p.location.state}) US$${p.capex}M S${p.stage} ${p.depositType||p.type}${p.sotreqStatus!=='não iniciado'?' Sotreq:'+p.sotreqStatus:''}`
+  );
+
+  const newsLines = (typeof newsData !== 'undefined' && newsData.length ? newsData.slice(-10).map(n =>
+    `- [${n.date}] **${n.company}** — ${n.title}`
+  ) : []);
+
+  const allocMap = typeof EQUIP_ALLOC !== 'undefined' ? EQUIP_ALLOC : {};
+  const depTypesDB = { iacSaprolite: 'Argila Iônica', hardRock: 'Rocha Dura', reprocessing: 'Reprocessamento', exploration: 'Exploração' };
+  const allocLines = Object.entries(allocMap).map(([t, alloc]) =>
+    `${depTypesDB[t] || t}: ${Object.entries(alloc).map(([k, v]) => `${famLabels[k]} ${(v*100).toFixed(1)}%`).join(', ')}`
+  );
+
+  return `Você é o MinerAI, analista sênior do Mining Intelligence Portal da Sotreq (dealer CAT no Brasil).
+
+SISTEMA: ${projects.length} projetos terras raras/minerais críticos no Brasil. CAPEX total US$${(total/1000).toFixed(1)}Bi, oportunidade Sotreq ~US$${(opp/1000).toFixed(1)}Bi (${conv}% do CAPEX). Janela ${c.anoInicio}–${c.anoFim}.
+
+FROTA: Frota = CAPEX × %alocação ÷ preço. Preços (USD): Caminhões US$800k, Escavadeiras US$4,5Mi, Carregadeiras US$3,8Mi, Tratores US$2,5Mi, Motoniveladoras US$1,5Mi, Equip.Apoio US$700k. Alocações: ${allocLines.join(' | ') || '—'}.
+
+TIPOS DEPÓSITO: IAC=lavra seletiva, cava rasa, frota médio porte (CAT 740/745/707, 349-352, 972-988, D6-D9) | Rocha Dura=frota robusta (CAT 745/770/772/773, 352-395, 988-992, D8-D10) | Reprocessamento=pátio (CAT 966-988, D6/D8) | Exploração=sem frota.
+
+PROJETOS (${projects.length}):
+${projLines.join('\n')}
+${newsLines.length ? '\nNOTÍCIAS:\n'+newsLines.join('\n') : ''}
+
+REGRAS: Responda em português, direto ao ponto, sem introduções ou rodeios. Aprofunde só se pedirem. Há limite de tamanho por resposta, prefira ser breve e completo a longo e cortado. Markdown simples. Se não souber, diga "Isso não está nos dados". Valores em USD.`;
+}
+
+function addChatMessage(role, text) {
+  const el = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  div.innerHTML = '<div class="chat-bubble">' + marked(text) + '</div>';
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+  return div;
+}
+
+function sendSuggestion(text) {
+  document.getElementById('chatInput').value = text;
+  sendChat();
+}
+
+const CHAT_MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite'];
+const CHAT_API = 'v1';
+const GEMINI_KEY = 'AQ.Ab8RN6KX7PvxJnkd2rBySq_501yVYqidFrxVY2p9A25ZeehcvA';
+
+function getGeminiKey() { return localStorage.getItem('gemini_key') || GEMINI_KEY; }
+function setGeminiKey(k) { if (k) localStorage.setItem('gemini_key', k); }
+
+async function chatFetch(key, body) {
+  for (let i = 0; i < CHAT_MODELS.length; i++) {
+    const url = 'https://generativelanguage.googleapis.com/' + CHAT_API + '/models/' + CHAT_MODELS[i] + ':streamGenerateContent?alt=sse';
+    const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-goog-api-key': key }, body: JSON.stringify(body) });
+    if (resp.ok) return resp;
+    if (resp.status === 429 || resp.status === 403 || resp.status >= 500) continue;
+    return resp;
+  }
+  return null;
+}
+
+function convertChatToGemini(messages) {
+  const system = messages.find(m => m.role === 'system');
+  const others = messages.filter(m => m.role !== 'system');
+  const contents = others.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
+  return { system: system ? system.content : '', contents };
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  let geminiKey = getGeminiKey();
+
+  input.value = '';
+  if (!chatInitialized) initChat();
+  document.getElementById('chSuggestions').style.display = 'none';
+  addChatMessage('user', text);
+
+  document.getElementById('chatSendBtn').disabled = true;
+  document.getElementById('chatSendBtn').innerHTML = '<i class="bi bi-three-dots"></i>';
+
+  // thinking indicator
+  const thinkEl = document.createElement('div');
+  thinkEl.className = 'chat-msg assistant';
+  thinkEl.innerHTML = '<div class="chat-bubble chat-thinking"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
+  document.getElementById('chatMessages').appendChild(thinkEl);
+  thinkEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  try {
+    const allMessages = [
+      ...(fullContextSent ? [] : chatHistory.filter(m => m.role === 'system')),
+      ...chatHistory.filter(m => m.role !== 'system').slice(-6),
+      { role: 'user', content: text }
+    ];
+    fullContextSent = true;
+
+    const { system, contents } = convertChatToGemini(allMessages);
+
+    const body = { contents, generationConfig: { temperature: 0.3, maxOutputTokens: 4096 } };
+    if (system) {
+      contents.unshift({ role: 'user', parts: [{ text: '[INSTRUÇÃO DO SISTEMA] ' + system + ' [/INSTRUÇÃO]' }] });
+      contents.unshift({ role: 'model', parts: [{ text: 'OK, entendi as instruções do sistema.' }] });
+    }
+
+    const resp = await chatFetch(geminiKey, body);
+
+    if (!resp) throw new Error('Todos os modelos Gemini estão indisponíveis no momento (alta demanda ou cota excedida). Tente novamente em alguns minutos.');
+
+    if (!resp.ok) {
+      const bodyText = await resp.text().catch(() => '');
+      let detail = 'Erro ' + resp.status;
+      try { const j = JSON.parse(bodyText); detail = j.error?.message || detail; } catch (_) {}
+      throw new Error(detail);
+    }
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let reply = '';
+    if (thinkEl.parentNode) thinkEl.remove();
+    const msgEl = addChatMessage('assistant', '');
+    const bubble = msgEl.querySelector('.chat-bubble');
+
+    let finishReason = '';
+    const processChunk = (chunk) => {
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const json = JSON.parse(line.slice(6));
+          const part = json.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (part) {
+            reply += part;
+            bubble.innerHTML = marked(reply);
+            msgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+          if (json.candidates?.[0]?.finishReason) finishReason = json.candidates[0].finishReason;
+        } catch (_) {}
+      }
+    };
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      processChunk(decoder.decode(value, { stream: true }));
+    }
+    processChunk(decoder.decode()); // flush
+
+    // Auto-continue if response was truncated
+    let contReply = reply;
+    while (finishReason === 'MAX_TOKENS') {
+      finishReason = '';
+      bubble.innerHTML = marked(contReply) + '<span style="display:inline-flex;gap:3px;margin-left:4px;"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
+      const contBody = {
+        contents: [
+          ...contents,
+          { role: 'model', parts: [{ text: contReply }] },
+          { role: 'user', parts: [{ text: 'Continue de onde parou, sem repetir o que já foi dito.' }] }
+        ],
+        generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }
+      };
+      const contResp = await chatFetch(geminiKey, contBody);
+      if (!contResp || !contResp.ok) break;
+      const cr = contResp.body.getReader();
+      while (true) {
+        const { done, value } = await cr.read();
+        if (done) break;
+        processChunk(decoder.decode(value, { stream: true }));
+      }
+      processChunk(decoder.decode());
+      contReply = reply;
+    }
+    reply = contReply;
+
+    chatHistory.push({ role: 'user', content: text });
+    chatHistory.push({ role: 'assistant', content: reply });
+
+  } catch (err) {
+    if (thinkEl.parentNode) thinkEl.remove();
+    const el = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'chat-msg assistant';
+    div.innerHTML = '<div class="chat-bubble">❌ Erro: ' + escHtml(err.message) + '</div>';
+    el.appendChild(div);
+  }
+
+  document.getElementById('chatSendBtn').disabled = false;
+  document.getElementById('chatSendBtn').innerHTML = '<i class="bi bi-send-fill"></i>';
+}
+
+function chatKeyHandler(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+// ── News fetch from UI ──
+async function fetchNewsUI() {
+  const btn = document.getElementById('fetchNewsBtn');
+  const status = document.getElementById('fetchNewsStatus');
+  btn.disabled = true; btn.style.opacity = '0.6';
+  status.innerHTML = '<i class="bi bi-hourglass-split"></i> Buscando...';
+
+  try {
+    const results = await sotreqFetchNews();
+    const added = results.length;
+    newsData.unshift(...results);
+    newsData.sort((a, b) => {
+      const ma = {Jan:0,Fev:1,Mar:2,Abr:3,Mai:4,Jun:5,Jul:6,Ago:7,Set:8,Out:9,Nov:10,Dez:11};
+      const ps = s => { const p = s.split('/'); const m = p[0].split(' '); return { d: parseInt(m[0])||1, m: ma[m[m.length-1]]||0, y: parseInt(p[1])||0 }; };
+      const pa = ps(a.date), pb = ps(b.date);
+      return (pb.y - pa.y) || (pb.m - pa.m) || (pb.d - pa.d);
+    });
+    if (newsData.length > 12) newsData.splice(12, newsData.length - 12);
+
+    sotreqSaveData();
+    renderNoticias();
+    renderSotreqSummary();
+
+    if (added > 0) {
+      status.innerHTML = '<span style="color:var(--cat-green);"><i class="bi bi-check-lg"></i> ' + added + ' nova' + (added > 1 ? 's' : '') + ' notícia' + (added > 1 ? 's' : '') + ' adicionada' + (added > 1 ? 's' : '') + '</span>';
+    } else {
+      status.innerHTML = '<span style="color:var(--cat-text-muted);"><i class="bi bi-info-circle"></i> Nenhuma notícia nova</span>';
+    }
+  } catch (e) {
+    status.innerHTML = '<span style="color:var(--cat-red);">Erro ao buscar: ' + escHtml(e.message) + '</span>';
+  }
+
+  btn.disabled = false; btn.style.opacity = '1';
+}
+
+function marked(text) {
+  if (!text) return '';
+  let t = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>');
+  t = t.replace(/(<li>[\s\S]*?<\/li>(\s*<li>[\s\S]*?<\/li>)*)/g, '<ul>$1</ul>');
+  t = t.replace(/\n\n/g, '</p><p>');
+  t = t.replace(/\n(?!<\/?[uo]l>|<\/?li>|<br>)/g, '<br>');
+  if (!t.startsWith('<')) t = '<p>' + t + '</p>';
+  return t;
+}
+
 function openAdminModal() {
   document.getElementById('adminModal').classList.add('open');
 }
@@ -4938,5 +5365,9 @@ function closeAdminModal() {
 }
 </script>
 
+<!-- chat moved to MinerAI tab -->
+
+<script>
+</script>
 </body>
 </html>
