@@ -519,6 +519,12 @@ gios de maturidade    --cat-red: #ff4444;
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes chartHighlight {
+    0% { outline-color: var(--cat-yellow); outline-offset: 0px; }
+    50% { outline-color: var(--cat-yellow); outline-offset: 6px; }
+    100% { outline-color: transparent; outline-offset: 6px; }
+  }
+  .chart-highlight { animation: chartHighlight 1.5s ease-out forwards; outline: 2px solid var(--cat-yellow); }
   .summary-card, .opp-card, .machine-card, .state-card, .pipe-stage {
     animation: fadeInUp 0.4s ease-out;
   }
@@ -1078,32 +1084,32 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
 <div class="summary-carousel-wrapper">
   <div class="summary-carousel" id="summaryCarousel">
-    <div class="summary-card">
+    <div class="summary-card" onclick="goToChart('funil')" style="cursor:pointer;">
       <div class="label">Projetos Mapeados</div>
       <div class="value yellow" id="totalProjetos">0</div>
       <div class="sub">Em diferentes estágios</div>
     </div>
-    <div class="summary-card">
+    <div class="summary-card" onclick="goToChart('chartCompanyCapex')" style="cursor:pointer;">
       <div class="label">CAPEX Total</div>
       <div class="value green" id="totalCapex">0</div>
       <div class="sub">Investimento acumulado</div>
     </div>
-    <div class="summary-card">
+    <div class="summary-card" onclick="goToChart('chartStageDistribution')" style="cursor:pointer;">
       <div class="label">Início Operação</div>
       <div class="value blue">2026-2030</div>
       <div class="sub">Janela crítica de oportunidade</div>
     </div>
-    <div class="summary-card">
+    <div class="summary-card" onclick="goToChart('chartCapexByState')" style="cursor:pointer;">
       <div class="label">Estados</div>
       <div class="value orange" id="totalEstados">0</div>
       <div class="sub">MG, BA, GO, AM, PA, RJ</div>
     </div>
-    <div class="summary-card">
+    <div class="summary-card" onclick="goToChart('chartCompanyCapex')" style="cursor:pointer;">
       <div class="label">Potencial Máquinas</div>
       <div class="value yellow" id="totalMachine">0</div>
       <div class="sub">Unidades estimadas</div>
     </div>
-    <div class="summary-card">
+    <div class="summary-card" onclick="goToChart('chartCompanyCapex')" style="cursor:pointer;">
       <div class="label">Oportunidade Sotreq</div>
       <div class="value green" id="totalOpportunity">0</div>
       <div class="sub">Receita estimada máquinas + serviços</div>
@@ -1113,7 +1119,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="value blue" id="totalFleetValue">0</div>
       <div class="sub" id="fleetValueDetail">Preço médio dos equipamentos × quantidade</div>
     </div>
-    <div class="summary-card">
+    <div class="summary-card" onclick="switchTab('resumo')" style="cursor:pointer;">
       <div class="label">Crescimento Anual (IEA)</div>
       <div class="value purple">15–20%</div>
       <div class="sub">Demanda global de REE até 2030</div>
@@ -2326,6 +2332,18 @@ function switchTab(tab) {
   document.getElementById(`tab-${tab}`).classList.add('active');
   if (tab === 'mineria' && !chatInitialized) initChat();
   if (tab === 'dashboard') renderCharts();
+}
+
+function goToChart(id) {
+  switchTab('dashboard');
+  const el = document.getElementById(id);
+  if (!el) return;
+  setTimeout(() => {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.remove('chart-highlight');
+    void el.offsetWidth;
+    el.classList.add('chart-highlight');
+  }, 100);
 }
 
 // ── RESUMO EXECUTIVO ──
@@ -5078,26 +5096,23 @@ function escHtml(str) {
 // ── MinerAI Chat ──
 let chatHistory = [];
 let chatInitialized = false;
-let fullContextSent = false;
 
 function initChat() {
   if (chatInitialized) return;
   chatHistory.push({ role: 'system', content: buildChatContext() });
   chatInitialized = true;
-  fullContextSent = false;
 }
 
 function resetChat() {
   chatHistory = [];
   chatInitialized = false;
-  fullContextSent = false;
   const el = document.getElementById('chatMessages');
   if (el) el.innerHTML = '';
 }
 
 function buildChatContext() {
   const total = projects.reduce((a, p) => a + p.capex, 0);
-  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, taxaCrescimento: '15–20%', equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
+  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
   const conv = c.conversao;
   const opp = total * (conv / 100);
 
@@ -5108,7 +5123,7 @@ function buildChatContext() {
   );
 
   const newsLines = (typeof newsData !== 'undefined' && newsData.length ? newsData.slice(-10).map(n =>
-    `- [${n.date}] **${n.company}** — ${n.title}`
+    `- [${n.date}] ${n.company} — ${n.title}`
   ) : []);
 
   const allocMap = typeof EQUIP_ALLOC !== 'undefined' ? EQUIP_ALLOC : {};
@@ -5117,20 +5132,24 @@ function buildChatContext() {
     `${depTypesDB[t] || t}: ${Object.entries(alloc).map(([k, v]) => `${famLabels[k]} ${(v*100).toFixed(1)}%`).join(', ')}`
   );
 
-  return `Você é o MinerAI, analista sênior do Mining Intelligence Portal da Sotreq (dealer CAT no Brasil).
+  return `Você é o MinerAI do Mining Intelligence Portal da Sotreq.
 
-SISTEMA: ${projects.length} projetos terras raras/minerais críticos no Brasil. CAPEX total US$${(total/1000).toFixed(1)}Bi, oportunidade Sotreq ~US$${(opp/1000).toFixed(1)}Bi (${conv}% do CAPEX). Janela ${c.anoInicio}–${c.anoFim}.
-
-FROTA: Frota = CAPEX × %alocação ÷ preço. Preços (USD): Caminhões US$800k, Escavadeiras US$4,5Mi, Carregadeiras US$3,8Mi, Tratores US$2,5Mi, Motoniveladoras US$1,5Mi, Equip.Apoio US$700k. Alocações: ${allocLines.join(' | ') || '—'}.
-
-TIPOS DEPÓSITO: IAC=lavra seletiva, cava rasa, frota médio porte (CAT 740/745/707, 349-352, 972-988, D6-D9) | Rocha Dura=frota robusta (CAT 745/770/772/773, 352-395, 988-992, D8-D10) | Reprocessamento=pátio (CAT 966-988, D6/D8) | Exploração=sem frota.
+FUNCIONAMENTO:
+1. SEMPRE procure primeiro a empresa/projeto na lista de PROJETOS abaixo.
+2. Se encontrar, responda com base nos dados do portal (CAPEX, estágio, localização, tipo depósito, oportunidade Sotreq).
+3. Se a empresa NÃO estiver na lista, diga que não consta no portal. Depois pode complementar com conhecimento geral se for relevante.
+4. Se estiver na lista mas faltar dado específico, pode complementar com seu conhecimento.
 
 PROJETOS (${projects.length}):
 ${projLines.join('\n')}
+
+CAPEX total: US$${(total/1000).toFixed(1)}Bi | Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}%) | Janela: ${c.anoInicio}–${c.anoFim}
+
+FROTA: Caminhões US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Motoniveladoras US$1,5Mi | Equip.Apoio US$700k
+Alocações: ${allocLines.join(' | ') || '—'}
 ${newsLines.length ? '\nNOTÍCIAS:\n'+newsLines.join('\n') : ''}
 
-REGRAS: Responda em português, direto ao ponto, sem introduções ou rodeios. Aprofunde só se pedirem. Há limite de tamanho por resposta, prefira ser breve e completo a longo e cortado. Markdown simples. Se não souber, diga "Isso não está nos dados". Valores em USD.`;
-}
+REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em USD. Cite os dados do projeto quando usá-los.`;
 
 function addChatMessage(role, text) {
   const el = document.getElementById('chatMessages');
@@ -5147,29 +5166,19 @@ function sendSuggestion(text) {
   sendChat();
 }
 
-const CHAT_MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite'];
-const CHAT_API = 'v1';
-const GEMINI_KEY = 'AQ.Ab8RN6IyghDeoNSawDMcjMGkAGLpXOgFGJ0KPqDNSvwzSrcaZQ';
+const OPENAI_KEY = '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';
+const OPENAI_MODEL = 'gpt-4o-mini';
 
-function getGeminiKey() { return localStorage.getItem('gemini_key') || GEMINI_KEY; }
-function setGeminiKey(k) { if (k) localStorage.setItem('gemini_key', k); }
+function getOpenAIKey() { return localStorage.getItem('openai_key') || OPENAI_KEY; }
+function setOpenAIKey(k) { if (k) localStorage.setItem('openai_key', k); }
 
-async function chatFetch(key, body) {
-  for (let i = 0; i < CHAT_MODELS.length; i++) {
-    const url = 'https://generativelanguage.googleapis.com/' + CHAT_API + '/models/' + CHAT_MODELS[i] + ':streamGenerateContent?alt=sse';
-    const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-goog-api-key': key }, body: JSON.stringify(body) });
-    if (resp.ok) return resp;
-    if (resp.status === 429 || resp.status === 403 || resp.status >= 500) continue;
-    return resp;
-  }
-  return null;
-}
-
-function convertChatToGemini(messages) {
-  const system = messages.find(m => m.role === 'system');
-  const others = messages.filter(m => m.role !== 'system');
-  const contents = others.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
-  return { system: system ? system.content : '', contents };
+async function openAIFetch(key, body) {
+  const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    body: JSON.stringify(body)
+  });
+  return resp;
 }
 
 async function sendChat() {
@@ -5177,7 +5186,7 @@ async function sendChat() {
   const text = input.value.trim();
   if (!text) return;
 
-  let geminiKey = getGeminiKey();
+  let apiKey = getOpenAIKey();
 
   input.value = '';
   if (!chatInitialized) initChat();
@@ -5195,24 +5204,15 @@ async function sendChat() {
   thinkEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   try {
-    const allMessages = [
-      ...(fullContextSent ? [] : chatHistory.filter(m => m.role === 'system')),
-      ...chatHistory.filter(m => m.role !== 'system').slice(-6),
+    const msgs = [
+      ...chatHistory.filter(m => m.role === 'system'),
+      ...chatHistory.filter(m => m.role !== 'system').slice(-8),
       { role: 'user', content: text }
     ];
-    fullContextSent = true;
 
-    const { system, contents } = convertChatToGemini(allMessages);
+    const body = { model: OPENAI_MODEL, messages: msgs, stream: true, temperature: 0.3, max_tokens: 4096 };
 
-    const body = { contents, generationConfig: { temperature: 0.3, maxOutputTokens: 4096 } };
-    if (system) {
-      contents.unshift({ role: 'user', parts: [{ text: '[INSTRUÇÃO DO SISTEMA] ' + system + ' [/INSTRUÇÃO]' }] });
-      contents.unshift({ role: 'model', parts: [{ text: 'OK, entendi as instruções do sistema.' }] });
-    }
-
-    const resp = await chatFetch(geminiKey, body);
-
-    if (!resp) throw new Error('Todos os modelos Gemini estão indisponíveis no momento (alta demanda ou cota excedida). Tente novamente em alguns minutos.');
+    const resp = await openAIFetch(apiKey, body);
 
     if (!resp.ok) {
       const bodyText = await resp.text().catch(() => '');
@@ -5228,56 +5228,28 @@ async function sendChat() {
     const msgEl = addChatMessage('assistant', '');
     const bubble = msgEl.querySelector('.chat-bubble');
 
-    let finishReason = '';
-    const processChunk = (chunk) => {
-      const lines = chunk.split('\n');
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        try {
-          const json = JSON.parse(line.slice(6));
-          const part = json.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (part) {
-            reply += part;
-            bubble.innerHTML = marked(reply);
-            msgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          }
-          if (json.candidates?.[0]?.finishReason) finishReason = json.candidates[0].finishReason;
-        } catch (_) {}
-      }
-    };
-
+    let buffer = '';
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      processChunk(decoder.decode(value, { stream: true }));
-    }
-    processChunk(decoder.decode()); // flush
-
-    // Auto-continue if response was truncated
-    let contReply = reply;
-    while (finishReason === 'MAX_TOKENS') {
-      finishReason = '';
-      bubble.innerHTML = marked(contReply) + '<span style="display:inline-flex;gap:3px;margin-left:4px;"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
-      const contBody = {
-        contents: [
-          ...contents,
-          { role: 'model', parts: [{ text: contReply }] },
-          { role: 'user', parts: [{ text: 'Continue de onde parou, sem repetir o que já foi dito.' }] }
-        ],
-        generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }
-      };
-      const contResp = await chatFetch(geminiKey, contBody);
-      if (!contResp || !contResp.ok) break;
-      const cr = contResp.body.getReader();
-      while (true) {
-        const { done, value } = await cr.read();
-        if (done) break;
-        processChunk(decoder.decode(value, { stream: true }));
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const payload = line.slice(6).trim();
+        if (payload === '[DONE]') break;
+        try {
+          const json = JSON.parse(payload);
+          const content = json.choices?.[0]?.delta?.content || '';
+          if (content) {
+            reply += content;
+            bubble.innerHTML = marked(reply);
+            msgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        } catch (_) {}
       }
-      processChunk(decoder.decode());
-      contReply = reply;
     }
-    reply = contReply;
 
     chatHistory.push({ role: 'user', content: text });
     chatHistory.push({ role: 'assistant', content: reply });
