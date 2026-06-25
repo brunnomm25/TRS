@@ -5175,19 +5175,29 @@ function sendSuggestion(text) {
   sendChat();
 }
 
-const OPENAI_KEY = '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';
-const OPENAI_MODEL = 'gpt-4o-mini';
+const CHAT_MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite'];
+const CHAT_API = 'v1';
+const GEMINI_KEY = 'AQ.Ab8RN6KYh0h38TWmndTTpw06u5jcHWMF2wsiVIhcNLPT8Xjxiw';
 
-function getOpenAIKey() { return localStorage.getItem('openai_key') || OPENAI_KEY; }
-function setOpenAIKey(k) { if (k) localStorage.setItem('openai_key', k); }
+function getGeminiKey() { return localStorage.getItem('gemini_key') || GEMINI_KEY; }
+function setGeminiKey(k) { if (k) localStorage.setItem('gemini_key', k); }
 
-async function openAIFetch(key, body) {
-  const resp = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify(body)
-  });
-  return resp;
+async function chatFetch(key, body) {
+  for (let i = 0; i < CHAT_MODELS.length; i++) {
+    const url = 'https://generativelanguage.googleapis.com/' + CHAT_API + '/models/' + CHAT_MODELS[i] + ':streamGenerateContent?alt=sse';
+    const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-goog-api-key': key }, body: JSON.stringify(body) });
+    if (resp.ok) return resp;
+    if (resp.status === 429 || resp.status === 403 || resp.status >= 500) continue;
+    return resp;
+  }
+  return null;
+}
+
+function convertChatToGemini(messages) {
+  const system = messages.find(m => m.role === 'system');
+  const others = messages.filter(m => m.role !== 'system');
+  const contents = others.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
+  return { system: system ? system.content : '', contents };
 }
 
 async function sendChat() {
@@ -5195,7 +5205,7 @@ async function sendChat() {
   const text = input.value.trim();
   if (!text) return;
 
-  let apiKey = getOpenAIKey();
+  let geminiKey = getGeminiKey();
 
   input.value = '';
   if (!chatInitialized) initChat();
@@ -5213,15 +5223,23 @@ async function sendChat() {
   thinkEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   try {
-    const msgs = [
+    const allMessages = [
       ...chatHistory.filter(m => m.role === 'system'),
       ...chatHistory.filter(m => m.role !== 'system').slice(-8),
       { role: 'user', content: text }
     ];
 
-    const body = { model: OPENAI_MODEL, messages: msgs, stream: true, temperature: 0.3, max_tokens: 4096 };
+    const { system, contents } = convertChatToGemini(allMessages);
 
-    const resp = await openAIFetch(apiKey, body);
+    const body = { contents, generationConfig: { temperature: 0.3, maxOutputTokens: 4096 } };
+    if (system) {
+      contents.unshift({ role: 'user', parts: [{ text: '[INSTRUÇÃO DO SISTEMA] ' + system + ' [/INSTRUÇÃO]' }] });
+      contents.unshift({ role: 'model', parts: [{ text: 'OK, entendi as instruções do sistema.' }] });
+    }
+
+    const resp = await chatFetch(geminiKey, body);
+
+    if (!resp) throw new Error('Todos os modelos Gemini estão indisponíveis. Tente novamente em alguns minutos.');
 
     if (!resp.ok) {
       const bodyText = await resp.text().catch(() => '');
@@ -5237,28 +5255,59 @@ async function sendChat() {
     const msgEl = addChatMessage('assistant', '');
     const bubble = msgEl.querySelector('.chat-bubble');
 
+    let finishReason = '';
     let buffer = '';
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
+    const processChunk = (chunk) => {
+      buffer += chunk;
       const lines = buffer.split('\n');
       buffer = lines.pop() || '';
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
-        const payload = line.slice(6).trim();
-        if (payload === '[DONE]') break;
         try {
-          const json = JSON.parse(payload);
-          const content = json.choices?.[0]?.delta?.content || '';
-          if (content) {
-            reply += content;
+          const json = JSON.parse(line.slice(6));
+          const part = json.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (part) {
+            reply += part;
             bubble.innerHTML = marked(reply);
             msgEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
+          if (json.candidates?.[0]?.finishReason) finishReason = json.candidates[0].finishReason;
         } catch (_) {}
       }
+    };
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      processChunk(decoder.decode(value, { stream: true }));
     }
+    processChunk(decoder.decode());
+
+    // Auto-continue if response was truncated
+    let contReply = reply;
+    while (finishReason === 'MAX_TOKENS') {
+      finishReason = '';
+      bubble.innerHTML = marked(contReply) + '<span style="display:inline-flex;gap:3px;margin-left:4px;"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>';
+      const contBody = {
+        contents: [
+          ...contents,
+          { role: 'model', parts: [{ text: contReply }] },
+          { role: 'user', parts: [{ text: 'Continue de onde parou, sem repetir o que já foi dito.' }] }
+        ],
+        generationConfig: { temperature: 0.3, maxOutputTokens: 4096 }
+      };
+      const contResp = await chatFetch(geminiKey, contBody);
+      if (!contResp || !contResp.ok) break;
+      const cr = contResp.body.getReader();
+      while (true) {
+        const { done, value } = await cr.read();
+        if (done) break;
+        processChunk(decoder.decode(value, { stream: true }));
+      }
+      processChunk(decoder.decode());
+      contReply = reply;
+    }
+    reply = contReply;
 
     chatHistory.push({ role: 'user', content: text });
     chatHistory.push({ role: 'assistant', content: reply });
