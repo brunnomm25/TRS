@@ -1369,8 +1369,11 @@
     font-size: 13px; line-height: 1.5;
   }
   .chat-msg.user .chat-bubble {
-    background: var(--cat-yellow); color: var(--cat-black);
+    background: var(--cat-yellow); color: #111827;
     border-bottom-right-radius: 4px;
+  }
+  [data-theme="dark"] .chat-msg.user .chat-bubble {
+    color: #ffffff;
   }
   .chat-msg.assistant .chat-bubble {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
@@ -1405,11 +1408,27 @@
   }
   .chat-input-bar button:hover { transform: scale(1.05); }
   .chat-input-bar button:disabled { opacity: 0.5; cursor: default; transform: none; }
-  /* ── MinerAI Tab ── */
+  /* ── MinerAÍ Tab ── */
   .mineria-card {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
     border-radius: 16px; overflow: hidden;
   }
+  .mineria-chat-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--cat-gray-light);
+    background: color-mix(in srgb, var(--cat-yellow) 7%, var(--cat-black));
+  }
+  .mineria-chat-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .mineria-chat-title img { width: 34px; height: 34px; border-radius: 9px; object-fit: cover; border: 1px solid rgba(255,205,0,0.35); }
+  .mineria-chat-title strong { color: var(--cat-fg); font-size: 14px; display: block; line-height: 1.1; }
+  .mineria-chat-title span { color: var(--cat-text-muted); font-size: 11px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mineria-chat-actions { display: flex; align-items: center; gap: 8px; }
+  .mineria-chat-actions button {
+    width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--cat-gray-light);
+    background: var(--cat-black); color: var(--cat-fg); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+  }
+  .mineria-chat-actions button:hover { border-color: var(--cat-yellow); color: var(--cat-yellow); }
   .mineria-chat {
     display: flex; flex-direction: column;
     min-height: 400px; max-height: 55vh;
@@ -1445,6 +1464,82 @@
   }
   .mineria-chat .chat-input-bar button:hover { transform: scale(1.05); }
   .mineria-chat .chat-input-bar button:disabled { opacity: 0.5; cursor: default; transform: none; }
+  body.minerai-fullscreen { overflow: hidden; }
+  body.minerai-fullscreen .mineria-card {
+    position: fixed; inset: 16px; z-index: 9500;
+    border-radius: 18px; display: flex; flex-direction: column;
+    background: #ffffff;
+    color: #1f2933;
+    border: 1px solid rgba(17,24,39,0.12);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  }
+  body.minerai-fullscreen .mineria-card::before {
+    content: ''; position: fixed; inset: 0; z-index: -1;
+    background: rgba(248,250,252,0.92); backdrop-filter: blur(10px);
+  }
+  body.minerai-fullscreen .mineria-chat-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  body.minerai-fullscreen .mineria-chat-title strong { color: #111827; }
+  body.minerai-fullscreen .mineria-chat-title span { color: #667085; }
+  body.minerai-fullscreen .mineria-chat-actions button {
+    background: #f8fafc;
+    border-color: #d0d5dd;
+    color: #344054;
+  }
+  body.minerai-fullscreen .mineria-chat-actions button:hover {
+    background: #FFCD00;
+    border-color: #FFCD00;
+    color: #111827;
+  }
+  body.minerai-fullscreen .mineria-chat {
+    min-height: 0; max-height: none; height: 100%;
+  }
+  body.minerai-fullscreen .mineria-chat .chat-messages {
+    max-height: none; min-height: 0; padding: 24px max(24px, calc((100vw - 980px) / 2));
+    background: #ffffff;
+  }
+  body.minerai-fullscreen .mineria-chat .chat-input-bar {
+    padding: 16px max(24px, calc((100vw - 980px) / 2));
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+  }
+  body.minerai-fullscreen .mineria-chat .chat-input-bar textarea {
+    min-height: 48px; font-size: 15px; border-radius: 14px;
+    background: #f9fafb;
+    color: #111827;
+    border-color: #d0d5dd;
+    box-shadow: 0 8px 24px rgba(15,23,42,0.06);
+  }
+  body.minerai-fullscreen .mineria-chat .chat-input-bar textarea:focus {
+    background: #ffffff;
+    border-color: #FFCD00;
+  }
+  body.minerai-fullscreen .chat-bubble {
+    max-width: min(820px, 92%);
+    font-size: 14px;
+  }
+  body.minerai-fullscreen .chat-msg.assistant .chat-bubble {
+    background: #f4f6f8;
+    border-color: #e5e7eb;
+    color: #1f2933;
+  }
+  body.minerai-fullscreen .chat-msg.user .chat-bubble {
+    background: #FFCD00;
+    color: #111827;
+  }
+  [data-theme="dark"] body.minerai-fullscreen .chat-msg.user .chat-bubble {
+    color: #ffffff;
+  }
+  body.minerai-fullscreen .chat-msg.assistant .chat-bubble strong { color: #111827; }
+  body.minerai-fullscreen #mineraiExpandIcon::before { content: "\f659"; }
+  @media (max-width:700px) {
+    body.minerai-fullscreen .mineria-card { inset: 8px; border-radius: 14px; }
+    body.minerai-fullscreen .mineria-chat .chat-messages,
+    body.minerai-fullscreen .mineria-chat .chat-input-bar { padding-left: 14px; padding-right: 14px; }
+    .mineria-chat-title span { display: none; }
+  }
 
   .ch-suggestions {
     display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
@@ -1567,7 +1662,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('mineria')"><i class="bi bi-robot"></i> MinerAI</button>
+  <button class="tab-btn active" onclick="switchTab('mineria')"><i class="bi bi-robot"></i> MinerAÍ</button>
   <button class="tab-btn" onclick="switchTab('resumo')"><i class="bi bi-file-text"></i> Resumo Executivo</button>
   <button class="tab-btn" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
   <button class="tab-btn" onclick="switchTab('noticias')"><i class="bi bi-newspaper"></i> Notícias</button>
@@ -1580,10 +1675,10 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   <div style="background:linear-gradient(135deg, rgba(255,205,0,0.08) 0%, var(--cat-black) 100%);border-radius:16px;padding:32px 36px;margin-bottom:24px;border:1px solid rgba(255,205,0,0.15);">
     <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
       <div style="width:72px;height:72px;border-radius:18px;background:var(--cat-black);border:1px solid rgba(255,205,0,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.22);">
-        <img src="minerai.png" alt="MinerAI" style="width:100%;height:100%;object-fit:cover;">
+        <img src="minerai.png" alt="MinerAÍ" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div style="flex:1;">
-        <h2 style="font-size:24px;font-weight:800;color:var(--cat-fg);margin:0 0 4px;letter-spacing:-0.5px;">MinerAI <span style="color:var(--cat-yellow);">· Inteligência de Projetos Sotreq</span></h2>
+        <h2 style="font-size:24px;font-weight:800;color:var(--cat-fg);margin:0 0 4px;letter-spacing:-0.5px;">MinerAÍ <span style="color:var(--cat-yellow);">· Inteligência de Projetos Sotreq</span></h2>
         <p style="font-size:14px;color:var(--cat-text-muted);margin:0;">Especialista do portfólio para responder sobre projetos, CAPEX, estágios, frota CAT e oportunidades Sotreq</p>
       </div>
     </div>
@@ -1598,9 +1693,23 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
   <div class="mineria-card">
     <div class="mineria-chat" id="mineriaChat">
+      <div class="mineria-chat-header">
+        <div class="mineria-chat-title">
+          <img src="minerai.png" alt="MinerAÍ">
+          <div>
+            <strong>MinerAÍ</strong>
+            <span>Inteligencia de projetos, CAPEX e frota CAT</span>
+          </div>
+        </div>
+        <div class="mineria-chat-actions">
+          <button onclick="toggleMinerAIFullscreen()" id="mineraiFullscreenBtn" title="Expandir conversa">
+            <i class="bi bi-arrows-fullscreen" id="mineraiExpandIcon"></i>
+          </button>
+        </div>
+      </div>
       <div class="chat-messages" id="chatMessages">
         <div class="chat-msg assistant">
-          <div class="chat-bubble">Olá. Sou o MinerAI. Pergunte sobre projetos, CAPEX, estágios, frota CAT, riscos, timing e oportunidades para a Sotreq.</div>
+          <div class="chat-bubble">Olá. Sou o MinerAÍ. Pergunte sobre projetos, CAPEX, estágios, frota CAT, riscos, timing e oportunidades para a Sotreq.</div>
         </div>
       </div>
       <div class="chat-input-bar">
@@ -2203,7 +2312,7 @@ const stageNames = [
   'S6 · Operação Comercial'
 ];
 const stageDescriptions = [
-  'Direitos minerários adquiridos, primeiras sondagens, target identification.',
+  'Direitos mineraiários adquiridos, primeiras sondagens, target identification.',
   'Recursos inferidos/indicados, estudos metalúrgicos, PEA/Scoping Study.',
   'EIA/RIMA protocolado, LP concedida, viabilidade técnica comprovada.',
   'LI emitida, engenharia detalhada, projetos executivos, preparação para construção.',
@@ -2448,7 +2557,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     licensing: 'Pesquisa mineral em andamento',
     machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões', 'Carregadeiras'],
     opportunity: 'US$ 111M', type: 'Argila Iônica',
-    highlights: '91.000 ha · 57 direitos minerários · Busca parceiros internacionais',
+    highlights: '91.000 ha · 57 direitos mineraiários · Busca parceiros internacionais',
     startYear: null, depositType: 'iacSaprolite'
   },
   {
@@ -2490,7 +2599,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     project: 'Atlas / Argus / Ceres / Íris', location: { city: 'Araxá, Catalão, Itamarati, Jequié', state: 'MG' },
     capex: 10, capexDetail: 'US$ 5-10M (early stage)',
     stage: 1, forecast: 'Pré-prospecção', capacity: 'Portfólio de pesquisa',
-    licensing: 'Direitos minerários adquiridos',
+    licensing: 'Direitos mineraiários adquiridos',
     machines: ['Perfuratrizes', 'Equipamentos de sondagem', 'Tratores'],
     opportunity: 'US$ 3M', type: 'Múltiplos alvos',
     highlights: 'Cliente brasileira junior · Portfólio em MG, GO, BA · Busca parceiros',
@@ -3684,7 +3793,7 @@ async function sotreqFetchNews() {
     const tags = ['Notícia'];
     const tl = title.toLowerCase();
     if (tl.includes('terras raras') || tl.includes('rare earth') || tl.includes('terras-raras')) tags.push('Terras Raras');
-    if (tl.includes('mineração') || tl.includes('mining') || tl.includes('mineração') || tl.includes('greenfield')) tags.push('Mineração');
+    if (tl.includes('mineração') || tl.includes('mining') || tl.includes('mineracao') || tl.includes('greenfield')) tags.push('Mineração');
     if (tl.includes('investimento') || tl.includes('capex') || tl.includes('financiamento') || tl.includes('investe') || tl.includes('aquisição') || tl.includes('aquire')) tags.push('Investimento');
     if (tl.includes('licença') || tl.includes('licenciamento') || tl.includes('ambiental') || tl.includes('licensing')) tags.push('Licenciamento');
     if (tl.includes('construção') || tl.includes('construcion') || tl.includes('engineering') || tl.includes('engenharia')) tags.push('Construção');
@@ -5978,7 +6087,7 @@ async function adminDeepResearch() {
       };
     });
 
-    const promising = results.filter(r => r.capex !== null || /terras raras|rare earth|mineração|mining.*brazil/i.test(r.title));
+    const promising = results.filter(r => r.capex !== null || /terras raras|rare earth|mineração|mineracao|mining.*brazil/i.test(r.title));
 
     document.getElementById('amForm').innerHTML = `
       <p style="color:var(--cat-text-muted);font-size:12px;margin-bottom:12px;">
@@ -6018,7 +6127,7 @@ function escHtml(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── MinerAI Chat ──
+// ── MinerAÍ Chat ──
 let chatHistory = [];
 let chatInitialized = false;
 
@@ -6068,7 +6177,7 @@ function buildChatContextLegacy() {
     return `- ${lab}: ${fam}`;
   }).filter(Boolean).join('\n');
 
-  return `Você é o MinerAI — inteligência comercial interna da Sotreq. Seu propósito EXCLUSIVO é ajudar a Sotreq a identificar, qualificar e capturar novas oportunidades de negócio em projetos de terras raras, minerais estratégicos e mineração no Brasil.
+  return `Você é o MinerAÍ — inteligência comercial interna da Sotreq. Seu propósito EXCLUSIVO é ajudar a Sotreq a identificar, qualificar e capturar novas oportunidades de negócio em projetos de terras raras, minerais estratégicos e mineração no Brasil.
 
 CONTEXTO: Você é uma ferramenta de SALAS DE CONTROLE COMERCIAL da Sotreq (revenda CAT exclusiva no Brasil). Você NÃO é um portal para investidores ou consultoria para mineradoras. Você serve à equipe comercial, de marketing e diretoria da Sotreq para:
 - Entender quais projetos têm maior potencial para venda de equipamentos CAT, serviços e peças
@@ -6194,7 +6303,7 @@ function buildChatContext() {
     'Operacao S6: foco em pecas, servicos, renovacao de frota, contratos de suporte, reforma e expansoes.'
   ];
 
-  return `Voce e o MinerAI, especialista de inteligencia de projetos da Sotreq para terras raras, minerais criticos, green field e mineracao no Brasil.
+  return `Voce e o MinerAÍ, especialista de inteligencia de projetos da Sotreq para terras raras, minerais criticos, green field e mineracao no Brasil.
 
 MISSAO
 Ajudar consultores da Sotreq a entender projetos, CAPEX, cronogramas, estagios, riscos, dimensionamento de frota CAT e oportunidades associadas. A essencia comercial continua: traduzir informacao tecnica e de mercado em contexto util para abordagem, planejamento e captura de oportunidades.
@@ -6286,6 +6395,27 @@ function sendSuggestion(text) {
   document.getElementById('chatInput').value = text;
   sendChat();
 }
+
+function toggleMinerAIFullscreen(force) {
+  const on = typeof force === 'boolean' ? force : !document.body.classList.contains('minerai-fullscreen');
+  document.body.classList.toggle('minerai-fullscreen', on);
+  const btn = document.getElementById('mineraiFullscreenBtn');
+  const icon = document.getElementById('mineraiExpandIcon');
+  if (btn) btn.title = on ? 'Fechar tela cheia' : 'Expandir conversa';
+  if (icon) icon.className = on ? 'bi bi-fullscreen-exit' : 'bi bi-arrows-fullscreen';
+  setTimeout(() => {
+    const msgs = document.getElementById('chatMessages');
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    const input = document.getElementById('chatInput');
+    if (input) input.focus();
+  }, 80);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.body.classList.contains('minerai-fullscreen')) {
+    toggleMinerAIFullscreen(false);
+  }
+});
 
 const WORKER_URL = 'https://winter-pond-4ae1.brunnomm1.workers.dev';
 const CHAT_MODEL = 'gpt-4o-mini';
@@ -6450,7 +6580,7 @@ function closeAdminModal() {
 }
 </script>
 
-<!-- chat moved to MinerAI tab -->
+<!-- chat moved to MinerAÍ tab -->
 
 <script>
 </script>
