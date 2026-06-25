@@ -432,6 +432,28 @@ gios de maturidade    --cat-red: #ff4444;
     color: var(--cat-yellow);
     margin: 6px 0;
   }
+  .methodology .fg-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+    color: var(--cat-text-muted);
+  }
+  .methodology .fg-table th {
+    text-align: left; font-weight: 600; color: var(--cat-yellow);
+    padding: 6px 8px; border-bottom: 1px solid var(--cat-gray-light);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .methodology .fg-table td {
+    padding: 5px 8px; border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .methodology .fg-table tr:last-child td { border-bottom: none; }
+  .methodology code {
+    display: inline-block;
+    background: rgba(255,205,0,0.06);
+    border: 1px solid rgba(255,205,0,0.12);
+    padding: 2px 8px; border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px; color: var(--cat-yellow);
+    margin: 2px 0;
+  }
 
   footer {
     border-top: 1px solid var(--cat-gray-light);
@@ -525,6 +547,46 @@ gios de maturidade    --cat-red: #ff4444;
     100% { outline-color: transparent; outline-offset: 6px; }
   }
   .chart-highlight { animation: chartHighlight 1.5s ease-out forwards; outline: 2px solid var(--cat-yellow); }
+
+  .fleet-donut { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 16px 0; }
+  .fleet-donut svg { width: 220px; height: 220px; flex-shrink: 0; }
+  .fleet-donut-legend { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+  .fleet-donut-legend .fd-item { display: flex; align-items: center; gap: 8px; }
+  .fleet-donut-legend .fd-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .fleet-donut-legend .fd-qty { font-weight: 600; color: var(--cat-fg); }
+  .fleet-donut-legend .fd-pct { color: var(--cat-text-muted); }
+
+  .calc-section { background: var(--cat-black); border: 1px solid var(--cat-gray-light); border-radius: 12px; padding: 24px; margin-top: 32px; }
+  .calc-section h3 { font-size: 16px; font-weight: 700; color: var(--cat-fg); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .calc-form label { display: block; font-size: 12px; color: var(--cat-text-muted); margin-bottom: 4px; font-weight: 600; }
+  .calc-form input, .calc-form select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--cat-gray-light); background: var(--cat-dark); color: var(--cat-fg); font-size: 13px; outline: none; }
+  .calc-form input:focus, .calc-form select:focus { border-color: var(--cat-yellow); }
+  .calc-result { background: rgba(255,205,0,0.06); border: 1px solid rgba(255,205,0,0.12); border-radius: 8px; padding: 16px; }
+  .calc-result h4 { font-size: 14px; color: var(--cat-yellow); margin-bottom: 8px; font-weight: 600; }
+  .calc-result table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .calc-result td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .calc-result td:last-child { text-align: right; font-weight: 600; color: var(--cat-fg); }
+  @media (max-width:700px) { .calc-grid { grid-template-columns: 1fr; } .fleet-donut { justify-content: center; } }
+
+  .compare-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .compare-bar button { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--cat-yellow); background: transparent; color: var(--cat-yellow); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .compare-bar button:hover { background: var(--cat-yellow); color: var(--cat-black); }
+  .compare-bar .sel-count { font-size: 12px; color: var(--cat-text-muted); }
+  .compare-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
+  .compare-overlay.open { display: flex; }
+  .compare-panel { background: var(--cat-black); border: 1px solid var(--cat-gray-light); border-radius: 12px; padding: 28px; max-width: 90vw; max-height: 85vh; overflow: auto; }
+  .compare-panel h3 { font-size: 16px; font-weight: 700; color: var(--cat-fg); margin-bottom: 16px; }
+  .compare-grid { display: grid; gap: 12px; font-size: 13px; }
+  .compare-grid .cg-row { display: grid; grid-template-columns: 120px repeat(auto-fill, minmax(180px,1fr)); gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .compare-grid .cg-row .cg-label { font-weight: 600; color: var(--cat-yellow); font-size: 12px; }
+  .compare-grid .cg-row .cg-val { color: var(--cat-text); }
+
+  .machine-match { display: none; margin-top: 6px; font-size: 11px; color: var(--cat-yellow); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px; }
+  .machine-card:hover .machine-match { display: block; }
+
+  .chart-container { width: 100%; min-height: 200px; }
+
   .summary-card, .opp-card, .machine-card, .state-card, .pipe-stage {
     animation: fadeInUp 0.4s ease-out;
   }
@@ -1084,7 +1146,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
 <div class="summary-carousel-wrapper">
   <div class="summary-carousel" id="summaryCarousel">
-    <div class="summary-card" onclick="goToChart('funil')" style="cursor:pointer;">
+    <div class="summary-card" onclick="goToChart('todos-projetos')" style="cursor:pointer;">
       <div class="label">Projetos Mapeados</div>
       <div class="value yellow" id="totalProjetos">0</div>
       <div class="sub">Em diferentes estágios</div>
@@ -1099,12 +1161,12 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="value blue">2026-2030</div>
       <div class="sub">Janela crítica de oportunidade</div>
     </div>
-    <div class="summary-card" onclick="goToChart('chartCapexByState')" style="cursor:pointer;">
+    <div class="summary-card" onclick="goToChart('opp-map-layout')" style="cursor:pointer;">
       <div class="label">Estados</div>
       <div class="value orange" id="totalEstados">0</div>
       <div class="sub">MG, BA, GO, AM, PA, RJ</div>
     </div>
-    <div class="summary-card" onclick="goToChart('chartCompanyCapex')" style="cursor:pointer;">
+    <div class="summary-card" onclick="goToChart('demanda-maquinas')" style="cursor:pointer;">
       <div class="label">Potencial Máquinas</div>
       <div class="value yellow" id="totalMachine">0</div>
       <div class="sub">Unidades estimadas</div>
@@ -1129,8 +1191,8 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('mineria')"><i class="bi bi-robot"></i> MinerAI</button>
-  <button class="tab-btn" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
   <button class="tab-btn" onclick="switchTab('resumo')"><i class="bi bi-file-text"></i> Resumo Executivo</button>
+  <button class="tab-btn" onclick="switchTab('dashboard')"><i class="bi bi-bar-chart-fill"></i> Dashboard</button>
   <button class="tab-btn" onclick="switchTab('noticias')"><i class="bi bi-newspaper"></i> Notícias</button>
 </div>
 
@@ -1170,224 +1232,6 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   </div>
 
 </div><!-- end tab-mineria -->
-
-<div id="tab-dashboard" class="tab-page">
-
-  <!-- PIPELINE / FUNIL DE MATURIDADE -->
-  <div class="pipeline">
-    <div class="section-header">
-      <h3 id="funil">Funil de Maturidade dos Projetos <a href="#funil" class="anchor-link">#</a></h3>
-    </div>
-    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
-      Classificação própria em 6 estágios, do projeto inicial à operação comercial.
-    </p>
-    <div class="pipeline-flow" id="pipelineFlow"></div>
-  </div>
-
-  <!-- DASHBOARD CHARTS -->
-  <div class="section-header" style="margin-top:40px;">
-    <h3 id="dashboard-analitico">Dashboard Analítico <a href="#dashboard-analitico" class="anchor-link">#</a></h3>
-  </div>
-  <div class="chart-grid" id="chartGrid">
-    <div class="chart-card chart-card-full" id="chartCompanyCapex">
-      <div class="chart-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <span>Oportunidade Sotreq por Cliente</span>
-        <button onclick="toggleCapexView()" id="capexToggleBtn" style="background:var(--cat-gray-light);border:none;border-radius:6px;padding:4px 12px;font-size:11px;color:var(--cat-fg);cursor:pointer;white-space:nowrap;"><i class="bi bi-bar-chart-fill"></i> Ver CAPEX Total</button>
-      </div>
-      <div class="chart-sub">30% do CAPEX de cada empresa · fatia estimada de equipamentos CAT + serviços</div>
-    </div>
-    <div class="chart-card" id="chartCapexByState">
-      <div class="chart-title">CAPEX Sotreq por Estado</div>
-      <div class="chart-sub">Oportunidade Sotreq por estado · 30% do CAPEX dos projetos</div>
-    </div>
-    <div class="chart-card" id="chartStageDistribution">
-      <div class="chart-title">Projetos por Estágio</div>
-      <div class="chart-sub">Quantidade de projetos em cada estágio de maturidade</div>
-    </div>
-    <div class="chart-card" id="chartDepositType">
-      <div class="chart-title">Oportunidade por Tipo de Depósito</div>
-      <div class="chart-sub">Distribuição da oportunidade Sotreq por tipo de depósito</div>
-    </div>
-    <div class="chart-card" id="chartPriority">
-      <div class="chart-title">Oportunidade por Prioridade</div>
-      <div class="chart-sub">Oportunidade Sotreq alocada por nível de prioridade</div>
-    </div>
-  </div>
-  <div class="chart-tooltip" id="chartTooltip"></div>
-  <div id="chartFilterInfo" style="display:none;align-items:center;gap:8px;margin-top:12px;padding:10px 16px;background:var(--cat-black);border:1px solid var(--cat-yellow);border-radius:8px;font-size:13px;font-weight:600;color:var(--cat-yellow);"></div>
-
-  <!-- PROJECT TABLE -->
-  <div style="margin-top: 40px;">
-    <div class="section-header">
-      <h3 id="todos-projetos">Todos os Projetos <span class="badge" id="badgeCount">0</span> <a href="#todos-projetos" class="anchor-link">#</a></h3>
-      <div class="filters">
-        <select id="stateFilter" onchange="applyFilters()">
-          <option value="all">Todos os Estados</option>
-        </select>
-        <select id="stageFilter" onchange="applyFilters()">
-          <option value="all">Todos os Estágios</option>
-        </select>
-        <select id="priorityFilter" onchange="applyFilters()">
-          <option value="all">Todas Prioridades</option>
-          <option value="critical">Crítica</option>
-          <option value="high">Alta</option>
-          <option value="medium">Média</option>
-          <option value="low">Baixa</option>
-        </select>
-        <select id="depositFilter" onchange="applyFilters()">
-          <option value="all">Todos os Depósitos</option>
-          <option value="iacSaprolite">Argila Iônica / IAC</option>
-          <option value="hardRock">Rocha Dura</option>
-          <option value="reprocessing">Fosfogesso / Resíduos</option>
-          <option value="exploration">Exploração</option>
-        </select>
-        <select id="statusFilter" onchange="applyFilters()">
-          <option value="all">Status Sotreq</option>
-          <option value="fechado">Fechado</option>
-          <option value="em-negociacao">Em Negociação</option>
-          <option value="proposta-enviada">Proposta Enviada</option>
-          <option value="nao-iniciado">Não Iniciado</option>
-        </select>
-      </div>
-    </div>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th onclick="sortTable(0)">Prioridade</th>
-            <th onclick="sortTable(1)">Cliente <span class="sort-icon">↕</span></th>
-            <th onclick="sortTable(2)">Projeto <span class="sort-icon">↕</span></th>
-            <th onclick="sortTable(3)">Localização <span class="sort-icon">↕</span></th>
-            <th onclick="sortTable(4)">CAPEX <span class="sort-icon">↕</span></th>
-            <th onclick="sortTable(5)">Estágio <span class="sort-icon">↕</span></th>
-            <th onclick="sortTable(6)">Previsão <span class="sort-icon">↕</span></th>
-            <th>Licenciamento</th>
-            <th>Máquinas Necessárias</th>
-            <th>Oportunidade Sotreq</th>
-            <th>Status Sotreq</th>
-            <th>Frota CAT</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- MACHINERY -->
-  <div class="machinery-section" style="margin-top:40px;">
-    <div class="section-header">
-      <h3 id="demanda-maquinas">Análise de Demanda por Máquinas CAT <a href="#demanda-maquinas" class="anchor-link">#</a></h3>
-    </div>
-    <div class="machine-grid">
-      <div class="machine-card">
-        <div class="m-icon"><img src="caminhao.png" alt="Caminhão"></div>
-        <div class="m-name">Caminhões articulados e rígidos menores</div>
-        <div class="m-desc">Modelos: CAT 740 GC, CAT 745, CAT 707 · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
-        <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
-        <div class="m-value" id="machValTrucks" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
-      </div>
-      <div class="machine-card">
-        <div class="m-icon"><img src="escavadeira.png" alt="Escavadeira"></div>
-        <div class="m-name">Escavadeiras hidráulicas médias/grandes</div>
-        <div class="m-desc">Modelos: CAT 349, CAT 350, CAT 352 · Aplicação: lavra seletiva, carregamento de caminhões 40–66 t, abertura de frentes e manuseio de material</div>
-        <div class="m-demand" id="machExcavators">0 <small>unidades</small></div>
-        <div class="m-value" id="machValExcavators" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
-      </div>
-      <div class="machine-card">
-        <div class="m-icon"><img src="carregadeira.png" alt="Carregadeira"></div>
-        <div class="m-name">Carregadeiras de rodas</div>
-        <div class="m-desc">Modelos: CAT 972, CAT 982, CAT 988 High Lift · Aplicação: alimentação de planta, pátios, pilhas, carregamento e apoio operacional</div>
-        <div class="m-demand" id="machLoaders">0 <small>unidades</small></div>
-        <div class="m-value" id="machValLoaders" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
-      </div>
-      <div class="machine-card">
-        <div class="m-icon"><img src="trator_de_esteira.png" alt="Trator de Esteira"></div>
-        <div class="m-name">Tratores de esteira</div>
-        <div class="m-desc">Modelos: CAT D6, D8, D9 · Aplicação: acessos, limpeza, recomposição, pilhas, infraestrutura e apoio à lavra</div>
-        <div class="m-demand" id="machDozers">0 <small>unidades</small></div>
-        <div class="m-value" id="machValDozers" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
-      </div>
-      <div class="machine-card">
-        <div class="m-icon"><img src="motoniveladora.png" alt="Motoniveladora"></div>
-        <div class="m-name">Motoniveladoras</div>
-        <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16 · Aplicação: manutenção de vias, plataformas, drenagem e estabilidade operacional</div>
-        <div class="m-demand" id="machSupport1">0 <small>unidades</small></div>
-        <div class="m-value" id="machValSupport1" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
-      </div>
-      <div class="machine-card">
-        <div class="m-icon"><img src="equipamento_de_apoio.png" alt="Equipamento de Apoio"></div>
-        <div class="m-name">Equipamentos de apoio</div>
-        <div class="m-desc">Modelos: CAT 318, CAT 250, CAT 815, CAT 825, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, compactação, pequenas movimentações e operação de pátio</div>
-        <div class="m-demand" id="machSupport2">0 <small>unidades</small></div>
-        <div class="m-value" id="machValSupport2" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
-      </div>
-    </div>
-    <p style="color:var(--cat-text-muted);font-size:12px;margin-top:12px;border-left:3px solid var(--cat-yellow);padding-left:12px;"><strong style="color:var(--cat-fg);">Nova premissa:</strong> Terras raras ≠ sempre mineração pesada. O dimensionamento agora varia por tipo de depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (foco em manuseio/pátio) ou exploração (sem frota operacional completa).</p>
-  </div>
-
-  <div class="machinery-section" style="margin-top:40px;">
-    <div class="section-header">
-      <h3 id="demanda-empresas">Demanda por Empresa <a href="#demanda-empresas" class="anchor-link">#</a></h3>
-    </div>
-    <div class="co-demand-grid" id="coDemandGrid"></div>
-  </div>
-
-  <!-- TIMELINE -->
-  <div class="timeline-section" style="margin-top:40px;">
-    <div class="section-header">
-      <h3 id="cronograma">Cronograma dos Principais Projetos <a href="#cronograma" class="anchor-link">#</a></h3>
-    </div>
-    <div class="timeline" id="timeline"></div>
-  </div>
-
-  <!-- METHODOLOGY -->
-  <div class="methodology">
-    <h3><span class="m-icon"><i class="bi bi-calculator"></i></span> Metodologia de Dimensionamento de Máquinas</h3>
-    <div class="meth-grid">
-      <div class="meth-item">
-        <h4>1. Classificação por Tipo de Depósito</h4>
-        <p>Projetos de <strong>argila iônica / IAC / saprolito</strong> (ex: Viridis, Meteoric, Aclara) — lavra rasa, material argiloso, baixo desmonte, frota média e seletiva. Projetos de <strong>rocha dura / carbonatito</strong> (ex: BRE/Monte Alto, St George) — requerem britagem, perfuração e frota mais pesada. Projetos de <strong>reprocessamento / fosfogesso</strong> (ex: Rainbow/Mosaic) — foco em manuseio de material e pátio. Projetos em <strong>exploração</strong> — frota operacional completa não estimada.</p>
-      </div>
-      <div class="meth-item">
-        <h4>2. Estimativa por Alocação de CAPEX</h4>
-        <p>A frota é estimada aplicando um percentual do CAPEX de cada projeto sobre o preço médio unitário de cada família de equipamento. Os percentuais variam por tipo de depósito:</p>
-        <ul style="font-size:12px;color:var(--cat-text-muted);padding-left:20px;">
-          <li><strong>IAC:</strong> caminhões 7%, escavadeiras 2,5%, carregadeiras 1,8%, tratores 2,5%, motoniveladoras 0,8%, equip. apoio 1,2%</li>
-          <li><strong>Rocha dura:</strong> caminhões 7,5%, escavadeiras 3%, carregadeiras 2,5%, tratores 2,5%, motoniveladoras 1%, equip. apoio 1%</li>
-          <li><strong>Reprocessamento:</strong> caminhões 5%, escavadeiras 2%, carregadeiras 2,5%, tratores 1,5%, motoniveladoras 0,6%, equip. apoio 1,2%</li>
-          <li><strong>Exploração:</strong> alocação reduzida (1% caminhões, 0,5% demais)</li>
-        </ul>
-        <p>Preços médios unitários e percentuais são configuráveis no painel administrativo.</p>
-      </div>
-      <div class="meth-item">
-        <h4>3. Baseline Viridis (Argila Iônica) — Referência Real</h4>
-        <p>Cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX): 15 caminhões CAT 707 (66 t), 2 carregadeiras CAT 988 High Lift, 4 tratores D9 + 4 D8, 4 escavadeiras CAT 350 + 1 CAT 318, 1 motoniveladora CAT 16, 1 compactador CAT 825 e 2 minicarregadeiras CAT 250. Usada como referência de validação da metodologia de alocação.</p>
-      </div>
-      <div class="meth-item">
-        <h4>4. Composição de Frota por Perfil</h4>
-        <p><strong>Argila iônica:</strong> caminhões articulados CAT 740 GC / CAT 745 ou rígidos CAT 707 (36–66 t), escavadeiras CAT 349–352, carregadeiras CAT 972–988, tratores D6–D9, motoniveladoras CAT 140–16 e equipamentos de apoio (compactadores CAT 815/825, manipuladores, etc.).<br><br>
-        <strong>Rocha dura:</strong> caminhões CAT 745/770/772/773 (60–100+ t), escavadeiras CAT 352–395, carregadeiras CAT 988–992, tratores D8–D10, perfuratrizes e britadores.<br><br>
-        <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, motoniveladoras e equipamentos de apoio.<br><br>
-        <strong>Exploração:</strong> apenas equipamentos leves, sondagem e abertura de acessos — sem frota operacional completa.</p>
-        <div class="formula">Frota estimada por projeto = CAPEX × % alocação ÷ preço médio do equipamento</div>
-      </div>
-      <div class="meth-item">
-        <h4>4. Fases do Projeto</h4>
-        <p>Consideramos 3 fases: <strong>Construção</strong> (terraplenagem, vias, fundações — 18 a 24 meses), <strong>Rampeamento</strong> (aumento gradual de produção — 12 a 18 meses) e <strong>Operação Plena</strong> (frota estabilizada). A demanda por máquinas CAT é maior nas fases de construção e rampeamento.</p>
-      </div>
-      <div class="meth-item">
-        <h4>5. Fonte dos Dados</h4>
-        <p>CAPEX declarados em comunicados ao mercado (ASX, TSX, SEC), estudos de viabilidade (PFS/DFS), relatórios do Ibram, BNDES, ANM, imprensa especializada (Valor Econômico, BNamericas, Brasil Mineral, Reuters), dados de capacidade produtiva divulgados pelas empresas e <strong>cotação real de fornecedor (Sotreq/Viridis, Maio/2026).</strong></p>
-      </div>
-      <div class="meth-item">
-        <h4>6. Limitações & Riscos</h4>
-        <p>Projetos em estágio inicial (S1-S2) têm CAPEX menos precisos. Variáveis como câmbio, inflação de insumos, atrasos regulatórios e volatilidade de preços de REE podem alterar cronogramas. Este é um documento de inteligência de mercado, não uma proposta comercial vinculante.</p>
-      </div>
-    </div>
-  </div>
-
-</div><!-- end tab-dashboard -->
-
 <!-- ============================================================ -->
 <!-- TAB: RESUMO EXECUTIVO                                         -->
 <!-- ============================================================ -->
@@ -1556,6 +1400,350 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
 </div><!-- end tab-resumo -->
 
+<div id="tab-dashboard" class="tab-page">
+
+  <!-- PIPELINE / FUNIL DE MATURIDADE -->
+  <div class="pipeline">
+    <div class="section-header">
+      <h3 id="funil">Funil de Maturidade dos Projetos <a href="#funil" class="anchor-link">#</a></h3>
+    </div>
+    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
+      Classificação própria em 6 estágios, do projeto inicial à operação comercial.
+    </p>
+    <div class="pipeline-flow" id="pipelineFlow"></div>
+  </div>
+
+  <!-- DASHBOARD CHARTS -->
+  <div class="section-header" style="margin-top:40px;">
+    <h3 id="dashboard-analitico">Dashboard Analítico <a href="#dashboard-analitico" class="anchor-link">#</a></h3>
+  </div>
+  <div class="chart-grid" id="chartGrid">
+    <div class="chart-card chart-card-full" id="chartCompanyCapex">
+      <div class="chart-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span>Oportunidade Sotreq por Cliente</span>
+        <button onclick="toggleCapexView()" id="capexToggleBtn" style="background:var(--cat-gray-light);border:none;border-radius:6px;padding:4px 12px;font-size:11px;color:var(--cat-fg);cursor:pointer;white-space:nowrap;"><i class="bi bi-bar-chart-fill"></i> Ver CAPEX Total</button>
+      </div>
+      <div class="chart-sub">30% do CAPEX de cada empresa · fatia estimada de equipamentos CAT + serviços</div>
+    </div>
+    <div class="chart-card" id="chartCapexByState">
+      <div class="chart-title">CAPEX Sotreq por Estado</div>
+      <div class="chart-sub">Oportunidade Sotreq por estado · 30% do CAPEX dos projetos</div>
+    </div>
+    <div class="chart-card" id="chartStageDistribution">
+      <div class="chart-title">Projetos por Estágio</div>
+      <div class="chart-sub">Quantidade de projetos em cada estágio de maturidade</div>
+    </div>
+    <div class="chart-card" id="chartDepositType">
+      <div class="chart-title">Oportunidade por Tipo de Depósito</div>
+      <div class="chart-sub">Distribuição da oportunidade Sotreq por tipo de depósito</div>
+    </div>
+    <div class="chart-card" id="chartPriority">
+      <div class="chart-title">Oportunidade por Prioridade</div>
+      <div class="chart-sub">Oportunidade Sotreq alocada por nível de prioridade</div>
+    </div>
+  </div>
+  <div class="chart-tooltip" id="chartTooltip"></div>
+  <div id="chartFilterInfo" style="display:none;align-items:center;gap:8px;margin-top:12px;padding:10px 16px;background:var(--cat-black);border:1px solid var(--cat-yellow);border-radius:8px;font-size:13px;font-weight:600;color:var(--cat-yellow);"></div>
+
+  <!-- PROJECT TABLE -->
+  <div style="margin-top: 40px;">
+    <div class="section-header">
+      <h3 id="todos-projetos">Todos os Projetos <span class="badge" id="badgeCount">0</span> <a href="#todos-projetos" class="anchor-link">#</a></h3>
+      <div class="filters">
+        <select id="stateFilter" onchange="applyFilters()">
+          <option value="all">Todos os Estados</option>
+        </select>
+        <select id="stageFilter" onchange="applyFilters()">
+          <option value="all">Todos os Estágios</option>
+        </select>
+        <select id="priorityFilter" onchange="applyFilters()">
+          <option value="all">Todas Prioridades</option>
+          <option value="critical">Crítica</option>
+          <option value="high">Alta</option>
+          <option value="medium">Média</option>
+          <option value="low">Baixa</option>
+        </select>
+        <select id="depositFilter" onchange="applyFilters()">
+          <option value="all">Todos os Depósitos</option>
+          <option value="iacSaprolite">Argila Iônica / IAC</option>
+          <option value="hardRock">Rocha Dura</option>
+          <option value="reprocessing">Fosfogesso / Resíduos</option>
+          <option value="exploration">Exploração</option>
+        </select>
+        <select id="statusFilter" onchange="applyFilters()">
+          <option value="all">Status Sotreq</option>
+          <option value="fechado">Fechado</option>
+          <option value="em-negociacao">Em Negociação</option>
+          <option value="proposta-enviada">Proposta Enviada</option>
+          <option value="nao-iniciado">Não Iniciado</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <div class="compare-bar">
+        <span class="sel-count" id="compareCount">0 projetos selecionados</span>
+        <button onclick="openCompare()"><i class="bi bi-eye"></i> Comparar</button>
+        <button onclick="clearCompare()"><i class="bi bi-x"></i> Limpar</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:32px;"><input type="checkbox" id="compareAll" onchange="toggleCompareAll(this.checked)" title="Selecionar todos"></th>
+            <th onclick="sortTable(0)">Prioridade</th>
+            <th onclick="sortTable(1)">Cliente <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(2)">Projeto <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(3)">Localização <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(4)">CAPEX <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(5)">Estágio <span class="sort-icon">↕</span></th>
+            <th onclick="sortTable(6)">Previsão <span class="sort-icon">↕</span></th>
+            <th>Licenciamento</th>
+            <th>Máquinas Necessárias</th>
+            <th>Oportunidade Sotreq</th>
+            <th>Status Sotreq</th>
+            <th>Frota CAT</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MACHINERY -->
+  <div class="machinery-section" style="margin-top:40px;">
+    <div class="section-header">
+      <h3 id="demanda-maquinas">Análise de Demanda por Máquinas CAT <a href="#demanda-maquinas" class="anchor-link">#</a></h3>
+    </div>
+    <div class="machine-grid">
+      <div class="machine-card">
+        <div class="m-icon"><img src="caminhao.png" alt="Caminhão"></div>
+        <div class="m-name">Caminhões articulados e rígidos menores</div>
+        <div class="m-desc">Modelos: CAT 740 GC, CAT 745, CAT 707 · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
+        <div class="machine-match" id="matchTrucks">Match: 988K(3p)→773(55t) · 990H(4p)→777(90t) · 992K(4p)→785(136t)</div>
+        <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
+        <div class="m-value" id="machValTrucks" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon"><img src="escavadeira.png" alt="Escavadeira"></div>
+        <div class="m-name">Escavadeiras hidráulicas médias/grandes</div>
+        <div class="m-desc">Modelos: CAT 349, CAT 350, CAT 352 · Aplicação: lavra seletiva, carregamento de caminhões 40–66 t, abertura de frentes e manuseio de material</div>
+        <div class="machine-match" id="matchExcavators">Match: 6020FS(3p)→777(90t) · 6040FS(3p)→789(177t) · 6060FS(4p)→797(313t)</div>
+        <div class="m-demand" id="machExcavators">0 <small>unidades</small></div>
+        <div class="m-value" id="machValExcavators" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon"><img src="carregadeira.png" alt="Carregadeira"></div>
+        <div class="m-name">Carregadeiras de rodas</div>
+        <div class="m-desc">Modelos: CAT 972, CAT 982, CAT 988 High Lift · Aplicação: alimentação de planta, pátios, pilhas, carregamento e apoio operacional</div>
+        <div class="machine-match" id="matchLoaders">Match IAC: 988K→773/775 · 990H→773/775/777 · 992K→777/785</div>
+        <div class="m-demand" id="machLoaders">0 <small>unidades</small></div>
+        <div class="m-value" id="machValLoaders" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon"><img src="trator_de_esteira.png" alt="Trator de Esteira"></div>
+        <div class="m-name">Tratores de esteira</div>
+        <div class="m-desc">Modelos: CAT D6, D8, D9 · Aplicação: acessos, limpeza, recomposição, pilhas, infraestrutura e apoio à lavra</div>
+        <div class="machine-match" id="matchDozers">Proporção: ~25% do nº de caminhões. D8/D9 para rocha dura, D6 para argila/rejeito.</div>
+        <div class="m-demand" id="machDozers">0 <small>unidades</small></div>
+        <div class="m-value" id="machValDozers" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon"><img src="motoniveladora.png" alt="Motoniveladora"></div>
+        <div class="m-name">Motoniveladoras</div>
+        <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16 · Aplicação: manutenção de vias, plataformas, drenagem e estabilidade operacional</div>
+        <div class="machine-match" id="matchSupport1">Proporção: ~12% do nº de caminhões. 1–2 por frente de lavra.</div>
+        <div class="m-demand" id="machSupport1">0 <small>unidades</small></div>
+        <div class="m-value" id="machValSupport1" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+      <div class="machine-card">
+        <div class="m-icon"><img src="equipamento_de_apoio.png" alt="Equipamento de Apoio"></div>
+        <div class="m-name">Equipamentos de apoio</div>
+        <div class="m-desc">Modelos: CAT 318, CAT 250, CAT 815, CAT 825, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, compactação, pequenas movimentações e operação de pátio</div>
+        <div class="machine-match" id="matchSupport2">Proporção: ~15% do nº de caminhões. Compactadores, empilhadeiras, minicarregadeiras.</div>
+        <div class="m-demand" id="machSupport2">0 <small>unidades</small></div>
+        <div class="m-value" id="machValSupport2" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;border-top:1px solid var(--cat-gray-light);padding-top:16px;">
+      <div class="fleet-donut" id="fleetDonut"><div class="chart-container" id="fleetDonutChart" style="min-height:220px;"></div></div>
+    </div>
+    <p style="color:var(--cat-text-muted);font-size:12px;margin-top:12px;border-left:3px solid var(--cat-yellow);padding-left:12px;"><strong style="color:var(--cat-fg);">Nova premissa:</strong> Terras raras ≠ sempre mineração pesada. O dimensionamento agora varia por tipo de depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (foco em manuseio/pátio) ou exploração (sem frota operacional completa).</p>
+  </div>
+
+  <div class="machinery-section" style="margin-top:40px;">
+    <div class="section-header">
+      <h3 id="demanda-empresas">Demanda por Empresa <a href="#demanda-empresas" class="anchor-link">#</a></h3>
+    </div>
+    <div class="co-demand-grid" id="coDemandGrid"></div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section" style="margin-top:40px;">
+    <div class="section-header">
+      <h3 id="cronograma">Cronograma dos Principais Projetos <a href="#cronograma" class="anchor-link">#</a></h3>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="methodology">
+    <h3><span class="m-icon"><i class="bi bi-calculator"></i></span> Metodologia de Dimensionamento de Máquinas</h3>
+    <div class="meth-grid">
+      <div class="meth-item">
+        <h4>1. Classificação por Tipo de Depósito</h4>
+        <p>Projetos de <strong>argila iônica / IAC / saprolito</strong> (ex: Viridis, Meteoric, Aclara) — lavra rasa, material argiloso, baixo desmonte, frota média e seletiva. Projetos de <strong>rocha dura / carbonatito</strong> (ex: BRE/Monte Alto, St George) — requerem britagem, perfuração e frota mais pesada. Projetos de <strong>reprocessamento / fosfogesso</strong> (ex: Rainbow/Mosaic) — foco em manuseio de material e pátio. Projetos em <strong>exploração</strong> — frota operacional completa não estimada.</p>
+      </div>
+      <div class="meth-item">
+        <h4>2. Método de Cálculo (Dual)</h4>
+        <p><strong>Bottom-up (CAT Field Guide):</strong> para projetos com capacidade anual informada (t/ano), a frota é calculada a partir da produtividade horária dos matches CAT, horas operacionais (~5.500 h/ano) e regras de dimensionamento do Field Guide. Usa as tabelas de match carregador→caminhão por tipo de depósito.</p>
+        <p><strong>Top-down (alocação CAPEX):</strong> para projetos sem capacidade disponível, aplica-se percentual do CAPEX sobre preço médio por família. Percentuais por tipo de depósito:</p>
+        <ul style="font-size:12px;color:var(--cat-text-muted);padding-left:20px;">
+          <li><strong>IAC:</strong> caminhões 7%, escavadeiras 2,5%, carregadeiras 1,8%, tratores 2,5%, motoniveladoras 0,8%, equip. apoio 1,2%</li>
+          <li><strong>Rocha dura:</strong> caminhões 7,5%, escavadeiras 3%, carregadeiras 2,5%, tratores 2,5%, motoniveladoras 1%, equip. apoio 1%</li>
+          <li><strong>Reprocessamento:</strong> caminhões 5%, escavadeiras 2%, carregadeiras 2,5%, tratores 1,5%, motoniveladoras 0,6%, equip. apoio 1,2%</li>
+          <li><strong>Exploração:</strong> alocação reduzida (1% caminhões, 0,5% demais)</li>
+        </ul>
+        <p>Preços médios unitários e percentuais são configuráveis no painel administrativo. Consulte a seção "Premissas CAT Field Guide" abaixo para detalhes das tabelas de match, densidades e ciclos.</p>
+      </div>
+      <div class="meth-item">
+        <h4>3. Baseline Viridis (Argila Iônica) — Referência Real</h4>
+        <p>Cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX): 15 caminhões CAT 707 (66 t), 2 carregadeiras CAT 988 High Lift, 4 tratores D9 + 4 D8, 4 escavadeiras CAT 350 + 1 CAT 318, 1 motoniveladora CAT 16, 1 compactador CAT 825 e 2 minicarregadeiras CAT 250. Usada como referência de validação da metodologia de alocação.</p>
+      </div>
+      <div class="meth-item">
+        <h4>4. Composição de Frota por Perfil</h4>
+        <p><strong>Argila iônica:</strong> caminhões articulados CAT 740 GC / CAT 745 ou rígidos CAT 707 (36–66 t), escavadeiras CAT 349–352, carregadeiras CAT 972–988, tratores D6–D9, motoniveladoras CAT 140–16 e equipamentos de apoio (compactadores CAT 815/825, manipuladores, etc.).<br><br>
+        <strong>Rocha dura:</strong> caminhões CAT 745/770/772/773 (60–100+ t), escavadeiras CAT 352–395, carregadeiras CAT 988–992, tratores D8–D10, perfuratrizes e britadores.<br><br>
+        <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, motoniveladoras e equipamentos de apoio.<br><br>
+        <strong>Exploração:</strong> apenas equipamentos leves, sondagem e abertura de acessos — sem frota operacional completa.</p>
+        <div class="formula">Frota estimada por projeto = CAPEX × % alocação ÷ preço médio do equipamento</div>
+      </div>
+      <div class="meth-item">
+        <h4>4. Fases do Projeto</h4>
+        <p>Consideramos 3 fases: <strong>Construção</strong> (terraplenagem, vias, fundações — 18 a 24 meses), <strong>Rampeamento</strong> (aumento gradual de produção — 12 a 18 meses) e <strong>Operação Plena</strong> (frota estabilizada). A demanda por máquinas CAT é maior nas fases de construção e rampeamento.</p>
+      </div>
+      <div class="meth-item">
+        <h4>5. Fonte dos Dados</h4>
+        <p>CAPEX declarados em comunicados ao mercado (ASX, TSX, SEC), estudos de viabilidade (PFS/DFS), relatórios do Ibram, BNDES, ANM, imprensa especializada (Valor Econômico, BNamericas, Brasil Mineral, Reuters), dados de capacidade produtiva divulgados pelas empresas e <strong>cotação real de fornecedor (Sotreq/Viridis, Maio/2026).</strong></p>
+      </div>
+      <div class="meth-item">
+        <h4>6. Limitações & Riscos</h4>
+        <p>Projetos em estágio inicial (S1-S2) têm CAPEX menos precisos. Variáveis como câmbio, inflação de insumos, atrasos regulatórios e volatilidade de preços de REE podem alterar cronogramas. Este é um documento de inteligência de mercado, não uma proposta comercial vinculante.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAT FIELD GUIDE PREMISSAS -->
+  <div class="methodology" id="cat-premisses" style="margin-top:32px;">
+    <h3><span class="m-icon"><i class="bi bi-book"></i></span> Premissas — CAT Field Guide 2016</h3>
+    <div class="meth-grid">
+      <div class="meth-item">
+        <h4>Densidades e Empolamento</h4>
+        <table class="fg-table">
+          <tr><th>Tipo</th><th>Densidade (solto)</th><th>Swell</th></tr>
+          <tr><td>Argila Iônica / saprolito</td><td>1,7 t/m³</td><td>35%</td></tr>
+          <tr><td>Rocha dura / carbonatito</td><td>2,6 t/m³</td><td>55%</td></tr>
+          <tr><td>Reprocessamento / fosfogesso</td><td>1,9 t/m³</td><td>25%</td></tr>
+        </table>
+      </div>
+      <div class="meth-item">
+        <h4>Regra de Passadas</h4>
+        <p>Ideal: <strong>3 a 5 passadas</strong> do carregador para encher cada caminhão. Mínimo 2, máximo 6. Acima de 6 = trocar caminhão maior ou carregador menor.</p>
+        <p style="margin-top:8px;">Política <strong>10/10/20</strong>: até 10% acima/abaixo do payload alvo = ok (classe 1). Até 20% eventual (classe 2). Acima de 20% = risco estrutural.</p>
+      </div>
+      <div class="meth-item">
+        <h4>Ciclos Típicos</h4>
+        <p>Carregador LWL (988/990/992): 28–42s por passada<br>
+        Carregador FS (6020–6060): 21–32s por passada<br>
+        Troca de caminhão (swap): 42s (bom), 60s (médio)<br>
+        Fator de enchimento: 90–110% (LWL), 85–105% (FS)</p>
+      </div>
+      <div class="meth-item">
+        <h4>Match Table — Argila Iônica (LWL)</h4>
+        <table class="fg-table">
+          <tr><th>Carregador</th><th>Caminhão</th><th>Passadas</th><th>Payload</th></tr>
+          <tr><td>988K (7,0 yd³)</td><td>773</td><td>3</td><td>55 t</td></tr>
+          <tr><td>988K</td><td>775</td><td>4</td><td>64 t</td></tr>
+          <tr><td>990H (8,5 yd³)</td><td>773</td><td>2</td><td>55 t</td></tr>
+          <tr><td>990H</td><td>775</td><td>3</td><td>64 t</td></tr>
+          <tr><td>990H</td><td>777</td><td>4</td><td>90 t</td></tr>
+          <tr><td>992K (12 yd³)</td><td>777</td><td>3</td><td>90 t</td></tr>
+          <tr><td>992K</td><td>785</td><td>4</td><td>136 t</td></tr>
+        </table>
+      </div>
+      <div class="meth-item">
+        <h4>Match Table — Rocha Dura (FS)</h4>
+        <table class="fg-table">
+          <tr><th>Carregador</th><th>Caminhão</th><th>Passadas</th><th>Payload</th></tr>
+          <tr><td>6020 FS (10 m³)</td><td>777</td><td>3</td><td>90 t</td></tr>
+          <tr><td>6020 FS</td><td>785</td><td>4</td><td>136 t</td></tr>
+          <tr><td>6030 FS (15 m³)</td><td>777</td><td>2</td><td>90 t</td></tr>
+          <tr><td>6030 FS</td><td>785</td><td>3</td><td>136 t</td></tr>
+          <tr><td>6030 FS</td><td>789</td><td>4</td><td>177 t</td></tr>
+          <tr><td>6040 FS (20 m³)</td><td>785</td><td>2</td><td>136 t</td></tr>
+          <tr><td>6040 FS</td><td>789</td><td>3</td><td>177 t</td></tr>
+          <tr><td>6040 FS</td><td>793</td><td>4</td><td>218 t</td></tr>
+          <tr><td>6060 FS (30 m³)</td><td>793</td><td>3</td><td>218 t</td></tr>
+          <tr><td>6060 FS</td><td>797</td><td>4</td><td>313 t</td></tr>
+        </table>
+      </div>
+      <div class="meth-item">
+        <h4>Cálculo de Frota</h4>
+        <p><strong>Bottom-up</strong> (quando há capacidade anual):<br>
+        <code>Caminhões = cap. anual ÷ (5.500 h × prod. horária)</code><br>
+        <code>Prod. horária = payload × 3.600 ÷ (ciclo carga + troca + transporte)</code><br>
+        <code>Carregadores = caminhões ÷ (ciclo carga + troca + retorno) / (ciclo carga + troca)</code><br>
+        <span style="font-size:11px;color:var(--cat-text-muted);">Usa o match padrão do tipo de depósito. Tratores, motoniveladoras e apoio = proporção dos caminhões.</span></p>
+        <p style="margin-top:8px;"><strong>Top-down</strong> (fallback, sem capacidade disponível):<br>
+        <code>Frota = CAPEX × % alocação ÷ preço médio</code></p>
+        <p style="margin-top:8px;font-size:11px;color:var(--cat-text-muted);"><i class="bi bi-info-circle"></i> Projetos com capacidade anual utilizam cálculo bottom-up. Os demais utilizam o método top-down por alocação de CAPEX.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARE OVERLAY -->
+  <div class="compare-overlay" id="compareOverlay" onclick="if(event.target===this)closeCompare()">
+    <div class="compare-panel" id="comparePanel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h3 style="margin:0;"><i class="bi bi-layers-fill" style="color:var(--cat-yellow);"></i> Comparação de Projetos</h3>
+        <button onclick="closeCompare()" style="background:none;border:none;color:var(--cat-text-muted);font-size:20px;cursor:pointer;"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div id="compareContent"><p style="color:var(--cat-text-muted);font-size:13px;">Selecione projetos usando os checkboxes na tabela e clique em "Comparar".</p></div>
+    </div>
+  </div>
+
+  <!-- FLEET TIMELINE CHART -->
+  <div class="chart-card" style="margin-top:32px;">
+    <div class="chart-title">Demanda de Equipamentos por Ano (2026–2030)</div>
+    <div class="chart-sub">Estimativa baseada nas curvas de desembolso por estágio × frota calculada</div>
+    <div class="chart-container" id="fleetTimelineChart" style="min-height:260px;"></div>
+  </div>
+
+  <!-- INTERACTIVE FLEET CALCULATOR -->
+  <div class="calc-section" id="fleet-calculator">
+    <h3><i class="bi bi-calculator-fill" style="color:var(--cat-yellow);"></i> Calculadora de Frota — CAT Field Guide</h3>
+    <div class="calc-grid">
+      <div class="calc-form">
+        <label>Tipo de Depósito</label>
+        <select id="calcDepositType">
+          <option value="iacSaprolite">Argila Iônica / saprolito</option>
+          <option value="hardRock">Rocha dura / carbonatito</option>
+          <option value="reprocessing">Reprocessamento / fosfogesso</option>
+        </select>
+        <label style="margin-top:12px;">Capacidade Anual (t/ano)</label>
+        <input type="number" id="calcCapacity" value="14000" min="1000" step="1000">
+        <label style="margin-top:12px;">Horas Operacionais / Ano</label>
+        <input type="number" id="calcHours" value="5500" min="2000" max="8760" step="100">
+        <button onclick="runFleetCalculator()" style="margin-top:16px;padding:10px 24px;border-radius:8px;background:var(--cat-yellow);color:var(--cat-black);border:none;font-weight:700;font-size:14px;cursor:pointer;width:100%;">Calcular Frota</button>
+      </div>
+      <div class="calc-result" id="calcResult">
+        <h4>Resultado</h4>
+        <p style="font-size:12px;color:var(--cat-text-muted);">Preencha os campos ao lado e clique em "Calcular Frota".</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end tab-dashboard -->
+
+
 <!-- ============================================================ -->
 <!-- TAB: NOTÍCIAS                                                -->
 <!-- ============================================================ -->
@@ -1645,6 +1833,43 @@ const EQUIP_ALLOC = {
   hardRock:     { trucks: 0.075, excavators: 0.085, loaders: 0.07, dozers: 0.045, support1: 0.014, support2: 0.02 },
   reprocessing: { trucks: 0.05, excavators: 0.055, loaders: 0.05, dozers: 0.03, support1: 0.01, support2: 0.013 },
   exploration:  { trucks: 0.01, excavators: 0.005, loaders: 0.005, dozers: 0.003, support1: 0.001, support2: 0.002 }
+};
+
+const MATERIAL_PROPS = {
+  iacSaprolite: { density: 1.7, swell: 1.35, fillFactor: 1.05, label: 'Argila/saprolito' },
+  hardRock:     { density: 2.6, swell: 1.55, fillFactor: 0.95, label: 'Rocha dura' },
+  reprocessing: { density: 1.9, swell: 1.25, fillFactor: 1.0,  label: 'Rejeito/fosfogesso' },
+  exploration:  { density: 2.0, swell: 1.3,  fillFactor: 1.0,  label: 'Geral' }
+};
+
+const MATCH_TABLE = {
+  iacSaprolite: [
+    { loader: '988K', truck: '773', passes: 3, bucket: '7.0 yd³', payload: '55 t', cycleTime: 35 },
+    { loader: '988K', truck: '775', passes: 4, bucket: '7.0 yd³', payload: '64 t', cycleTime: 35 },
+    { loader: '990H', truck: '773', passes: 2, bucket: '8.5 yd³', payload: '55 t', cycleTime: 38 },
+    { loader: '990H', truck: '775', passes: 3, bucket: '8.5 yd³', payload: '64 t', cycleTime: 38 },
+    { loader: '990H', truck: '777', passes: 4, bucket: '8.5 yd³', payload: '90 t', cycleTime: 38 },
+    { loader: '992K', truck: '777', passes: 3, bucket: '12 yd³', payload: '90 t', cycleTime: 42 },
+    { loader: '992K', truck: '785', passes: 4, bucket: '12 yd³', payload: '136 t', cycleTime: 42 }
+  ],
+  hardRock: [
+    { loader: '6020 FS', truck: '777', passes: 3, bucket: '10 m³', payload: '90 t', cycleTime: 26 },
+    { loader: '6020 FS', truck: '785', passes: 4, bucket: '10 m³', payload: '136 t', cycleTime: 26 },
+    { loader: '6030 FS', truck: '777', passes: 2, bucket: '15 m³', payload: '90 t', cycleTime: 28 },
+    { loader: '6030 FS', truck: '785', passes: 3, bucket: '15 m³', payload: '136 t', cycleTime: 28 },
+    { loader: '6030 FS', truck: '789', passes: 4, bucket: '15 m³', payload: '177 t', cycleTime: 28 },
+    { loader: '6040 FS', truck: '785', passes: 2, bucket: '20 m³', payload: '136 t', cycleTime: 30 },
+    { loader: '6040 FS', truck: '789', passes: 3, bucket: '20 m³', payload: '177 t', cycleTime: 30 },
+    { loader: '6040 FS', truck: '793', passes: 4, bucket: '20 m³', payload: '218 t', cycleTime: 30 },
+    { loader: '6060 FS', truck: '793', passes: 3, bucket: '30 m³', payload: '218 t', cycleTime: 32 },
+    { loader: '6060 FS', truck: '797', passes: 4, bucket: '30 m³', payload: '313 t', cycleTime: 32 }
+  ],
+  reprocessing: [
+    { loader: '966K', truck: '725', passes: 3, bucket: '4.5 yd³', payload: '25 t', cycleTime: 30 },
+    { loader: '972K', truck: '730', passes: 3, bucket: '5.0 yd³', payload: '30 t', cycleTime: 32 },
+    { loader: '982K', truck: '740', passes: 3, bucket: '6.0 yd³', payload: '40 t', cycleTime: 34 }
+  ],
+  exploration: []
 };
 
 const equipmentProfiles = {
@@ -1911,31 +2136,63 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
 
 const statesData = {};
 
-function estimateFleet(data) {
-  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
-  let result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, support1: 0, support2: 0, total: 0 };
-  const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, support1: 1.5, support2: 0.7 };
-  data.forEach(proj => {
-    const dt = proj.depositType || 'exploration';
-    const a = EQUIP_ALLOC[dt] || EQUIP_ALLOC.exploration;
-    keys.forEach(k => {
-      result[k] += Math.round(proj.capex * (a[k] || 0) / price[k]);
-    });
-  });
-  result.total = result.trucks + result.excavators + result.loaders + result.dozers + result.support1 + result.support2;
-  return result;
+function parseAnnualTonnes(capStr) {
+  if (!capStr) return 0;
+  const m = capStr.match(/([\d.,]+)\s*([kM]?t)\s*\/?\s*(?:ano|a)/i);
+  if (!m) return 0;
+  let val = parseFloat(m[1].replace(/\./g,'').replace(',','.'));
+  const unit = m[2].toLowerCase();
+  if (unit === 'kt') val *= 1000;
+  else if (unit === 'mt') val *= 1000000;
+  return val;
 }
 
 function estimateProjectFleet(p) {
   if (p.realFleet) return p.realFleet;
+  const dt = p.depositType || 'exploration';
   const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
   const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, support1: 1.5, support2: 0.7 };
-  const dt = p.depositType || 'exploration';
   const a = EQUIP_ALLOC[dt] || EQUIP_ALLOC.exploration;
   const result = { total: 0 };
-  keys.forEach(k => {
-    result[k] = Math.round(p.capex * (a[k] || 0) / price[k]);
+
+  const annTonnes = parseAnnualTonnes(p.capacity);
+  const matches = MATCH_TABLE[dt] || [];
+
+  if (annTonnes > 0 && matches.length > 0) {
+    const match = matches[Math.floor(matches.length / 2)];
+    const payloadT = parseFloat(match.payload) || 90;
+    const opsHours = 5500;
+    const cycleTransport = 12;
+    const cycleLoad = match.cycleTime || 35;
+    const swapTime = 42;
+    const totalCycle = cycleLoad + cycleTransport + swapTime;
+    const trucksPerLoader = Math.round((cycleLoad + swapTime + cycleTransport) / (cycleLoad + swapTime));
+    const truckProdTH = payloadT * (3600 / totalCycle);
+    const annPerTruck = truckProdTH * opsHours;
+    const numTrucks = Math.max(1, Math.round(annTonnes / annPerTruck * 1.15));
+    const numLoaders = Math.max(1, Math.round(numTrucks / trucksPerLoader));
+    result.trucks = numTrucks;
+    result.loaders = numLoaders;
+    result.excavators = Math.round(numTrucks * 0.15);
+    result.dozers = Math.round(numTrucks * 0.25);
+    result.support1 = Math.max(1, Math.round(numTrucks * 0.12));
+    result.support2 = Math.max(1, Math.round(numTrucks * 0.15));
+  } else {
+    keys.forEach(k => {
+      result[k] = Math.round(p.capex * (a[k] || 0) / price[k]);
+    });
+  }
+  return result;
+}
+
+function estimateFleet(data) {
+  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, support1: 0, support2: 0, total: 0 };
+  data.forEach(proj => {
+    const f = estimateProjectFleet(proj);
+    keys.forEach(k => { result[k] += f[k] || 0; });
   });
+  result.total = result.trucks + result.excavators + result.loaders + result.dozers + result.support1 + result.support2;
   return result;
 }
 
@@ -2079,6 +2336,7 @@ function init() {
   });
 
   renderTable(projects);
+  addCompareCheckboxes();
   renderPipeline(projects);
   renderTimeline(projects);
   document.getElementById('badgeCount').textContent = projects.length;
@@ -2276,6 +2534,7 @@ function applyFilters() {
     return true;
   });
   renderTable(filtered);
+  addCompareCheckboxes();
   document.getElementById('badgeCount').textContent = filtered.length;
 }
 
@@ -2335,9 +2594,11 @@ function switchTab(tab) {
 }
 
 function goToChart(id) {
-  switchTab('dashboard');
   const el = document.getElementById(id);
-  if (!el) return;
+  if (!el) return switchTab('resumo');
+  const tabPage = el.closest('.tab-page');
+  const tabId = tabPage ? tabPage.id.replace('tab-', '') : 'resumo';
+  switchTab(tabId);
   setTimeout(() => {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     el.classList.remove('chart-highlight');
@@ -3195,6 +3456,197 @@ function renderCharts() {
   renderChartDepositType();
   renderChartPriority();
   if (chartSotreqView) { renderChartCompanyCapexSotreq(); } else { renderChartCompanyCapex(); }
+  renderFleetDonut();
+  renderFleetTimeline();
+}
+
+function renderFleetDonut() {
+  const container = document.getElementById('fleetDonutChart');
+  if (!container || container._rendered) return; container._rendered = true;
+  const fleet = estimateFleet(projects);
+  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Motoniveladoras','Apoio'];
+  const colors = ['#FFCD00','#33b5e5','#00C851','#ff4444','#FF8800','#aa66cc'];
+  const data = keys.map((k,i) => ({ label: labels[i], value: fleet[k]||0, color: colors[i] }));
+  const total = d3.sum(data, d => d.value);
+  if (!total) return;
+
+  const w = 220, h = 220, r = 90, ir = 55;
+  const svg = d3.select(container).append('svg').attr('viewBox',`0 0 ${w} ${h}`).append('g').attr('transform',`translate(${w/2},${h/2})`);
+  const pie = d3.pie().value(d=>d.value).sort(null);
+  const arc = d3.arc().innerRadius(ir).outerRadius(r);
+  const arcH = d3.arc().innerRadius(ir).outerRadius(r+8);
+
+  svg.selectAll('path').data(pie(data)).enter().append('path')
+    .attr('d', arc).attr('fill', d=>d.data.color).attr('stroke','var(--cat-dark)').attr('stroke-width',2)
+    .on('mouseenter', function(){ d3.select(this).transition().duration(200).attr('d', arcH); })
+    .on('mouseleave', function(){ d3.select(this).transition().duration(200).attr('d', arc); });
+
+  svg.append('text').attr('text-anchor','middle').attr('dy','-0.2em').style('font-size','22px').style('font-weight','800').style('fill','var(--cat-fg)').text(total);
+  svg.append('text').attr('text-anchor','middle').attr('dy','1.2em').style('font-size','11px').style('fill','var(--cat-text-muted)').text('unidades');
+
+  const legend = d3.select(container).append('div').attr('class','fleet-donut-legend');
+  data.forEach(d => { if (d.value) { const pct = (d.value/total*100).toFixed(1);
+    legend.append('div').attr('class','fd-item').html(`<span class="fd-dot" style="background:${d.color}"></span><span class="fd-qty">${d.value}</span><span class="fd-label">${d.label}</span><span class="fd-pct">${pct}%</span>`); }});
+}
+
+function renderFleetTimeline() {
+  const container = document.getElementById('fleetTimelineChart');
+  if (!container) return;
+  const fleet = estimateFleet(projects);
+  const stageCurve = [0,0.05,0.10,0.20,0.15,0.40,0.10];
+  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const colors = ['#FFCD00','#33b5e5','#00C851','#ff4444','#FF8800','#aa66cc'];
+  const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Motoniveladoras','Apoio'];
+
+  const totalByType = {};
+  keys.forEach(k => { totalByType[k] = 0; });
+  projects.forEach(p => { const f = estimateProjectFleet(p); const s = stageCurve[p.stage]||0.05; keys.forEach(k => { totalByType[k] += (f[k]||0) * s; }); });
+
+  const years = [2026,2027,2028,2029,2030];
+  const yearlyData = years.map(y => {
+    const row = { year: y };
+    keys.forEach((k,i) => {
+      let val = 0;
+      projects.forEach(p => {
+        if (!p.startYear || p.startYear > y + 1) return;
+        const f = estimateProjectFleet(p);
+        const s = (p.stage === 6 && y >= (p.startYear||9999)) ? 0.10 : stageCurve[p.stage]||0.05;
+        val += (f[k]||0) * s;
+      });
+      row[k] = Math.round(val);
+    });
+    return row;
+  });
+
+  const w = Math.max(container.clientWidth-40,300), h = 220, m = {t:20,r:60,b:30,l:50};
+  const svg = d3.select(container).html('').append('svg').attr('viewBox',`0 0 ${w} ${h}`).append('g').attr('transform',`translate(${m.l},${m.t})`);
+  const iw = w-m.l-m.r, ih = h-m.t-m.b;
+
+  const x = d3.scaleBand().domain(years).range([0,iw]).padding(0.2);
+  const yMax = d3.max(yearlyData, d => d3.sum(keys, k => d[k])) || 10;
+  const y = d3.scaleLinear().domain([0, yMax*1.15]).range([ih,0]);
+
+  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('d'))).attr('color','var(--cat-text-muted)').style('font-size','10px');
+  svg.append('g').attr('transform',`translate(0,${ih})`).call(d3.axisBottom(x)).attr('color','var(--cat-text-muted)').style('font-size','11px');
+
+  const stack = d3.stack().keys(keys);
+  const stacked = stack(yearlyData);
+  const x0 = d3.scaleBand().domain(years).range([0,iw]).padding(0.3);
+
+  stacked.forEach((layer, li) => {
+    svg.selectAll(`.bar-${li}`).data(layer).enter().append('rect')
+      .attr('x', d => x0(d.data.year)).attr('y', d => y(d[1])).attr('height', d => y(d[0])-y(d[1])).attr('width', x0.bandwidth())
+      .attr('fill', colors[li]).attr('opacity',0.85)
+      .append('title').text(d => `${labels[li]}: ${Math.round(d[1]-d[0])}`);
+  });
+
+  svg.append('text').attr('x',iw+12).attr('y',6).attr('fill','var(--cat-text-muted)').style('font-size','11px').text('unidades');
+}
+
+function runFleetCalculator() {
+  const dt = document.getElementById('calcDepositType').value;
+  const cap = parseFloat(document.getElementById('calcCapacity').value) || 0;
+  const ops = parseFloat(document.getElementById('calcHours').value) || 5500;
+  const matches = MATCH_TABLE[dt] || [];
+  const el = document.getElementById('calcResult');
+  if (!cap || !matches.length) { el.innerHTML = '<h4>Resultado</h4><p style="font-size:12px;color:var(--cat-text-muted);">Preencha a capacidade anual e selecione um tipo de depósito com match table disponível.</p>'; return; }
+
+  const match = matches[Math.floor(matches.length / 2)];
+  const payloadT = parseFloat(match.payload) || 90;
+  const cycleTransport = 12;
+  const cycleLoad = match.cycleTime || 35;
+  const swapTime = 42;
+  const totalCycle = cycleLoad + cycleTransport + swapTime;
+  const trucksPerLoader = Math.round((cycleLoad + swapTime + cycleTransport) / (cycleLoad + swapTime));
+  const truckProdTH = payloadT * (3600 / totalCycle);
+  const annPerTruck = truckProdTH * ops;
+  const numTrucks = Math.max(1, Math.round(cap / annPerTruck * 1.15));
+  const numLoaders = Math.max(1, Math.round(numTrucks / trucksPerLoader));
+  const numDozers = Math.round(numTrucks * 0.25);
+  const numGraders = Math.max(1, Math.round(numTrucks * 0.12));
+  const numSupport = Math.max(1, Math.round(numTrucks * 0.15));
+
+  const prices = { trucks: 800000, loaders: 3800000, excavators: 4500000, dozers: 2500000, graders: 1500000, support: 700000 };
+  const totalVal = numTrucks*prices.trucks + numLoaders*prices.loaders + numDozers*prices.dozers + numGraders*prices.graders + numSupport*prices.support;
+
+  el.innerHTML = `
+    <h4><i class="bi bi-check-circle-fill" style="color:var(--cat-green);"></i> Frota Calculada</h4>
+    <table>
+      <tr><td>Match sugerido</td><td>${match.loader} → ${match.truck} (${match.passes} passadas, ${match.payload})</td></tr>
+      <tr><td>Caminhões</td><td>${numTrucks} un.</td></tr>
+      <tr><td>Carregadeiras</td><td>${numLoaders} un.</td></tr>
+      <tr><td>Tratores de esteira</td><td>${numDozers} un.</td></tr>
+      <tr><td>Motoniveladoras</td><td>${numGraders} un.</td></tr>
+      <tr><td>Equip. apoio</td><td>${numSupport} un.</td></tr>
+      <tr style="border-top:2px solid var(--cat-yellow);"><td><strong>Valor total frota</strong></td><td><strong>US$ ${(totalVal/1e6).toFixed(1)} Mi</strong></td></tr>
+      <tr><td>Prod. caminhão</td><td>${truckProdTH.toFixed(1)} t/h</td></tr>
+      <tr><td>Horas/ano</td><td>${ops} h</td></tr>
+    </table>`;
+}
+
+// ── Projeto Compare ──
+let selectedProjects = [];
+
+function toggleCompareAll(checked) {
+  document.querySelectorAll('.cmp-chk').forEach(cb => cb.checked = checked);
+  updateCompareCount();
+}
+function toggleCompare(idx) {
+  const cb = document.getElementById('cmp-'+idx);
+  if (cb) { cb.checked = !cb.checked; updateCompareCount(); }
+}
+function updateCompareCount() {
+  const s = document.querySelectorAll('.cmp-chk:checked').length;
+  document.getElementById('compareCount').textContent = s + ' projeto' + (s!==1?'s':'') + ' selecionado' + (s!==1?'s':'');
+}
+function openCompare() {
+  const checked = document.querySelectorAll('.cmp-chk:checked');
+  if (!checked.length) { alert('Selecione pelo menos um projeto para comparar.'); return; }
+  const sel = [];
+  checked.forEach(cb => { const idx = parseInt(cb.value); if (projects[idx]) sel.push(projects[idx]); });
+  const el = document.getElementById('compareContent');
+  if (!sel.length) { el.innerHTML = '<p style="color:var(--cat-text-muted);font-size:13px;">Nenhum projeto válido selecionado.</p>'; return; }
+
+  const fields = [
+    { label: 'Empresa', fn: p => p.company },
+    { label: 'Projeto', fn: p => p.project },
+    { label: 'CAPEX', fn: p => 'US$ ' + p.capex + 'M' },
+    { label: 'Estágio', fn: p => 'S' + p.stage },
+    { label: 'Tipo', fn: p => p.type || p.depositType || '—' },
+    { label: 'Previsão', fn: p => p.forecast || '—' },
+    { label: 'Estado', fn: p => p.location.state },
+    { label: 'Caminhões', fn: p => { const f = estimateProjectFleet(p); return (f.trucks||0) + ' un.'; } },
+    { label: 'Carregadeiras', fn: p => { const f = estimateProjectFleet(p); return (f.loaders||0) + ' un.'; } },
+    { label: 'Escavadeiras', fn: p => { const f = estimateProjectFleet(p); return (f.excavators||0) + ' un.'; } },
+    { label: 'Tratores', fn: p => { const f = estimateProjectFleet(p); return (f.dozers||0) + ' un.'; } },
+    { label: 'Oport. Sotreq', fn: p => { const c = sotreqConfig || {}; const r = (c.conversao||30)/100; return 'US$ ' + (p.capex * r).toFixed(0) + 'M'; } },
+    { label: 'Status', fn: p => p.sotreqStatus || 'não iniciado' }
+  ];
+
+  el.innerHTML = '<div class="compare-grid">' + fields.map(f => `
+    <div class="cg-row">
+      <div class="cg-label">${f.label}</div>
+      ${sel.map(p => `<div class="cg-val">${f.fn(p) || '—'}</div>`).join('')}
+    </div>`).join('') + '</div>';
+  document.getElementById('compareOverlay').classList.add('open');
+}
+function closeCompare() { document.getElementById('compareOverlay').classList.remove('open'); }
+function clearCompare() {
+  document.querySelectorAll('.cmp-chk:checked').forEach(cb => cb.checked = false);
+  updateCompareCount();
+}
+
+// Add compare checkboxes to table rows after render
+function addCompareCheckboxes() {
+  const rows = document.querySelectorAll('#tableBody tr');
+  rows.forEach((row, i) => {
+    const td = document.createElement('td');
+    td.style.width = '32px';
+    td.innerHTML = `<input type="checkbox" class="cmp-chk" id="cmp-${i}" value="${i}" onchange="updateCompareCount()">`;
+    row.insertBefore(td, row.firstChild);
+  });
+  updateCompareCount();
 }
 
 function chartWidth(container) {
@@ -5132,6 +5584,17 @@ function buildChatContext() {
     `${depTypesDB[t] || t}: ${Object.entries(alloc).map(([k, v]) => `${famLabels[k]} ${(v*100).toFixed(1)}%`).join(', ')}`
   );
 
+  const densityLines = Object.entries(typeof MATERIAL_PROPS !== 'undefined' ? MATERIAL_PROPS : {}).map(([t, m]) =>
+    `${depTypesDB[t]||t} ${m.density} t/m³ swell ${Math.round((m.swell-1)*100)}%`
+  ).join(' | ');
+
+  const matchLines = Object.entries(typeof MATCH_TABLE !== 'undefined' ? MATCH_TABLE : {}).map(([t, rows]) => {
+    if (!rows.length) return '';
+    const lab = depTypesDB[t] || t;
+    const fam = rows.map(r => `${r.loader}→${r.truck}(${r.passes}p ${r.payload})`).join(' ');
+    return `- ${lab}: ${fam}`;
+  }).filter(Boolean).join('\n');
+
   return `Você é o MinerAI do Mining Intelligence Portal da Sotreq.
 
 FUNCIONAMENTO:
@@ -5156,6 +5619,20 @@ PROJEÇÕES (use para calcular estimativas anuais):
 - Oportunidade Sotreq por ano = CAPEX anual do projeto × ${conv}%
 - Janela ${c.anoInicio}–${c.anoFim} é o período crítico de oportunidade Sotreq.
 - Explique suas premissas ao fazer projeções.
+
+CAT FIELD GUIDE (dados reais para cálculo de frota e produtividade):
+- Densidades (solto): ${densityLines}
+- Regra de passadas: ideal 3-5 passes por caminhão cheio; mín. 2, máx. 6. Acima de 6 = trocar caminhão maior ou carregador menor
+- Política de carga útil 10/10/20: até 10% acima/abaixo do payload alvo é ok (classe 1); até 20% eventual (classe 2); acima de 20% = risco estrutural
+- Tempo de troca de caminhão (swap time): 42s (bom), 60s (médio)
+- Ciclo carregador: LWL 28-42s | FS 21-32s
+- Fator enchimento: 90-110% (LWL), 85-105% (FS)
+
+Match tables CAT (carregador → caminhão → passadas):
+${matchLines}
+
+Produtividade = carga útil por ciclo × ciclos/hora. Nº caminhões/carregador ~ (ciclo carga + troca + retorno) / (ciclo carga + troca), tipicamente 3-5:1.
+Para estimar frota: capacidade anual ÷ horas operacionais (~5500h mina) ÷ produtividade horária do match.
 
 REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em USD. Cite os dados do projeto quando usá-los.`;
 }
