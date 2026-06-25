@@ -20,7 +20,7 @@
     --cat-text: #e0e0e0;
     --cat-text-muted: #888;
     --cat-green: #00C851;
-gios de maturidade    --cat-red: #ff4444;
+    --cat-red: #ff4444;
     --cat-blue: #33b5e5;
     --cat-orange: #FF8800;
     --cat-purple: #aa66cc;
@@ -414,7 +414,7 @@ gios de maturidade    --cat-red: #ff4444;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
   }
-  .methodology .meth-item { }
+  .methodology .meth-item { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .methodology .meth-item h4 {
     font-size: 14px; font-weight: 600; color: var(--cat-yellow); margin-bottom: 6px;
   }
@@ -434,16 +434,26 @@ gios de maturidade    --cat-red: #ff4444;
   }
   .methodology .fg-table {
     width: 100%; border-collapse: collapse; font-size: 12px;
-    color: var(--cat-text-muted);
+    color: var(--cat-text); table-layout: fixed;
   }
   .methodology .fg-table th {
-    text-align: left; font-weight: 600; color: var(--cat-yellow);
-    padding: 6px 8px; border-bottom: 1px solid var(--cat-gray-light);
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+    text-align: left; font-weight: 700; color: var(--cat-fg);
+    padding: 7px 6px; border-bottom: 2px solid var(--cat-yellow);
+    font-size: 11px; background: var(--cat-dark); word-break: break-word;
   }
   .methodology .fg-table td {
-    padding: 5px 8px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    padding: 6px; border-bottom: 1px solid var(--cat-gray-light);
+    color: var(--cat-text); word-break: break-word;
   }
+  .methodology .fg-table th:nth-child(1),
+  .methodology .fg-table td:nth-child(1) { width: 32%; }
+  .methodology .fg-table th:nth-child(2),
+  .methodology .fg-table td:nth-child(2) { width: 22%; }
+  .methodology .fg-table th:nth-child(3),
+  .methodology .fg-table td:nth-child(3) { width: 20%; }
+  .methodology .fg-table th:nth-child(4),
+  .methodology .fg-table td:nth-child(4) { width: 26%; }
+  .methodology .fg-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
   .methodology .fg-table tr:last-child td { border-bottom: none; }
   .methodology code {
     display: inline-block;
@@ -548,26 +558,62 @@ gios de maturidade    --cat-red: #ff4444;
   }
   .chart-highlight { animation: chartHighlight 1.5s ease-out forwards; outline: 2px solid var(--cat-yellow); }
 
-  .fleet-donut { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 16px 0; }
-  .fleet-donut svg { width: 220px; height: 220px; flex-shrink: 0; }
-  .fleet-donut-legend { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
-  .fleet-donut-legend .fd-item { display: flex; align-items: center; gap: 8px; }
-  .fleet-donut-legend .fd-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
-  .fleet-donut-legend .fd-qty { font-weight: 600; color: var(--cat-fg); }
-  .fleet-donut-legend .fd-pct { color: var(--cat-text-muted); }
+  .fleet-donut {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.85fr) minmax(280px, 1.15fr);
+    align-items: center;
+    gap: 22px;
+    padding: 18px;
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--cat-yellow) 10%, var(--cat-black)), var(--cat-black));
+  }
+  .fleet-donut svg { width: min(100%, 280px); height: auto; justify-self: center; }
+  .fleet-donut-legend {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    font-size: 12px;
+  }
+  .fleet-donut-legend .fd-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 8px;
+    min-height: 58px;
+    padding: 10px 12px;
+    border: 1px solid color-mix(in srgb, var(--cat-gray-light) 65%, transparent);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--cat-dark) 36%, transparent);
+  }
+  .fleet-donut-legend .fd-dot { width: 10px; height: 34px; border-radius: 999px; flex-shrink: 0; }
+  .fleet-donut-legend .fd-label { color: var(--cat-text); font-weight: 700; line-height: 1.2; }
+  .fleet-donut-legend .fd-qty { color: var(--cat-fg); font-size: 20px; font-weight: 850; letter-spacing: -0.4px; }
+  .fleet-donut-legend .fd-pct { color: var(--cat-text-muted); font-size: 11px; font-weight: 650; }
+  .fleet-donut-kicker {
+    margin-bottom: 10px;
+    color: var(--cat-text-muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+  .fleet-donut-kicker strong { color: var(--cat-yellow); }
 
-  .calc-section { background: var(--cat-black); border: 1px solid var(--cat-gray-light); border-radius: 12px; padding: 24px; margin-top: 32px; }
-  .calc-section h3 { font-size: 16px; font-weight: 700; color: var(--cat-fg); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .calc-form label { display: block; font-size: 12px; color: var(--cat-text-muted); margin-bottom: 4px; font-weight: 600; }
-  .calc-form input, .calc-form select { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--cat-gray-light); background: var(--cat-dark); color: var(--cat-fg); font-size: 13px; outline: none; }
+  .calc-section { background: var(--cat-black); border: 1px solid var(--cat-gray-light); border-radius: 12px; padding: 20px; margin-top: 32px; }
+  .calc-section h3 { font-size: 15px; font-weight: 700; color: var(--cat-fg); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .calc-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .calc-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: end; }
+  .calc-form label { display: block; font-size: 12px; color: var(--cat-text-muted); margin-bottom: 3px; font-weight: 600; }
+  .calc-form input, .calc-form select { width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--cat-gray-light); background: var(--cat-dark); color: var(--cat-fg); font-size: 13px; outline: none; box-sizing: border-box; }
   .calc-form input:focus, .calc-form select:focus { border-color: var(--cat-yellow); }
-  .calc-result { background: rgba(255,205,0,0.06); border: 1px solid rgba(255,205,0,0.12); border-radius: 8px; padding: 16px; }
-  .calc-result h4 { font-size: 14px; color: var(--cat-yellow); margin-bottom: 8px; font-weight: 600; }
-  .calc-result table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .calc-result td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .calc-result td:last-child { text-align: right; font-weight: 600; color: var(--cat-fg); }
-  @media (max-width:700px) { .calc-grid { grid-template-columns: 1fr; } .fleet-donut { justify-content: center; } }
+  .calc-form button { margin-top: 0; }
+  .calc-result { background: rgba(255,205,0,0.06); border: 1px solid rgba(255,205,0,0.12); border-radius: 8px; padding: 14px; overflow-wrap: break-word; word-break: break-word; }
+  .calc-result h4 { font-size: 14px; color: var(--cat-yellow); margin-bottom: 6px; font-weight: 600; }
+  @media (max-width:700px) {
+    .calc-grid { grid-template-columns: 1fr; }
+    .fleet-donut { grid-template-columns: 1fr; padding: 14px; }
+    .fleet-donut-legend { grid-template-columns: 1fr; }
+  }
 
   .compare-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
   .compare-bar button { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--cat-yellow); background: transparent; color: var(--cat-yellow); font-size: 12px; font-weight: 600; cursor: pointer; }
@@ -969,7 +1015,7 @@ gios de maturidade    --cat-red: #ff4444;
   .chart-card svg text { font-family: 'Inter', sans-serif; }
   .chart-card .chart-body { min-height: 220px; }
   .chart-tooltip {
-    position: absolute; background: var(--cat-black); color: var(--cat-fg);
+    position: fixed; background: var(--cat-black); color: var(--cat-fg);
     padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 500;
     pointer-events: none; border: 1px solid var(--cat-yellow); opacity: 0;
     transition: opacity 0.15s; z-index: 20; white-space: nowrap;
@@ -979,6 +1025,337 @@ gios de maturidade    --cat-red: #ff4444;
   .chart-card .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--cat-text-muted); }
   .chart-card .legend-item .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
   .chart-card-full { grid-column: 1 / -1; }
+
+  /* MODERN RESPONSIVE POLISH */
+  :root {
+    --surface-0: color-mix(in srgb, var(--cat-dark) 94%, var(--cat-yellow) 6%);
+    --surface-1: color-mix(in srgb, var(--cat-black) 92%, var(--cat-yellow) 8%);
+    --surface-2: color-mix(in srgb, var(--cat-gray) 82%, var(--cat-yellow) 18%);
+    --border-soft: color-mix(in srgb, var(--cat-gray-light) 76%, transparent);
+    --shadow-soft: 0 18px 45px rgba(0,0,0,0.13);
+    --shadow-card: 0 12px 30px rgba(0,0,0,0.10);
+  }
+  body {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--cat-dark) 88%, var(--cat-yellow) 12%) 0, var(--cat-dark) 320px),
+      var(--cat-dark);
+  }
+  .top-bar {
+    height: 76px;
+    border-bottom: 1px solid color-mix(in srgb, var(--cat-yellow) 60%, transparent);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    backdrop-filter: blur(18px);
+  }
+  .hero {
+    padding: 42px 32px 54px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--cat-black) 88%, var(--cat-yellow) 12%), var(--cat-dark));
+  }
+  .hero::before { display: none; }
+  .hero h1 { max-width: 920px; line-height: 1.04; }
+  .summary-carousel-wrapper {
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    background: color-mix(in srgb, var(--cat-dark) 86%, transparent);
+    backdrop-filter: blur(16px);
+  }
+  .summary-card,
+  .metric-card,
+  .exe-kpi,
+  .opp-status-card,
+  .pipe-stage,
+  .chart-card,
+  .methodology,
+  .calc-section,
+  .news-card,
+  .mineria-card,
+  .re-header {
+    border-color: var(--border-soft);
+    box-shadow: var(--shadow-card);
+  }
+  .summary-card,
+  .chart-card,
+  .metric-card,
+  .pipe-stage,
+  .news-card,
+  .opp-status-card {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--cat-black) 96%, #fff 4%), var(--cat-black));
+  }
+  .summary-card:hover,
+  .metric-card:hover,
+  .pipe-stage:hover,
+  .chart-card:hover,
+  .news-card:hover,
+  .opp-status-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px rgba(0,0,0,0.16);
+  }
+  .tab-bar {
+    position: sticky;
+    top: 76px;
+    z-index: 45;
+    overflow-x: auto;
+    gap: 8px;
+    border-bottom: none;
+    background: color-mix(in srgb, var(--cat-dark) 88%, transparent);
+    backdrop-filter: blur(14px);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    margin-bottom: 0;
+    padding: 10px 18px;
+    white-space: nowrap;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .tab-btn.active {
+    background: var(--cat-yellow);
+    border-color: var(--cat-yellow);
+    color: #171717;
+    box-shadow: 0 10px 24px rgba(255,205,0,0.22);
+  }
+  .section-header {
+    padding: 14px 0 4px;
+    border-bottom: 1px solid color-mix(in srgb, var(--cat-gray-light) 55%, transparent);
+  }
+  .section-header .filters select,
+  .section-header .filters input,
+  .calc-form input,
+  .calc-form select,
+  .chat-input-bar textarea {
+    border-radius: 10px;
+    min-height: 40px;
+  }
+  .chart-card {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .chart-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cat-yellow), var(--cat-blue), var(--cat-green));
+    opacity: 0.72;
+  }
+  .chart-card .chart-title {
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 14px;
+  }
+  .chart-card .chart-sub { max-width: 760px; }
+  .chart-action-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--cat-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .chart-tooltip {
+    max-width: min(320px, calc(100vw - 32px));
+    white-space: normal;
+    backdrop-filter: blur(12px);
+  }
+  .chart-filter-info {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: color-mix(in srgb, var(--cat-yellow) 11%, var(--cat-black));
+    border: 1px solid color-mix(in srgb, var(--cat-yellow) 72%, transparent);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cat-yellow);
+  }
+  .chart-filter-info button {
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--cat-yellow) 70%, transparent);
+    background: transparent;
+    color: var(--cat-yellow);
+    cursor: pointer;
+  }
+  .chart-filter-info button:hover {
+    background: var(--cat-yellow);
+    color: #171717;
+  }
+  .chart-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 18px; }
+  .table-wrapper {
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+  }
+  table thead th { top: 0; }
+  table tbody tr:hover { background: color-mix(in srgb, var(--cat-yellow) 9%, transparent); }
+  @media (max-width: 1100px) {
+    .summary-carousel { grid-template-columns: repeat(4, minmax(140px, 1fr)); }
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .top-bar {
+      height: auto;
+      min-height: 64px;
+      padding: 10px 16px;
+      gap: 10px;
+    }
+    .top-bar .logo { gap: 10px; min-width: 0; }
+    .top-bar .logo img { max-height: 40px; }
+    .top-bar .logo .divider,
+    .top-bar .tagline .sub { display: none; }
+    .top-bar .logo .brand-text .subtitle {
+      font-size: 12px;
+      max-width: 42vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .hero { padding: 28px 16px 44px; }
+    .hero h1 { font-size: 26px; }
+    .summary-carousel-wrapper {
+      position: static;
+      margin: -22px 12px 0;
+      padding: 10px;
+      border-radius: 14px;
+    }
+    .summary-carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      scroll-snap-type: x proximity;
+      padding-bottom: 2px;
+    }
+    .summary-card {
+      min-width: 172px;
+      scroll-snap-align: start;
+    }
+    .tab-bar {
+      top: 0;
+      padding: 10px 16px;
+    }
+    .tab-btn { padding: 9px 14px; font-size: 12px; }
+    .main-content { padding: 24px 16px; }
+    .section-header { align-items: stretch; }
+    .section-header .filters { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+    .section-header .filters select,
+    .section-header .filters input { width: 100%; }
+    .chart-card { padding: 16px; }
+    .chart-filter-info button { margin-left: 0; }
+    .calc-form { grid-template-columns: 1fr; }
+    .chat-bubble { max-width: 94%; }
+  }
+  @media (max-width: 480px) {
+    .section-header .filters { grid-template-columns: 1fr; }
+    .summary-card { min-width: 155px; }
+    .chart-card .legend { justify-content: flex-start; }
+  }
+
+  /* SALES EXPERIENCE POLISH */
+  body { font-size: 14px; letter-spacing: 0; }
+  h1, h2, h3, h4, .chart-title, .summary-card .value, .machine-card .m-demand {
+    letter-spacing: -0.01em;
+  }
+  .hero h1,
+  .re-header .re-h-left h1 {
+    letter-spacing: -0.03em;
+  }
+  .machine-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 14px;
+  }
+  .machine-card {
+    text-align: left;
+    border-radius: 14px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    gap: 10px 14px;
+    align-items: start;
+  }
+  .machine-card .m-icon {
+    grid-row: span 4;
+    width: 58px;
+    height: 58px;
+    margin: 0;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--cat-yellow) 10%, var(--cat-black));
+    border: 1px solid color-mix(in srgb, var(--cat-yellow) 22%, transparent);
+    align-items: center;
+  }
+  .machine-card .m-icon img { max-width: 52px; max-height: 48px; object-fit: contain; }
+  .machine-card .m-name {
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+  .machine-card .m-desc {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .machine-card .m-demand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    width: fit-content;
+    margin-top: 2px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--cat-yellow);
+    color: #171717;
+    font-size: 18px;
+  }
+  .machine-card .m-demand small { color: rgba(0,0,0,0.72); font-weight: 700; }
+  .machine-card .m-value { font-weight: 750; }
+  .machine-match {
+    grid-column: 2;
+    color: var(--cat-text-muted);
+    background: color-mix(in srgb, var(--cat-yellow) 8%, transparent);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .co-card {
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .co-card .co-header .co-name { font-size: 14px; line-height: 1.2; }
+  .co-card .co-header .co-total {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cat-yellow);
+    color: #171717;
+  }
+  .co-card .co-row {
+    min-height: 34px;
+    font-size: 12px;
+  }
+  .co-card .co-row .co-label { color: var(--cat-text); font-weight: 650; }
+  .insight-bar {
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--cat-yellow) 14%, var(--cat-black)), var(--cat-black));
+    border-color: color-mix(in srgb, var(--cat-yellow) 32%, transparent);
+  }
+  @media (max-width: 520px) {
+    .machine-card { grid-template-columns: 52px 1fr; padding: 14px; }
+    .machine-card .m-icon { width: 50px; height: 50px; }
+    .machine-card .m-icon img { max-width: 46px; max-height: 42px; }
+    .machine-match { grid-column: 1 / -1; }
+  }
   .chat-messages {
     flex: 1; overflow-y: auto; padding: 12px 16px;
     display: flex; flex-direction: column; gap: 8px;
@@ -1161,7 +1538,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="value blue">2026-2030</div>
       <div class="sub">Janela crítica de oportunidade</div>
     </div>
-    <div class="summary-card" onclick="goToChart('opp-map-layout')" style="cursor:pointer;">
+    <div class="summary-card" onclick="goToChart('reMapLeft')" style="cursor:pointer;">
       <div class="label">Estados</div>
       <div class="value orange" id="totalEstados">0</div>
       <div class="sub">MG, BA, GO, AM, PA, RJ</div>
@@ -1202,26 +1579,28 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
   <div style="background:linear-gradient(135deg, rgba(255,205,0,0.08) 0%, var(--cat-black) 100%);border-radius:16px;padding:32px 36px;margin-bottom:24px;border:1px solid rgba(255,205,0,0.15);">
     <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-      <div style="width:64px;height:64px;border-radius:16px;background:var(--cat-yellow);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">🤖</div>
+      <div style="width:72px;height:72px;border-radius:18px;background:var(--cat-black);border:1px solid rgba(255,205,0,0.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.22);">
+        <img src="minerai.png" alt="MinerAI" style="width:100%;height:100%;object-fit:cover;">
+      </div>
       <div style="flex:1;">
-        <h2 style="font-size:24px;font-weight:800;color:var(--cat-fg);margin:0 0 4px;letter-spacing:-0.5px;">MinerAI <span style="color:var(--cat-yellow);">· Assistente do Portfólio</span></h2>
-        <p style="font-size:14px;color:var(--cat-text-muted);margin:0;">Treinado nos dados reais do portfólio · Pergunte sobre projetos, CAPEX, equipamentos e mais</p>
+        <h2 style="font-size:24px;font-weight:800;color:var(--cat-fg);margin:0 0 4px;letter-spacing:-0.5px;">MinerAI <span style="color:var(--cat-yellow);">· Inteligência de Projetos Sotreq</span></h2>
+        <p style="font-size:14px;color:var(--cat-text-muted);margin:0;">Especialista do portfólio para responder sobre projetos, CAPEX, estágios, frota CAT e oportunidades Sotreq</p>
       </div>
     </div>
   </div>
 
   <div class="ch-suggestions" id="chSuggestions">
-    <div class="ch-suggestion" onclick="sendSuggestion('Qual o maior projeto do portfólio?')">📊 Qual o maior projeto do portfólio?</div>
-    <div class="ch-suggestion" onclick="sendSuggestion('Total de CAPEX de todos os projetos?')">💰 Total de CAPEX de todos os projetos?</div>
-    <div class="ch-suggestion" onclick="sendSuggestion('Oportunidade Sotreq total estimada?')">⚡ Oportunidade Sotreq total estimada?</div>
-    <div class="ch-suggestion" onclick="sendSuggestion('Quais projetos estão em Minas Gerais?')">📍 Projetos em Minas Gerais</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Qual o CAPEX previsto por ano para o projeto Caldeira?')">CAPEX por ano</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Dimensione a frota estimada para o maior projeto do portfólio.')">Dimensionar frota</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Quais projetos estão mais próximos de demandar equipamentos CAT?')">Timing de equipamentos</div>
+    <div class="ch-suggestion" onclick="sendSuggestion('Explique de forma simples quais oportunidades existem em terras raras para a Sotreq.')">Entender oportunidades</div>
   </div>
 
   <div class="mineria-card">
     <div class="mineria-chat" id="mineriaChat">
       <div class="chat-messages" id="chatMessages">
         <div class="chat-msg assistant">
-          <div class="chat-bubble">👋 Olá! Pergunte sobre os projetos, CAPEX, estágios e oportunidades do portfólio.</div>
+          <div class="chat-bubble">Olá. Sou o MinerAI. Pergunte sobre projetos, CAPEX, estágios, frota CAT, riscos, timing e oportunidades para a Sotreq.</div>
         </div>
       </div>
       <div class="chat-input-bar">
@@ -1373,7 +1752,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       </div>
       <div class="meth-item" style="text-align:center;">
         <h4>
-          <img src="equipamento_de_apoio.png" style="height:36px;width:auto;vertical-align:middle;" title="Perfuratriz">
+          <img src="perfuratriz.png" style="height:36px;width:auto;vertical-align:middle;" title="Perfuratriz">
           <img src="caminhao.png" style="height:36px;width:auto;vertical-align:middle;margin-left:4px;" title="Caminhão">
           Rocha Dura
         </h4>
@@ -1394,7 +1773,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   <div class="insight-bar">
     <div class="insight-icon"><i class="bi bi-lightbulb-fill"></i></div>
     <div class="insight-text">
-      <strong>INSIGHT ESTRATÉGICO:</strong> O Brasil avança na mineração de terras raras: projetos como Caldeira (Meteoric), Monte Alto (BRE) e Volta Grande (Belo Sun) colocam o país na rota de novos investimentos minerais. O dimensionamento de equipamentos considera o perfil de cada depósito — argila iônica (frota seletiva, baseline Viridis), rocha dura (equipamentos robustos), reprocessamento (manuseio/pátio) e exploração (sem frota completa).
+      <strong>INSIGHT COMERCIAL:</strong> Este radar ajuda o consultor a priorizar contas, entender o momento de cada projeto e antecipar conversas com clientes antes da compra de equipamentos, servicos e pecas. O foco e transformar sinais de mercado em abordagem comercial: cliente certo, timing certo e proposta preparada.
     </div>
   </div>
 
@@ -1415,35 +1794,36 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
   <!-- DASHBOARD CHARTS -->
   <div class="section-header" style="margin-top:40px;">
-    <h3 id="dashboard-analitico">Dashboard Analítico <a href="#dashboard-analitico" class="anchor-link">#</a></h3>
+    <h3 id="dashboard-analitico">Painel Comercial <a href="#dashboard-analitico" class="anchor-link">#</a></h3>
   </div>
+  <div class="chart-action-hint" style="margin-top:-2px;"><i class="bi bi-cursor-fill"></i> Clique em barras e fatias para filtrar. Clique novamente ou use o X para limpar.</div>
   <div class="chart-grid" id="chartGrid">
     <div class="chart-card chart-card-full" id="chartCompanyCapex">
       <div class="chart-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <span>Oportunidade Sotreq por Cliente</span>
+        <span>Carteira de Oportunidades por Cliente</span>
         <button onclick="toggleCapexView()" id="capexToggleBtn" style="background:var(--cat-gray-light);border:none;border-radius:6px;padding:4px 12px;font-size:11px;color:var(--cat-fg);cursor:pointer;white-space:nowrap;"><i class="bi bi-bar-chart-fill"></i> Ver CAPEX Total</button>
       </div>
-      <div class="chart-sub">30% do CAPEX de cada empresa · fatia estimada de equipamentos CAT + serviços</div>
+      <div class="chart-sub">Priorizacao comercial por cliente, potencial de equipamentos CAT e servicos associados</div>
     </div>
     <div class="chart-card" id="chartCapexByState">
-      <div class="chart-title">CAPEX Sotreq por Estado</div>
-      <div class="chart-sub">Oportunidade Sotreq por estado · 30% do CAPEX dos projetos</div>
+      <div class="chart-title">Oportunidade por Estado</div>
+      <div class="chart-sub">Onde concentrar prospeccao, visitas e relacionamento regional</div>
     </div>
     <div class="chart-card" id="chartStageDistribution">
-      <div class="chart-title">Projetos por Estágio</div>
-      <div class="chart-sub">Quantidade de projetos em cada estágio de maturidade</div>
+      <div class="chart-title">Timing Comercial por Estagio</div>
+      <div class="chart-sub">Projetos mais proximos de decisao de compra e mobilizacao</div>
     </div>
     <div class="chart-card" id="chartDepositType">
-      <div class="chart-title">Oportunidade por Tipo de Depósito</div>
-      <div class="chart-sub">Distribuição da oportunidade Sotreq por tipo de depósito</div>
+      <div class="chart-title">Perfil da Oportunidade</div>
+      <div class="chart-sub">Leitura macro do portfolio para orientar abordagem e mix de oferta</div>
     </div>
     <div class="chart-card" id="chartPriority">
-      <div class="chart-title">Oportunidade por Prioridade</div>
-      <div class="chart-sub">Oportunidade Sotreq alocada por nível de prioridade</div>
+      <div class="chart-title">Prioridade de Abordagem</div>
+      <div class="chart-sub">Separacao da carteira por foco comercial e urgencia de acompanhamento</div>
     </div>
   </div>
   <div class="chart-tooltip" id="chartTooltip"></div>
-  <div id="chartFilterInfo" style="display:none;align-items:center;gap:8px;margin-top:12px;padding:10px 16px;background:var(--cat-black);border:1px solid var(--cat-yellow);border-radius:8px;font-size:13px;font-weight:600;color:var(--cat-yellow);"></div>
+  <div id="chartFilterInfo" class="chart-filter-info"></div>
 
   <!-- PROJECT TABLE -->
   <div style="margin-top: 40px;">
@@ -1511,7 +1891,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   <!-- MACHINERY -->
   <div class="machinery-section" style="margin-top:40px;">
     <div class="section-header">
-      <h3 id="demanda-maquinas">Análise de Demanda por Máquinas CAT <a href="#demanda-maquinas" class="anchor-link">#</a></h3>
+      <h3 id="demanda-maquinas">Demanda Estimada de Equipamentos CAT <a href="#demanda-maquinas" class="anchor-link">#</a></h3>
     </div>
     <div class="machine-grid">
       <div class="machine-card">
@@ -1547,6 +1927,14 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-value" id="machValDozers" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
       <div class="machine-card">
+        <div class="m-icon"><img src="perfuratriz.png" alt="Perfuratriz"></div>
+        <div class="m-name">Perfuratrizes</div>
+        <div class="m-desc">Modelos: CAT MD5150, MD6200, MD6250 · Aplicação: perfuração de rocha dura, desmonte, furos de produção e pré‑corte</div>
+        <div class="machine-match" id="matchDrills">Proporção: ~10% do nº de caminhões. 2–4 por frente de lavra em rocha dura. Uso reduzido em argila iônica.</div>
+        <div class="m-demand" id="machDrills">0 <small>unidades</small></div>
+        <div class="m-value" id="machValDrills" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
+      </div>
+      <div class="machine-card">
         <div class="m-icon"><img src="motoniveladora.png" alt="Motoniveladora"></div>
         <div class="m-name">Motoniveladoras</div>
         <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16 · Aplicação: manutenção de vias, plataformas, drenagem e estabilidade operacional</div>
@@ -1564,14 +1952,13 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       </div>
     </div>
     <div style="margin-top:20px;border-top:1px solid var(--cat-gray-light);padding-top:16px;">
-      <div class="fleet-donut" id="fleetDonut"><div class="chart-container" id="fleetDonutChart" style="min-height:220px;"></div></div>
+      <div id="fleetDonut"><div class="chart-container" id="fleetDonutChart" style="min-height:220px;"></div></div>
     </div>
-    <p style="color:var(--cat-text-muted);font-size:12px;margin-top:12px;border-left:3px solid var(--cat-yellow);padding-left:12px;"><strong style="color:var(--cat-fg);">Nova premissa:</strong> Terras raras ≠ sempre mineração pesada. O dimensionamento agora varia por tipo de depósito: argila iônica (frota seletiva de médio porte), rocha dura (equipamentos robustos), reprocessamento (foco em manuseio/pátio) ou exploração (sem frota operacional completa).</p>
   </div>
 
   <div class="machinery-section" style="margin-top:40px;">
     <div class="section-header">
-      <h3 id="demanda-empresas">Demanda por Empresa <a href="#demanda-empresas" class="anchor-link">#</a></h3>
+      <h3 id="demanda-empresas">Contas Prioritarias e Mix de Equipamentos <a href="#demanda-empresas" class="anchor-link">#</a></h3>
     </div>
     <div class="co-demand-grid" id="coDemandGrid"></div>
   </div>
@@ -1714,7 +2101,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   <div class="chart-card" style="margin-top:32px;">
     <div class="chart-title">Demanda de Equipamentos por Ano (2026–2030)</div>
     <div class="chart-sub">Estimativa baseada nas curvas de desembolso por estágio × frota calculada</div>
-    <div class="chart-container" id="fleetTimelineChart" style="min-height:260px;"></div>
+    <div class="chart-container" id="fleetTimelineChart" style="min-height:260px;position:relative;"></div>
   </div>
 
   <!-- INTERACTIVE FLEET CALCULATOR -->
@@ -1722,17 +2109,25 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     <h3><i class="bi bi-calculator-fill" style="color:var(--cat-yellow);"></i> Calculadora de Frota — CAT Field Guide</h3>
     <div class="calc-grid">
       <div class="calc-form">
-        <label>Tipo de Depósito</label>
-        <select id="calcDepositType">
-          <option value="iacSaprolite">Argila Iônica / saprolito</option>
-          <option value="hardRock">Rocha dura / carbonatito</option>
-          <option value="reprocessing">Reprocessamento / fosfogesso</option>
-        </select>
-        <label style="margin-top:12px;">Capacidade Anual (t/ano)</label>
-        <input type="number" id="calcCapacity" value="14000" min="1000" step="1000">
-        <label style="margin-top:12px;">Horas Operacionais / Ano</label>
-        <input type="number" id="calcHours" value="5500" min="2000" max="8760" step="100">
-        <button onclick="runFleetCalculator()" style="margin-top:16px;padding:10px 24px;border-radius:8px;background:var(--cat-yellow);color:var(--cat-black);border:none;font-weight:700;font-size:14px;cursor:pointer;width:100%;">Calcular Frota</button>
+        <div>
+          <label>Tipo de Depósito</label>
+          <select id="calcDepositType">
+            <option value="iacSaprolite">Argila Iônica / saprolito</option>
+            <option value="hardRock">Rocha dura / carbonatito</option>
+            <option value="reprocessing">Reprocessamento / fosfogesso</option>
+          </select>
+        </div>
+        <div>
+          <label>Capacidade Anual (t/ano)</label>
+          <input type="number" id="calcCapacity" value="3000000" min="100000" step="100000">
+        </div>
+        <div>
+          <label>Horas Operacionais / Ano</label>
+          <input type="number" id="calcHours" value="5500" min="2000" max="8760" step="100">
+        </div>
+        <div style="grid-column:1/-1;">
+          <button onclick="runFleetCalculator()" style="padding:10px 24px;border-radius:8px;background:var(--cat-yellow);color:var(--cat-black);border:none;font-weight:700;font-size:14px;cursor:pointer;">Calcular Frota</button>
+        </div>
       </div>
       <div class="calc-result" id="calcResult">
         <h4>Resultado</h4>
@@ -1821,6 +2216,7 @@ const EQUIP_FAMILIES = [
   { key: 'excavators', label: 'Escavadeiras' },
   { key: 'loaders', label: 'Carregadeiras' },
   { key: 'dozers', label: 'Tratores de Esteira' },
+  { key: 'drills', label: 'Perfuratrizes' },
   { key: 'support1', label: 'Motoniveladoras' },
   { key: 'support2', label: 'Equip. Apoio' },
   { key: 'other', label: 'Outros' }
@@ -1829,10 +2225,10 @@ function famLabel(key) { const f = EQUIP_FAMILIES.find(e => e.key === key); retu
 
 // % do CAPEX alocado a cada família de equipamento por tipo de depósito
 const EQUIP_ALLOC = {
-  iacSaprolite: { trucks: 0.07, excavators: 0.08, loaders: 0.065, dozers: 0.045, support1: 0.013, support2: 0.018 },
-  hardRock:     { trucks: 0.075, excavators: 0.085, loaders: 0.07, dozers: 0.045, support1: 0.014, support2: 0.02 },
-  reprocessing: { trucks: 0.05, excavators: 0.055, loaders: 0.05, dozers: 0.03, support1: 0.01, support2: 0.013 },
-  exploration:  { trucks: 0.01, excavators: 0.005, loaders: 0.005, dozers: 0.003, support1: 0.001, support2: 0.002 }
+  iacSaprolite: { trucks: 0.07, excavators: 0.08, loaders: 0.065, dozers: 0.045, drills: 0.015, support1: 0.013, support2: 0.018 },
+  hardRock:     { trucks: 0.075, excavators: 0.085, loaders: 0.07, dozers: 0.045, drills: 0.04, support1: 0.014, support2: 0.02 },
+  reprocessing: { trucks: 0.05, excavators: 0.055, loaders: 0.05, dozers: 0.03, drills: 0.01, support1: 0.01, support2: 0.013 },
+  exploration:  { trucks: 0.01, excavators: 0.005, loaders: 0.005, dozers: 0.003, drills: 0.008, support1: 0.001, support2: 0.002 }
 };
 
 const MATERIAL_PROPS = {
@@ -1880,6 +2276,7 @@ const equipmentProfiles = {
     excavators: ['CAT 349', 'CAT 350', 'CAT 352'],
     loaders: ['CAT 972', 'CAT 982', 'CAT 988'],
     dozers: ['CAT D6', 'CAT D8', 'CAT D9'],
+    drills: ['CAT MD5150'],
     support: ['CAT 16', 'CAT 318', 'CAT 250'],
     sizingLogic: 'Frota média, lavra seletiva, cava rasa, baixo desmonte e transporte moderado.'
   },
@@ -2150,8 +2547,8 @@ function parseAnnualTonnes(capStr) {
 function estimateProjectFleet(p) {
   if (p.realFleet) return p.realFleet;
   const dt = p.depositType || 'exploration';
-  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
-  const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, support1: 1.5, support2: 0.7 };
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
+  const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, drills: 1.2, support1: 1.5, support2: 0.7 };
   const a = EQUIP_ALLOC[dt] || EQUIP_ALLOC.exploration;
   const result = { total: 0 };
 
@@ -2175,6 +2572,7 @@ function estimateProjectFleet(p) {
     result.loaders = numLoaders;
     result.excavators = Math.round(numTrucks * 0.15);
     result.dozers = Math.round(numTrucks * 0.25);
+    result.drills = Math.max(1, Math.round(numTrucks * 0.1));
     result.support1 = Math.max(1, Math.round(numTrucks * 0.12));
     result.support2 = Math.max(1, Math.round(numTrucks * 0.15));
   } else {
@@ -2186,19 +2584,19 @@ function estimateProjectFleet(p) {
 }
 
 function estimateFleet(data) {
-  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
-  const result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, support1: 0, support2: 0, total: 0 };
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
+  const result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, drills: 0, support1: 0, support2: 0, total: 0 };
   data.forEach(proj => {
     const f = estimateProjectFleet(proj);
     keys.forEach(k => { result[k] += f[k] || 0; });
   });
-  result.total = result.trucks + result.excavators + result.loaders + result.dozers + result.support1 + result.support2;
+  result.total = result.trucks + result.excavators + result.loaders + result.dozers + result.drills + result.support1 + result.support2;
   return result;
 }
 
 function calcFleetValue(fleet) {
-  const prices = sotreqConfig.equipPrices || { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 };
-  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const prices = sotreqConfig.equipPrices || { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, drills: 1200000, support1: 1500000, support2: 700000 };
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   let total = 0;
   const breakdown = {};
   keys.forEach(k => {
@@ -2222,12 +2620,13 @@ function toggleFleet(el) {
 }
 
 function renderCompanyDemand() {
-  const equipKeys = ['trucks','excavators','loaders','dozers','support1','support2'];
+  const equipKeys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   const equipMeta = {
     trucks:    { label: 'Caminhões',           img: 'caminhao.png' },
     excavators:{ label: 'Escavadeiras',        img: 'escavadeira.png' },
     loaders:   { label: 'Carregadeiras',       img: 'carregadeira.png' },
     dozers:    { label: 'Tratores de Esteira', img: 'trator_de_esteira.png' },
+    drills:    { label: 'Perfuratrizes',       img: 'perfuratriz.png' },
     support1:  { label: 'Motoniveladoras',     img: 'motoniveladora.png' },
     support2:  { label: 'Equip. Apoio',        img: 'equipamento_de_apoio.png' }
   };
@@ -2301,6 +2700,7 @@ function init() {
   document.getElementById('machExcavators').innerHTML = sm.excavators + ' <small>unidades</small>';
   document.getElementById('machLoaders').innerHTML = sm.loaders + ' <small>unidades</small>';
   document.getElementById('machDozers').innerHTML = sm.dozers + ' <small>unidades</small>';
+  document.getElementById('machDrills').innerHTML = sm.drills + ' <small>unidades</small>';
   document.getElementById('machSupport1').innerHTML = sm.support1 + ' <small>unidades</small>';
   document.getElementById('machSupport2').innerHTML = sm.support2 + ' <small>unidades</small>';
 
@@ -2316,7 +2716,7 @@ function init() {
   oppEl.parentElement.querySelector('.sub').textContent = '~' + sm.total + ' equipamentos CAT estimados · ' + c.conversao + '% oportunidade Sotreq';
 
   document.getElementById('totalFleetValue').innerHTML = 'US$ ' + (fleetVal.total >= 1e9 ? (fleetVal.total/1e9).toFixed(2) + ' Bi' : (fleetVal.total/1e6).toFixed(0) + ' Mi');
-  document.getElementById('fleetValueDetail').innerHTML = Object.entries({trucks:'Caminhões',excavators:'Escavadeiras',loaders:'Carregadeiras',dozers:'Tratores',support1:'Motoniveladoras',support2:'Equip. Apoio'}).map(([k,label]) =>
+  document.getElementById('fleetValueDetail').innerHTML = Object.entries({trucks:'Caminhões',excavators:'Escavadeiras',loaders:'Carregadeiras',dozers:'Tratores',drills:'Perfuratrizes',support1:'Motoniveladoras',support2:'Equip. Apoio'}).map(([k,label]) =>
     `<span class="stat-item"><strong>${label}:</strong> US$ ${(fleetVal[k]/1e6).toFixed(0)} Mi</span>`
   ).join('') + `<span class="stat-item"><strong>Total Frota:</strong> US$ ${fleetVal.total >= 1e9 ? (fleetVal.total/1e9).toFixed(2) + ' Bi' : (fleetVal.total/1e6).toFixed(0) + ' Mi'}</span>`;
 
@@ -2400,6 +2800,7 @@ function renderTable(data) {
           <div class="fd-item"><span class="fd-label">Escavadeiras</span><span class="fd-value">${f.excavators}</span></div>
           <div class="fd-item"><span class="fd-label">Carregadeiras</span><span class="fd-value">${f.loaders}</span></div>
           <div class="fd-item"><span class="fd-label">Tratores</span><span class="fd-value">${f.dozers}</span></div>
+          <div class="fd-item"><span class="fd-label">Perfuratrizes</span><span class="fd-value">${f.drills||0}</span></div>
           <div class="fd-item"><span class="fd-label">Motonivelad.</span><span class="fd-value">${f.support1}</span></div>
           <div class="fd-item"><span class="fd-label">Apoio</span><span class="fd-value">${f.support2}</span></div>
           <div class="fd-item" style="border-top:1px solid var(--cat-gray-light);padding-top:4px;margin-top:4px;"><span class="fd-label" style="font-weight:700;">Valor Frota</span><span class="fd-value" style="color:var(--cat-blue);">US$ ${fv >= 1e9 ? (fv/1e9).toFixed(2) + ' Bi' : (fv/1e6).toFixed(0) + ' Mi'}</span></div>
@@ -2417,7 +2818,7 @@ function renderPipeline(data) {
   flow.innerHTML = stages.map(s => {
     const projs = data.filter(p => p.stage === s);
     return `
-      <div class="pipe-stage ${stageColors[s-1]}">
+      <div class="pipe-stage ${stageColors[s-1]}" onclick="chartSetFilter('stage', ${s})" title="Filtrar por ${stageNames[s-1]}" style="cursor:pointer;">
         <div class="ps-header">
           <div class="ps-num">${s}</div>
           <div class="ps-name">${stageNames[s-1]}</div>
@@ -2600,11 +3001,12 @@ function goToChart(id) {
   const tabId = tabPage ? tabPage.id.replace('tab-', '') : 'resumo';
   switchTab(tabId);
   setTimeout(() => {
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const top = el.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({ top, behavior: 'smooth' });
     el.classList.remove('chart-highlight');
     void el.offsetWidth;
     el.classList.add('chart-highlight');
-  }, 100);
+  }, 150);
 }
 
 // ── RESUMO EXECUTIVO ──
@@ -3150,10 +3552,10 @@ let sotreqConfig = {
   anoFim: 2030,
   taxaCrescimento: '15–20%',
   capMaxTabela: 200,       // max CAPEX p/ escala visual
-  fleetIac: { refCapex: 560, trucks: 45, excavators: 8, loaders: 6, dozers: 8, support1: 1, support2: 5 },
-  fleetHardRock: { refCapex: 720, trucks: 55, excavators: 10, loaders: 8, dozers: 8, support1: 2, support2: 4 },
-  fleetReprocessing: { refCapex: 280, trucks: 14, excavators: 5, loaders: 6, dozers: 3, support1: 1, support2: 5 },
-  equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 },
+  fleetIac: { refCapex: 560, trucks: 45, excavators: 8, loaders: 6, dozers: 8, drills: 1, support1: 1, support2: 5 },
+  fleetHardRock: { refCapex: 720, trucks: 55, excavators: 10, loaders: 8, dozers: 8, drills: 3, support1: 2, support2: 4 },
+  fleetReprocessing: { refCapex: 280, trucks: 14, excavators: 5, loaders: 6, dozers: 3, drills: 1, support1: 1, support2: 5 },
+  equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, drills: 1200000, support1: 1500000, support2: 700000 },
   brlRate: 5.0,
 };
 
@@ -3165,15 +3567,15 @@ function sotreqLoadConfig() {
     // Migrate old fleet keys to new structure
     if (c && c.viridisFleet && !c.fleetIac) {
       const old = c.viridisFleet;
-      sotreqConfig.fleetIac = { refCapex: c.baselineCapex || 560, trucks: old.trucks||15, excavators: old.excavators||5, loaders: old.loaders||2, dozers: old.dozers||8, support1: old.support1||2, support2: old.support2||3 };
+      sotreqConfig.fleetIac = { refCapex: c.baselineCapex || 560, trucks: old.trucks||15, excavators: old.excavators||5, loaders: old.loaders||2, dozers: old.dozers||8, drills: 1, support1: old.support1||2, support2: old.support2||3 };
     }
     if (c && c.hardRockBaseline && !c.fleetHardRock) {
       const old = c.hardRockBaseline;
-      sotreqConfig.fleetHardRock = { refCapex: 720, trucks: old.trucks||20, excavators: old.excavators||6, loaders: old.loaders||4, dozers: old.dozers||6, support1: old.support1||3, support2: old.support2||2 };
+      sotreqConfig.fleetHardRock = { refCapex: 720, trucks: old.trucks||20, excavators: old.excavators||6, loaders: old.loaders||4, dozers: old.dozers||6, drills: 3, support1: old.support1||3, support2: old.support2||2 };
     }
     if (c && c.reprocessingBaseline && !c.fleetReprocessing) {
       const old = c.reprocessingBaseline;
-      sotreqConfig.fleetReprocessing = { refCapex: 280, trucks: old.trucks||4, excavators: old.excavators||3, loaders: old.loaders||4, dozers: old.dozers||3, support1: old.support1||2, support2: old.support2||3 };
+      sotreqConfig.fleetReprocessing = { refCapex: 280, trucks: old.trucks||4, excavators: old.excavators||3, loaders: old.loaders||4, dozers: old.dozers||3, drills: 1, support1: old.support1||2, support2: old.support2||3 };
     }
   }
 }
@@ -3380,7 +3782,7 @@ function renderSotreqSummary() {
         <p style="font-size:11px;">
           Caminhões: <strong>${sm.trucks}</strong> · Escavadeiras: <strong>${sm.excavators}</strong><br>
           Carregadeiras: <strong>${sm.loaders}</strong> · Tratores: <strong>${sm.dozers}</strong><br>
-          Motonivelad.: <strong>${sm.support1}</strong> · Equip. Apoio: <strong>${sm.support2}</strong>
+          Perfuratrizes: <strong>${sm.drills}</strong> · Motonivelad.: <strong>${sm.support1}</strong> · Equip. Apoio: <strong>${sm.support2}</strong>
         </p>
       </div>
       <div class="meth-item">
@@ -3428,23 +3830,26 @@ function chartFilterLabel() {
 }
 
 function chartSetFilter(type, value) {
-  if (chartFilter && chartFilter.type === type && chartFilter.value === value) {
+  if (!type) {
+    chartFilter = null;
+  } else if (chartFilter && chartFilter.type === type && chartFilter.value === value) {
     chartFilter = null;
   } else {
     chartFilter = { type, value };
   }
   renderCharts();
-  document.getElementById('stateFilter').value = 'all';
-  document.getElementById('stageFilter').value = 'all';
-  document.getElementById('priorityFilter').value = 'all';
-  document.getElementById('depositFilter').value = 'all';
+  ['stateFilter','stageFilter','priorityFilter','depositFilter','statusFilter'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 'all';
+  });
   applyFilters();
   const fi = document.getElementById('chartFilterInfo');
   if (chartFilter) {
     fi.style.display = 'flex';
-    fi.innerHTML = `<i class="bi bi-funnel-fill"></i> Filtro: ${chartFilterLabel()} <button onclick="chartSetFilter(null,null)" style="background:transparent;border:none;color:#FFCD00;cursor:pointer;font-size:16px;margin-left:8px;" title="Limpar filtro"><i class="bi bi-x-lg"></i></button>`;
+    fi.innerHTML = `<i class="bi bi-funnel-fill"></i><span>Filtro ativo: ${chartFilterLabel()}</span><button onclick="chartSetFilter(null,null)" title="Limpar filtro"><i class="bi bi-x-lg"></i></button>`;
   } else {
     fi.style.display = 'none';
+    fi.innerHTML = '';
   }
 }
 
@@ -3462,32 +3867,60 @@ function renderCharts() {
 
 function renderFleetDonut() {
   const container = document.getElementById('fleetDonutChart');
-  if (!container || container._rendered) return; container._rendered = true;
+  if (!container) return;
+  d3.select(container).html('');
   const fleet = estimateFleet(projects);
-  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
-  const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Motoniveladoras','Apoio'];
-  const colors = ['#FFCD00','#33b5e5','#00C851','#ff4444','#FF8800','#aa66cc'];
-  const data = keys.map((k,i) => ({ label: labels[i], value: fleet[k]||0, color: colors[i] }));
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
+  const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Perfuratrizes','Motoniveladoras','Apoio'];
+  const colors = ['#FFCD00','#2F343A','#6B7280','#111827','#C6A100','#8C8F94','#4B5563'];
+  const data = keys.map((k,i) => ({ key: k, label: labels[i], value: fleet[k]||0, color: colors[i] }))
+    .filter(d => d.value > 0)
+    .sort((a,b) => b.value - a.value);
   const total = d3.sum(data, d => d.value);
   if (!total) return;
 
-  const w = 220, h = 220, r = 90, ir = 55;
-  const svg = d3.select(container).append('svg').attr('viewBox',`0 0 ${w} ${h}`).append('g').attr('transform',`translate(${w/2},${h/2})`);
+  const wrapper = d3.select(container).append('div').attr('class','fleet-donut');
+  const chartWrap = wrapper.append('div').style('position','relative').style('min-width','0');
+  const w = 300, h = 300, r = 122, ir = 78;
+  const svg = chartWrap.append('svg')
+    .attr('viewBox',`0 0 ${w} ${h}`)
+    .attr('role','img')
+    .attr('aria-label','Mix estimado de equipamentos CAT')
+    .append('g')
+    .attr('transform',`translate(${w/2},${h/2})`);
   const pie = d3.pie().value(d=>d.value).sort(null);
   const arc = d3.arc().innerRadius(ir).outerRadius(r);
-  const arcH = d3.arc().innerRadius(ir).outerRadius(r+8);
+  const arcH = d3.arc().innerRadius(ir).outerRadius(r+10);
+  const tt = chartTooltip(container);
 
   svg.selectAll('path').data(pie(data)).enter().append('path')
-    .attr('d', arc).attr('fill', d=>d.data.color).attr('stroke','var(--cat-dark)').attr('stroke-width',2)
-    .on('mouseenter', function(){ d3.select(this).transition().duration(200).attr('d', arcH); })
-    .on('mouseleave', function(){ d3.select(this).transition().duration(200).attr('d', arc); });
+    .attr('d', arc)
+    .attr('fill', d=>d.data.color)
+    .attr('stroke','var(--cat-black)')
+    .attr('stroke-width',3)
+    .style('cursor','pointer')
+    .on('mouseenter', function(e,d){
+      d3.select(this).transition().duration(180).attr('d', arcH).attr('filter','drop-shadow(0 8px 16px rgba(0,0,0,0.22))');
+      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:18px;font-weight:850;color:#FFCD00;">${d.data.value} un.</span><br><span style="color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do mix estimado</span>`);
+    })
+    .on('mousemove', (e) => tt.move(e))
+    .on('mouseleave', function(){
+      d3.select(this).transition().duration(180).attr('d', arc).attr('filter', null);
+      tt.hide();
+    });
 
-  svg.append('text').attr('text-anchor','middle').attr('dy','-0.2em').style('font-size','22px').style('font-weight','800').style('fill','var(--cat-fg)').text(total);
-  svg.append('text').attr('text-anchor','middle').attr('dy','1.2em').style('font-size','11px').style('fill','var(--cat-text-muted)').text('unidades');
+  svg.append('circle').attr('r', ir - 9).attr('fill','var(--cat-black)').attr('stroke','rgba(255,205,0,0.35)').attr('stroke-width',1);
+  svg.append('text').attr('text-anchor','middle').attr('dy','-0.25em').style('font-size','38px').style('font-weight','900').style('letter-spacing','-1px').style('fill','var(--cat-yellow)').text(total);
+  svg.append('text').attr('text-anchor','middle').attr('dy','1.35em').style('font-size','12px').style('font-weight','750').style('fill','var(--cat-fg)').text('equipamentos');
+  svg.append('text').attr('text-anchor','middle').attr('dy','2.85em').style('font-size','10px').style('fill','var(--cat-text-muted)').text('mix estimado');
 
-  const legend = d3.select(container).append('div').attr('class','fleet-donut-legend');
-  data.forEach(d => { if (d.value) { const pct = (d.value/total*100).toFixed(1);
-    legend.append('div').attr('class','fd-item').html(`<span class="fd-dot" style="background:${d.color}"></span><span class="fd-qty">${d.value}</span><span class="fd-label">${d.label}</span><span class="fd-pct">${pct}%</span>`); }});
+  const legendBox = wrapper.append('div');
+  legendBox.append('div').attr('class','fleet-donut-kicker').html('<strong>Mix de demanda</strong> para abordagem comercial');
+  const legend = legendBox.append('div').attr('class','fleet-donut-legend');
+  data.forEach(d => {
+    const pct = (d.value/total*100).toFixed(1);
+    legend.append('div').attr('class','fd-item').html(`<span class="fd-dot" style="background:${d.color}"></span><span><span class="fd-label">${d.label}</span><br><span class="fd-pct">${pct}% do total</span></span><span class="fd-qty">${d.value}</span>`);
+  });
 }
 
 function renderFleetTimeline() {
@@ -3495,9 +3928,9 @@ function renderFleetTimeline() {
   if (!container) return;
   const fleet = estimateFleet(projects);
   const stageCurve = [0,0.05,0.10,0.20,0.15,0.40,0.10];
-  const keys = ['trucks','excavators','loaders','dozers','support1','support2'];
-  const colors = ['#FFCD00','#33b5e5','#00C851','#ff4444','#FF8800','#aa66cc'];
-  const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Motoniveladoras','Apoio'];
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
+  const colors = ['#FFCD00','#2F343A','#6B7280','#111827','#C6A100','#8C8F94','#4B5563'];
+  const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Perfuratrizes','Motoniveladoras','Apoio'];
 
   const totalByType = {};
   keys.forEach(k => { totalByType[k] = 0; });
@@ -3537,11 +3970,39 @@ function renderFleetTimeline() {
   stacked.forEach((layer, li) => {
     svg.selectAll(`.bar-${li}`).data(layer).enter().append('rect')
       .attr('x', d => x0(d.data.year)).attr('y', d => y(d[1])).attr('height', d => y(d[0])-y(d[1])).attr('width', x0.bandwidth())
-      .attr('fill', colors[li]).attr('opacity',0.85)
-      .append('title').text(d => `${labels[li]}: ${Math.round(d[1]-d[0])}`);
+      .attr('fill', colors[li]).attr('opacity',0.85).attr('stroke','transparent').attr('stroke-width',0)
+      .attr('class','timeline-bar').style('cursor','pointer')
+      .on('mouseover', function(e, d) {
+        d3.select(this).attr('opacity',1).attr('stroke','#fff').attr('stroke-width',1.5);
+        const val = Math.round(d[1]-d[0]);
+        const year = d.data.year;
+        tooltip.style('display','block').html(`<strong>${year}</strong><br>${labels[li]}: <strong>${val}</strong> un.`);
+      })
+      .on('mousemove', function(e) {
+        const [mx, my] = d3.pointer(e, container);
+        tooltip.style('left',(mx+10)+'px').style('top',(my-30)+'px');
+      })
+      .on('mouseout', function() {
+        d3.select(this).attr('opacity',0.85).attr('stroke','transparent').attr('stroke-width',0);
+        tooltip.style('display','none');
+      });
   });
 
+  const tooltip = d3.select(container).append('div')
+    .style('position','absolute').style('display','none')
+    .style('background','var(--cat-black)').style('color','var(--cat-fg)')
+    .style('border','1px solid var(--cat-gray-light)').style('border-radius','6px')
+    .style('padding','6px 10px').style('font-size','12px')
+    .style('pointer-events','none').style('z-index','10')
+    .style('white-space','nowrap').style('box-shadow','0 2px 8px rgba(0,0,0,0.3)');
+
   svg.append('text').attr('x',iw+12).attr('y',6).attr('fill','var(--cat-text-muted)').style('font-size','11px').text('unidades');
+
+  const legendDiv = d3.select(container).append('div').style('display','flex').style('gap','12px').style('flex-wrap','wrap').style('justify-content','center').style('margin-top','12px');
+  labels.forEach((l,i) => {
+    legendDiv.append('div').style('display','flex').style('align-items','center').style('gap','4px').style('font-size','11px').style('color','var(--cat-text-muted)')
+      .html(`<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${colors[i]};flex-shrink:0;"></span> ${l}`);
+  });
 }
 
 function runFleetCalculator() {
@@ -3550,39 +4011,39 @@ function runFleetCalculator() {
   const ops = parseFloat(document.getElementById('calcHours').value) || 5500;
   const matches = MATCH_TABLE[dt] || [];
   const el = document.getElementById('calcResult');
-  if (!cap || !matches.length) { el.innerHTML = '<h4>Resultado</h4><p style="font-size:12px;color:var(--cat-text-muted);">Preencha a capacidade anual e selecione um tipo de depósito com match table disponível.</p>'; return; }
+  if (!cap || !matches.length) { el.innerHTML = '<h4 style="margin:0 0 8px 0;font-size:14px;color:var(--cat-yellow);">Resultado</h4><p style="font-size:12px;color:var(--cat-text-muted);">Preencha a capacidade anual e selecione um tipo de depósito com match table disponível.</p>'; return; }
 
   const match = matches[Math.floor(matches.length / 2)];
   const payloadT = parseFloat(match.payload) || 90;
-  const cycleTransport = 12;
-  const cycleLoad = match.cycleTime || 35;
+  const loadTime = (match.cycleTime || 35) * (match.passes || 1);
+  const haulTime = 600;
   const swapTime = 42;
-  const totalCycle = cycleLoad + cycleTransport + swapTime;
-  const trucksPerLoader = Math.round((cycleLoad + swapTime + cycleTransport) / (cycleLoad + swapTime));
+  const totalCycle = loadTime + haulTime + swapTime;
   const truckProdTH = payloadT * (3600 / totalCycle);
   const annPerTruck = truckProdTH * ops;
   const numTrucks = Math.max(1, Math.round(cap / annPerTruck * 1.15));
-  const numLoaders = Math.max(1, Math.round(numTrucks / trucksPerLoader));
-  const numDozers = Math.round(numTrucks * 0.25);
-  const numGraders = Math.max(1, Math.round(numTrucks * 0.12));
-  const numSupport = Math.max(1, Math.round(numTrucks * 0.15));
+  const trucksPerLoader = Math.round((loadTime + haulTime + swapTime) / (loadTime + swapTime));
+  const numLoaders = Math.max(1, Math.round(numTrucks / Math.max(1, trucksPerLoader)));
+  const numDozers = Math.max(1, Math.round(numTrucks * 0.2));
+  const numGraders = Math.max(1, Math.round(numTrucks * 0.15));
+  const numSupport = Math.max(1, Math.round(numTrucks * 0.12));
 
   const prices = { trucks: 800000, loaders: 3800000, excavators: 4500000, dozers: 2500000, graders: 1500000, support: 700000 };
   const totalVal = numTrucks*prices.trucks + numLoaders*prices.loaders + numDozers*prices.dozers + numGraders*prices.graders + numSupport*prices.support;
 
   el.innerHTML = `
-    <h4><i class="bi bi-check-circle-fill" style="color:var(--cat-green);"></i> Frota Calculada</h4>
-    <table>
-      <tr><td>Match sugerido</td><td>${match.loader} → ${match.truck} (${match.passes} passadas, ${match.payload})</td></tr>
-      <tr><td>Caminhões</td><td>${numTrucks} un.</td></tr>
-      <tr><td>Carregadeiras</td><td>${numLoaders} un.</td></tr>
-      <tr><td>Tratores de esteira</td><td>${numDozers} un.</td></tr>
-      <tr><td>Motoniveladoras</td><td>${numGraders} un.</td></tr>
-      <tr><td>Equip. apoio</td><td>${numSupport} un.</td></tr>
-      <tr style="border-top:2px solid var(--cat-yellow);"><td><strong>Valor total frota</strong></td><td><strong>US$ ${(totalVal/1e6).toFixed(1)} Mi</strong></td></tr>
-      <tr><td>Prod. caminhão</td><td>${truckProdTH.toFixed(1)} t/h</td></tr>
-      <tr><td>Horas/ano</td><td>${ops} h</td></tr>
-    </table>`;
+    <h4 style="margin:0 0 8px 0;font-size:14px;color:var(--cat-yellow);display:flex;align-items:center;gap:6px;"><i class="bi bi-check-circle-fill" style="color:var(--cat-green);"></i> Frota Calculada</h4>
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Match sugerido</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${match.loader} → ${match.truck} (${match.passes} passadas, ${match.payload})</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Caminhões</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numTrucks} un.</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Carregadeiras</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numLoaders} un.</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Tratores de esteira</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numDozers} un.</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Motoniveladoras</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numGraders} un.</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Equip. apoio</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numSupport} un.</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-top:2px solid var(--cat-yellow);font-size:13px;font-weight:700;color:var(--cat-fg);"><span>Valor total frota</span><span>US$ ${(totalVal/1e6).toFixed(1)} Mi</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Prod. caminhão</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${truckProdTH.toFixed(1)} t/h</span></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Horas/ano</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${ops} h</span></div>
+    </div>`;
 }
 
 // ── Projeto Compare ──
@@ -3658,9 +4119,10 @@ function chartTooltip(container) {
   return {
     show(html) { el.style('opacity', 1).html(html); },
     move(e) {
-      const ct = container.getBoundingClientRect();
-      el.style('left', (e.clientX - ct.left + 14) + 'px')
-        .style('top', (e.clientY - ct.top - 36) + 'px');
+      const pad = 14;
+      const x = Math.max(12, Math.min(e.clientX + pad, window.innerWidth - 340));
+      const y = Math.max(12, e.clientY - 44);
+      el.style('left', x + 'px').style('top', y + 'px');
     },
     hide() { el.style('opacity', 0); }
   };
@@ -3752,7 +4214,7 @@ function renderChartStageDistribution() {
   const ih = h - margin.top - margin.bottom;
   const isFiltered = chartFilter && chartFilter.type === 'stage';
 
-  const colors = ['#FF8800', '#ffaa33', '#33b5e5', '#66d9ff', '#FFCD00', '#00C851'];
+  const colors = ['#4B5563', '#6B7280', '#8C8F94', '#C6A100', '#FFCD00', '#1F7A4D'];
 
   d3.select(container).selectAll('svg').remove();
   const svg = d3.select(container).append('svg')
@@ -3819,7 +4281,7 @@ function renderChartDepositType() {
     exploration: 'Exploração',
     unknown: 'Outros'
   };
-  const colors = { iacSaprolite: '#FFCD00', hardRock: '#FF8800', reprocessing: '#33b5e5', exploration: '#888', unknown: '#666' };
+  const colors = { iacSaprolite: '#FFCD00', hardRock: '#111827', reprocessing: '#8C8F94', exploration: '#6B7280', unknown: '#4B5563' };
   const chartData = Object.entries(depData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: Math.round(v * 100) / 100 }));
   const total = chartData.reduce((a, d) => a + d.value, 0);
   if (!total) return;
@@ -3900,7 +4362,7 @@ function renderChartPriority() {
     prioData[p.priority] = (prioData[p.priority] || 0) + p.capex * rate;
   });
   const labels = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
-  const colors = { critical: '#ff4444', high: '#FF8800', medium: '#FFCD00', low: '#888' };
+  const colors = { critical: '#111827', high: '#C6A100', medium: '#FFCD00', low: '#8C8F94' };
   const chartData = Object.entries(prioData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: Math.round(v * 100) / 100 }));
   const total = chartData.reduce((a, d) => a + d.value, 0);
   if (!total) return;
@@ -4002,24 +4464,24 @@ function renderChartCompanyCapex() {
   const y = d3.scaleBand().domain(chartData.map(d => d[0])).range([0, ih]).padding(0.25);
 
   const tt = chartTooltip(container);
-  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#FF8800']);
+  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#8C8F94']);
 
   g.selectAll('.bar').data(chartData).enter().append('rect')
     .attr('y', d => y(d[0]))
     .attr('height', y.bandwidth())
     .attr('x', 0)
     .attr('width', d => x(d[1]))
-    .attr('fill', (d, i) => isFiltered && d[0] === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
-    .attr('opacity', d => isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85)
+    .attr('fill', (d, i) => isFiltered && (compFull[d[0]] || d[0]) === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
+    .attr('opacity', d => isFiltered && (compFull[d[0]] || d[0]) !== chartFilter.value ? 0.3 : 0.85)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('opacity', 1);
-      tt.show(`<span style="font-size:13px;">${d[0]}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d[1]}M</span>`);
+      tt.show(`<span style="font-size:13px;">${compFull[d[0]] || d[0]}</span><br><span style="font-size:15px;font-weight:800;">US$ ${d[1]}M</span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function() {
-      d3.select(this).attr('opacity', isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85);
+      d3.select(this).attr('opacity', isFiltered && (compFull[d[0]] || d[0]) !== chartFilter.value ? 0.3 : 0.85);
       tt.hide();
     })
     .on('click', function(e, d) { chartSetFilter('company', compFull[d[0]] || d[0]); });
@@ -4069,7 +4531,7 @@ function renderChartCompanyCapexSotreq() {
   const y = d3.scaleBand().domain(chartData.map(d => d.company)).range([0, ih]).padding(0.25);
 
   const tt = chartTooltip(container);
-  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#FF8800']);
+  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#8C8F94']);
 
   // Background bar (total CAPEX)
   g.selectAll('.bar').data(chartData).enter().append('rect')
@@ -4077,17 +4539,17 @@ function renderChartCompanyCapexSotreq() {
     .attr('height', y.bandwidth())
     .attr('x', 0)
     .attr('width', d => x(d.capex))
-    .attr('fill', (d, i) => isFiltered && d.company === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
-    .attr('opacity', d => isFiltered && d.company !== chartFilter.value ? 0.25 : 0.25)
+    .attr('fill', (d, i) => isFiltered && (compFull[d.company] || d.company) === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
+    .attr('opacity', d => isFiltered && (compFull[d.company] || d.company) !== chartFilter.value ? 0.25 : 0.25)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('opacity', 0.4);
-      tt.show(`<span style="font-size:13px;">${d.company}</span><br><span style="font-size:13px;">CAPEX Total: <strong>US$ ${d.capex}M</strong></span><br><span style="font-size:13px;">CAPEX Sotreq: <strong style="color:#00cc66;">US$ ${d.sotreq}M</strong></span>`);
+      tt.show(`<span style="font-size:13px;">${compFull[d.company] || d.company}</span><br><span style="font-size:13px;">CAPEX Total: <strong>US$ ${d.capex}M</strong></span><br><span style="font-size:13px;">CAPEX Sotreq: <strong style="color:#00cc66;">US$ ${d.sotreq}M</strong></span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function() {
-      d3.select(this).attr('opacity', isFiltered && d.company !== chartFilter.value ? 0.25 : 0.25);
+      d3.select(this).attr('opacity', isFiltered && (compFull[d.company] || d.company) !== chartFilter.value ? 0.25 : 0.25);
       tt.hide();
     })
     .on('click', function(e, d) { chartSetFilter('company', compFull[d.company] || d.company); });
@@ -4098,17 +4560,17 @@ function renderChartCompanyCapexSotreq() {
     .attr('height', y.bandwidth())
     .attr('x', 0)
     .attr('width', d => x(d.sotreq))
-    .attr('fill', (d, i) => isFiltered && d.company === chartFilter.value ? '#00e676' : isFiltered ? '#1a3a1a' : '#00cc66')
-    .attr('opacity', d => isFiltered && d.company !== chartFilter.value ? 0.3 : 0.9)
+    .attr('fill', (d, i) => isFiltered && (compFull[d.company] || d.company) === chartFilter.value ? '#00e676' : isFiltered ? '#1a3a1a' : '#00cc66')
+    .attr('opacity', d => isFiltered && (compFull[d.company] || d.company) !== chartFilter.value ? 0.3 : 0.9)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('opacity', 1);
-      tt.show(`<span style="font-size:13px;">${d.company}</span><br><span style="font-size:13px;">CAPEX Total: <strong>US$ ${d.capex}M</strong></span><br><span style="font-size:13px;">CAPEX Sotreq: <strong style="color:#00cc66;">US$ ${d.sotreq}M</strong></span>`);
+      tt.show(`<span style="font-size:13px;">${compFull[d.company] || d.company}</span><br><span style="font-size:13px;">CAPEX Total: <strong>US$ ${d.capex}M</strong></span><br><span style="font-size:13px;">CAPEX Sotreq: <strong style="color:#00cc66;">US$ ${d.sotreq}M</strong></span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function() {
-      d3.select(this).attr('opacity', isFiltered && d.company !== chartFilter.value ? 0.3 : 0.9);
+      d3.select(this).attr('opacity', isFiltered && (compFull[d.company] || d.company) !== chartFilter.value ? 0.3 : 0.9);
       tt.hide();
     })
     .on('click', function(e, d) { chartSetFilter('company', compFull[d.company] || d.company); });
@@ -4155,6 +4617,17 @@ function toggleCapexView() {
     renderChartCompanyCapex();
   }
 }
+
+let chartResizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(chartResizeTimer);
+  chartResizeTimer = setTimeout(() => {
+    renderCharts();
+    if (document.getElementById('tab-resumo')?.classList.contains('active')) {
+      try { renderExecutiveSummary(); } catch(e) {}
+    }
+  }, 180);
+});
 
 // ── INIT ──
 (async function() {
@@ -5562,7 +6035,7 @@ function resetChat() {
   if (el) el.innerHTML = '';
 }
 
-function buildChatContext() {
+function buildChatContextLegacy() {
   const total = projects.reduce((a, p) => a + p.capex, 0);
   const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
   const conv = c.conversao;
@@ -5595,20 +6068,27 @@ function buildChatContext() {
     return `- ${lab}: ${fam}`;
   }).filter(Boolean).join('\n');
 
-  return `Você é o MinerAI do Mining Intelligence Portal da Sotreq.
+  return `Você é o MinerAI — inteligência comercial interna da Sotreq. Seu propósito EXCLUSIVO é ajudar a Sotreq a identificar, qualificar e capturar novas oportunidades de negócio em projetos de terras raras, minerais estratégicos e mineração no Brasil.
+
+CONTEXTO: Você é uma ferramenta de SALAS DE CONTROLE COMERCIAL da Sotreq (revenda CAT exclusiva no Brasil). Você NÃO é um portal para investidores ou consultoria para mineradoras. Você serve à equipe comercial, de marketing e diretoria da Sotreq para:
+- Entender quais projetos têm maior potencial para venda de equipamentos CAT, serviços e peças
+- Calcular estimativas de frota e oportunidades financeiras por projeto e por ano
+- Acompanhar cronogramas e marcos para saber quando abordar cada cliente
+- Identificar licenciamento ambiental, estágio do projeto e riscos que podem impactar o negócio Sotreq
 
 FUNCIONAMENTO:
 1. SEMPRE procure primeiro a empresa/projeto na lista de PROJETOS abaixo.
-2. Se encontrar, responda com base nos dados do portal (CAPEX, estágio, forecast, localização, tipo depósito, oportunidade Sotreq).
-3. Se a empresa NÃO estiver na lista, diga que não consta no portal. Depois pode complementar com conhecimento geral se for relevante.
+2. Se encontrar, responda com base nos dados do portal, SEMPRE destacando a oportunidade para a Sotreq (equipamentos, frota, valor estimado, timing).
+3. Se a empresa NÃO estiver na lista, diga que não consta no portfólio atual da Sotreq. Depois pode complementar com conhecimento geral se for relevante para avaliar se a Sotreq deveria prospectar.
 4. Se estiver na lista mas faltar dado específico, pode complementar com seu conhecimento.
+5. Ao responder, foque em: (a) qual o potencial para Sotreq, (b) qual o timing certo para abordagem, (c) quais equipamentos CAT podem ser necessários, (d) riscos e barreiras.
 
 PROJETOS (${projects.length}):
 ${projLines.join('\n')}
 
 CAPEX total: US$${(total/1000).toFixed(1)}Bi | Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}%) | Janela crítica: ${c.anoInicio}–${c.anoFim}
 
-FROTA: Caminhões US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Motoniveladoras US$1,5Mi | Equip.Apoio US$700k
+FROTA: Caminhões US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Perfuratrizes US$1,2Mi | Motoniveladoras US$1,5Mi | Equip.Apoio US$700k
 Alocações: ${allocLines.join(' | ') || '—'}
 ${newsLines.length ? '\nNOTÍCIAS:\n'+newsLines.join('\n') : ''}
 
@@ -5635,6 +6115,161 @@ Produtividade = carga útil por ciclo × ciclos/hora. Nº caminhões/carregador 
 Para estimar frota: capacidade anual ÷ horas operacionais (~5500h mina) ÷ produtividade horária do match.
 
 REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em USD. Cite os dados do projeto quando usá-los.`;
+}
+
+function buildChatContext() {
+  const total = projects.reduce((a, p) => a + p.capex, 0);
+  const c = typeof sotreqConfig !== 'undefined'
+    ? sotreqConfig
+    : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, drills: 1200000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
+  const conv = c.conversao || 30;
+  const opp = total * (conv / 100);
+
+  const famLabels = {
+    trucks: 'Caminhoes',
+    excavators: 'Escavadeiras',
+    loaders: 'Carregadeiras',
+    dozers: 'Tratores de Esteira',
+    drills: 'Perfuratrizes',
+    support1: 'Motoniveladoras',
+    support2: 'Equip. Apoio'
+  };
+  const priorityLabel = { critical: 'critica', high: 'alta', medium: 'media', low: 'baixa' };
+  const statusLabel = { 'nao-iniciado': 'nao iniciado', 'proposta-enviada': 'proposta enviada', 'em-negociacao': 'em negociacao', fechado: 'fechado' };
+  const depTypesDB = { iacSaprolite: 'Argila Ionica', hardRock: 'Rocha Dura', reprocessing: 'Reprocessamento', exploration: 'Exploracao' };
+
+  const fleet = estimateFleet(projects);
+  const fleetLines = Object.entries(famLabels).map(([k, label]) => `${label}: ${fleet[k] || 0}`).join(' | ');
+
+  const projLines = projects.map((p, i) =>
+    `${i+1}. ${p.company} - ${p.project} (${p.location.city}, ${p.location.state}) | CAPEX US$${p.capex}M | Oport. Sotreq ~US$${Math.round(p.capex * conv / 100)}M | S${p.stage} ${stageShort[p.stage] || ''} | prioridade ${priorityLabel[p.priority] || p.priority} | forecast: ${p.forecast || 'sem previsao'}${p.capacity ? ' | capacidade: ' + p.capacity : ''} | status Sotreq: ${statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'nao iniciado'} | destaque: ${p.highlights || 'sem destaque'}`
+  );
+
+  const topProjects = [...projects].sort((a, b) => b.capex - a.capex).slice(0, 8).map((p, i) =>
+    `${i+1}. ${p.company}/${p.project}: CAPEX US$${p.capex}M, oport. Sotreq ~US$${Math.round(p.capex * conv / 100)}M, S${p.stage}, ${p.location.state}, prioridade ${priorityLabel[p.priority] || p.priority}`
+  );
+
+  const stageLines = [1,2,3,4,5,6].map(s => {
+    const rows = projects.filter(p => p.stage === s);
+    const cap = rows.reduce((a, p) => a + p.capex, 0);
+    return `S${s}: ${rows.length} projeto(s), CAPEX US$${cap}M, oport. Sotreq ~US$${Math.round(cap * conv / 100)}M`;
+  });
+
+  const stateSummary = {};
+  projects.forEach(p => {
+    const st = p.location.state;
+    if (!stateSummary[st]) stateSummary[st] = { count: 0, capex: 0, companies: [] };
+    stateSummary[st].count += 1;
+    stateSummary[st].capex += p.capex;
+    stateSummary[st].companies.push(`${p.company}/${p.project}`);
+  });
+  const stateLines = Object.entries(stateSummary)
+    .sort((a, b) => b[1].capex - a[1].capex)
+    .map(([st, v]) => `${st}: ${v.count} projeto(s), CAPEX US$${v.capex}M, oport. Sotreq ~US$${Math.round(v.capex * conv / 100)}M, contas: ${v.companies.slice(0,4).join('; ')}`);
+
+  const newsLines = (typeof newsData !== 'undefined' && newsData.length ? newsData.slice(-10).map(n =>
+    `- [${n.date}] ${n.company} - ${n.title}`
+  ) : []);
+
+  const allocMap = typeof EQUIP_ALLOC !== 'undefined' ? EQUIP_ALLOC : {};
+  const allocLines = Object.entries(allocMap).map(([t, alloc]) =>
+    `${depTypesDB[t] || t}: ${Object.entries(alloc).map(([k, v]) => `${famLabels[k] || k} ${(v*100).toFixed(1)}%`).join(', ')}`
+  );
+
+  const densityLines = Object.entries(typeof MATERIAL_PROPS !== 'undefined' ? MATERIAL_PROPS : {}).map(([t, m]) =>
+    `${depTypesDB[t] || t} ${m.density} t/m3 swell ${Math.round((m.swell - 1) * 100)}%`
+  ).join(' | ');
+
+  const matchLines = Object.entries(typeof MATCH_TABLE !== 'undefined' ? MATCH_TABLE : {}).map(([t, rows]) => {
+    if (!rows.length) return '';
+    const lab = depTypesDB[t] || t;
+    const fam = rows.map(r => `${r.loader}->${r.truck}(${r.passes}p ${r.payload})`).join(' ');
+    return `- ${lab}: ${fam}`;
+  }).filter(Boolean).join('\n');
+
+  const playbook = [
+    'Conta critica ou alto CAPEX: contato consultivo com decisor, engenharia, compras e manutencao; preparar conversa sobre frota, prazo, suporte de campo e TCO.',
+    'Projeto em S3-S5: janela ativa de influencia tecnica/comercial; sugerir visita, levantamento de aplicacao, disponibilidade de maquinas e plano de pos-venda.',
+    'Projeto em S1-S2: nutricao de relacionamento; acompanhar licenciamento, estudos, CAPEX, entrada de EPC/engenharia e mudancas de cronograma.',
+    'Operacao S6: foco em pecas, servicos, renovacao de frota, contratos de suporte, reforma e expansoes.'
+  ];
+
+  return `Voce e o MinerAI, especialista de inteligencia de projetos da Sotreq para terras raras, minerais criticos, green field e mineracao no Brasil.
+
+MISSAO
+Ajudar consultores da Sotreq a entender projetos, CAPEX, cronogramas, estagios, riscos, dimensionamento de frota CAT e oportunidades associadas. A essencia comercial continua: traduzir informacao tecnica e de mercado em contexto util para abordagem, planejamento e captura de oportunidades.
+
+ESTILO DE RESPOSTA
+- O usuario e consultor da Sotreq. Responda como especialista de mercado e aplicacao CAT: direto, pratico e sem enrolacao.
+- Use primeiro os dados do portal. Quando complementar com conhecimento geral, avise: "fora dos dados do portal".
+- Nao invente noticias, datas, CAPEX, status ou cliente. Se o dado nao estiver no portal, diga que nao consta.
+- Resposta curta por padrao: 3 a 6 bullets. Para perguntas complexas, use "Resposta curta", "Por que importa" e "Proxima acao".
+- Quando recomendar uma acao comercial, inclua conta/projeto, motivo, timing e proximo passo.
+- Evite jargao geologico excessivo. Traduza para impacto comercial.
+- Nao seja consultoria para mineradora nem portal de investidor. O foco e entendimento do projeto e impacto para a Sotreq.
+- Se houver incerteza, mostre a premissa e nao apresente como fato.
+
+REGRAS DE RACIOCINIO
+1. Procure primeiro empresa/projeto na lista de PROJETOS.
+2. Se encontrar, responda com CAPEX, oportunidade Sotreq, estado, estagio, frota/mix provavel, risco e proxima acao.
+3. Se nao encontrar, diga que nao consta no portfolio atual e sugira como qualificar a conta.
+4. Para "o que priorizar?", ranqueie por oportunidade Sotreq, estagio/timing e prioridade.
+5. Para "como abordar?", entregue uma fala pronta curta, pontos de descoberta e proximo passo.
+6. Para pergunta simples, responda simples. Nao explique metodologia se a pessoa pediu apenas um numero.
+7. Para pergunta dificil, separe dados do portal de premissas.
+
+RESUMO DA CARTEIRA
+Projetos: ${projects.length}
+CAPEX total: US$${(total/1000).toFixed(1)}Bi
+Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}% do CAPEX)
+Janela critica: ${c.anoInicio}-${c.anoFim}
+Frota estimada total: ${fleet.total || 0} equipamentos | ${fleetLines}
+
+TOP CONTAS POR POTENCIAL
+${topProjects.join('\n')}
+
+PIPELINE POR ESTAGIO
+${stageLines.join('\n')}
+
+MAPA POR ESTADO
+${stateLines.join('\n')}
+
+PLAYBOOK COMERCIAL
+${playbook.map(x => '- ' + x).join('\n')}
+
+PROJETOS DO PORTAL
+${projLines.join('\n')}
+
+PREMISSAS DE VALOR E FROTA
+Oportunidade Sotreq = CAPEX do projeto x ${conv}%.
+Precos medios: Caminhoes US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Perfuratrizes US$1,2Mi | Motoniveladoras US$1,5Mi | Equip. Apoio US$700k.
+Alocacoes por perfil: ${allocLines.join(' | ') || 'nao disponivel'}
+${newsLines.length ? '\nULTIMAS NOTICIAS DO PORTAL\n' + newsLines.join('\n') : ''}
+
+PROJECOES
+Use apenas quando o usuario pedir estimativa por ano.
+- Curva estimada por estagio: S1=5%, S2=10%, S3=20%, S4=15%, S5=40%, S6=10% do CAPEX.
+- Oportunidade Sotreq por ano = CAPEX anual x ${conv}%.
+- Explique a premissa em uma linha.
+
+CAT FIELD GUIDE
+Use so quando a pergunta envolver frota, produtividade ou match de equipamento.
+- Densidades: ${densityLines}
+- Regra de passadas: ideal 3-5 passes por caminhao cheio.
+- Politica 10/10/20 de carga util: ate 10% ok; ate 20% eventual; acima disso e risco.
+- Tempo de troca de caminhao: 42s bom, 60s medio.
+- Ciclo carregador: LWL 28-42s | FS 21-32s.
+Match tables CAT:
+${matchLines}
+
+FORMATO DE SAIDA
+- Resposta facil: 1 paragrafo ou 3 bullets.
+- Resposta comercial: "Conta", "Por que agora", "O que oferecer", "Proximo passo".
+- Comparacao: tabela markdown curta.
+- Maximo de 10 bullets, salvo se o usuario pedir detalhe.
+- Valores em USD, arredondados quando fizer sentido.
+
+Responda em portugues do Brasil, com tom profissional, objetivo e util para vendas.`;
 }
 
 function addChatMessage(role, text) {
@@ -5686,11 +6321,11 @@ async function sendChat() {
   try {
     const msgs = [
       ...chatHistory.filter(m => m.role === 'system'),
-      ...chatHistory.filter(m => m.role !== 'system').slice(-8),
+      ...chatHistory.filter(m => m.role !== 'system').slice(-10),
       { role: 'user', content: text }
     ];
 
-    const body = { messages: msgs, stream: true, temperature: 0.3, max_tokens: 4096 };
+    const body = { messages: msgs, stream: true, temperature: 0.2, max_tokens: 2200 };
 
     const resp = await chatFetch(body);
 
