@@ -5119,7 +5119,7 @@ function buildChatContext() {
   const famLabels = { trucks: 'Caminhões', excavators: 'Escavadeiras', loaders: 'Carregadeiras', dozers: 'Tratores de Esteira', support1: 'Motoniveladoras', support2: 'Equip. Apoio' };
 
   const projLines = projects.map((p, i) =>
-    `${i+1}. ${p.company} - ${p.project} (${p.location.city},${p.location.state}) US$${p.capex}M S${p.stage} ${p.depositType||p.type}${p.sotreqStatus!=='não iniciado'?' Sotreq:'+p.sotreqStatus:''}`
+    `${i+1}. ${p.company} - ${p.project} (${p.location.city},${p.location.state}) US$${p.capex}M S${p.stage} ${p.depositType||p.type} forecast:${p.forecast}${p.capacity?' cap:'+p.capacity:''}${p.sotreqStatus!=='não iniciado'?' Sotreq:'+p.sotreqStatus:''}`
   );
 
   const newsLines = (typeof newsData !== 'undefined' && newsData.length ? newsData.slice(-10).map(n =>
@@ -5136,20 +5136,29 @@ function buildChatContext() {
 
 FUNCIONAMENTO:
 1. SEMPRE procure primeiro a empresa/projeto na lista de PROJETOS abaixo.
-2. Se encontrar, responda com base nos dados do portal (CAPEX, estágio, localização, tipo depósito, oportunidade Sotreq).
+2. Se encontrar, responda com base nos dados do portal (CAPEX, estágio, forecast, localização, tipo depósito, oportunidade Sotreq).
 3. Se a empresa NÃO estiver na lista, diga que não consta no portal. Depois pode complementar com conhecimento geral se for relevante.
 4. Se estiver na lista mas faltar dado específico, pode complementar com seu conhecimento.
 
 PROJETOS (${projects.length}):
 ${projLines.join('\n')}
 
-CAPEX total: US$${(total/1000).toFixed(1)}Bi | Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}%) | Janela: ${c.anoInicio}–${c.anoFim}
+CAPEX total: US$${(total/1000).toFixed(1)}Bi | Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}%) | Janela crítica: ${c.anoInicio}–${c.anoFim}
 
 FROTA: Caminhões US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Motoniveladoras US$1,5Mi | Equip.Apoio US$700k
 Alocações: ${allocLines.join(' | ') || '—'}
 ${newsLines.length ? '\nNOTÍCIAS:\n'+newsLines.join('\n') : ''}
 
+PROJEÇÕES (use para calcular estimativas anuais):
+- CAPEX total do projeto distribuído pelos anos conforme estágio.
+- Curva de desembolso estimada por estágio: S1(Exploração)=5% ano | S2(Prospecção)=10% | S3(Viabilidade)=20% | S4(Licenciamento)=15% | S5(Construção)=40% | S6(Operação/Expansão)=10% (do CAPEX total por ano, enquanto durar a fase)
+- Use o campo "forecast" de cada projeto para identificar marcos e anos-chave.
+- Oportunidade Sotreq por ano = CAPEX anual do projeto × ${conv}%
+- Janela ${c.anoInicio}–${c.anoFim} é o período crítico de oportunidade Sotreq.
+- Explique suas premissas ao fazer projeções.
+
 REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em USD. Cite os dados do projeto quando usá-los.`;
+}
 
 function addChatMessage(role, text) {
   const el = document.getElementById('chatMessages');
