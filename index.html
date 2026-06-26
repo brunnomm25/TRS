@@ -4971,28 +4971,44 @@ function renderChartCompanyCapexSotreq() {
     })
     .on('click', function(e, d) { chartSetFilter('company', compFull[d.company] || d.company); });
 
-  // Sotreq value label
+  // Sotreq value label — place inside bar if text fits, else after bar
   g.selectAll('.sotreq-label').data(chartData).enter().append('text')
     .attr('x', d => {
       const w = x(d.sotreq);
-      if (w > 60) return w - 6;
+      const textW = ('Sotreq: US$ ' + d.sotreq + 'M').length * 7;
+      if (w > textW) return w - 6;
       return w + 4;
     })
     .attr('y', d => y(d.company) + y.bandwidth() / 2)
     .attr('dy', '0.32em')
-    .attr('text-anchor', d => x(d.sotreq) > 60 ? 'end' : 'start')
-    .style('fill', d => x(d.sotreq) > 60 ? '#fff' : '#00cc66')
+    .attr('text-anchor', d => {
+      const w = x(d.sotreq);
+      const textW = ('Sotreq: US$ ' + d.sotreq + 'M').length * 7;
+      return w > textW ? 'end' : 'start';
+    })
+    .style('fill', d => {
+      const w = x(d.sotreq);
+      const textW = ('Sotreq: US$ ' + d.sotreq + 'M').length * 7;
+      return w > textW ? '#fff' : '#00cc66';
+    })
     .attr('font-size', '12px').attr('font-weight', '700')
     .style('pointer-events', 'none')
-    .text(d => x(d.sotreq) > 60 ? 'Sotreq: US$ ' + d.sotreq + 'M' : 'US$ ' + d.sotreq + 'M');
+    .text(d => {
+      const w = x(d.sotreq);
+      const textW = ('Sotreq: US$ ' + d.sotreq + 'M').length * 7;
+      return w > textW ? 'Sotreq: US$ ' + d.sotreq + 'M' : 'US$ ' + d.sotreq + 'M';
+    });
 
   // Total CAPEX label — at end of each bar, with gap from sotreq label
   g.selectAll('.label').data(chartData).enter().append('text')
     .attr('x', d => {
       const w = x(d.sotreq);
+      const shortW = ('US$ ' + d.sotreq + 'M').length * 7;
+      const textW = ('Sotreq: US$ ' + d.sotreq + 'M').length * 7;
+      const inside = w > textW;
       var totalX = Math.min(x(d.capex), iw - 10);
-      if (w > 60) return totalX + 6;
-      return Math.max(totalX + 6, w + 56);
+      if (inside) return totalX + 6;
+      return Math.max(totalX + 6, w + shortW + 8);
     })
     .attr('y', d => y(d.company) + y.bandwidth() / 2)
     .attr('dy', '0.32em')
