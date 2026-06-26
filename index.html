@@ -313,25 +313,71 @@
   .machine-card .m-desc { font-size: 11px; color: var(--cat-text-muted); margin-top: 4px; }
   .machine-card .m-demand { font-size: 18px; font-weight: 800; color: var(--cat-yellow); margin-top: 8px; }
   .machine-card .m-demand small { font-size: 11px; font-weight: 400; color: var(--cat-text-muted); }
+  .co-carousel-wrapper {
+    position: relative;
+    margin-top: 16px;
+  }
   .co-demand-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 12px; margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 2px 4px 12px;
+    -webkit-overflow-scrolling: touch;
   }
   .co-card {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
-    border-radius: 10px; padding: 14px; transition: all 0.2s;
+    border-radius: 10px; padding: 12px; transition: all 0.2s;
+    flex: 0 0 clamp(230px, 27vw, 310px);
+    min-height: 255px;
+    scroll-snap-align: start;
   }
   .co-card:hover { border-color: var(--cat-yellow); }
-  .co-card .co-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .co-card .co-header .co-name { font-weight: 700; color: var(--cat-fg); font-size: 13px; }
+  .co-card .co-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .co-card .co-header .co-name { font-weight: 700; color: var(--cat-fg); font-size: 13px; line-height: 1.2; }
   .co-card .co-header .co-loc { font-size: 10px; color: var(--cat-text-muted); background: var(--cat-gray); padding: 1px 6px; border-radius: 3px; }
   .co-card .co-header .co-total { font-size: 14px; font-weight: 800; color: var(--cat-yellow); }
-  .co-card .co-row { display: flex; align-items: center; gap: 6px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 11px; }
+  .co-card .co-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+  .co-card .co-badge { font-size: 10px; color: var(--cat-text-muted); background: var(--cat-gray); padding: 2px 7px; border-radius: 999px; font-weight: 650; }
+  .co-card .co-movement {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    margin: -2px 0 8px; padding: 6px 8px; border-radius: 8px;
+    background: color-mix(in srgb, var(--cat-yellow) 8%, transparent);
+    color: var(--cat-text-muted); font-size: 10px; font-weight: 650;
+  }
+  .co-card .co-movement strong { color: var(--cat-fg); font-size: 11px; }
+  .co-card .co-total-box {
+    min-width: 48px; height: 40px; border-radius: 10px; background: var(--cat-yellow);
+    color: #111827; display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    font-weight: 900; line-height: 1;
+  }
+  .co-card .co-total-box small { font-size: 9px; font-weight: 750; margin-top: 3px; text-transform: uppercase; }
+  .co-card .co-bar { height: 5px; border-radius: 999px; background: color-mix(in srgb, var(--cat-gray-light) 55%, transparent); overflow: hidden; margin-bottom: 8px; }
+  .co-card .co-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--cat-yellow), #1F7A4D); border-radius: inherit; }
+  .co-card .co-row { display: flex; align-items: center; gap: 6px; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 11px; }
   .co-card .co-row:last-child { border-bottom: none; }
   .co-card .co-row .co-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .co-card .co-row .co-icon img { height: 24px; width: auto; }
   .co-card .co-row .co-label { color: var(--cat-text-muted); flex: 1; }
   .co-card .co-row .co-qty { color: var(--cat-fg); font-weight: 700; white-space: nowrap; }
+  .co-card .co-row .co-mini-bar { width: 52px; height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--cat-gray-light) 55%, transparent); overflow: hidden; }
+  .co-card .co-row .co-mini-bar span { display: block; height: 100%; background: var(--cat-yellow); border-radius: inherit; }
+  .co-carousel-btn {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 4;
+    width: 34px; height: 34px; border-radius: 999px;
+    border: 1px solid var(--cat-gray-light); background: var(--cat-black);
+    color: var(--cat-fg); cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  }
+  .co-carousel-btn:hover { background: var(--cat-yellow); color: #111827; border-color: var(--cat-yellow); }
+  .co-carousel-btn.prev { left: -12px; }
+  .co-carousel-btn.next { right: -12px; }
+  @media (max-width: 560px) {
+    .co-card { flex-basis: 82vw; }
+    .co-carousel-btn { display: none; }
+    .co-demand-grid { padding-left: 0; padding-right: 0; }
+  }
 
   .state-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -2006,7 +2052,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="machine-card">
         <div class="m-icon"><img src="caminhao.png" alt="Caminhão"></div>
         <div class="m-name">Caminhões articulados e rígidos menores</div>
-        <div class="m-desc">Modelos: CAT 740 GC, CAT 745, CAT 707 · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
+        <div class="m-desc">Modelos: caminhões articulados e rígidos de menor porte · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
         <div class="machine-match" id="matchTrucks">Match: 988K(3p)→773(55t) · 990H(4p)→777(90t) · 992K(4p)→785(136t)</div>
         <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
         <div class="m-value" id="machValTrucks" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
@@ -2067,9 +2113,16 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
   <div class="machinery-section" style="margin-top:40px;">
     <div class="section-header">
-      <h3 id="demanda-empresas">Contas Prioritarias e Mix de Equipamentos <a href="#demanda-empresas" class="anchor-link">#</a></h3>
+      <h3 id="demanda-empresas">Quantidade de Equipamentos por Empresa <a href="#demanda-empresas" class="anchor-link">#</a></h3>
     </div>
-    <div class="co-demand-grid" id="coDemandGrid"></div>
+    <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:12px;">
+      Estimativa por empresa com base em premissas técnicas de dimensionamento, tipo de depósito, maturidade do projeto e cotações reais quando disponíveis.
+    </p>
+    <div class="co-carousel-wrapper">
+      <button class="co-carousel-btn prev" onclick="scrollCompanyDemand(-1)" title="Ver empresas anteriores"><i class="bi bi-chevron-left"></i></button>
+      <div class="co-demand-grid" id="coDemandGrid"></div>
+      <button class="co-carousel-btn next" onclick="scrollCompanyDemand(1)" title="Ver próximas empresas"><i class="bi bi-chevron-right"></i></button>
+    </div>
   </div>
 
   <!-- TIMELINE -->
@@ -2090,27 +2143,27 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       </div>
       <div class="meth-item">
         <h4>2. Método de Cálculo (Dual)</h4>
-        <p><strong>Bottom-up (CAT Field Guide):</strong> para projetos com capacidade anual informada (t/ano), a frota é calculada a partir da produtividade horária dos matches CAT, horas operacionais (~5.500 h/ano) e regras de dimensionamento do Field Guide. Usa as tabelas de match carregador→caminhão por tipo de depósito.</p>
-        <p><strong>Top-down (alocação CAPEX):</strong> para projetos sem capacidade disponível, aplica-se percentual do CAPEX sobre preço médio por família. Percentuais por tipo de depósito:</p>
+        <p><strong>Base técnica + referência real:</strong> a frota é estimada por tipo de depósito, maturidade do projeto e baseline de aplicação CAT. Projetos com cotação real enviada usam a própria cotação como referência.</p>
+        <p><strong>Escalonamento por CAPEX e estágio:</strong> quando não há cotação, o baseline é ajustado pela escala do CAPEX e pelo estágio do projeto. Projetos em exploração recebem apenas demanda mínima de sondagem/apoio, sem frota operacional completa.</p>
         <ul style="font-size:12px;color:var(--cat-text-muted);padding-left:20px;">
-          <li><strong>IAC:</strong> caminhões 7%, escavadeiras 2,5%, carregadeiras 1,8%, tratores 2,5%, motoniveladoras 0,8%, equip. apoio 1,2%</li>
-          <li><strong>Rocha dura:</strong> caminhões 7,5%, escavadeiras 3%, carregadeiras 2,5%, tratores 2,5%, motoniveladoras 1%, equip. apoio 1%</li>
-          <li><strong>Reprocessamento:</strong> caminhões 5%, escavadeiras 2%, carregadeiras 2,5%, tratores 1,5%, motoniveladoras 0,6%, equip. apoio 1,2%</li>
-          <li><strong>Exploração:</strong> alocação reduzida (1% caminhões, 0,5% demais)</li>
+          <li><strong>IAC / argila iônica:</strong> baseline calibrado pela cotação Viridis, com frota seletiva de médio porte.</li>
+          <li><strong>Rocha dura:</strong> baseline com perfuração, escavação, caminhões, carregadeiras e apoio de mina.</li>
+          <li><strong>Reprocessamento:</strong> foco em carregamento, pátio, manuseio e alimentação de planta.</li>
+          <li><strong>Exploração:</strong> piso mínimo comercial para sondagem, apoio e abertura de acessos.</li>
         </ul>
-        <p>Preços médios unitários e percentuais são configuráveis no painel administrativo. Consulte a seção "Premissas CAT Field Guide" abaixo para detalhes das tabelas de match, densidades e ciclos.</p>
+        <p>Preços médios unitários e baselines são configuráveis no painel administrativo. Consulte a seção "Premissas de Dimensionamento" abaixo para a visão geral dos critérios utilizados.</p>
       </div>
       <div class="meth-item">
         <h4>3. Baseline Viridis (Argila Iônica) — Referência Real</h4>
-        <p>Cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX): 15 caminhões CAT 707 (66 t), 2 carregadeiras CAT 988 High Lift, 4 tratores D9 + 4 D8, 4 escavadeiras CAT 350 + 1 CAT 318, 1 motoniveladora CAT 16, 1 compactador CAT 825 e 2 minicarregadeiras CAT 250. Usada como referência de validação da metodologia de alocação.</p>
+        <p>Cotação real recebida para o projeto <strong>Viridis Colossus</strong> (US$ 560M CAPEX): 15 caminhões rígidos de menor porte, 2 carregadeiras de grande porte, 8 tratores de esteira, 5 escavadeiras, 1 motoniveladora e 3 equipamentos de apoio. Usada como referência de validação da metodologia.</p>
       </div>
       <div class="meth-item">
         <h4>4. Composição de Frota por Perfil</h4>
-        <p><strong>Argila iônica:</strong> caminhões articulados CAT 740 GC / CAT 745 ou rígidos CAT 707 (36–66 t), escavadeiras CAT 349–352, carregadeiras CAT 972–988, tratores D6–D9, motoniveladoras CAT 140–16 e equipamentos de apoio (compactadores CAT 815/825, manipuladores, etc.).<br><br>
+        <p><strong>Argila iônica:</strong> caminhões articulados ou rígidos de menor porte, escavadeiras médias, carregadeiras, tratores, motoniveladoras e equipamentos de apoio.<br><br>
         <strong>Rocha dura:</strong> caminhões CAT 745/770/772/773 (60–100+ t), escavadeiras CAT 352–395, carregadeiras CAT 988–992, tratores D8–D10, perfuratrizes e britadores.<br><br>
         <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, motoniveladoras e equipamentos de apoio.<br><br>
         <strong>Exploração:</strong> apenas equipamentos leves, sondagem e abertura de acessos — sem frota operacional completa.</p>
-        <div class="formula">Frota estimada por projeto = CAPEX × % alocação ÷ preço médio do equipamento</div>
+        <div class="formula">Frota estimada por projeto = perfil do depósito × maturidade × escala do projeto × referências internas</div>
       </div>
       <div class="meth-item">
         <h4>4. Fases do Projeto</h4>
@@ -2127,70 +2180,21 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     </div>
   </div>
 
-  <!-- CAT FIELD GUIDE PREMISSAS -->
+  <!-- PREMISSAS DE DIMENSIONAMENTO -->
   <div class="methodology" id="cat-premisses" style="margin-top:32px;">
-    <h3><span class="m-icon"><i class="bi bi-book"></i></span> Premissas — CAT Field Guide 2016</h3>
+    <h3><span class="m-icon"><i class="bi bi-book"></i></span> Premissas de Dimensionamento</h3>
     <div class="meth-grid">
       <div class="meth-item">
-        <h4>Densidades e Empolamento</h4>
-        <table class="fg-table">
-          <tr><th>Tipo</th><th>Densidade (solto)</th><th>Swell</th></tr>
-          <tr><td>Argila Iônica / saprolito</td><td>1,7 t/m³</td><td>35%</td></tr>
-          <tr><td>Rocha dura / carbonatito</td><td>2,6 t/m³</td><td>55%</td></tr>
-          <tr><td>Reprocessamento / fosfogesso</td><td>1,9 t/m³</td><td>25%</td></tr>
-        </table>
+        <h4>Crit?rios T?cnicos</h4>
+        <p>As estimativas utilizam premissas internas de dimensionamento por tipo de dep?sito, maturidade do projeto, escala de CAPEX e perfil operacional esperado. O objetivo ? apoiar prioriza??o comercial, n?o substituir engenharia detalhada ou proposta vinculante.</p>
       </div>
       <div class="meth-item">
-        <h4>Regra de Passadas</h4>
-        <p>Ideal: <strong>3 a 5 passadas</strong> do carregador para encher cada caminhão. Mínimo 2, máximo 6. Acima de 6 = trocar caminhão maior ou carregador menor.</p>
-        <p style="margin-top:8px;">Política <strong>10/10/20</strong>: até 10% acima/abaixo do payload alvo = ok (classe 1). Até 20% eventual (classe 2). Acima de 20% = risco estrutural.</p>
+        <h4>Perfis Considerados</h4>
+        <p><strong>Argila i?nica:</strong> frota seletiva de m?dio porte. <strong>Rocha dura:</strong> maior peso em perfura??o, escava??o, carregamento e transporte. <strong>Reprocessamento:</strong> foco em p?tio, manuseio e alimenta??o de planta. <strong>Explora??o:</strong> demanda m?nima de sondagem e apoio.</p>
       </div>
       <div class="meth-item">
-        <h4>Ciclos Típicos</h4>
-        <p>Carregador LWL (988/990/992): 28–42s por passada<br>
-        Carregador FS (6020–6060): 21–32s por passada<br>
-        Troca de caminhão (swap): 42s (bom), 60s (médio)<br>
-        Fator de enchimento: 90–110% (LWL), 85–105% (FS)</p>
-      </div>
-      <div class="meth-item">
-        <h4>Match Table — Argila Iônica (LWL)</h4>
-        <table class="fg-table">
-          <tr><th>Carregador</th><th>Caminhão</th><th>Passadas</th><th>Payload</th></tr>
-          <tr><td>988K (7,0 yd³)</td><td>773</td><td>3</td><td>55 t</td></tr>
-          <tr><td>988K</td><td>775</td><td>4</td><td>64 t</td></tr>
-          <tr><td>990H (8,5 yd³)</td><td>773</td><td>2</td><td>55 t</td></tr>
-          <tr><td>990H</td><td>775</td><td>3</td><td>64 t</td></tr>
-          <tr><td>990H</td><td>777</td><td>4</td><td>90 t</td></tr>
-          <tr><td>992K (12 yd³)</td><td>777</td><td>3</td><td>90 t</td></tr>
-          <tr><td>992K</td><td>785</td><td>4</td><td>136 t</td></tr>
-        </table>
-      </div>
-      <div class="meth-item">
-        <h4>Match Table — Rocha Dura (FS)</h4>
-        <table class="fg-table">
-          <tr><th>Carregador</th><th>Caminhão</th><th>Passadas</th><th>Payload</th></tr>
-          <tr><td>6020 FS (10 m³)</td><td>777</td><td>3</td><td>90 t</td></tr>
-          <tr><td>6020 FS</td><td>785</td><td>4</td><td>136 t</td></tr>
-          <tr><td>6030 FS (15 m³)</td><td>777</td><td>2</td><td>90 t</td></tr>
-          <tr><td>6030 FS</td><td>785</td><td>3</td><td>136 t</td></tr>
-          <tr><td>6030 FS</td><td>789</td><td>4</td><td>177 t</td></tr>
-          <tr><td>6040 FS (20 m³)</td><td>785</td><td>2</td><td>136 t</td></tr>
-          <tr><td>6040 FS</td><td>789</td><td>3</td><td>177 t</td></tr>
-          <tr><td>6040 FS</td><td>793</td><td>4</td><td>218 t</td></tr>
-          <tr><td>6060 FS (30 m³)</td><td>793</td><td>3</td><td>218 t</td></tr>
-          <tr><td>6060 FS</td><td>797</td><td>4</td><td>313 t</td></tr>
-        </table>
-      </div>
-      <div class="meth-item">
-        <h4>Cálculo de Frota</h4>
-        <p><strong>Bottom-up</strong> (quando há capacidade anual):<br>
-        <code>Caminhões = cap. anual ÷ (5.500 h × prod. horária)</code><br>
-        <code>Prod. horária = payload × 3.600 ÷ (ciclo carga + troca + transporte)</code><br>
-        <code>Carregadores = caminhões ÷ (ciclo carga + troca + retorno) / (ciclo carga + troca)</code><br>
-        <span style="font-size:11px;color:var(--cat-text-muted);">Usa o match padrão do tipo de depósito. Tratores, motoniveladoras e apoio = proporção dos caminhões.</span></p>
-        <p style="margin-top:8px;"><strong>Top-down</strong> (fallback, sem capacidade disponível):<br>
-        <code>Frota = CAPEX × % alocação ÷ preço médio</code></p>
-        <p style="margin-top:8px;font-size:11px;color:var(--cat-text-muted);"><i class="bi bi-info-circle"></i> Projetos com capacidade anual utilizam cálculo bottom-up. Os demais utilizam o método top-down por alocação de CAPEX.</p>
+        <h4>Como Ler os N&uacute;meros</h4>
+        <p>A quantidade de equipamentos &eacute; uma estimativa direcional para identificar contas, timing e fam&iacute;lias de m&aacute;quinas com maior potencial. Projetos avan&ccedil;ados e cota&ccedil;&otilde;es reais t&ecirc;m maior peso; projetos iniciais aparecem com demanda conservadora.</p>
       </div>
     </div>
   </div>
@@ -2215,7 +2219,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
   <!-- INTERACTIVE FLEET CALCULATOR -->
   <div class="calc-section" id="fleet-calculator">
-    <h3><i class="bi bi-calculator-fill" style="color:var(--cat-yellow);"></i> Calculadora de Frota — CAT Field Guide</h3>
+    <h3><i class="bi bi-calculator-fill" style="color:var(--cat-yellow);"></i> Calculadora de Frota</h3>
     <div class="calc-grid">
       <div class="calc-form">
         <div>
@@ -2254,7 +2258,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 <div id="tab-noticias" class="tab-page">
 
   <div class="section-header">
-    <h3>Notícias da Semana — Maio 2026</h3>
+    <h3>Notícias da Semana</h3>
   </div>
   <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
     Principais fatos e comunicados ao mercado que embasam as estimativas deste relatório. Clique no título para acessar a notícia original.
@@ -2298,7 +2302,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <span>Caterpillar</span>
       </div>
     </div>
-    <p>Documento de inteligência de mercado para análise interna da Sotreq. Dados atualizados em Maio de 2026.</p>
+    <p>Documento de inteligência de mercado para análise interna da Sotreq.</p>
     <p style="margin-top: 4px;">Fontes: Ibram, BNDES, ANM, ASX, TSX, comunicados oficiais, Valor Econômico, BNamericas, Brasil Mineral, Reuters</p>
   </footer>
 
@@ -2381,7 +2385,7 @@ const equipmentProfiles = {
   iacSaprolite: {
     label: 'Argila iônica / saprolito / IAC',
     truckRange: '36–66 t',
-    trucks: ['CAT 740 GC', 'CAT 745', 'CAT 707'],
+    trucks: ['Caminhões articulados', 'Caminhões rígidos menores'],
     excavators: ['CAT 349', 'CAT 350', 'CAT 352'],
     loaders: ['CAT 972', 'CAT 982', 'CAT 988'],
     dozers: ['CAT D6', 'CAT D8', 'CAT D9'],
@@ -2442,7 +2446,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
     opportunity: 'US$ 168M', type: 'Argila Iônica',
     highlights: 'US$50M Export Finance Australia · US$30M BNDES · Plataforma BIP Gov.Federal · JV Viridion reciclagem',
-    startYear: 2028, depositType: 'iacSaprolite',
+    startYear: 2028, depositType: 'iacSaprolite', sotreqStatus: 'proposta-enviada', quoteStatus: 'enviada',
     quote: [
       { model: 'CAT 707', family: 'trucks', desc: 'Caminhão Rígido 66 Ton (equiv. SANY SAT40C)', qty: 15, unitPrice: 350000, currency: 'USD' },
       { model: 'CAT 988', family: 'loaders', desc: 'Carregadeira de Rodas High Lift', qty: 2, unitPrice: 1800000, currency: 'USD' },
@@ -2464,7 +2468,7 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Motoniveladoras', 'Equipamentos de processo'],
     opportunity: 'US$ 75M', type: 'Argila Iônica',
     highlights: 'Único produtor de terras raras fora da Ásia · Adquirida USA Rare Earth (Abr/26) · Contrato 15 anos com preço mínimo · DFC US$ 565M · Expansão planejada',
-    startYear: 2024, depositType: 'iacSaprolite', sotreqStatus: 'fechado',
+    startYear: 2024, depositType: 'iacSaprolite', sotreqStatus: 'fechado', quoteStatus: 'historica',
     realFleet: { trucks: 18, excavators: 6, loaders: 4, dozers: 9, support1: 3, support2: 4 },
     quote: [
       { model: 'CAT 707', family: 'trucks', desc: 'Caminhão Rígido 66 Ton', qty: 15, unitPrice: 350000, currency: 'USD' },
@@ -2653,43 +2657,104 @@ function parseAnnualTonnes(capStr) {
   return val;
 }
 
+function formatAnnualTonnes(t) {
+  if (!t || t <= 0) return 'n/d';
+  if (t >= 1000000) return (t / 1000000).toFixed(t >= 10000000 ? 0 : 1).replace('.', ',') + ' Mt/ano';
+  if (t >= 1000) return Math.round(t / 1000).toLocaleString('pt-BR') + ' kt/ano';
+  return Math.round(t).toLocaleString('pt-BR') + ' t/ano';
+}
+
+function estimateAnnualMovement(p) {
+  const dt = p.depositType || 'exploration';
+  const capText = p.capacity || '';
+  const capTonnes = parseAnnualTonnes(capText);
+  const hasDirectOreMovement = /Mt\/ano|M\s*t\/ano|t\s+min[eé]rio|fosfogesso|fosfato/i.test(capText);
+  if (capTonnes > 0 && hasDirectOreMovement) {
+    return {
+      tonnes: capTonnes,
+      label: formatAnnualTonnes(capTonnes),
+      detail: `${p.project}: capacidade/movimentação informada (${capText})`
+    };
+  }
+
+  const baseMt = { iacSaprolite: 2.5, hardRock: 1.8, reprocessing: 2.7, exploration: 0.12 };
+  const refCapex = { iacSaprolite: 560, hardRock: 720, reprocessing: 280, exploration: 100 };
+  const maturity = { 1: 0.20, 2: 0.35, 3: 0.65, 4: 0.85, 5: 1.00, 6: 1.00 }[p.stage] || 0.35;
+  const scale = Math.sqrt(Math.max(p.capex || 1, 1) / (refCapex[dt] || 100));
+  let tonnes = (baseMt[dt] || baseMt.exploration) * scale * maturity * 1000000;
+  if (dt === 'exploration') tonnes = Math.max(30000, Math.min(tonnes, 300000));
+  const capNote = capText ? ` | capacidade declarada: ${capText}` : '';
+  return {
+    tonnes,
+    label: '~' + formatAnnualTonnes(tonnes),
+    detail: `${p.project}: estimativa direcional por tipo de depósito, estágio S${p.stage} e CAPEX${capNote}`
+  };
+}
+
+function normalizeFleet(fleet) {
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
+  const result = {};
+  keys.forEach(k => { result[k] = Math.max(0, Math.round(fleet[k] || 0)); });
+  result.total = keys.reduce((a, k) => a + result[k], 0);
+  return result;
+}
+
+function fleetFromQuote(p) {
+  if (!p.quote || !p.quote.length) return null;
+  const result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, drills: 0, support1: 0, support2: 0 };
+  p.quote.forEach(line => {
+    const key = line.family;
+    if (Object.prototype.hasOwnProperty.call(result, key)) result[key] += line.qty || 0;
+  });
+  return normalizeFleet(result);
+}
+
+function explorationFleet(p) {
+  const capex = p.capex || 0;
+  const names = (p.machines || []).join(' ').toLowerCase();
+  const result = { trucks: 0, excavators: 0, loaders: 0, dozers: 0, drills: 1, support1: 0, support2: 1 };
+  if (names.includes('trator')) result.dozers = 1;
+  if (names.includes('escav')) result.excavators = 1;
+  if (names.includes('carreg')) result.loaders = 1;
+  if (capex >= 75) result.support2 += 1;
+  if (capex >= 120) result.trucks = 1;
+  return normalizeFleet(result);
+}
+
 function estimateProjectFleet(p) {
-  if (p.realFleet) return p.realFleet;
+  if (p.realFleet) return normalizeFleet(p.realFleet);
+  if (p.quoteStatus === 'enviada') {
+    const quoted = fleetFromQuote(p);
+    if (quoted && quoted.total > 0) return quoted;
+  }
   const dt = p.depositType || 'exploration';
   const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
-  const price = { trucks: 0.80, excavators: 4.5, loaders: 3.8, dozers: 2.5, drills: 1.2, support1: 1.5, support2: 0.7 };
-  const a = EQUIP_ALLOC[dt] || EQUIP_ALLOC.exploration;
-  const result = { total: 0 };
+  const baselineKey = dt === 'hardRock' ? 'fleetHardRock' : dt === 'reprocessing' ? 'fleetReprocessing' : dt === 'iacSaprolite' ? 'fleetIac' : null;
+  if (!baselineKey || p.stage <= 1 && dt === 'exploration') return explorationFleet(p);
 
-  const annTonnes = parseAnnualTonnes(p.capacity);
-  const matches = MATCH_TABLE[dt] || [];
+  const base = sotreqConfig[baselineKey] || {};
+  const refCapex = Math.max(base.refCapex || (dt === 'hardRock' ? 720 : dt === 'reprocessing' ? 280 : 560), 1);
+  const maturity = { 1: 0.25, 2: 0.45, 3: 0.75, 4: 0.90, 5: 1.00, 6: 1.00 }[p.stage] || 0.45;
+  const scale = Math.sqrt(Math.max(p.capex || 1, 1) / refCapex) * maturity;
+  const result = {};
 
-  if (annTonnes > 0 && matches.length > 0) {
-    const match = matches[Math.floor(matches.length / 2)];
-    const payloadT = parseFloat(match.payload) || 90;
-    const opsHours = 5500;
-    const cycleTransport = 12;
-    const cycleLoad = match.cycleTime || 35;
-    const swapTime = 42;
-    const totalCycle = cycleLoad + cycleTransport + swapTime;
-    const trucksPerLoader = Math.round((cycleLoad + swapTime + cycleTransport) / (cycleLoad + swapTime));
-    const truckProdTH = payloadT * (3600 / totalCycle);
-    const annPerTruck = truckProdTH * opsHours;
-    const numTrucks = Math.max(1, Math.round(annTonnes / annPerTruck * 1.15));
-    const numLoaders = Math.max(1, Math.round(numTrucks / trucksPerLoader));
-    result.trucks = numTrucks;
-    result.loaders = numLoaders;
-    result.excavators = Math.round(numTrucks * 0.15);
-    result.dozers = Math.round(numTrucks * 0.25);
-    result.drills = Math.max(1, Math.round(numTrucks * 0.1));
-    result.support1 = Math.max(1, Math.round(numTrucks * 0.12));
-    result.support2 = Math.max(1, Math.round(numTrucks * 0.15));
-  } else {
-    keys.forEach(k => {
-      result[k] = Math.round(p.capex * (a[k] || 0) / price[k]);
-    });
+  keys.forEach(k => {
+    result[k] = Math.round((base[k] || 0) * scale);
+  });
+
+  const machineText = (p.machines || []).join(' ').toLowerCase();
+  if (p.stage <= 2) {
+    const early = explorationFleet(p);
+    keys.forEach(k => { result[k] = Math.max(result[k] || 0, early[k] || 0); });
   }
-  return result;
+  if (machineText.includes('perfuratriz') || machineText.includes('sondagem')) result.drills = Math.max(result.drills || 0, 1);
+  if (machineText.includes('escav')) result.excavators = Math.max(result.excavators || 0, p.stage >= 3 ? 1 : 0);
+  if (machineText.includes('carreg')) result.loaders = Math.max(result.loaders || 0, p.stage >= 3 ? 1 : 0);
+  if (machineText.includes('trator')) result.dozers = Math.max(result.dozers || 0, p.stage >= 3 ? 1 : 0);
+  if (p.stage >= 3 && (dt === 'iacSaprolite' || dt === 'hardRock')) result.trucks = Math.max(result.trucks || 0, 1);
+  result.support2 = Math.max(result.support2 || 0, 1);
+
+  return normalizeFleet(result);
 }
 
 function estimateFleet(data) {
@@ -2704,7 +2769,7 @@ function estimateFleet(data) {
 }
 
 function calcFleetValue(fleet) {
-  const prices = sotreqConfig.equipPrices || { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, drills: 1200000, support1: 1500000, support2: 700000 };
+  const prices = sotreqConfig.equipPrices || { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 };
   const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   let total = 0;
   const breakdown = {};
@@ -2728,6 +2793,12 @@ function toggleFleet(el) {
   el.innerHTML = detail.classList.contains('open') ? el.innerHTML.replace('▾', '▴') : el.innerHTML.replace('▴', '▾');
 }
 
+function scrollCompanyDemand(dir) {
+  const grid = document.getElementById('coDemandGrid');
+  if (!grid) return;
+  grid.scrollBy({ left: dir * Math.max(320, Math.round(grid.clientWidth * 0.75)), behavior: 'smooth' });
+}
+
 function renderCompanyDemand() {
   const equipKeys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   const equipMeta = {
@@ -2742,7 +2813,13 @@ function renderCompanyDemand() {
 
   const byCo = {};
   projects.forEach(p => {
-    if (!byCo[p.company]) byCo[p.company] = { company: p.company, location: p.location.state, total: 0, equip: {} };
+    if (!byCo[p.company]) byCo[p.company] = { company: p.company, states: new Set(), projects: [], total: 0, equip: {}, hasQuote: false, movement: 0, movementNotes: [] };
+    byCo[p.company].states.add(p.location.state);
+    byCo[p.company].projects.push(p.project);
+    if (p.quoteStatus === 'enviada') byCo[p.company].hasQuote = true;
+    const movement = estimateAnnualMovement(p);
+    byCo[p.company].movement += movement.tonnes || 0;
+    byCo[p.company].movementNotes.push(movement.detail);
     const f = estimateProjectFleet(p);
     equipKeys.forEach(k => {
       const qty = f[k] || 0;
@@ -2754,26 +2831,45 @@ function renderCompanyDemand() {
   });
 
   const sorted = Object.values(byCo).sort((a, b) => b.total - a.total);
+  const maxTotal = Math.max(...sorted.map(co => co.total), 1);
   const grid = document.getElementById('coDemandGrid');
   if (!grid) return;
 
-  grid.innerHTML = sorted.map(co => {
+  grid.innerHTML = sorted.map((co, idx) => {
     const rows = equipKeys
       .filter(k => co.equip[k])
+      .sort((a, b) => co.equip[b] - co.equip[a])
+      .slice(0, 4)
       .map(k =>
         '<div class="co-row">' +
           '<div class="co-icon"><img src="' + equipMeta[k].img + '" alt="' + equipMeta[k].label + '"></div>' +
           '<span class="co-label">' + equipMeta[k].label + '</span>' +
+          '<span class="co-mini-bar"><span style="width:' + Math.max(8, Math.round((co.equip[k] / co.total) * 100)) + '%"></span></span>' +
           '<span class="co-qty">' + co.equip[k] + ' unid.</span>' +
         '</div>'
       ).join('');
-    return '<div class="co-card">' +
+    const hiddenCount = equipKeys.filter(k => co.equip[k]).length - 4;
+    const source = co.hasQuote ? 'Cotação enviada' : 'Premissas técnicas';
+    const states = [...co.states].join(' / ');
+    const movementLabel = co.movement > 0 ? formatAnnualTonnes(co.movement) : 'n/d';
+    const tooltip = 'Base da estimativa\\n' +
+      'Mov./cap. anual considerada: ' + movementLabel + '\\n' +
+      'Fonte: ' + source + '\\n' +
+      co.movementNotes.join('\\n');
+    return '<div class="co-card" title="' + escHtml(tooltip) + '">' +
       '<div class="co-header">' +
-        '<span class="co-name">' + co.company + '</span>' +
-        '<span class="co-loc">' + co.location + '</span>' +
-        '<span class="co-total">' + co.total + '</span>' +
+        '<span class="co-name">' + (idx + 1) + '. ' + co.company + '</span>' +
+        '<span class="co-total-box">' + co.total + '<small>unid.</small></span>' +
       '</div>' +
+      '<div class="co-meta">' +
+        '<span class="co-badge">' + states + '</span>' +
+        '<span class="co-badge">' + co.projects.length + (co.projects.length === 1 ? ' projeto' : ' projetos') + '</span>' +
+        '<span class="co-badge">' + source + '</span>' +
+      '</div>' +
+      '<div class="co-movement"><span>Mov./cap. anual considerada</span><strong>' + movementLabel + '</strong></div>' +
+      '<div class="co-bar"><span style="width:' + Math.max(6, Math.round((co.total / maxTotal) * 100)) + '%"></span></div>' +
       rows +
+      (hiddenCount > 0 ? '<div style="font-size:10px;color:var(--cat-text-muted);margin-top:6px;">+' + hiddenCount + ' fam&iacute;lia(s) de equipamento</div>' : '') +
     '</div>';
   }).join('');
 }
@@ -3459,6 +3555,16 @@ function renderBrazilMap(stateData) {
 // ── PIPELINE DETALHADO ──
 // ── NOTÍCIAS ──
 const newsData = [ // __DATA_BEGIN_NEWS__
+  { date: '26 Mai/2026', source: 'Revista Fórum', company: 'Spark Energy Minerals',
+    title: 'Mineradora canadense quer investir R$ 150 milhões em projeto de minerais críticos no Vale do Lítio',
+    text: 'A Spark Energy Minerals, do Canadá, quer investir R$ 150 milhões no projeto Arapaima, no Vale do Lítio, em Minas Gerais. O projeto envolve minerais críticos como lítio, terras raras e gálio, com protocolo de intenções junto ao Governo de MG e potencial de geração de empregos na fase de pesquisa mineral.',
+    tags: ['Spark Energy', 'Arapaima', 'MG', 'Exploração'],
+    link: 'https://revistaforum.com.br/brasil/mineradora-canadense-quer-investir-r-150-milhoes-em-projeto-de-minerais-criticos-no-vale-do-litio/' },
+  { date: '26 Mai/2026', source: 'BNamericas', company: 'Spark Energy Minerals',
+    title: 'Canadense Spark prevê R$150 mi para projeto de minerais críticos no Brasil',
+    text: 'A BNamericas reporta que a canadense Spark Energy Minerals prevê investimento de R$ 150 milhões para avançar o projeto Arapaima, de minerais críticos, em Minas Gerais. O sinal reforça a entrada da companhia no radar de prospecção comercial para oportunidades futuras.',
+    tags: ['Spark Energy', 'Arapaima', 'MG', 'Investimento'],
+    link: 'https://www.bnamericas.com/pt/noticias/canadense-spark-preve-r150mi-para-projeto-de-minerais-criticos-no-brasil' },
   { date: '26 Mai/2026', source: 'Notícias da Mineração', company: 'Viridis',
     title: 'Viridis já mira construção do projeto Colossus',
     text: 'Viridis Mining & Minerals finalizou o DFS do projeto Colossus, em Poços de Caldas (MG), e protocolou a Licença de Instalação (LI) junto à FEAM. CAPEX estimado de US$ 560M e produção prevista de ~13.500 t/ano de REO. FID prevista para o 2S/2026.',
@@ -3637,7 +3743,10 @@ async function sotreqLoadData() {
   // Merge any default news not in saved
   let changed = false;
   for (const dn of defaultNews) {
-    const exists = newsData.some(n => n.title === dn.title);
+    const exists = newsData.some(n =>
+      n.title === dn.title ||
+      (n.link && dn.link && n.link === dn.link)
+    );
     if (!exists) { newsData.push(dn); changed = true; }
   }
   // Migrate old date format
@@ -3645,6 +3754,92 @@ async function sotreqLoadData() {
     if (/^(Jan|Fev|Mar|Abr|Mai|Jun|Jul|Ago|Set|Out|Nov|Dez)\/\d{4}$/.test(n.date)) {
       n.date = '01 ' + n.date; changed = true;
     }
+    const sparkSignal = [
+      n.title || '',
+      n.text || '',
+      n.link || ''
+    ].join(' ').toLowerCase();
+    if (
+      sparkSignal.includes('spark energy') ||
+      sparkSignal.includes('arapaima') ||
+      sparkSignal.includes('vale-do-litio') ||
+      sparkSignal.includes('vale do lítio') ||
+      sparkSignal.includes('vale do litio')
+    ) {
+      const sparkForumLink = 'https://revistaforum.com.br/brasil/mineradora-canadense-quer-investir-r-150-milhoes-em-projeto-de-minerais-criticos-no-vale-do-litio/';
+      const sparkBnaLink = 'https://www.bnamericas.com/pt/noticias/canadense-spark-preve-r150mi-para-projeto-de-minerais-criticos-no-brasil';
+      const isOldForumSpark = !n.link ||
+        (n.link || '').includes('revistaforum.com.br') ||
+        (n.title || '') === 'Spark Energy Minerals entra no radar com projeto Arapaima no Vale do Jequitinhonha' ||
+        (n.title || '').toLowerCase().includes('mineradora canadense quer investir r$ 150') ||
+        (n.source || '').toLowerCase().includes('fórum') ||
+        (n.source || '').toLowerCase().includes('forum');
+      const isBnaSpark = (n.link || '').includes('bnamericas.com/pt/noticias/canadense-spark-preve') ||
+        (n.title || '').toLowerCase().includes('canadense spark prevê') ||
+        (n.title || '').toLowerCase().includes('canadense spark preve') ||
+        (n.source || '').toLowerCase().includes('bnamericas');
+      if (n.company !== 'Spark Energy Minerals') {
+        n.company = 'Spark Energy Minerals';
+        changed = true;
+      }
+      if (isOldForumSpark && (!n.link || n.link !== sparkForumLink)) {
+        n.link = sparkForumLink;
+        changed = true;
+      }
+      if (isOldForumSpark && n.source !== 'Revista Fórum') {
+        n.source = 'Revista Fórum';
+        changed = true;
+      }
+      if (isOldForumSpark && n.title === 'Spark Energy Minerals entra no radar com projeto Arapaima no Vale do Jequitinhonha') {
+        n.title = 'Mineradora canadense quer investir R$ 150 milhões em projeto de minerais críticos no Vale do Lítio';
+        changed = true;
+      }
+      if (isBnaSpark) {
+        if (n.link !== sparkBnaLink) {
+          n.link = sparkBnaLink;
+          changed = true;
+        }
+        if (n.source !== 'BNamericas') {
+          n.source = 'BNamericas';
+          changed = true;
+        }
+        if (n.title !== 'Canadense Spark prevê R$150 mi para projeto de minerais críticos no Brasil') {
+          n.title = 'Canadense Spark prevê R$150 mi para projeto de minerais críticos no Brasil';
+          changed = true;
+        }
+      }
+      if (!n.tags) n.tags = [];
+      ['Spark Energy', 'Arapaima', 'MG', 'Exploração'].forEach(tag => {
+        if (!n.tags.includes(tag)) n.tags.push(tag);
+      });
+    }
+  }
+  const dedupedNews = [];
+  const seenNewsKeys = new Set();
+  const seenNewsTitles = new Set();
+  for (const n of newsData) {
+    const signal = [
+      n.company || '',
+      n.title || '',
+      n.text || '',
+      n.link || ''
+    ].join(' ').toLowerCase();
+    const normalizedTitle = (n.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const key = n.link
+      ? 'link:' + n.link
+      : 'title:' + normalizedTitle;
+    if (seenNewsKeys.has(key) || (normalizedTitle && seenNewsTitles.has(normalizedTitle))) {
+      changed = true;
+      continue;
+    }
+    seenNewsKeys.add(key);
+    if (normalizedTitle) seenNewsTitles.add(normalizedTitle);
+    dedupedNews.push(n);
+  }
+  if (dedupedNews.length !== newsData.length) {
+    newsData.length = 0;
+    newsData.push(...dedupedNews);
+    changed = true;
   }
   if (changed) sotreqSaveData();
 }
@@ -3661,10 +3856,11 @@ let sotreqConfig = {
   anoFim: 2030,
   taxaCrescimento: '15–20%',
   capMaxTabela: 200,       // max CAPEX p/ escala visual
-  fleetIac: { refCapex: 560, trucks: 45, excavators: 8, loaders: 6, dozers: 8, drills: 1, support1: 1, support2: 5 },
-  fleetHardRock: { refCapex: 720, trucks: 55, excavators: 10, loaders: 8, dozers: 8, drills: 3, support1: 2, support2: 4 },
-  fleetReprocessing: { refCapex: 280, trucks: 14, excavators: 5, loaders: 6, dozers: 3, drills: 1, support1: 1, support2: 5 },
-  equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, drills: 1200000, support1: 1500000, support2: 700000 },
+  fleetModelVersion: 4,
+  fleetIac: { refCapex: 560, trucks: 20, excavators: 5, loaders: 2, dozers: 8, drills: 1, support1: 1, support2: 3 },
+  fleetHardRock: { refCapex: 720, trucks: 28, excavators: 6, loaders: 4, dozers: 6, drills: 3, support1: 2, support2: 4 },
+  fleetReprocessing: { refCapex: 280, trucks: 4, excavators: 3, loaders: 5, dozers: 2, drills: 0, support1: 1, support2: 4 },
+  equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 },
   brlRate: 5.0,
 };
 
@@ -3673,6 +3869,13 @@ function sotreqLoadConfig() {
   if (saved) {
     let c;
     try { c = JSON.parse(saved); Object.assign(sotreqConfig, c); } catch(e) { c = {}; }
+    if (!c.fleetModelVersion || c.fleetModelVersion < 4) {
+      sotreqConfig.fleetModelVersion = 4;
+      sotreqConfig.fleetIac = { refCapex: 560, trucks: 20, excavators: 5, loaders: 2, dozers: 8, drills: 1, support1: 1, support2: 3 };
+      sotreqConfig.fleetHardRock = { refCapex: 720, trucks: 28, excavators: 6, loaders: 4, dozers: 6, drills: 3, support1: 2, support2: 4 };
+      sotreqConfig.fleetReprocessing = { refCapex: 280, trucks: 4, excavators: 3, loaders: 5, dozers: 2, drills: 0, support1: 1, support2: 4 };
+      sotreqConfig.equipPrices = { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 };
+    }
     // Migrate old fleet keys to new structure
     if (c && c.viridisFleet && !c.fleetIac) {
       const old = c.viridisFleet;
@@ -3780,8 +3983,9 @@ async function sotreqFetchNews() {
       'BCM': 'BCM', 'ADL': 'ADL', 'Terra Brasil': 'Terra Brasil', 'Belo Sun': 'Belo Sun',
       'Volta Grande': 'Belo Sun',
       'Serra Verde': 'Serra Verde', 'USA Rare Earth': 'Serra Verde', 'Pela Ema': 'Serra Verde',
+      'Spark Energy Minerals': 'Spark Energy Minerals', 'Spark Energy': 'Spark Energy Minerals', 'Arapaima': 'Spark Energy Minerals',
       'Sotreq': 'Sotreq', 'Caterpillar': 'Cat', 'Cat': 'Cat',
-      'Ibram': 'Ibram', 'BNDES': 'BNDES', 'ANM': 'ANM', 'Vale': 'Vale', 'Samarco': 'Samarco',
+      'Ibram': 'Ibram', 'BNDES': 'BNDES', 'ANM': 'ANM', 'Vale S.A.': 'Vale', 'Vale Base Metals': 'Vale', 'Samarco': 'Samarco',
       'Anglo American': 'Anglo American', 'GSX': 'GSX', 'Rio Tinto': 'Rio Tinto'
     };
     let company = 'Geral';
@@ -3845,10 +4049,10 @@ function renderNoticias() {
     <div class="news-card">
       <div class="nc-date">${n.date}</div>
       <div class="nc-source">Fonte: <strong>${n.source}</strong></div>
-      <h4><a href="${n.link}" target="_blank" rel="noopener">${n.title}</a></h4>
+      <h4>${n.link ? `<a href="${n.link}" target="_blank" rel="noopener">${n.title}</a>` : n.title}</h4>
       <p>${n.text}</p>
       <div class="nc-tags">${n.tags.map(t => `<span>${t}</span>`).join('')}</div>
-      <div class="nc-link"><a href="${n.link}" target="_blank" rel="noopener">Ler notícia original →</a></div>
+      ${n.link ? `<div class="nc-link"><a href="${n.link}" target="_blank" rel="noopener">Ler notícia original →</a></div>` : ''}
     </div>
   `).join('');
 }
@@ -3870,7 +4074,9 @@ function renderSotreqSummary() {
   const sm = {};
   Object.keys(fe).forEach(k => { sm[k] = Math.round(fe[k] * rate); });
   const opp = rawCapex * rate;
-  const qtdProjetosCotados = projects.filter(p => p.quote && p.quote.length > 0).length;
+  const cotacoesEnviadas = projects.filter(p => p.quoteStatus === 'enviada' && p.quote && p.quote.length > 0);
+  const qtdProjetosCotados = cotacoesEnviadas.length;
+  const qtdItensCotados = cotacoesEnviadas.reduce((a, p) => a + p.quote.length, 0);
   el.innerHTML = `
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:12px;">
       A Sotreq possui hoje <strong style="color:var(--cat-fg);">${projects.length} projetos de terras raras</strong> mapeados no Brasil, distribuídos em <strong style="color:var(--cat-fg);">${states.length} estado${states.length !== 1 ? 's' : ''}</strong> (${states.join(', ')}), com um CAPEX total combinado de <strong style="color:var(--cat-yellow);">US$ ${(rawCapex/1000).toFixed(1)} Bi</strong>.
@@ -3897,7 +4103,7 @@ function renderSotreqSummary() {
       <div class="meth-item">
         <h4><i class="bi bi-file-text"></i> Cotações Enviadas</h4>
         <p><strong style="font-size:22px;color:var(--cat-yellow);">${qtdProjetosCotados}</strong> ${qtdProjetosCotados === 1 ? 'projeto' : 'projetos'} com cotações</p>
-        <p style="font-size:11px;">${projects.filter(p => p.quote && p.quote.length > 0).reduce((a, p) => a + p.quote.length, 0)} equipamentos cotados no total</p>
+        <p style="font-size:11px;">${qtdItensCotados} equipamentos cotados no total</p>
       </div>
     </div>
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-top:12px;border-top:1px solid var(--cat-gray-light);padding-top:12px;">
@@ -4010,7 +4216,7 @@ function renderFleetDonut() {
     .style('cursor','pointer')
     .on('mouseenter', function(e,d){
       d3.select(this).transition().duration(180).attr('d', arcH).attr('filter','drop-shadow(0 8px 16px rgba(0,0,0,0.22))');
-      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:18px;font-weight:850;color:#FFCD00;">${d.data.value} un.</span><br><span style="color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% do mix estimado</span>`);
+      tt.show(`<span style="font-size:13px;">${d.data.label}</span><br><span style="font-size:18px;font-weight:850;color:#FFCD00;">${d.data.value} un.</span><br><span style="color:var(--cat-text-muted);">${(d.data.value/total*100).toFixed(1)}% da frota estimada</span>`);
     })
     .on('mousemove', (e) => tt.move(e))
     .on('mouseleave', function(){
@@ -4021,10 +4227,10 @@ function renderFleetDonut() {
   svg.append('circle').attr('r', ir - 9).attr('fill','var(--cat-black)').attr('stroke','rgba(255,205,0,0.35)').attr('stroke-width',1);
   svg.append('text').attr('text-anchor','middle').attr('dy','-0.25em').style('font-size','38px').style('font-weight','900').style('letter-spacing','-1px').style('fill','var(--cat-yellow)').text(total);
   svg.append('text').attr('text-anchor','middle').attr('dy','1.35em').style('font-size','12px').style('font-weight','750').style('fill','var(--cat-fg)').text('equipamentos');
-  svg.append('text').attr('text-anchor','middle').attr('dy','2.85em').style('font-size','10px').style('fill','var(--cat-text-muted)').text('mix estimado');
+  svg.append('text').attr('text-anchor','middle').attr('dy','2.85em').style('font-size','10px').style('fill','var(--cat-text-muted)').text('frota estimada');
 
   const legendBox = wrapper.append('div');
-  legendBox.append('div').attr('class','fleet-donut-kicker').html('<strong>Mix de demanda</strong> para abordagem comercial');
+  legendBox.append('div').attr('class','fleet-donut-kicker').html('<strong>Distribuição estimada</strong> por família de equipamento');
   const legend = legendBox.append('div').attr('class','fleet-donut-legend');
   data.forEach(d => {
     const pct = (d.value/total*100).toFixed(1);
@@ -4120,7 +4326,7 @@ function runFleetCalculator() {
   const ops = parseFloat(document.getElementById('calcHours').value) || 5500;
   const matches = MATCH_TABLE[dt] || [];
   const el = document.getElementById('calcResult');
-  if (!cap || !matches.length) { el.innerHTML = '<h4 style="margin:0 0 8px 0;font-size:14px;color:var(--cat-yellow);">Resultado</h4><p style="font-size:12px;color:var(--cat-text-muted);">Preencha a capacidade anual e selecione um tipo de depósito com match table disponível.</p>'; return; }
+  if (!cap || !matches.length) { el.innerHTML = '<h4 style="margin:0 0 8px 0;font-size:14px;color:var(--cat-yellow);">Resultado</h4><p style="font-size:12px;color:var(--cat-text-muted);">Preencha a capacidade anual e selecione um tipo de depósito com premissas disponíveis.</p>'; return; }
 
   const match = matches[Math.floor(matches.length / 2)];
   const payloadT = parseFloat(match.payload) || 90;
@@ -4137,13 +4343,12 @@ function runFleetCalculator() {
   const numGraders = Math.max(1, Math.round(numTrucks * 0.15));
   const numSupport = Math.max(1, Math.round(numTrucks * 0.12));
 
-  const prices = { trucks: 800000, loaders: 3800000, excavators: 4500000, dozers: 2500000, graders: 1500000, support: 700000 };
+  const prices = { trucks: 443000, loaders: 245000, excavators: 255000, dozers: 410000, graders: 293000, support: 113000 };
   const totalVal = numTrucks*prices.trucks + numLoaders*prices.loaders + numDozers*prices.dozers + numGraders*prices.graders + numSupport*prices.support;
 
   el.innerHTML = `
     <h4 style="margin:0 0 8px 0;font-size:14px;color:var(--cat-yellow);display:flex;align-items:center;gap:6px;"><i class="bi bi-check-circle-fill" style="color:var(--cat-green);"></i> Frota Calculada</h4>
     <div style="display:flex;flex-direction:column;gap:2px;">
-      <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Match sugerido</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${match.loader} → ${match.truck} (${match.passes} passadas, ${match.payload})</span></div>
       <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Caminhões</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numTrucks} un.</span></div>
       <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Carregadeiras</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numLoaders} un.</span></div>
       <div style="display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;"><span style="color:var(--cat-text);">Tratores de esteira</span><span style="font-weight:600;color:var(--cat-fg);text-align:right;">${numDozers} un.</span></div>
@@ -4312,13 +4517,29 @@ function renderChartStageDistribution() {
   const stageCount = {};
   data.forEach(p => { stageCount[p.stage] = (stageCount[p.stage] || 0) + 1; });
   const chartData = [];
+  const compactLabels = {
+    1: ['S1', 'Prospeccao'],
+    2: ['S2', 'Recursos'],
+    3: ['S3', 'Lic. previa'],
+    4: ['S4', 'Lic. instal.'],
+    5: ['S5', 'Construcao'],
+    6: ['S6', 'Operacao']
+  };
   for (let i = 1; i <= 6; i++) {
-    chartData.push({ stage: i, label: stageShort[i] || 'S' + i, count: stageCount[i] || 0 });
+    chartData.push({
+      stage: i,
+      label: stageShort[i] || 'S' + i,
+      lines: compactLabels[i] || ['S' + i],
+      count: stageCount[i] || 0
+    });
   }
 
-  const cw = Math.max(chartWidth(container), 400);
-  const margin = { top: 24, right: 20, bottom: 70, left: 44 };
-  const h = 300;
+  const cw = Math.max(chartWidth(container), 280);
+  const isNarrow = cw < 460;
+  const margin = isNarrow
+    ? { top: 20, right: 34, bottom: 18, left: 104 }
+    : { top: 28, right: 18, bottom: 64, left: 44 };
+  const h = isNarrow ? 330 : 300;
   const iw = cw - margin.left - margin.right;
   const ih = h - margin.top - margin.bottom;
   const isFiltered = chartFilter && chartFilter.type === 'stage';
@@ -4333,45 +4554,111 @@ function renderChartStageDistribution() {
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
   const maxV = d3.max(chartData, d => d.count) || 1;
-  const x = d3.scaleBand().domain(chartData.map(d => d.label)).range([0, iw]).padding(0.2);
-  const y = d3.scaleLinear().domain([0, Math.max(maxV * 1.3, 5)]).range([ih, 0]);
-
   const tt = chartTooltip(container);
 
-  g.selectAll('.bar').data(chartData).enter().append('rect')
-    .attr('x', d => x(d.label))
-    .attr('width', x.bandwidth())
-    .attr('y', d => y(d.count))
-    .attr('height', d => ih - y(d.count))
-    .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? '#3a3a3a' : colors[i])
-    .attr('opacity', d => isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.85)
-    .attr('rx', 4).attr('ry', 4)
-    .style('cursor', 'pointer')
-    .on('mouseenter', function(e, d) {
-      d3.select(this).attr('opacity', 1);
-      tt.show(`<span style="font-size:13px;">${d.label}</span><br><span style="font-size:15px;font-weight:800;">${d.count} projeto${d.count !== 1 ? 's' : ''}</span>`);
-    })
-    .on('mousemove', (e) => tt.move(e))
-    .on('mouseleave', function() {
-      d3.select(this).attr('opacity', isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.85);
-      tt.hide();
-    })
-    .on('click', function(e, d) { chartSetFilter('stage', d.stage); });
+  if (isNarrow) {
+    const x = d3.scaleLinear().domain([0, Math.max(maxV * 1.25, 5)]).range([0, iw]);
+    const y = d3.scaleBand().domain(chartData.map(d => d.stage)).range([0, ih]).padding(0.24);
 
-  g.selectAll('.label').data(chartData).enter().append('text')
-    .attr('x', d => x(d.label) + x.bandwidth() / 2)
-    .attr('y', d => y(d.count) - 6)
-    .attr('text-anchor', 'middle')
-    .style('fill', 'var(--cat-text-muted)').attr('font-size', '9px').attr('font-weight', '600')
-    .text(d => d.count);
+    g.selectAll('.bar').data(chartData).enter().append('rect')
+      .attr('x', 0)
+      .attr('y', d => y(d.stage))
+      .attr('width', d => x(d.count))
+      .attr('height', y.bandwidth())
+      .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? '#3a3a3a' : colors[i])
+      .attr('opacity', d => isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.9)
+      .attr('rx', 5).attr('ry', 5)
+      .style('cursor', 'pointer')
+      .on('mouseenter', function(e, d) {
+        d3.select(this).attr('opacity', 1);
+        tt.show(`<span style="font-size:13px;">${d.label}</span><br><span style="font-size:15px;font-weight:800;">${d.count} projeto${d.count !== 1 ? 's' : ''}</span>`);
+      })
+      .on('mousemove', (e) => tt.move(e))
+      .on('mouseleave', function(e, d) {
+        d3.select(this).attr('opacity', isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.9);
+        tt.hide();
+      })
+      .on('click', function(e, d) { chartSetFilter('stage', d.stage); });
 
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => Math.round(d)).tickSize(0).tickPadding(6))
-    .selectAll('text').attr('font-size', '9px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '500');
-  g.selectAll('.domain').attr('stroke', 'none');
+    g.selectAll('.stage-label').data(chartData).enter().append('text')
+      .attr('x', -10)
+      .attr('y', d => y(d.stage) + y.bandwidth() / 2)
+      .attr('dy', '0.32em')
+      .attr('text-anchor', 'end')
+      .style('fill', 'var(--cat-text-muted)')
+      .attr('font-size', '10px')
+      .attr('font-weight', '700')
+      .text(d => d.lines.join(' - '));
 
-  g.append('g').attr('transform', `translate(0,${ih})`)
-    .call(d3.axisBottom(x).tickSize(0).tickPadding(8))
-    .selectAll('text').attr('font-size', '9px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+    g.selectAll('.value-label').data(chartData).enter().append('text')
+      .attr('x', d => Math.min(x(d.count) + 8, iw - 4))
+      .attr('y', d => y(d.stage) + y.bandwidth() / 2)
+      .attr('dy', '0.32em')
+      .attr('text-anchor', d => x(d.count) > iw - 28 ? 'end' : 'start')
+      .style('fill', 'var(--cat-text-muted)')
+      .attr('font-size', '11px')
+      .attr('font-weight', '800')
+      .text(d => d.count);
+  } else {
+    const x = d3.scaleBand().domain(chartData.map(d => d.stage)).range([0, iw]).padding(0.26);
+    const y = d3.scaleLinear().domain([0, Math.max(maxV * 1.3, 5)]).range([ih, 0]);
+
+    g.selectAll('.bar').data(chartData).enter().append('rect')
+      .attr('x', d => x(d.stage))
+      .attr('width', x.bandwidth())
+      .attr('y', d => y(d.count))
+      .attr('height', d => ih - y(d.count))
+      .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? '#3a3a3a' : colors[i])
+      .attr('opacity', d => isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.88)
+      .attr('rx', 6).attr('ry', 6)
+      .style('cursor', 'pointer')
+      .on('mouseenter', function(e, d) {
+        d3.select(this).attr('opacity', 1);
+        tt.show(`<span style="font-size:13px;">${d.label}</span><br><span style="font-size:15px;font-weight:800;">${d.count} projeto${d.count !== 1 ? 's' : ''}</span>`);
+      })
+      .on('mousemove', (e) => tt.move(e))
+      .on('mouseleave', function(e, d) {
+        d3.select(this).attr('opacity', isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.88);
+        tt.hide();
+      })
+      .on('click', function(e, d) { chartSetFilter('stage', d.stage); });
+
+    g.selectAll('.label').data(chartData).enter().append('text')
+      .attr('x', d => x(d.stage) + x.bandwidth() / 2)
+      .attr('y', d => Math.max(y(d.count) - 8, 12))
+      .attr('text-anchor', 'middle')
+      .style('fill', 'var(--cat-text-muted)')
+      .attr('font-size', '11px')
+      .attr('font-weight', '800')
+      .text(d => d.count);
+
+    g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => Math.round(d)).tickSize(0).tickPadding(6))
+      .selectAll('text').attr('font-size', '10px').style('fill', 'var(--cat-text-muted)').attr('font-weight', '600');
+    g.selectAll('.domain').attr('stroke', 'none');
+
+    const axis = g.append('g').attr('transform', `translate(0,${ih})`);
+    const ticks = axis.selectAll('.stage-axis-label')
+      .data(chartData)
+      .enter()
+      .append('text')
+      .attr('class', 'stage-axis-label')
+      .attr('x', d => x(d.stage) + x.bandwidth() / 2)
+      .attr('y', 14)
+      .attr('text-anchor', 'middle')
+      .style('fill', 'var(--cat-text-muted)')
+      .attr('font-size', cw < 620 ? '9px' : '10px')
+      .attr('font-weight', '700');
+
+    ticks.each(function(d) {
+      const text = d3.select(this);
+      d.lines.forEach((line, i) => {
+        text.append('tspan')
+          .attr('x', x(d.stage) + x.bandwidth() / 2)
+          .attr('dy', i === 0 ? 0 : 12)
+          .text(line);
+      });
+    });
+  }
 }
 
 function renderChartDepositType() {
@@ -5587,7 +5874,7 @@ function adminRenderIndicators() {
     <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--cat-gray-light);">
       <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--cat-yellow);"><i class="bi bi-cpu"></i> Preço Médio dos Equipamentos (USD)</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-        ${Object.entries({trucks:'Caminhão p/ Mineração',excavators:'Escavadeira Hidráulica',loaders:'Carregadeira',dozers:'Trator de Esteira',support1:'Motoniveladora',support2:'Equip. Apoio'}).map(([k,label]) =>
+        ${Object.entries({trucks:'Caminhão mineração / CAT 707',excavators:'Escavadeira Hidráulica',loaders:'Carregadeira',dozers:'Trator de Esteira',support1:'Motoniveladora',support2:'Equip. Apoio'}).map(([k,label]) =>
           `<label style="font-size:10px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--cat-text-muted);display:flex;align-items:center;gap:6px;">
             <span style="min-width:100px;">${label}:</span>
             <input type="number" id="cfg_price_${k}" value="${(sotreqConfig.equipPrices||{})[k]||0}" min="0" step="10000" style="width:100px;padding:4px 6px;font-size:12px;" onchange="adminUpdatePrice('${k}',this.value)">
@@ -5654,11 +5941,11 @@ function adminRenderIndicatorsSummary() {
       <span class="apc-field"><strong>Total:</strong> ${sm.total}</span>
     </div>
     <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
-      Fórmula: <strong>∑ CAPEX (US$M) × % alocação ÷ preço (US$M)</strong> por tipo de depósito<br>
-      IAC → trucks: CAPEX × 7% ÷ US$ ${(((c.equipPrices||{}).trucks||800000)/1e6).toFixed(2)}M<br>
-      Rocha Dura → trucks: CAPEX × 7.5% ÷ US$ ${(((c.equipPrices||{}).trucks||800000)/1e6).toFixed(2)}M<br>
-      Reprocessamento → trucks: CAPEX × 5% ÷ US$ ${(((c.equipPrices||{}).trucks||800000)/1e6).toFixed(2)}M<br>
-      Exploração → alocação reduzida (1% trucks, ~0.3% demais)
+      Fórmula: <strong>baseline tecnico × escala CAPEX × fator de maturidade</strong><br>
+      IAC → calibrado pela cotação Viridis<br>
+      Rocha Dura → baseline com perfuração, carregamento e transporte<br>
+      Reprocessamento → baseline de pátio/manuseio<br>
+      Exploração → piso mínimo de sondagem e apoio
     </div></div>
 
     <div class="ap-card"><div class="apc-header"><div>
@@ -5742,8 +6029,7 @@ function adminRenderIndicatorsSummary() {
         `).join('')}
       </div>
       <div style="margin-top:6px;font-size:10px;color:var(--cat-text-muted);font-family:monospace;">
-        <strong>Nota:</strong> a estimativa agora usa alocação por % do CAPEX ÷ preço unitário.<br>
-        Este baseline não é mais utilizado no cálculo.
+        <strong>Nota:</strong> estes baselines alimentam a estimativa por empresa e por família de equipamento.
       </div>
     </div>`;
   }).join('');
@@ -6146,7 +6432,7 @@ function resetChat() {
 
 function buildChatContextLegacy() {
   const total = projects.reduce((a, p) => a + p.capex, 0);
-  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
+  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
   const conv = c.conversao;
   const opp = total * (conv / 100);
 
@@ -6209,19 +6495,10 @@ PROJEÇÕES (use para calcular estimativas anuais):
 - Janela ${c.anoInicio}–${c.anoFim} é o período crítico de oportunidade Sotreq.
 - Explique suas premissas ao fazer projeções.
 
-CAT FIELD GUIDE (dados reais para cálculo de frota e produtividade):
-- Densidades (solto): ${densityLines}
-- Regra de passadas: ideal 3-5 passes por caminhão cheio; mín. 2, máx. 6. Acima de 6 = trocar caminhão maior ou carregador menor
-- Política de carga útil 10/10/20: até 10% acima/abaixo do payload alvo é ok (classe 1); até 20% eventual (classe 2); acima de 20% = risco estrutural
-- Tempo de troca de caminhão (swap time): 42s (bom), 60s (médio)
-- Ciclo carregador: LWL 28-42s | FS 21-32s
-- Fator enchimento: 90-110% (LWL), 85-105% (FS)
-
-Match tables CAT (carregador → caminhão → passadas):
-${matchLines}
-
-Produtividade = carga útil por ciclo × ciclos/hora. Nº caminhões/carregador ~ (ciclo carga + troca + retorno) / (ciclo carga + troca), tipicamente 3-5:1.
-Para estimar frota: capacidade anual ÷ horas operacionais (~5500h mina) ÷ produtividade horária do match.
+PREMISSAS TECNICAS DE DIMENSIONAMENTO:
+- Use premissas internas por tipo de deposito, escala do projeto, maturidade e perfil operacional.
+- Para frota, responda de forma direcional e comercial. Evite expor formulas detalhadas, tabelas internas ou parametros sensiveis.
+- Se perguntarem como foi calculado, explique em alto nivel: tipo de deposito, CAPEX, estagio, capacidade informada e cotacoes reais quando existirem.
 
 REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em USD. Cite os dados do projeto quando usá-los.`;
 }
@@ -6230,7 +6507,7 @@ function buildChatContext() {
   const total = projects.reduce((a, p) => a + p.capex, 0);
   const c = typeof sotreqConfig !== 'undefined'
     ? sotreqConfig
-    : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 800000, excavators: 4500000, loaders: 3800000, dozers: 2500000, drills: 1200000, support1: 1500000, support2: 700000 }, brlRate: 5.0 };
+    : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
   const conv = c.conversao || 30;
   const opp = total * (conv / 100);
 
@@ -6361,15 +6638,10 @@ Use apenas quando o usuario pedir estimativa por ano.
 - Oportunidade Sotreq por ano = CAPEX anual x ${conv}%.
 - Explique a premissa em uma linha.
 
-CAT FIELD GUIDE
-Use so quando a pergunta envolver frota, produtividade ou match de equipamento.
-- Densidades: ${densityLines}
-- Regra de passadas: ideal 3-5 passes por caminhao cheio.
-- Politica 10/10/20 de carga util: ate 10% ok; ate 20% eventual; acima disso e risco.
-- Tempo de troca de caminhao: 42s bom, 60s medio.
-- Ciclo carregador: LWL 28-42s | FS 21-32s.
-Match tables CAT:
-${matchLines}
+PREMISSAS TECNICAS
+Use somente quando a pergunta envolver frota, produtividade ou combinacao de equipamento.
+- Responda em alto nivel, sem expor tabelas internas ou parametros sensiveis.
+- Explique que a estimativa considera tipo de deposito, CAPEX, estagio, capacidade informada e cotacoes reais quando existirem.
 
 FORMATO DE SAIDA
 - Resposta facil: 1 paragrafo ou 3 bullets.
