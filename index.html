@@ -44,6 +44,7 @@
     color: var(--cat-text);
     line-height: 1.6;
     min-height: 100vh;
+    overflow-x: hidden;
   }
   .top-bar {
     background: var(--cat-black);
@@ -673,6 +674,75 @@
   .compare-grid .cg-row { display: grid; grid-template-columns: 120px repeat(auto-fill, minmax(180px,1fr)); gap: 8px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
   .compare-grid .cg-row .cg-label { font-weight: 600; color: var(--cat-yellow); font-size: 12px; }
   .compare-grid .cg-row .cg-val { color: var(--cat-text); }
+
+  .state-detail-overlay {
+    display: none; position: fixed; inset: 0; z-index: 230;
+    background: rgba(0,0,0,0.62); align-items: center; justify-content: center;
+    padding: 18px;
+  }
+  .state-detail-overlay.open { display: flex; }
+  .state-detail-panel {
+    width: min(920px, 96vw); max-height: 86vh; overflow: auto;
+    background: var(--cat-black); border: 1px solid rgba(255,205,0,0.28);
+    border-radius: 14px; box-shadow: 0 28px 80px rgba(0,0,0,0.32);
+  }
+  .state-detail-head {
+    position: sticky; top: 0; z-index: 1;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 14px;
+    padding: 18px 20px; background: var(--cat-black);
+    border-bottom: 1px solid var(--cat-gray-light);
+  }
+  .state-detail-head h3 {
+    margin: 0; font-size: 20px; font-weight: 850; color: var(--cat-fg);
+    letter-spacing: -0.2px;
+  }
+  .state-detail-head p { margin: 4px 0 0; color: var(--cat-text-muted); font-size: 12px; }
+  .state-detail-close {
+    width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--cat-gray-light);
+    background: transparent; color: var(--cat-text-muted); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .state-detail-close:hover { color: var(--cat-black); background: var(--cat-yellow); border-color: var(--cat-yellow); }
+  .state-detail-body { padding: 18px 20px 22px; }
+  .state-detail-kpis {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px;
+  }
+  .state-detail-kpi {
+    border: 1px solid var(--cat-gray-light); border-radius: 10px; padding: 12px;
+    background: rgba(255,255,255,0.025);
+  }
+  .state-detail-kpi span {
+    display: block; color: var(--cat-text-muted); font-size: 10px; font-weight: 750;
+    text-transform: uppercase; letter-spacing: 0.55px; margin-bottom: 5px;
+  }
+  .state-detail-kpi strong { display: block; color: var(--cat-yellow); font-size: 18px; line-height: 1.1; }
+  .state-detail-list { display: grid; gap: 10px; }
+  .state-detail-project {
+    border: 1px solid var(--cat-gray-light); border-radius: 10px; padding: 13px;
+    background: rgba(255,255,255,0.018);
+  }
+  .state-detail-project .sdp-top {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px;
+  }
+  .state-detail-project .sdp-company { color: var(--cat-fg); font-weight: 800; font-size: 14px; }
+  .state-detail-project .sdp-project { color: var(--cat-text-muted); font-size: 12px; margin-top: 2px; }
+  .state-detail-project .sdp-capex { color: var(--cat-yellow); font-weight: 850; white-space: nowrap; }
+  .state-detail-project .sdp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .state-detail-project .sdp-tag {
+    font-size: 10px; font-weight: 750; color: var(--cat-text);
+    border: 1px solid var(--cat-gray-light); border-radius: 999px; padding: 3px 8px;
+    background: var(--cat-gray);
+  }
+  .state-detail-project .sdp-note { color: var(--cat-text-muted); font-size: 12px; line-height: 1.45; }
+  .state-detail-project .sdp-note strong { color: var(--cat-fg); }
+  @media (max-width: 760px) {
+    .state-detail-overlay { padding: 10px; align-items: stretch; }
+    .state-detail-panel { width: 100%; max-height: 94vh; border-radius: 12px; }
+    .state-detail-head { padding: 14px; }
+    .state-detail-body { padding: 14px; }
+    .state-detail-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .state-detail-project .sdp-top { flex-direction: column; gap: 4px; }
+  }
 
   .machine-match { display: none; margin-top: 6px; font-size: 11px; color: var(--cat-yellow); border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px; }
   .machine-card:hover .machine-match { display: block; }
@@ -1809,6 +1879,20 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 
   </div>
 
+  <!-- STATE DETAIL OVERLAY -->
+  <div class="state-detail-overlay" id="stateDetailOverlay" onclick="if(event.target===this)closeStateProjects()">
+    <div class="state-detail-panel" role="dialog" aria-modal="true" aria-labelledby="stateDetailTitle">
+      <div class="state-detail-head">
+        <div>
+          <h3 id="stateDetailTitle">Estado</h3>
+          <p id="stateDetailSubtitle">Projetos mapeados no estado</p>
+        </div>
+        <button class="state-detail-close" onclick="closeStateProjects()" title="Fechar"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="state-detail-body" id="stateDetailContent"></div>
+    </div>
+  </div>
+
   <!-- ============================================================ -->
   <!-- SEÇÃO 02: INDICADORES-CHAVE                                   -->
   <!-- ============================================================ -->
@@ -2185,12 +2269,12 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     <h3><span class="m-icon"><i class="bi bi-book"></i></span> Premissas de Dimensionamento</h3>
     <div class="meth-grid">
       <div class="meth-item">
-        <h4>Crit?rios T?cnicos</h4>
-        <p>As estimativas utilizam premissas internas de dimensionamento por tipo de dep?sito, maturidade do projeto, escala de CAPEX e perfil operacional esperado. O objetivo ? apoiar prioriza??o comercial, n?o substituir engenharia detalhada ou proposta vinculante.</p>
+        <h4>Crit&eacute;rios T&eacute;cnicos</h4>
+        <p>As estimativas utilizam premissas internas de dimensionamento por tipo de dep&oacute;sito, maturidade do projeto, escala de CAPEX e perfil operacional esperado. O objetivo &eacute; apoiar prioriza&ccedil;&atilde;o comercial, n&atilde;o substituir engenharia detalhada ou proposta vinculante.</p>
       </div>
       <div class="meth-item">
         <h4>Perfis Considerados</h4>
-        <p><strong>Argila i?nica:</strong> frota seletiva de m?dio porte. <strong>Rocha dura:</strong> maior peso em perfura??o, escava??o, carregamento e transporte. <strong>Reprocessamento:</strong> foco em p?tio, manuseio e alimenta??o de planta. <strong>Explora??o:</strong> demanda m?nima de sondagem e apoio.</p>
+        <p><strong>Argila i&ocirc;nica:</strong> frota seletiva de m&eacute;dio porte. <strong>Rocha dura:</strong> maior peso em perfura&ccedil;&atilde;o, escava&ccedil;&atilde;o, carregamento e transporte. <strong>Reprocessamento:</strong> foco em p&aacute;tio, manuseio e alimenta&ccedil;&atilde;o de planta. <strong>Explora&ccedil;&atilde;o:</strong> demanda m&iacute;nima de sondagem e apoio.</p>
       </div>
       <div class="meth-item">
         <h4>Como Ler os N&uacute;meros</h4>
@@ -3413,6 +3497,69 @@ function renderExecutiveSummary() {
 // ── BRAZIL SVG MAP (D3.js) ──
 let mapRendered = false;
 
+function showStateProjects(abbr, info, stateName) {
+  if (!info || !info.projects || !info.projects.length) return;
+  const overlay = document.getElementById('stateDetailOverlay');
+  const title = document.getElementById('stateDetailTitle');
+  const subtitle = document.getElementById('stateDetailSubtitle');
+  const content = document.getElementById('stateDetailContent');
+  if (!overlay || !title || !subtitle || !content) return;
+
+  const sorted = [...info.projects].sort((a, b) => b.capex - a.capex);
+  const totalCapex = sorted.reduce((sum, p) => sum + (p.capex || 0), 0);
+  const conv = ((sotreqConfig && sotreqConfig.conversao) || 30) / 100;
+  const opp = Math.round(totalCapex * conv);
+  const companies = new Set(sorted.map(p => p.company)).size;
+  const maxStage = Math.max(...sorted.map(p => p.stage || 1));
+  const stageLabel = stageShort[maxStage] || ('S' + maxStage);
+  const depositLabel = { iacSaprolite:'Argila iônica', hardRock:'Rocha dura', reprocessing:'Reprocessamento', exploration:'Exploração' };
+  const statusLabel = { 'nao-iniciado':'Não iniciado','proposta-enviada':'Proposta enviada','em-negociacao':'Em negociação','fechado':'Fechado' };
+
+  title.textContent = stateName + ' (' + abbr + ')';
+  subtitle.textContent = sorted.length + ' projeto(s), ' + companies + ' conta(s) e CAPEX combinado de US$ ' + totalCapex + 'M';
+
+  content.innerHTML =
+    '<div class="state-detail-kpis">' +
+      '<div class="state-detail-kpi"><span>Projetos</span><strong>' + sorted.length + '</strong></div>' +
+      '<div class="state-detail-kpi"><span>CAPEX total</span><strong>US$ ' + totalCapex + 'M</strong></div>' +
+      '<div class="state-detail-kpi"><span>Oportunidade Sotreq</span><strong>US$ ' + opp + 'M</strong></div>' +
+      '<div class="state-detail-kpi"><span>Maior estágio</span><strong>' + escHtml(stageLabel) + '</strong></div>' +
+    '</div>' +
+    '<div class="state-detail-list">' +
+      sorted.map(function(p) {
+        const fleet = estimateProjectFleet(p);
+        const fleetTotal = fleet.total || 0;
+        return '<div class="state-detail-project">' +
+          '<div class="sdp-top">' +
+            '<div><div class="sdp-company">' + escHtml(p.company) + '</div>' +
+            '<div class="sdp-project">' + escHtml(p.project) + ' · ' + escHtml((p.location && p.location.city) || '') + '</div></div>' +
+            '<div class="sdp-capex">US$ ' + escHtml(String(p.capex || 0)) + 'M</div>' +
+          '</div>' +
+          '<div class="sdp-tags">' +
+            '<span class="sdp-tag">' + escHtml(stageShort[p.stage] || ('S' + p.stage)) + '</span>' +
+            '<span class="sdp-tag">' + escHtml(depositLabel[p.depositType] || p.type || 'Tipo não informado') + '</span>' +
+            '<span class="sdp-tag">' + escHtml(statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'Não iniciado') + '</span>' +
+            (p.forecast ? '<span class="sdp-tag">Início ' + escHtml(String(p.forecast)) + '</span>' : '') +
+            (fleetTotal ? '<span class="sdp-tag">~' + fleetTotal + ' equip.</span>' : '') +
+          '</div>' +
+          '<div class="sdp-note"><strong>Destaque:</strong> ' + escHtml(p.highlights || p.capexDetail || 'Projeto mapeado para acompanhamento comercial.') + '</div>' +
+          (p.capacity ? '<div class="sdp-note"><strong>Movimentação/capacidade:</strong> ' + escHtml(p.capacity) + '</div>' : '') +
+        '</div>';
+      }).join('') +
+    '</div>';
+
+  overlay.classList.add('open');
+}
+
+function closeStateProjects() {
+  const overlay = document.getElementById('stateDetailOverlay');
+  if (overlay) overlay.classList.remove('open');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeStateProjects();
+});
+
 function renderBrazilMap(stateData) {
   const container = document.getElementById('brazilSvgMap');
   if (!container || mapRendered) return;
@@ -3420,6 +3567,34 @@ function renderBrazilMap(stateData) {
   const tooltip = document.getElementById('mapTooltip');
   const width = 500;
   const height = 420;
+  const brazilStateNames = {
+    'AC':'Acre','AL':'Alagoas','AP':'Amapá','AM':'Amazonas','BA':'Bahia',
+    'CE':'Ceará','DF':'Distrito Federal','ES':'Espírito Santo','GO':'Goiás',
+    'MA':'Maranhão','MT':'Mato Grosso','MS':'Mato Grosso do Sul','MG':'Minas Gerais',
+    'PA':'Pará','PB':'Paraíba','PR':'Paraná','PE':'Pernambuco','PI':'Piauí',
+    'RJ':'Rio de Janeiro','RN':'Rio Grande do Norte','RS':'Rio Grande do Sul',
+    'RO':'Rondônia','RR':'Roraima','SC':'Santa Catarina','SP':'São Paulo',
+    'SE':'Sergipe','TO':'Tocantins'
+  };
+  const projectCounts = Object.values(stateData).map(info => info.projects.length);
+  const maxProjectCount = Math.max(1, ...projectCounts);
+  const projectColor = d3.interpolateRgbBasis(['#fff6bf', '#ffe066', '#FFCD00']);
+  const hoverColor = d3.interpolateRgbBasis(['#fff0a3', '#ffd84a', '#ffdc3d']);
+  const logIntensity = function(count) {
+    if (!count) return 0;
+    if (maxProjectCount <= 1) return 1;
+    return Math.log1p(count) / Math.log1p(maxProjectCount);
+  };
+  const stateFill = function(abbr) {
+    const info = stateData[abbr];
+    if (!info) return 'var(--cat-gray)';
+    return projectColor(logIntensity(info.projects.length));
+  };
+  const stateHoverFill = function(abbr) {
+    const info = stateData[abbr];
+    if (!info) return 'var(--cat-gray-light)';
+    return hoverColor(logIntensity(info.projects.length));
+  };
 
   const projection = d3.geoMercator()
     .center([-54, -14])
@@ -3447,7 +3622,7 @@ function renderBrazilMap(stateData) {
         .attr('d', pathGen)
         .style('fill', function(d) {
           const abbr = d.properties.UF_05;
-          return stateData[abbr] ? '#FFCD00' : 'var(--cat-gray)';
+          return stateFill(abbr);
         })
         .style('stroke', '#0d0d0d')
         .attr('stroke-width', 0.5)
@@ -3456,22 +3631,38 @@ function renderBrazilMap(stateData) {
           const abbr = d.properties.UF_05;
           return stateData[abbr] ? 'pointer' : 'default';
         })
+        .attr('tabindex', function(d) {
+          const abbr = d.properties.UF_05;
+          return stateData[abbr] ? 0 : null;
+        })
+        .attr('role', function(d) {
+          const abbr = d.properties.UF_05;
+          return stateData[abbr] ? 'button' : null;
+        })
+        .attr('aria-label', function(d) {
+          const abbr = d.properties.UF_05;
+          const info = stateData[abbr];
+          return info ? (brazilStateNames[abbr] || abbr) + ': ver ' + info.projects.length + ' projeto(s)' : null;
+        })
+        .on('click', function(e, d) {
+          const abbr = d.properties.UF_05;
+          if (stateData[abbr]) showStateProjects(abbr, stateData[abbr], brazilStateNames[abbr] || abbr);
+        })
+        .on('keydown', function(e, d) {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          const abbr = d.properties.UF_05;
+          if (!stateData[abbr]) return;
+          e.preventDefault();
+          showStateProjects(abbr, stateData[abbr], brazilStateNames[abbr] || abbr);
+        })
         .on('mouseenter', function(e, d) {
           const abbr = d.properties.UF_05;
           d3.select(this)
-            .style('fill', stateData[abbr] ? '#e6b800' : 'var(--cat-gray-light)')
+            .style('fill', stateHoverFill(abbr))
             .style('stroke', 'var(--cat-yellow)')
             .attr('stroke-width', 1.2);
           tooltip.style.opacity = '1';
-          const estadoName = {
-            'AC':'Acre','AL':'Alagoas','AP':'Amapa','AM':'Amazonas','BA':'Bahia',
-            'CE':'Ceara','DF':'Distrito Federal','ES':'Espirito Santo','GO':'Goias',
-            'MA':'Maranhao','MT':'Mato Grosso','MS':'Mato Grosso do Sul','MG':'Minas Gerais',
-            'PA':'Para','PB':'Paraiba','PR':'Parana','PE':'Pernambuco','PI':'Piaui',
-            'RJ':'Rio de Janeiro','RN':'Rio Grande do Norte','RS':'Rio Grande do Sul',
-            'RO':'Rondonia','RR':'Roraima','SC':'Santa Catarina','SP':'Sao Paulo',
-            'SE':'Sergipe','TO':'Tocantins'
-          }[abbr] || abbr;
+          const estadoName = brazilStateNames[abbr] || abbr;
           tooltip.textContent = estadoName + (stateData[abbr] ? ' — ' + stateData[abbr].projects.length + ' projeto(s)' : '');
         })
         .on('mousemove', function(e) {
@@ -3482,11 +3673,38 @@ function renderBrazilMap(stateData) {
         .on('mouseleave', function(e, d) {
           const abbr = d.properties.UF_05;
           d3.select(this)
-            .style('fill', stateData[abbr] ? '#FFCD00' : 'var(--cat-gray)')
+            .style('fill', stateFill(abbr))
             .style('stroke', '#0d0d0d')
             .attr('stroke-width', 0.5);
           tooltip.style.opacity = '0';
         });
+
+      const legendSteps = [1, Math.max(1, Math.round((1 + maxProjectCount) / 2)), maxProjectCount]
+        .filter((value, index, arr) => arr.indexOf(value) === index);
+      const legend = svgEl.append('g')
+        .attr('class', 'map-log-legend')
+        .attr('transform', 'translate(18, 356)');
+      legend.append('text')
+        .attr('x', 0).attr('y', -8)
+        .style('fill', 'var(--cat-text-muted)')
+        .attr('font-size', '9px')
+        .attr('font-weight', '700')
+        .text('Escala log: mais projetos = cor mais intensa');
+      legendSteps.forEach(function(count, i) {
+        const x = i * 58;
+        legend.append('rect')
+          .attr('x', x).attr('y', 0)
+          .attr('width', 36).attr('height', 8)
+          .attr('rx', 3)
+          .style('fill', projectColor(logIntensity(count)));
+        legend.append('text')
+          .attr('x', x + 18).attr('y', 22)
+          .attr('text-anchor', 'middle')
+          .style('fill', 'var(--cat-text-muted)')
+          .attr('font-size', '9px')
+          .attr('font-weight', '650')
+          .text(count + (count === 1 ? ' proj.' : ' proj.'));
+      });
 
       // ── Permanent labels: project count per state with leader lines ──
       const defaultLineLen = 110;
@@ -4267,20 +4485,41 @@ function renderFleetTimeline() {
     return row;
   });
 
-  const w = Math.max(container.clientWidth-40,300), h = 220, m = {t:20,r:60,b:30,l:50};
-  const svg = d3.select(container).html('').append('svg').attr('viewBox',`0 0 ${w} ${h}`).append('g').attr('transform',`translate(${m.l},${m.t})`);
+  container.innerHTML = '';
+
+  const legendDiv = d3.select(container).append('div')
+    .style('display','flex').style('gap','6px').style('flex-wrap','wrap')
+    .style('justify-content','flex-start').style('margin-bottom','6px');
+  labels.forEach((l,i) => {
+    legendDiv.append('div').style('display','flex').style('align-items','center').style('gap','3px')
+      .style('font-size','10px').style('color','var(--cat-text-muted)')
+      .html(`<span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${colors[i]};flex-shrink:0;"></span> ${l}`);
+  });
+
+  const w = Math.max(container.clientWidth-20,300), h = 190, m = {t:14,r:45,b:22,l:40};
+  const svg = d3.select(container).append('svg').attr('viewBox',`0 0 ${w} ${h}`)
+    .style('width','100%').style('height','auto')
+    .append('g').attr('transform',`translate(${m.l},${m.t})`);
   const iw = w-m.l-m.r, ih = h-m.t-m.b;
 
   const x = d3.scaleBand().domain(years).range([0,iw]).padding(0.2);
   const yMax = d3.max(yearlyData, d => d3.sum(keys, k => d[k])) || 10;
   const y = d3.scaleLinear().domain([0, yMax*1.15]).range([ih,0]);
 
-  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('d'))).attr('color','var(--cat-text-muted)').style('font-size','10px');
-  svg.append('g').attr('transform',`translate(0,${ih})`).call(d3.axisBottom(x)).attr('color','var(--cat-text-muted)').style('font-size','11px');
+  svg.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d3.format('d'))).attr('color','var(--cat-text-muted)').style('font-size','9px');
+  svg.append('g').attr('transform',`translate(0,${ih})`).call(d3.axisBottom(x)).attr('color','var(--cat-text-muted)').style('font-size','10px');
 
   const stack = d3.stack().keys(keys);
   const stacked = stack(yearlyData);
   const x0 = d3.scaleBand().domain(years).range([0,iw]).padding(0.3);
+
+  const tooltip = d3.select(container).append('div')
+    .style('position','absolute').style('display','none')
+    .style('background','var(--cat-black)').style('color','var(--cat-fg)')
+    .style('border','1px solid var(--cat-gray-light)').style('border-radius','6px')
+    .style('padding','5px 8px').style('font-size','11px')
+    .style('pointer-events','none').style('z-index','10')
+    .style('white-space','nowrap').style('box-shadow','0 2px 8px rgba(0,0,0,0.3)');
 
   stacked.forEach((layer, li) => {
     svg.selectAll(`.bar-${li}`).data(layer).enter().append('rect')
@@ -4290,8 +4529,7 @@ function renderFleetTimeline() {
       .on('mouseover', function(e, d) {
         d3.select(this).attr('opacity',1).attr('stroke','#fff').attr('stroke-width',1.5);
         const val = Math.round(d[1]-d[0]);
-        const year = d.data.year;
-        tooltip.style('display','block').html(`<strong>${year}</strong><br>${labels[li]}: <strong>${val}</strong> un.`);
+        tooltip.style('display','block').html(`<strong>${d.data.year}</strong><br>${labels[li]}: <strong>${val}</strong> un.`);
       })
       .on('mousemove', function(e) {
         const [mx, my] = d3.pointer(e, container);
@@ -4303,21 +4541,7 @@ function renderFleetTimeline() {
       });
   });
 
-  const tooltip = d3.select(container).append('div')
-    .style('position','absolute').style('display','none')
-    .style('background','var(--cat-black)').style('color','var(--cat-fg)')
-    .style('border','1px solid var(--cat-gray-light)').style('border-radius','6px')
-    .style('padding','6px 10px').style('font-size','12px')
-    .style('pointer-events','none').style('z-index','10')
-    .style('white-space','nowrap').style('box-shadow','0 2px 8px rgba(0,0,0,0.3)');
-
-  svg.append('text').attr('x',iw+12).attr('y',6).attr('fill','var(--cat-text-muted)').style('font-size','11px').text('unidades');
-
-  const legendDiv = d3.select(container).append('div').style('display','flex').style('gap','12px').style('flex-wrap','wrap').style('justify-content','center').style('margin-top','12px');
-  labels.forEach((l,i) => {
-    legendDiv.append('div').style('display','flex').style('align-items','center').style('gap','4px').style('font-size','11px').style('color','var(--cat-text-muted)')
-      .html(`<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${colors[i]};flex-shrink:0;"></span> ${l}`);
-  });
+  svg.append('text').attr('x',iw+8).attr('y',4).attr('fill','var(--cat-text-muted)').style('font-size','10px').text('unidades');
 }
 
 function runFleetCalculator() {
