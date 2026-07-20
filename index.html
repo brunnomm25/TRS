@@ -37,6 +37,22 @@
     --cat-text-muted: #666;
     --cat-fg: #1a1a1a;
   }
+  [data-theme="dark"] {
+    --cat-yellow: #FFCD00;
+    --cat-yellow-dark: #E5B800;
+    --cat-black: #161b22;
+    --cat-dark: #0b0f14;
+    --cat-gray: #222a35;
+    --cat-gray-light: #3f4a5a;
+    --cat-text: #edf1f7;
+    --cat-text-muted: #b3bdcc;
+    --cat-green: #25D366;
+    --cat-red: #ff6b6b;
+    --cat-blue: #5ec7f4;
+    --cat-orange: #ffad42;
+    --cat-purple: #c084fc;
+    --cat-fg: #ffffff;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -68,6 +84,64 @@
     .top-bar .logo .divider { width: 1px; height: 36px; background: var(--cat-gray-light); flex-shrink: 0; }
   .top-bar .logo .brand-text .subtitle { font-size: 14px; font-weight: 600; color: var(--cat-fg); letter-spacing: -0.3px; }
   .top-bar .logo .brand-text span { font-size: 10px; color: var(--cat-text-muted); font-weight: 400; }
+  .portfolio-switch {
+    position: relative;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0;
+    background: var(--cat-gray); border: 1px solid var(--cat-gray-light);
+    border-radius: 999px; padding: 4px; margin-left: 2px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    overflow: hidden;
+    min-width: 300px;
+  }
+  .portfolio-switch::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    left: 4px; top: 4px; bottom: 4px;
+    width: calc(50% - 4px);
+    border-radius: 999px;
+    background: var(--cat-yellow);
+    box-shadow: 0 8px 18px rgba(255,205,0,0.22);
+    transition: transform 0.28s cubic-bezier(.22,.8,.22,1), background 0.24s ease, box-shadow 0.24s ease;
+  }
+  .portfolio-switch.green-active::before {
+    transform: translateX(100%);
+    background: var(--cat-green);
+    box-shadow: 0 8px 18px rgba(0,150,57,0.24);
+  }
+  .portfolio-switch button {
+    position: relative;
+    z-index: 1;
+    border: none; background: transparent; color: var(--cat-text-muted);
+    border-radius: 999px; padding: 7px 12px; font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.45px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+  }
+  .portfolio-switch button.active {
+    color: var(--cat-black);
+  }
+  .portfolio-switch #portfolioGreenBtn.active {
+    color: #fff;
+  }
+  .portfolio-switch button:not(.active):hover { color: var(--cat-fg); }
+  @media (max-width: 980px) {
+    .top-bar .logo { flex-wrap: wrap; }
+    .portfolio-switch { order: 10; }
+  }
+  @media (max-width: 620px) {
+    .portfolio-switch {
+      width: 100%;
+      max-width: 420px;
+      margin-left: 0;
+    }
+    .portfolio-switch button {
+      flex: 1 1 0;
+      justify-content: center;
+      padding: 7px 8px;
+      font-size: 10px;
+    }
+  }
   .top-bar .tagline { text-align: right; display: flex; align-items: center; gap: 12px; }
   .top-bar .tagline .title { font-size: 14px; font-weight: 600; color: var(--cat-yellow); }
   .top-bar .tagline .sub { font-size: 11px; color: var(--cat-text-muted); }
@@ -677,7 +751,9 @@
 
   .state-detail-overlay {
     display: none; position: fixed; inset: 0; z-index: 230;
-    background: rgba(0,0,0,0.62); align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.62);
+    backdrop-filter: blur(5px);
+    align-items: center; justify-content: center;
     padding: 18px;
   }
   .state-detail-overlay.open { display: flex; }
@@ -779,8 +855,12 @@
   }
   .tab-btn:hover { color: var(--cat-text); background: rgba(255,255,255,0.02); }
   .tab-btn.active { color: var(--cat-yellow); border-bottom-color: var(--cat-yellow); }
-  .tab-page { display: none; }
-  .tab-page.active { display: block; }
+  .tab-page { display: none; opacity: 0; transform: translateY(10px); }
+  .tab-page.active { display: block; animation: tabPageIn 0.28s cubic-bezier(.22,.8,.22,1) both; }
+  @keyframes tabPageIn {
+    from { opacity: 0; transform: translateY(12px); filter: blur(2px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
 
   /* BRAZIL MAP */
   .brazil-map {
@@ -895,9 +975,11 @@
   @media (max-width: 1000px) { .opp-map-layout { grid-template-columns: 1fr; } }
 
   .opp-map-center {
+    position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
     border-radius: 14px; padding: 20px; min-height: 360px;
+    overflow: hidden;
   }
   .opp-map-center .map-title { font-size: 14px; font-weight: 700; color: var(--cat-yellow); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 2px; }
 
@@ -1141,6 +1223,149 @@
   .chart-card .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--cat-text-muted); }
   .chart-card .legend-item .ldot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
   .chart-card-full { grid-column: 1 / -1; }
+  .commercial-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .commercial-card {
+    background: var(--cat-black);
+    border: 1px solid var(--cat-gray-light);
+    border-radius: 12px;
+    padding: 20px;
+    min-width: 0;
+    box-shadow: var(--shadow-card);
+  }
+  .commercial-card:hover { border-color: var(--cat-yellow); }
+  .commercial-card.wide { grid-column: 1 / -1; }
+  .commercial-card .chart-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--cat-fg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .commercial-card .chart-sub {
+    font-size: 11px;
+    color: var(--cat-text-muted);
+    margin-bottom: 16px;
+  }
+  .funnel-list { display: grid; gap: 10px; }
+  .funnel-row {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr) 76px;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+  }
+  .funnel-label { color: var(--cat-fg); font-weight: 700; }
+  .funnel-bar {
+    height: 12px;
+    background: var(--cat-gray);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--cat-gray-light);
+  }
+  .funnel-fill {
+    height: 100%;
+    min-width: 3px;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--cat-yellow), #25D366);
+  }
+  .funnel-value { color: var(--cat-text-muted); font-weight: 700; text-align: right; }
+  .scenario-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .scenario-controls label {
+    display: grid;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--cat-text-muted);
+  }
+  .scenario-controls input {
+    width: 100%;
+    border: 1px solid var(--cat-gray-light);
+    background: var(--cat-gray);
+    color: var(--cat-fg);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-family: inherit;
+    font-weight: 700;
+  }
+  .scenario-check {
+    display: flex !important;
+    align-items: center;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+  }
+  .scenario-check input { width: auto; }
+  .scenario-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .scenario-kpi {
+    background: var(--cat-gray);
+    border: 1px solid var(--cat-gray-light);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .scenario-kpi strong { display: block; color: var(--cat-yellow); font-size: 18px; line-height: 1.1; }
+  .scenario-kpi span { display: block; margin-top: 4px; color: var(--cat-text-muted); font-size: 11px; }
+  .next-action-list { display: grid; gap: 10px; }
+  .next-action-item {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--cat-gray-light);
+    border-radius: 10px;
+    background: var(--cat-gray);
+  }
+  .next-rank {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--cat-yellow);
+    color: var(--cat-black);
+    font-weight: 900;
+    font-size: 12px;
+  }
+  .next-main strong { display: block; color: var(--cat-fg); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .next-main span { display: block; color: var(--cat-text-muted); font-size: 11px; margin-top: 2px; }
+  .next-tag {
+    color: var(--cat-black);
+    background: var(--cat-yellow);
+    border-radius: 999px;
+    padding: 5px 9px;
+    font-size: 10px;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+  @media (max-width: 1000px) {
+    .commercial-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .commercial-card { padding: 16px; }
+    .funnel-row { grid-template-columns: 1fr; gap: 5px; }
+    .funnel-value { text-align: left; }
+    .next-action-item { grid-template-columns: 30px minmax(0, 1fr); }
+    .next-tag { grid-column: 2; width: fit-content; }
+  }
 
   /* MODERN RESPONSIVE POLISH */
   :root {
@@ -1212,6 +1437,7 @@
     position: sticky;
     top: 76px;
     z-index: 45;
+    --tab-index: 0;
     overflow-x: auto;
     gap: 8px;
     border-bottom: none;
@@ -1220,9 +1446,29 @@
     padding-top: 10px;
     padding-bottom: 10px;
     scrollbar-width: none;
+    isolation: isolate;
+  }
+  .tab-bar::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    left: 32px;
+    top: 10px;
+    height: calc(100% - 20px);
+    width: calc((100% - 64px - 24px) / 4);
+    max-width: 240px;
+    border-radius: 999px;
+    background: var(--cat-yellow);
+    box-shadow: 0 10px 24px rgba(255,205,0,0.22);
+    transform: translateX(calc(var(--tab-index) * (100% + 8px)));
+    transition: transform 0.32s cubic-bezier(.22,.8,.22,1), width 0.24s ease, background 0.24s ease;
   }
   .tab-bar::-webkit-scrollbar { display: none; }
   .tab-btn {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0;
+    max-width: 240px;
     border: 1px solid transparent;
     border-radius: 999px;
     margin-bottom: 0;
@@ -1230,12 +1476,14 @@
     white-space: nowrap;
     text-transform: none;
     letter-spacing: 0;
+    transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
   }
+  .tab-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.04); }
   .tab-btn.active {
-    background: var(--cat-yellow);
-    border-color: var(--cat-yellow);
+    background: transparent;
+    border-color: transparent;
     color: #171717;
-    box-shadow: 0 10px 24px rgba(255,205,0,0.22);
+    box-shadow: none;
   }
   .section-header {
     padding: 14px 0 4px;
@@ -1361,7 +1609,14 @@
       top: 0;
       padding: 10px 16px;
     }
+    .tab-bar::before { display: none; }
     .tab-btn { padding: 9px 14px; font-size: 12px; }
+    .tab-btn.active {
+      background: var(--cat-yellow);
+      border-color: var(--cat-yellow);
+      color: #171717;
+      box-shadow: 0 10px 24px rgba(255,205,0,0.18);
+    }
     .main-content { padding: 24px 16px; }
     .section-header { align-items: stretch; }
     .section-header .filters { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
@@ -1466,6 +1721,109 @@
       linear-gradient(90deg, color-mix(in srgb, var(--cat-yellow) 14%, var(--cat-black)), var(--cat-black));
     border-color: color-mix(in srgb, var(--cat-yellow) 32%, transparent);
   }
+  [data-theme="dark"] .summary-card,
+  [data-theme="dark"] .metric-card,
+  [data-theme="dark"] .chart-card,
+  [data-theme="dark"] .news-card,
+  [data-theme="dark"] .opp-status-card,
+  [data-theme="dark"] .methodology,
+  [data-theme="dark"] .machine-card,
+  [data-theme="dark"] .co-card,
+  [data-theme="dark"] .state-card,
+  [data-theme="dark"] .timeline-item .tl-content,
+  [data-theme="dark"] .pipe-stage,
+  [data-theme="dark"] .calc-section,
+  [data-theme="dark"] .mineria-card,
+  [data-theme="dark"] .re-header,
+  [data-theme="dark"] .opp-map-center,
+  [data-theme="dark"] .table-wrapper {
+    background: #161b22;
+    border-color: #3f4a5a;
+  }
+  [data-theme="dark"] .top-bar,
+  [data-theme="dark"] .summary-carousel-wrapper,
+  [data-theme="dark"] .tab-bar {
+    background: color-mix(in srgb, #0b0f14 92%, transparent);
+  }
+  [data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #111827 0%, #0b0f14 58%, #161b22 100%);
+  }
+  [data-theme="dark"] .section-header .filters select,
+  [data-theme="dark"] .section-header .filters input,
+  [data-theme="dark"] .calc-form input,
+  [data-theme="dark"] .calc-form select,
+  [data-theme="dark"] .chat-input-bar textarea,
+  [data-theme="dark"] .mineria-chat .chat-input-bar textarea,
+  [data-theme="dark"] #adminPanel input,
+  [data-theme="dark"] #adminPanel select,
+  [data-theme="dark"] #adminPanel textarea,
+  [data-theme="dark"] #adminModal input,
+  [data-theme="dark"] #adminModal select,
+  [data-theme="dark"] #adminModal textarea {
+    background: #0f141b;
+    color: #f8fafc;
+    border-color: #4b5565;
+  }
+  [data-theme="dark"] input::placeholder,
+  [data-theme="dark"] textarea::placeholder {
+    color: #8f9bad;
+  }
+  [data-theme="dark"] table thead th,
+  [data-theme="dark"] .pipe-exec-table thead,
+  [data-theme="dark"] .methodology .fg-table th {
+    background: #202836;
+    color: #d8dee9;
+  }
+  [data-theme="dark"] table tbody tr:hover,
+  [data-theme="dark"] .pipe-exec-table tbody tr:hover {
+    background: rgba(255,205,0,0.095);
+  }
+  [data-theme="dark"] .chat-msg.user .chat-bubble {
+    background: #FFCD00;
+    color: #111827;
+  }
+  [data-theme="dark"] .chat-msg.assistant .chat-bubble {
+    background: #111827;
+    border-color: #3f4a5a;
+    color: #edf1f7;
+  }
+  [data-theme="dark"] .mineria-chat-header,
+  [data-theme="dark"] .state-detail-head {
+    background: #111827;
+  }
+  [data-theme="dark"] .state-detail-panel {
+    background: #161b22;
+    border-color: rgba(255,205,0,0.38);
+  }
+  [data-theme="dark"] .state-detail-project,
+  [data-theme="dark"] .state-detail-kpi,
+  [data-theme="dark"] .sdp-tag,
+  [data-theme="dark"] .co-card .co-badge,
+  [data-theme="dark"] .map-state .ms-count {
+    background: #202836;
+    border-color: #465264;
+  }
+  [data-theme="dark"] .chart-tooltip,
+  [data-theme="dark"] #mapTooltip {
+    background: #0f141b !important;
+    color: #f8fafc !important;
+    border-color: #FFCD00 !important;
+  }
+  [data-theme="dark"] #brazilSvgMap path:not([style*="255, 205"]) {
+    stroke: #647083;
+  }
+  [data-theme="dark"] .news-filters button,
+  [data-theme="dark"] .ch-suggestion {
+    background: #202836;
+    color: #d8dee9;
+    border-color: #465264;
+  }
+  [data-theme="dark"] .news-filters button.active,
+  [data-theme="dark"] .ch-suggestion:hover {
+    background: #FFCD00;
+    color: #111827;
+    border-color: #FFCD00;
+  }
   @media (max-width: 520px) {
     .machine-card { grid-template-columns: 52px 1fr; padding: 14px; }
     .machine-card .m-icon { width: 50px; height: 50px; }
@@ -1489,7 +1847,7 @@
     border-bottom-right-radius: 4px;
   }
   [data-theme="dark"] .chat-msg.user .chat-bubble {
-    color: #ffffff;
+    color: #111827;
   }
   .chat-msg.assistant .chat-bubble {
     background: var(--cat-black); border: 1px solid var(--cat-gray-light);
@@ -1502,6 +1860,20 @@
   .chat-msg.assistant .chat-bubble code {
     background: var(--cat-gray); padding: 1px 5px; border-radius: 3px;
     font-size: 12px;
+  }
+  .chat-bubble.typing-intro::after {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 1.15em;
+    margin-left: 3px;
+    vertical-align: -0.18em;
+    border-radius: 999px;
+    background: var(--cat-yellow);
+    animation: typingBlink 0.85s steps(2, start) infinite;
+  }
+  @keyframes typingBlink {
+    50% { opacity: 0; }
   }
 
   .chat-input-bar {
@@ -1646,9 +2018,41 @@
     color: #111827;
   }
   [data-theme="dark"] body.minerai-fullscreen .chat-msg.user .chat-bubble {
-    color: #ffffff;
+    color: #111827;
   }
   body.minerai-fullscreen .chat-msg.assistant .chat-bubble strong { color: #111827; }
+  [data-theme="dark"] body.minerai-fullscreen .mineria-card {
+    background: #0b0f14;
+    color: #edf1f7;
+    border-color: #3f4a5a;
+  }
+  [data-theme="dark"] body.minerai-fullscreen .mineria-card::before {
+    background: rgba(5,8,12,0.88);
+  }
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat-header,
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat .chat-messages,
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat .chat-input-bar {
+    background: #0b0f14;
+    border-color: #3f4a5a;
+  }
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat-title strong,
+  [data-theme="dark"] body.minerai-fullscreen .chat-msg.assistant .chat-bubble strong {
+    color: #ffffff;
+  }
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat-title span {
+    color: #b3bdcc;
+  }
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat-actions button,
+  [data-theme="dark"] body.minerai-fullscreen .mineria-chat .chat-input-bar textarea {
+    background: #111827;
+    color: #f8fafc;
+    border-color: #465264;
+  }
+  [data-theme="dark"] body.minerai-fullscreen .chat-msg.assistant .chat-bubble {
+    background: #111827;
+    border-color: #3f4a5a;
+    color: #edf1f7;
+  }
   body.minerai-fullscreen #mineraiExpandIcon::before { content: "\f659"; }
   @media (max-width:700px) {
     body.minerai-fullscreen .mineria-card { inset: 8px; border-radius: 14px; }
@@ -1713,11 +2117,15 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <span class="subtitle">Sotreq</span>
       <span style="font-size:10px;color:var(--cat-text-muted);">Dealer Caterpillar</span>
     </div>
+    <div class="portfolio-switch" aria-label="Selecionar portfólio">
+      <button id="portfolioRareBtn" class="active" onclick="setPortfolioMode('rareEarth')" title="Ver projetos de terras raras"><i class="bi bi-magnet"></i> Terras Raras</button>
+      <button id="portfolioGreenBtn" onclick="setPortfolioMode('greenfield')" title="Ver projetos greenfield"><i class="bi bi-tree-fill"></i> Green Field</button>
+    </div>
   </div>
   <div class="tagline">
     <div>
       <div class="title">Inteligência de Mercado</div>
-      <div class="sub">Terras Raras · 2026-2030</div>
+      <div class="sub" id="portfolioTopSub">Terras Raras · 2026-2030</div>
     </div>
     <button class="theme-btn" onclick="toggleTheme()" title="Alternar tema claro/escuro" id="themeBtn"><i class="bi bi-moon-stars-fill"></i></button>
   </div>
@@ -1726,7 +2134,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
 <section class="hero">
   <div class="container">
     <h1>Mining Intelligence Portal</h1>
-    <p style="margin:6px 0 0;font-size:15px;color:var(--cat-text-muted);font-weight:400;">Oportunidades de Projetos <em style="color:var(--cat-yellow);font-style:normal;">Terras Raras</em> e <em style="color:var(--cat-green);font-style:normal;">Green Field</em> no Brasil</p>
+    <p id="portfolioHeroSub" style="margin:6px 0 0;font-size:15px;color:var(--cat-text-muted);font-weight:400;">Oportunidades de Projetos <em style="color:var(--cat-yellow);font-style:normal;">Terras Raras</em> no Brasil</p>
   </div>
 </section>
 
@@ -1752,7 +2160,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     <div class="summary-card" onclick="goToChart('reMapLeft')" style="cursor:pointer;">
       <div class="label">Estados</div>
       <div class="value orange" id="totalEstados">0</div>
-      <div class="sub">MG, BA, GO, AM, PA, RJ</div>
+      <div class="sub" id="summaryStatesList">MG, BA, GO, AM, PA, RJ</div>
     </div>
     <div class="summary-card" onclick="goToChart('demanda-maquinas')" style="cursor:pointer;">
       <div class="label">Potencial Máquinas</div>
@@ -1770,9 +2178,9 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="sub" id="fleetValueDetail">Preço médio dos equipamentos × quantidade</div>
     </div>
     <div class="summary-card" onclick="switchTab('resumo')" style="cursor:pointer;">
-      <div class="label">Crescimento Anual (IEA)</div>
-      <div class="value purple">15–20%</div>
-      <div class="sub">Demanda global de REE até 2030</div>
+      <div class="label" id="growthCardLabel">Crescimento Anual (IEA)</div>
+      <div class="value purple" id="growthCardValue">15–20%</div>
+      <div class="sub" id="growthCardSub">Demanda global de REE até 2030</div>
     </div>
   </div>
 </div>
@@ -1824,9 +2232,6 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         </div>
       </div>
       <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg assistant">
-          <div class="chat-bubble">Olá. Sou o MinerAÍ. Pergunte sobre projetos, CAPEX, estágios, frota CAT, riscos, timing e oportunidades para a Sotreq.</div>
-        </div>
       </div>
       <div class="chat-input-bar">
         <textarea id="chatInput" placeholder="Pergunte sobre o portfólio..." onkeydown="chatKeyHandler(event)" rows="1"></textarea>
@@ -1844,8 +2249,8 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   <!-- HEADER -->
   <div class="re-header">
     <div class="re-h-left">
-      <h1>TERRAS RARAS E GREEN FIELD NO BRASIL</h1>
-      <p>Resumo executivo de oportunidades, investimentos e pipeline para Sotreq.</p>
+      <h1 id="rePortfolioTitle">TERRAS RARAS NO BRASIL</h1>
+      <p id="rePortfolioSubtitle">Resumo executivo de oportunidades, investimentos e pipeline para Sotreq.</p>
     </div>
     <div class="re-h-right">
       <div class="re-date"><span class="re-cal"><i class="bi bi-calendar-event"></i></span> <span id="reDateSpan">MAIO 2026</span></div>
@@ -1927,8 +2332,8 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   </div>
 
   <!-- INFO SOBRE TERRAS RARAS -->
-  <div class="methodology" style="margin-top:32px;">
-    <h3><span class="m-icon"><i class="bi bi-gem"></i></span> O que são Terras Raras?</h3>
+  <div class="methodology" id="portfolioEducationA" style="margin-top:32px;">
+    <h3><span class="m-icon"><i class="bi bi-magnet"></i></span> O que são Terras Raras?</h3>
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:16px;">
       Terras raras são um grupo de <strong style="color:var(--cat-fg);">17 elementos químicos</strong> (Escândio, Ítrio e os 15 lantanídeos) — essenciais para tecnologias limpa e de defesa. Apesar do nome, <strong>não são raras na crosta terrestre</strong>; o desafio está em concentrá-las e separá-las economicamente.
     </p>
@@ -1952,7 +2357,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     </div>
   </div>
 
-  <div class="methodology" style="margin-top:20px;">
+  <div class="methodology" id="portfolioEducationB" style="margin-top:20px;">
     <h3><span class="m-icon"><i class="bi bi-pick"></i></span> Como funciona a mineração de Terras Raras?</h3>
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:12px;">
       Cada projeto passa por estágios regulatórios e construtivos. Monitoramos <strong>6 estágios</strong> que vão da prospecção à operação comercial:
@@ -2063,6 +2468,49 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   </div>
   <div class="chart-tooltip" id="chartTooltip"></div>
   <div id="chartFilterInfo" class="chart-filter-info"></div>
+
+  <div class="section-header" style="margin-top:40px;">
+    <h3 id="inteligencia-comercial">Inteligência Comercial <a href="#inteligencia-comercial" class="anchor-link">#</a></h3>
+  </div>
+  <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
+    Camada de apoio para transformar o radar de projetos em priorização, timing e próxima ação do consultor.
+  </p>
+  <div class="commercial-grid">
+    <div class="commercial-card wide" id="commercialPriorityMatrix">
+      <div class="chart-title">Matriz de Priorização Comercial</div>
+      <div class="chart-sub">Cruza maturidade do projeto, oportunidade Sotreq e frota estimada para destacar onde agir primeiro</div>
+    </div>
+    <div class="commercial-card" id="commercialFunnel">
+      <div class="chart-title">Funil Comercial Sotreq</div>
+      <div class="chart-sub">Carteira por status de relacionamento, proposta e negociação</div>
+      <div class="funnel-list" id="commercialFunnelList"></div>
+    </div>
+    <div class="commercial-card" id="scenarioSimulator">
+      <div class="chart-title">Simulador de Cenários</div>
+      <div class="chart-sub">Ajuste premissas rápidas para estimar oportunidade e volume de máquinas</div>
+      <div class="scenario-controls">
+        <label>Conversão Sotreq (%)
+          <input type="number" id="scenarioConversion" min="1" max="60" step="1" oninput="updateScenarioSimulator()">
+        </label>
+        <label>Câmbio (R$/US$)
+          <input type="number" id="scenarioFx" min="1" max="10" step="0.1" oninput="updateScenarioSimulator()">
+        </label>
+        <label>Ajuste caminhões (%)
+          <input type="number" id="scenarioTruckFactor" min="60" max="160" step="5" oninput="updateScenarioSimulator()">
+        </label>
+        <label class="scenario-check">
+          <input type="checkbox" id="scenarioCat707" onchange="updateScenarioSimulator()">
+          Considerar caminhão rígido menor
+        </label>
+      </div>
+      <div class="scenario-results" id="scenarioResults"></div>
+    </div>
+    <div class="commercial-card wide" id="nextActionRanking">
+      <div class="chart-title">Ranking de Próxima Ação</div>
+      <div class="chart-sub">Sugestão objetiva de abordagem para os projetos com melhor combinação de timing e potencial</div>
+      <div class="next-action-list" id="nextActionList"></div>
+    </div>
+  </div>
 
   <!-- PROJECT TABLE -->
   <div style="margin-top: 40px;">
@@ -2344,7 +2792,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
   <div class="section-header">
     <h3>Notícias da Semana</h3>
   </div>
-  <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
+  <p id="newsIntroText" style="color:var(--cat-text-muted);font-size:13px;margin-bottom:16px;">
     Principais fatos e comunicados ao mercado que embasam as estimativas deste relatório. Clique no título para acessar a notícia original.
   </p>
 
@@ -2509,7 +2957,40 @@ const equipmentProfiles = {
   }
 };
 
-const projects = [ // __DATA_BEGIN_PROJECTS__
+const portfolioMeta = {
+  rareEarth: {
+    label: 'Terras Raras',
+    topSub: 'Terras Raras · 2026-2030',
+    heroHtml: 'Oportunidades de Projetos <em style="color:var(--cat-yellow);font-style:normal;">Terras Raras</em> no Brasil',
+    executiveTitle: 'TERRAS RARAS NO BRASIL',
+    executiveSubtitle: 'Resumo executivo de oportunidades, investimentos e pipeline para Sotreq.',
+    marketSentence: 'projetos de terras raras',
+    dashboardContext: 'terras raras',
+    growthLabel: 'Crescimento Anual (IEA)',
+    growthValue: '15–20%',
+    growthSub: 'Demanda global de REE até 2030',
+    newsIntro: 'Principais fatos e comunicados ao mercado que embasam as estimativas deste relatório. Clique no título para acessar a notícia original.',
+    mineraiScope: 'terras raras, minerais críticos, green field e mineração no Brasil'
+  },
+  greenfield: {
+    label: 'Green Field',
+    topSub: 'Green Field · Novos Projetos de Mineração',
+    heroHtml: 'Oportunidades de Projetos <em style="color:var(--cat-green);font-style:normal;">Green Field</em> de mineração no Brasil',
+    executiveTitle: 'GREEN FIELD NO BRASIL',
+    executiveSubtitle: 'Resumo executivo de oportunidades, investimentos e pipeline para Sotreq.',
+    marketSentence: 'projetos greenfield de mineração',
+    dashboardContext: 'greenfield de mineração',
+    growthLabel: 'Pipeline Green Field',
+    growthValue: '2026+',
+    growthSub: 'Novos projetos minerais em mapeamento',
+    newsIntro: 'Notícias e comunicados públicos usados para acompanhar projetos novos, em licenciamento, construção ou ramp-up no Brasil.',
+    mineraiScope: 'projetos greenfield de mineração, ouro, bauxita, lítio, cobre, níquel, fertilizantes e novos empreendimentos no Brasil'
+  }
+};
+
+let activePortfolioMode = localStorage.getItem('sotreq_portfolio_mode') || 'rareEarth';
+
+const rareEarthProjects = [ // __DATA_BEGIN_PROJECTS__
   {
     priority: 'critical', company: 'Meteoric Resources', origin: 'Austrália',
     project: 'Caldeira', location: { city: 'Poços de Caldas / Caldas', state: 'MG' },
@@ -2727,6 +3208,128 @@ const projects = [ // __DATA_BEGIN_PROJECTS__
     startYear: null, depositType: 'exploration'
   }
 ]; // __DATA_END_PROJECTS__
+
+const greenfieldProjects = [
+  {
+    priority: 'critical', company: 'Brazil Potash Corp.', origin: 'Canadá / Brasil',
+    project: 'Autazes', location: { city: 'Autazes', state: 'AM' },
+    capex: 2491, capexDetail: 'US$ 2,49B pre-operating CAPEX (after-tax)',
+    stage: 4, forecast: 'Construção sujeita a financiamento', capacity: '2,4 Mt/ano MOP',
+    licensing: 'Licenças de construção majoritariamente obtidas; avanço em outorgas e infraestrutura',
+    machines: ['Escavadeiras', 'Carregadeiras', 'Caminhões', 'Tratores de Esteira', 'Equipamentos de apoio'],
+    opportunity: 'US$ 747M', type: 'Potássio / Fertilizantes',
+    highlights: 'Projeto de potássio em Autazes · CAPEX pré-operacional ~US$2,5B · foco em segurança alimentar e redução de importações',
+    startYear: 2030, depositType: 'hardRock'
+  },
+  {
+    priority: 'critical', company: 'Sul Americana de Metais (SAM)', origin: 'Brasil / China',
+    project: 'Bloco 8', location: { city: 'Grão Mogol / Padre Carvalho', state: 'MG' },
+    capex: 2100, capexDetail: 'US$ 2,1B divulgado pela empresa',
+    stage: 3, forecast: 'Licenciamento ambiental', capacity: '27,5 Mt/ano pellet feed',
+    licensing: 'Primeira fase de licenciamento ambiental',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Carregadeiras', 'Tratores de Esteira', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'US$ 630M', type: 'Minério de Ferro',
+    highlights: 'Complexo de minério de ferro de baixo teor no Norte de MG · grande potencial de terraplenagem, cava e infraestrutura',
+    startYear: null, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Alurion Resources', origin: 'Austrália / Brasil',
+    project: 'Amargosa', location: { city: 'Amargosa / Jequié / Jaguaquara', state: 'BA' },
+    capex: 119, capexDetail: 'US$ 119M Scoping Study',
+    stage: 2, forecast: 'Spin-off/IPO 2026 · estudos e desenvolvimento',
+    capacity: '5,1 Mt/ano bauxita direct-ship · 17 anos',
+    licensing: 'Projeto em desenvolvimento; histórico de exploração Rio Tinto/BRE',
+    machines: ['Caminhões', 'Escavadeiras', 'Carregadeiras', 'Tratores de Esteira', 'Motoniveladoras', 'Equipamentos de apoio'],
+    opportunity: 'US$ 36M', type: 'Bauxita / Gálio',
+    highlights: 'Recurso JORC 568 Mt · 98 Mt DSB · operação truck-and-shovel simples com logística rodoviária até porto',
+    startYear: null, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Belo Sun Mining', origin: 'Canadá',
+    project: 'Volta Grande', location: { city: 'Altamira', state: 'PA' },
+    capex: 150, capexDetail: 'CAPEX de atualização pendente; valor direcional para acompanhamento comercial',
+    stage: 4, forecast: 'DFS update / pré-construção', capacity: 'Ouro · cava a céu aberto',
+    licensing: 'Licença de Instalação reemitida em 2026, válida até 2029',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Perfuratrizes', 'Carregadeiras'],
+    opportunity: 'US$ 45M', type: 'Ouro',
+    highlights: 'LI reemitida pela SEMAS · estudos técnicos e qualificação de mão de obra local em andamento',
+    startYear: null, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Centaurus Metals', origin: 'Austrália',
+    project: 'Jaguar', location: { city: 'São Félix do Xingu / Carajás', state: 'PA' },
+    capex: 380, capexDetail: 'US$ 380M pré-produção',
+    stage: 4, forecast: 'FID 2026 · primeira produção 2029',
+    capacity: '18,7 kt/ano Ni médio · 3,5 Mtpa',
+    licensing: 'Licenças ambientais avançadas; FID condicionada a financiamento',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Carregadeiras', 'Tratores de Esteira', 'Perfuratrizes'],
+    opportunity: 'US$ 114M', type: 'Níquel Sulfetado',
+    highlights: 'Projeto de níquel sulfetado em Carajás · CAPEX baixo para porte do ativo · construção prevista após FID',
+    startYear: 2029, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Consórcio Santa Quitéria (INB / Galvani)', origin: 'Brasil',
+    project: 'Santa Quitéria', location: { city: 'Santa Quitéria', state: 'CE' },
+    capex: 400, capexDetail: 'Mais de R$ 2B (~US$ 400M)',
+    stage: 3, forecast: 'LP 2026 · instalação 2027 · operação 2031',
+    capacity: '1,05 Mt/ano fertilizantes fosfatados · 220 kt/ano fosfato bicálcico',
+    licensing: 'Licença prévia ambiental em análise',
+    machines: ['Escavadeiras', 'Carregadeiras', 'Caminhões', 'Tratores de Esteira', 'Motoniveladoras'],
+    opportunity: 'US$ 120M', type: 'Fosfato / Urânio',
+    highlights: 'Complexo mineroindustrial de colofanito · fertilizantes e urânio como subproduto · sem barragem de rejeitos no redesenho',
+    startYear: 2031, depositType: 'hardRock'
+  },
+  {
+    priority: 'high', company: 'Lithium Ionic', origin: 'Canadá',
+    project: 'Bandeira', location: { city: 'Itinga / Araçuaí', state: 'MG' },
+    capex: 191, capexDetail: 'US$ 191M FS',
+    stage: 4, forecast: 'Construção-ready 2026',
+    capacity: '177 kt/ano concentrado de espodumênio',
+    licensing: 'LAC em fase final; engenharia e procurement avançando',
+    machines: ['Escavadeiras', 'Carregadeiras', 'Caminhões', 'Equipamentos de apoio'],
+    opportunity: 'US$ 57M', type: 'Lítio',
+    highlights: 'Projeto Bandeira avançando para construção · FS com CAPEX baixo e operação subterrânea/beneficiamento',
+    startYear: 2027, depositType: 'hardRock'
+  },
+  {
+    priority: 'medium', company: 'Sigma Lithium', origin: 'Canadá / Brasil',
+    project: 'Grota do Cirilo Fase 2 / Barreiro', location: { city: 'Vale do Jequitinhonha', state: 'MG' },
+    capex: 107, capexDetail: 'US$ 107M total capex Fase 2',
+    stage: 5, forecast: 'Ramp-up 2026-2027',
+    capacity: 'Expansão para até 520 kt/ano concentrado',
+    licensing: 'LP, LI e LO obtidas para Mina 2 / Barreiro e Planta 2',
+    machines: ['Escavadeiras', 'Carregadeiras', 'Caminhões', 'Tratores de Esteira', 'Equipamentos de apoio'],
+    opportunity: 'US$ 32M', type: 'Lítio',
+    highlights: 'Retomada de lavra em 2026 e preparação de expansão da Planta 2 Greentech',
+    startYear: 2027, depositType: 'hardRock'
+  },
+  {
+    priority: 'medium', company: 'Atlas Lithium', origin: 'EUA / Brasil',
+    project: 'Neves', location: { city: 'Araçuaí', state: 'MG' },
+    capex: 58, capexDetail: 'US$ 57,6M direct CAPEX DFS',
+    stage: 4, forecast: 'Produção comercial Q4 2027',
+    capacity: '146-150 kt/ano concentrado de lítio',
+    licensing: 'Permissões operacionais e expansão obtidas; contratos de execução avançando',
+    machines: ['Escavadeiras', 'Carregadeiras', 'Caminhões', 'Equipamentos de apoio'],
+    opportunity: 'US$ 17M', type: 'Lítio',
+    highlights: 'Projeto Neves totalmente permitido e em contratação de parceiros de execução',
+    startYear: 2027, depositType: 'hardRock'
+  },
+  {
+    priority: 'medium', company: 'Aura Minerals', origin: 'Canadá / Brasil',
+    project: 'Matupá', location: { city: 'Matupá / Guarantã do Norte', state: 'MT' },
+    capex: 107, capexDetail: 'US$ 107M estimado',
+    stage: 3, forecast: 'Projeto de crescimento',
+    capacity: '55 koz Au/ano nos primeiros anos',
+    licensing: 'Projeto de lavra a céu aberto com FS publicado',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras'],
+    opportunity: 'US$ 32M', type: 'Ouro',
+    highlights: 'Projeto de ouro a céu aberto da Aura em Mato Grosso · potencial de frota média e infraestrutura de mina',
+    startYear: null, depositType: 'hardRock'
+  }
+];
+
+let projects = activePortfolioMode === 'greenfield' ? greenfieldProjects : rareEarthProjects;
 
 const statesData = {};
 
@@ -2958,7 +3561,108 @@ function renderCompanyDemand() {
   }).join('');
 }
 
+function portfolioInfo() {
+  return portfolioMeta[activePortfolioMode] || portfolioMeta.rareEarth;
+}
+
+function applyPortfolioCopy() {
+  const meta = portfolioInfo();
+  const topSub = document.getElementById('portfolioTopSub');
+  const heroSub = document.getElementById('portfolioHeroSub');
+  const reTitle = document.getElementById('rePortfolioTitle');
+  const reSubtitle = document.getElementById('rePortfolioSubtitle');
+  const newsIntro = document.getElementById('newsIntroText');
+  const growthLabel = document.getElementById('growthCardLabel');
+  const growthValue = document.getElementById('growthCardValue');
+  const growthSub = document.getElementById('growthCardSub');
+  const portfolioSwitch = document.querySelector('.portfolio-switch');
+  const rareBtn = document.getElementById('portfolioRareBtn');
+  const greenBtn = document.getElementById('portfolioGreenBtn');
+  if (topSub) topSub.textContent = meta.topSub;
+  if (heroSub) heroSub.innerHTML = meta.heroHtml;
+  if (reTitle) reTitle.textContent = meta.executiveTitle;
+  if (reSubtitle) reSubtitle.textContent = meta.executiveSubtitle;
+  if (newsIntro) newsIntro.textContent = meta.newsIntro;
+  if (growthLabel) growthLabel.textContent = meta.growthLabel;
+  if (growthValue) growthValue.textContent = meta.growthValue;
+  if (growthSub) growthSub.textContent = meta.growthSub;
+  if (portfolioSwitch) portfolioSwitch.classList.toggle('green-active', activePortfolioMode === 'greenfield');
+  if (rareBtn) rareBtn.classList.toggle('active', activePortfolioMode === 'rareEarth');
+  if (greenBtn) greenBtn.classList.toggle('active', activePortfolioMode === 'greenfield');
+  renderPortfolioEducation();
+}
+
+function renderPortfolioEducation() {
+  const a = document.getElementById('portfolioEducationA');
+  const b = document.getElementById('portfolioEducationB');
+  if (!a || !b) return;
+  if (!a.dataset.rareHtml) a.dataset.rareHtml = a.innerHTML;
+  if (!b.dataset.rareHtml) b.dataset.rareHtml = b.innerHTML;
+  if (activePortfolioMode === 'greenfield') {
+    a.innerHTML = `
+      <h3><span class="m-icon"><i class="bi bi-tree-fill"></i></span> O que é Green Field em mineração?</h3>
+      <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:16px;">
+        Neste portal, <strong style="color:var(--cat-fg);">Green Field</strong> representa projetos novos, expansões estruturantes ou ativos ainda em licenciamento, engenharia, construção ou ramp-up inicial fora do recorte de terras raras. O foco é identificar demanda futura de frota, infraestrutura de mina e serviços antes da decisão de compra.
+      </p>
+      <div class="meth-grid">
+        <div class="meth-item"><h4><i class="bi bi-currency-dollar" style="margin-right:6px;"></i> CAPEX e Timing</h4><p>Projetos em LP, LI, FID ou construção indicam janela comercial para antecipar dimensionamento, proposta técnica e relacionamento com engenharia/procurement.</p></div>
+        <div class="meth-item"><h4><i class="bi bi-truck" style="margin-right:6px;"></i> Frota e Infraestrutura</h4><p>Oportunidades aparecem em terraplenagem, abertura de cava, pré-strip, acessos, pátios, carregamento, transporte interno e apoio operacional.</p></div>
+        <div class="meth-item"><h4><i class="bi bi-layers" style="margin-right:6px;"></i> Diversificação Mineral</h4><p>O modo Green Field acompanha ouro, bauxita, lítio, cobre, níquel, potássio, fosfato e minério de ferro, sempre com foco em novos projetos no Brasil.</p></div>
+        <div class="meth-item"><h4><i class="bi bi-bullseye" style="margin-right:6px;"></i> Uso Comercial</h4><p>A leitura ajuda consultores a priorizar contas, mapear influenciadores técnicos e entrar antes da fase de compra formal de equipamentos.</p></div>
+      </div>`;
+    b.innerHTML = `
+      <h3><span class="m-icon"><i class="bi bi-signpost-split"></i></span> Como ler o pipeline Green Field?</h3>
+      <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:12px;">
+        O pipeline usa os mesmos 6 estágios do portal para comparar projetos de substâncias diferentes sem mudar a experiência do usuário:
+      </p>
+      <div style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);"><strong>S1</strong><br>Prospecção</div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);"><strong>S2</strong><br>Recursos/PEA</div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);"><strong>S3</strong><br>Lic. Prévia</div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);"><strong>S4</strong><br>Instalação/FID</div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);"><strong>S5</strong><br>Construção</div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;background:var(--cat-gray);border-radius:6px;font-size:10px;color:var(--cat-text-muted);"><strong>S6</strong><br>Operação/Ramp-up</div>
+      </div>
+      <p style="font-size:12px;color:var(--cat-text-muted);">Para projetos sem CAPEX público, o painel mostra estimativa direcional e deixa essa premissa explícita no detalhe do projeto.</p>`;
+  } else {
+    a.innerHTML = a.dataset.rareHtml;
+    b.innerHTML = b.dataset.rareHtml;
+  }
+}
+
+function resetRenderState() {
+  chartFilter = null;
+  newsFilter = 'all';
+  mapRendered = false;
+  closeStateProjects();
+  d3.select('#brazilSvgMap').selectAll('svg').remove();
+  ['stateFilter','stageFilter','priorityFilter','depositFilter','statusFilter'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 'all';
+  });
+}
+
+function setPortfolioMode(mode) {
+  if (!portfolioMeta[mode] || activePortfolioMode === mode) return;
+  activePortfolioMode = mode;
+  localStorage.setItem('sotreq_portfolio_mode', mode);
+  projects = mode === 'greenfield' ? greenfieldProjects : rareEarthProjects;
+  newsData = mode === 'greenfield' ? greenfieldNewsData : rareEarthNewsData;
+  resetRenderState();
+  applyPortfolioCopy();
+  init();
+  renderExecutiveSummary();
+  try { renderCharts(); } catch(e) {}
+  try { renderNoticias(); } catch(e) {}
+  if (typeof resetChat === 'function') resetChat();
+  else {
+    if (typeof chatHistory !== 'undefined') chatHistory = [];
+    chatInitialized = false;
+  }
+}
+
 function init() {
+  applyPortfolioCopy();
   const meses = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
   const agora = new Date();
   document.getElementById('reDateSpan').textContent = meses[agora.getMonth()] + ' ' + agora.getFullYear();
@@ -2983,6 +3687,8 @@ function init() {
   document.getElementById('totalCapex').innerHTML = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
 
   document.getElementById('totalEstados').textContent = states.length;
+  const statesListEl = document.getElementById('summaryStatesList');
+  if (statesListEl) statesListEl.textContent = states.sort().join(', ');
 
   document.getElementById('totalMachine').textContent = sm.total;
   document.getElementById('machTrucks').innerHTML = sm.trucks + ' <small>unidades</small>';
@@ -3011,6 +3717,7 @@ function init() {
 
   // Filters
   const stateFilter = document.getElementById('stateFilter');
+  if (stateFilter) stateFilter.innerHTML = '<option value="all">Todos Estados</option>';
   states.sort().forEach(s => {
     const opt = document.createElement('option');
     opt.value = s; opt.textContent = s;
@@ -3018,11 +3725,26 @@ function init() {
   });
 
   const stageFilter = document.getElementById('stageFilter');
+  if (stageFilter) stageFilter.innerHTML = '<option value="all">Todos Estágios</option>';
   stageNames.forEach((name, i) => {
     const opt = document.createElement('option');
     opt.value = i + 1; opt.textContent = name;
     stageFilter.appendChild(opt);
   });
+
+  const depositFilter = document.getElementById('depositFilter');
+  if (depositFilter) {
+    depositFilter.innerHTML = `<option value="all">${activePortfolioMode === 'greenfield' ? 'Todos Minerais' : 'Todos Depósitos'}</option>`;
+    const profileKeys = activePortfolioMode === 'greenfield'
+      ? [...new Set(projects.map(opportunityProfileKey))].sort((a, b) => opportunityProfileLabel(a).localeCompare(opportunityProfileLabel(b), 'pt-BR'))
+      : ['iacSaprolite', 'hardRock', 'reprocessing', 'exploration'];
+    profileKeys.forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = opportunityProfileLabel(key);
+      depositFilter.appendChild(opt);
+    });
+  }
 
   renderTable(projects);
   addCompareCheckboxes();
@@ -3058,7 +3780,7 @@ function renderTable(data) {
       <td><span class="priority-dot ${priorityDot[p.priority]}"></span>${priorityMap[p.priority]}</td>
       <td>
         <span class="company">${p.company}</span>
-        <span class="project">${p.origin} · ${depositLabel[p.depositType] || p.type}</span>
+        <span class="project">${p.origin} · ${activePortfolioMode === 'greenfield' ? (p.type || opportunityProfileLabel(opportunityProfileKey(p))) : (depositLabel[p.depositType] || p.type)}</span>
       </td>
       <td>
         <span class="company">${p.project}</span>
@@ -3076,7 +3798,7 @@ function renderTable(data) {
       <td style="font-size:11px;color:var(--cat-text-muted);max-width:160px">${p.licensing}</td>
       <td>
         <div class="machine-tags">
-          <span class="m-tag" style="background:rgba(255,205,0,0.15);color:var(--cat-yellow);font-weight:700;">${depositLabel[p.depositType] || p.type}</span>
+          <span class="m-tag" style="background:rgba(255,205,0,0.15);color:var(--cat-yellow);font-weight:700;">${activePortfolioMode === 'greenfield' ? (p.type || opportunityProfileLabel(opportunityProfileKey(p))) : (depositLabel[p.depositType] || p.type)}</span>
           ${p.machines.slice(0, 3).map(m => `<span class="m-tag ${p.priority === 'critical' ? 'high' : ''}">${m}</span>`).join('')}
           ${p.machines.length > 3 ? `<span class="m-tag">+${p.machines.length-3}</span>` : ''}
         </div>
@@ -3202,6 +3924,41 @@ function renderTimeline(data) {
   ` : '');
 }
 
+function opportunityProfileKey(p) {
+  if (activePortfolioMode !== 'greenfield') return p.depositType || 'unknown';
+  const type = (p.type || '').toLowerCase();
+  if (type.includes('bauxita')) return 'bauxita';
+  if (type.includes('lítio') || type.includes('litio')) return 'litio';
+  if (type.includes('ouro')) return 'ouro';
+  if (type.includes('níquel') || type.includes('niquel')) return 'niquel';
+  if (type.includes('potássio') || type.includes('potassio')) return 'potassio';
+  if (type.includes('fosfato')) return 'fosfato';
+  if (type.includes('ferro')) return 'minerioFerro';
+  return 'outros';
+}
+
+function opportunityProfileLabel(key) {
+  const rareLabels = {
+    iacSaprolite: 'Argila Iônica',
+    hardRock: 'Rocha Dura',
+    reprocessing: 'Fosfogesso',
+    exploration: 'Exploração',
+    unknown: 'Outros'
+  };
+  const mineralLabels = {
+    bauxita: 'Bauxita / Gálio',
+    litio: 'Lítio',
+    ouro: 'Ouro',
+    niquel: 'Níquel',
+    potassio: 'Potássio',
+    fosfato: 'Fosfato / Urânio',
+    minerioFerro: 'Minério de Ferro',
+    outros: 'Outros'
+  };
+  const map = activePortfolioMode === 'greenfield' ? mineralLabels : rareLabels;
+  return map[key] || key;
+}
+
 function applyFilters() {
   const state = document.getElementById('stateFilter').value;
   const stage = document.getElementById('stageFilter').value;
@@ -3212,12 +3969,12 @@ function applyFilters() {
     if (state !== 'all' && p.location.state !== state) return false;
     if (stage !== 'all' && p.stage !== parseInt(stage)) return false;
     if (priority !== 'all' && p.priority !== priority) return false;
-    if (deposit !== 'all' && p.depositType !== deposit) return false;
+    if (deposit !== 'all' && opportunityProfileKey(p) !== deposit) return false;
     if (status !== 'all' && (p.sotreqStatus || 'nao-iniciado') !== status) return false;
     if (chartFilter) {
       if (chartFilter.type === 'state' && p.location.state !== chartFilter.value) return false;
       if (chartFilter.type === 'stage' && p.stage !== chartFilter.value) return false;
-      if (chartFilter.type === 'depositType' && (p.depositType || 'unknown') !== chartFilter.value) return false;
+      if (chartFilter.type === 'depositType' && opportunityProfileKey(p) !== chartFilter.value) return false;
       if (chartFilter.type === 'priority' && p.priority !== chartFilter.value) return false;
       if (chartFilter.type === 'company' && p.company !== chartFilter.value) return false;
     }
@@ -3262,6 +4019,10 @@ function toggleTheme() {
     btn.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
     localStorage.setItem('cat-theme', 'light');
   }
+  mapRendered = false;
+  d3.select('#brazilSvgMap').selectAll('svg').remove();
+  try { renderExecutiveSummary(); } catch(e) {}
+  try { renderCharts(); } catch(e) {}
 }
 // Restore saved theme
 (function() {
@@ -3274,9 +4035,19 @@ function toggleTheme() {
 })();
 
 // ── TAB SWITCHING ──
+const tabOrder = ['mineria', 'resumo', 'dashboard', 'noticias'];
+
 function switchTab(tab) {
+  const current = document.querySelector('.tab-page.active');
+  if (current && current.id === `tab-${tab}`) {
+    const tabBar = document.querySelector('.tab-bar');
+    if (tabBar) tabBar.style.setProperty('--tab-index', Math.max(0, tabOrder.indexOf(tab)));
+    return;
+  }
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  const tabBar = document.querySelector('.tab-bar');
+  if (tabBar) tabBar.style.setProperty('--tab-index', Math.max(0, tabOrder.indexOf(tab)));
   document.querySelector(`.tab-btn[onclick*="${tab}"]`).classList.add('active');
   document.getElementById(`tab-${tab}`).classList.add('active');
   if (tab === 'mineria' && !chatInitialized) initChat();
@@ -3308,7 +4079,7 @@ function renderExecutiveSummary() {
   });
 
   // State descriptions
-  const stateDesc = {
+  const rareStateDesc = {
     'AM': ['Amazonas', 'Exploração inicial de terras raras associadas a rochas alcalinas e carbonatitos. Desafios logísticos e ambientais.'],
     'PA': ['Pará', 'Exploração. Região com registros geológicos favoráveis. Novas campanhas de prospecção em curso.'],
     'PI': ['Piauí', 'Exploração inicial. Terras raras em argila iônica na fronteira com a Bahia. Estágio muito inicial.'],
@@ -3317,6 +4088,15 @@ function renderExecutiveSummary() {
     'MG': ['Minas Gerais', 'Desenvolvimento avançado. Meteoric (Caldeira), Viridis (Colossus) e outros projetos em infraestrutura.'],
     'RJ': ['Rio de Janeiro', 'Operação comercial. ADL Mineração produz monazita com licença CNEN e exportação privada.'],
   };
+  const greenfieldStateDesc = {
+    'AM': ['Amazonas', 'Potássio em Autazes com foco em fertilizantes e infraestrutura logística associada ao Rio Madeira.'],
+    'BA': ['Bahia', 'Bauxita e gálio no Projeto Amargosa/Alurion, com rota inicial de bauxita direct-ship e logística rodoviária até porto.'],
+    'CE': ['Ceará', 'Fosfato e urânio em Santa Quitéria, projeto mineroindustrial em licenciamento ambiental.'],
+    'MG': ['Minas Gerais', 'Carteira diversificada com lítio no Vale do Jequitinhonha e minério de ferro no Norte de Minas.'],
+    'MT': ['Mato Grosso', 'Projeto de ouro Matupá em área de crescimento da Aura na província Alta Floresta.'],
+    'PA': ['Pará', 'Projetos greenfield de ouro e níquel, com foco em Volta Grande e Jaguar/Carajás.']
+  };
+  const stateDesc = activePortfolioMode === 'greenfield' ? greenfieldStateDesc : rareStateDesc;
 
   // Status color for each state based on max project stage
   const stateStatus = {};
@@ -3504,6 +4284,7 @@ function showStateProjects(abbr, info, stateName) {
   const subtitle = document.getElementById('stateDetailSubtitle');
   const content = document.getElementById('stateDetailContent');
   if (!overlay || !title || !subtitle || !content) return;
+  if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
 
   const sorted = [...info.projects].sort((a, b) => b.capex - a.capex);
   const totalCapex = sorted.reduce((sum, p) => sum + (p.capex || 0), 0);
@@ -3537,7 +4318,7 @@ function showStateProjects(abbr, info, stateName) {
           '</div>' +
           '<div class="sdp-tags">' +
             '<span class="sdp-tag">' + escHtml(stageShort[p.stage] || ('S' + p.stage)) + '</span>' +
-            '<span class="sdp-tag">' + escHtml(depositLabel[p.depositType] || p.type || 'Tipo não informado') + '</span>' +
+            '<span class="sdp-tag">' + escHtml(activePortfolioMode === 'greenfield' ? (p.type || opportunityProfileLabel(opportunityProfileKey(p))) : (depositLabel[p.depositType] || p.type || 'Tipo não informado')) + '</span>' +
             '<span class="sdp-tag">' + escHtml(statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'Não iniciado') + '</span>' +
             (p.forecast ? '<span class="sdp-tag">Início ' + escHtml(String(p.forecast)) + '</span>' : '') +
             (fleetTotal ? '<span class="sdp-tag">~' + fleetTotal + ' equip.</span>' : '') +
@@ -3587,14 +4368,15 @@ function renderBrazilMap(stateData) {
   };
   const stateFill = function(abbr) {
     const info = stateData[abbr];
-    if (!info) return 'var(--cat-gray)';
+    if (!info) return mapEmptyFill();
     return projectColor(logIntensity(info.projects.length));
   };
   const stateHoverFill = function(abbr) {
     const info = stateData[abbr];
-    if (!info) return 'var(--cat-gray-light)';
+    if (!info) return mapEmptyHoverFill();
     return hoverColor(logIntensity(info.projects.length));
   };
+  const mapStroke = isDarkTheme() ? '#111827' : '#0d0d0d';
 
   const projection = d3.geoMercator()
     .center([-54, -14])
@@ -3624,7 +4406,7 @@ function renderBrazilMap(stateData) {
           const abbr = d.properties.UF_05;
           return stateFill(abbr);
         })
-        .style('stroke', '#0d0d0d')
+        .style('stroke', mapStroke)
         .attr('stroke-width', 0.5)
         .attr('vector-effect', 'non-scaling-stroke')
         .style('cursor', function(d) {
@@ -3674,7 +4456,7 @@ function renderBrazilMap(stateData) {
           const abbr = d.properties.UF_05;
           d3.select(this)
             .style('fill', stateFill(abbr))
-            .style('stroke', '#0d0d0d')
+            .style('stroke', mapStroke)
             .attr('stroke-width', 0.5);
           tooltip.style.opacity = '0';
         });
@@ -3752,7 +4534,7 @@ function renderBrazilMap(stateData) {
             .style('fill', 'var(--cat-fg)').attr('font-size', '12px')
             .attr('font-weight', '700')
             .style('paint-order', 'stroke')
-            .style('stroke', 'var(--cat-dark)').style('stroke-width', '3px')
+            .style('stroke', isDarkTheme() ? '#0b0f14' : 'var(--cat-dark)').style('stroke-width', '3px')
             .style('stroke-linecap', 'round').style('stroke-linejoin', 'round')
             .text(label);
           g.append('text')
@@ -3772,7 +4554,7 @@ function renderBrazilMap(stateData) {
 
 // ── PIPELINE DETALHADO ──
 // ── NOTÍCIAS ──
-const newsData = [ // __DATA_BEGIN_NEWS__
+const rareEarthNewsData = [ // __DATA_BEGIN_NEWS__
   { date: '26 Mai/2026', source: 'Revista Fórum', company: 'Spark Energy Minerals',
     title: 'Mineradora canadense quer investir R$ 150 milhões em projeto de minerais críticos no Vale do Lítio',
     text: 'A Spark Energy Minerals, do Canadá, quer investir R$ 150 milhões no projeto Arapaima, no Vale do Lítio, em Minas Gerais. O projeto envolve minerais críticos como lítio, terras raras e gálio, com protocolo de intenções junto ao Governo de MG e potencial de geração de empregos na fase de pesquisa mineral.',
@@ -3845,6 +4627,88 @@ const newsData = [ // __DATA_BEGIN_NEWS__
     link: 'https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel' },
 ]; // __DATA_END_NEWS__
 
+const greenfieldNewsData = [
+  {
+    date: '13 Jul/2026', source: 'Atlas Lithium', company: 'Atlas Lithium',
+    title: 'Atlas Lithium mantém Neves no caminho para produção comercial em 2027',
+    text: 'A companhia informou que o projeto Neves, em Minas Gerais, está totalmente permitido, com produção planejada de cerca de 150 mil toneladas anuais de concentrado de lítio e interesse comercial acima da capacidade planejada.',
+    tags: ['Lítio', 'MG', 'Neves', 'Produção 2027'],
+    link: 'https://www.atlas-lithium.com/news/atlas-lithium-receives-strong-product-demand-on-track-for-commercial-production-in-2027'
+  },
+  {
+    date: '30 Jun/2026', source: 'Belo Sun', company: 'Belo Sun Mining',
+    title: 'Belo Sun atualiza avanço do projeto Volta Grande no Pará',
+    text: 'A Belo Sun informou avanços técnicos, contratação da G Mining Services para análise técnica e programa de capacitação local, mantendo o projeto Volta Grande no radar de pré-construção.',
+    tags: ['Ouro', 'PA', 'Volta Grande', 'Licenciamento'],
+    link: 'https://www.belosun.com/news/belo-sun-provides-project-update'
+  },
+  {
+    date: '28 Mai/2026', source: 'INB', company: 'Consórcio Santa Quitéria (INB / Galvani)',
+    title: 'Projeto Santa Quitéria avança com melhorias ambientais e previsão de LP em 2026',
+    text: 'A INB destacou avanços no projeto de fosfato e urânio em Santa Quitéria, incluindo menor consumo de água, eliminação de barragens de rejeitos e cronograma com instalação prevista para 2027.',
+    tags: ['Fosfato', 'CE', 'Santa Quitéria', 'Licenciamento'],
+    link: 'https://www.inb.gov.br/pt-br/Detalhe/Conteudo/avancos-do-projeto-santa-quiteria-sao-destaques-no-segundo-dia-de-seminario-inte/Origem/1534'
+  },
+  {
+    date: '07 Mai/2026', source: 'Lithium Ionic', company: 'Lithium Ionic',
+    title: 'Lithium Ionic inicia cotações de contratação para operações de mina em Bandeira',
+    text: 'A Lithium Ionic informou que engenharia, procurement, licenciamento e engajamento comunitário seguem avançando no Projeto Bandeira, em Minas Gerais.',
+    tags: ['Lítio', 'MG', 'Bandeira', 'Construção'],
+    link: 'https://www.lithiumionic.com/news/lithium-ionic-initiates-mine-operations-contractor-tenders-and-provides-bandeira-development-and-community-engagement-update'
+  },
+  {
+    date: '30 Abr/2026', source: 'Belo Sun', company: 'Belo Sun Mining',
+    title: 'SEMAS reemite Licença de Instalação do projeto Volta Grande',
+    text: 'A Belo Sun comunicou a reemissão da LI 3698/2026 para o projeto de ouro Volta Grande, válida até abril de 2029, permitindo avanço do projeto.',
+    tags: ['Ouro', 'PA', 'LI', 'Volta Grande'],
+    link: 'https://www.belosun.com/news/belo-sun-provides-update-on-volta-grande-gold-project'
+  },
+  {
+    date: '27 Abr/2026', source: 'Atlas Lithium', company: 'Atlas Lithium',
+    title: 'Atlas Lithium contrata parceiros de execução para levar Neves à produção',
+    text: 'A Atlas anunciou contratos com parceiros operacionais para implementação do projeto Neves, com produção prevista de cerca de 146 mil toneladas anuais de concentrado de lítio.',
+    tags: ['Lítio', 'MG', 'Neves', 'Execução'],
+    link: 'https://www.atlas-lithium.com/news/atlas-lithium-contracts-key-project-execution-partners-to-drive-its-neves-project-toward-production/'
+  },
+  {
+    date: '18 Mai/2026', source: 'GlobeNewswire', company: 'Alurion Resources',
+    title: 'BRE propõe separar Amargosa em nova empresa Alurion Resources',
+    text: 'A Brazilian Rare Earths anunciou intenção de separar o Projeto Amargosa, de bauxita-gálio na Bahia, em uma nova companhia dedicada chamada Alurion Resources.',
+    tags: ['Bauxita', 'Gálio', 'BA', 'Amargosa', 'Alurion'],
+    link: 'https://www.globenewswire.com/news-release/2026/05/18/3296635/0/en/Brazilian-Rare-Earths-Amargosa-Bauxite-Gallium-Project-to-Be-Demerged-as-Alurion-Resources-Limited.html'
+  },
+  {
+    date: '10 Fev/2026', source: 'Brazil Potash', company: 'Brazil Potash Corp.',
+    title: 'Brazil Potash reporta avanços em Autazes e iniciativas de financiamento',
+    text: 'A Brazil Potash informou avanços em outorgas, infraestrutura e discussões de financiamento para o projeto de potássio Autazes, no Amazonas.',
+    tags: ['Potássio', 'AM', 'Autazes', 'Fertilizantes'],
+    link: 'https://ir.brazilpotash.com/news-events/press-releases/detail/52/brazil-potash-reports-significant-site-progress-including-federal-water-rights-approval-indigenous-community-partnership-advancement-and-construction-financing-initiatives'
+  },
+  {
+    date: '02 Fev/2026', source: 'Sigma Lithium', company: 'Sigma Lithium',
+    title: 'Sigma Lithium retoma atividades de mineração e prepara expansão da Fase 2',
+    text: 'A Sigma informou retomada das atividades de lavra na Mina 1 e preparação da expansão da Planta Greentech Fase 2, com maior frota fora de estrada e ramp-up controlado.',
+    tags: ['Lítio', 'MG', 'Sigma', 'Fase 2'],
+    link: 'https://sigmalithiumcorp.com/sigma-lithium-announces-the-resumption-of-mining-activities-at-mine-1-with-over-600-people-working-on-site/'
+  },
+  {
+    date: '2026', source: 'Centaurus Metals', company: 'Centaurus Metals',
+    title: 'Jaguar mira FID em 2026 e primeira produção de níquel em 2029',
+    text: 'A Centaurus apresenta o projeto Jaguar, em Carajás, com CAPEX pré-produção de US$ 380 milhões, FID prevista para 2026 e primeira produção alvo em 2029.',
+    tags: ['Níquel', 'PA', 'Jaguar', 'Carajás'],
+    link: 'https://centaurusmetals.com/projects/jaguar-nickel-sulphide-project'
+  },
+  {
+    date: '2026', source: 'SAM Metais', company: 'Sul Americana de Metais (SAM)',
+    title: 'SAM informa investimento de US$ 2,1 bilhões no Projeto Bloco 8',
+    text: 'A SAM apresenta o Projeto Bloco 8, no Norte de Minas, como complexo de minério de ferro de baixo teor com investimento previsto de US$ 2,1 bilhões.',
+    tags: ['Minério de Ferro', 'MG', 'Bloco 8'],
+    link: 'https://www.sammetais.com.br/'
+  }
+];
+
+let newsData = activePortfolioMode === 'greenfield' ? greenfieldNewsData : rareEarthNewsData;
+
 // ── SUPABASE CONFIG ──
 // Crie uma conta em https://supabase.com, crie um projeto, e cole abaixo a URL e a chave anon (pública).
 // Depois, execute o SQL de setup (veja o console do navegador após carregar a página).
@@ -3883,7 +4747,7 @@ GRANT ALL ON site_data TO anon;`);
 }
 
 async function supaSalvarDados() {
-  if (!supabaseClient) return false;
+  if (!supabaseClient || activePortfolioMode !== 'rareEarth') return false;
   try {
     const payload = { projects: JSON.parse(JSON.stringify(projects)), news: JSON.parse(JSON.stringify(newsData)), updated_at: new Date().toISOString() };
     const { error } = await supabaseClient.from('site_data').upsert({ id: 1, ...payload }, { onConflict: 'id' });
@@ -3901,12 +4765,13 @@ async function sotreqLoadData() {
   // Load saved data from Supabase or localStorage
   let savedProjects = [];
   let savedNews = [];
-  const supaData = await supaCarregarDados();
+  const supaData = activePortfolioMode === 'rareEarth' ? await supaCarregarDados() : null;
   if (supaData && supaData.projects && supaData.projects.length > 0) {
     savedProjects = supaData.projects;
     if (supaData.news && supaData.news.length > 0) savedNews = supaData.news;
   } else {
-    const saved = localStorage.getItem('sotreq_data');
+    const savedKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
+    const saved = localStorage.getItem(savedKey);
     if (saved) {
       try {
         const data = JSON.parse(saved);
@@ -3922,6 +4787,10 @@ async function sotreqLoadData() {
     p.company && !invalid.includes(p.company) &&
     p.project && !invalid.includes(p.project) && p.capex > 0
   );
+  if (activePortfolioMode === 'greenfield') {
+    savedProjects = savedProjects.filter(p => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper|Vale Base Metals/i.test(`${p.company || ''} ${p.project || ''}`));
+    savedNews = savedNews.filter(n => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper|Vale Base Metals/i.test(`${n.company || ''} ${n.title || ''}`));
+  }
 
   // Start from defaults, overlay safe fields from saved projects
   projects.length = 0;
@@ -4062,7 +4931,8 @@ async function sotreqLoadData() {
   if (changed) sotreqSaveData();
 }
 function sotreqSaveData() {
-  localStorage.setItem('sotreq_data', JSON.stringify({ projects, news: newsData }));
+  const saveKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
+  localStorage.setItem(saveKey, JSON.stringify({ projects, news: newsData }));
   supaSalvarDados();
   resetChat();
 }
@@ -4116,7 +4986,7 @@ function sotreqSaveConfig() {
 
 // ── NEWS FETCH (Google News RSS via rss2json — funciona no navegador, sem chave) ──
 async function sotreqFetchNews() {
-  const queries = [
+  const rareQueries = [
     'terras+raras+brasil',
     'mineração+terras+raras+investimento',
     'rare+earth+brazil',
@@ -4126,6 +4996,17 @@ async function sotreqFetchNews() {
     'Aclara+Carina+terras+raras',
     'Belo+Sun+Volta+Grande+ouro'
   ];
+  const greenQueries = [
+    'projeto+mineracao+greenfield+Brasil+investimento',
+    'projeto+ouro+Brasil+licenca+instalacao+mineracao',
+    'projeto+bauxita+Brasil+licenciamento+investimento',
+    'Amargosa+Alurion+bauxita+Bahia',
+    'litio+Minas+Gerais+projeto+construcao',
+    'niquel+Carajas+Jaguar+FID',
+    'potassio+Autazes+construcao',
+    'fosfato+Santa+Quiteria+licenciamento'
+  ];
+  const queries = activePortfolioMode === 'greenfield' ? greenQueries : rareQueries;
   const all = [];
 
   for (const q of queries) {
@@ -4202,8 +5083,16 @@ async function sotreqFetchNews() {
       'Volta Grande': 'Belo Sun',
       'Serra Verde': 'Serra Verde', 'USA Rare Earth': 'Serra Verde', 'Pela Ema': 'Serra Verde',
       'Spark Energy Minerals': 'Spark Energy Minerals', 'Spark Energy': 'Spark Energy Minerals', 'Arapaima': 'Spark Energy Minerals',
+      'Brazil Potash': 'Brazil Potash Corp.', 'Autazes': 'Brazil Potash Corp.',
+      'Sul Americana de Metais': 'Sul Americana de Metais (SAM)', 'SAM': 'Sul Americana de Metais (SAM)', 'Bloco 8': 'Sul Americana de Metais (SAM)',
+      'Centaurus': 'Centaurus Metals', 'Jaguar': 'Centaurus Metals',
+      'Alurion': 'Alurion Resources', 'Amargosa': 'Alurion Resources',
+      'Lithium Ionic': 'Lithium Ionic', 'Bandeira': 'Lithium Ionic',
+      'Sigma Lithium': 'Sigma Lithium', 'Atlas Lithium': 'Atlas Lithium', 'Neves': 'Atlas Lithium',
+      'Santa Quitéria': 'Consórcio Santa Quitéria (INB / Galvani)', 'Galvani': 'Consórcio Santa Quitéria (INB / Galvani)',
+      'Aura Minerals': 'Aura Minerals', 'Matupá': 'Aura Minerals',
       'Sotreq': 'Sotreq', 'Caterpillar': 'Cat', 'Cat': 'Cat',
-      'Ibram': 'Ibram', 'BNDES': 'BNDES', 'ANM': 'ANM', 'Vale S.A.': 'Vale', 'Vale Base Metals': 'Vale', 'Samarco': 'Samarco',
+      'Ibram': 'Ibram', 'BNDES': 'BNDES', 'ANM': 'ANM', 'Vale S.A.': 'Vale', 'Samarco': 'Samarco',
       'Anglo American': 'Anglo American', 'GSX': 'GSX', 'Rio Tinto': 'Rio Tinto'
     };
     let company = 'Geral';
@@ -4215,6 +5104,13 @@ async function sotreqFetchNews() {
     const tags = ['Notícia'];
     const tl = title.toLowerCase();
     if (tl.includes('terras raras') || tl.includes('rare earth') || tl.includes('terras-raras')) tags.push('Terras Raras');
+    if (tl.includes('ouro') || tl.includes('gold')) tags.push('Ouro');
+    if (tl.includes('bauxita') || tl.includes('alum')) tags.push('Bauxita');
+    if (tl.includes('lítio') || tl.includes('litio') || tl.includes('lithium')) tags.push('Lítio');
+    if (tl.includes('cobre') || tl.includes('copper')) tags.push('Cobre');
+    if (tl.includes('níquel') || tl.includes('niquel') || tl.includes('nickel')) tags.push('Níquel');
+    if (tl.includes('potássio') || tl.includes('potassio') || tl.includes('potash')) tags.push('Potássio');
+    if (tl.includes('fosfato') || tl.includes('phosphate')) tags.push('Fosfato');
     if (tl.includes('mineração') || tl.includes('mining') || tl.includes('mineracao') || tl.includes('greenfield')) tags.push('Mineração');
     if (tl.includes('investimento') || tl.includes('capex') || tl.includes('financiamento') || tl.includes('investe') || tl.includes('aquisição') || tl.includes('aquire')) tags.push('Investimento');
     if (tl.includes('licença') || tl.includes('licenciamento') || tl.includes('ambiental') || tl.includes('licensing')) tags.push('Licenciamento');
@@ -4295,9 +5191,10 @@ function renderSotreqSummary() {
   const cotacoesEnviadas = projects.filter(p => p.quoteStatus === 'enviada' && p.quote && p.quote.length > 0);
   const qtdProjetosCotados = cotacoesEnviadas.length;
   const qtdItensCotados = cotacoesEnviadas.reduce((a, p) => a + p.quote.length, 0);
+  const meta = portfolioInfo();
   el.innerHTML = `
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-bottom:12px;">
-      A Sotreq possui hoje <strong style="color:var(--cat-fg);">${projects.length} projetos de terras raras</strong> mapeados no Brasil, distribuídos em <strong style="color:var(--cat-fg);">${states.length} estado${states.length !== 1 ? 's' : ''}</strong> (${states.join(', ')}), com um CAPEX total combinado de <strong style="color:var(--cat-yellow);">US$ ${(rawCapex/1000).toFixed(1)} Bi</strong>.
+      A Sotreq possui hoje <strong style="color:var(--cat-fg);">${projects.length} ${meta.marketSentence}</strong> mapeados no Brasil, distribuídos em <strong style="color:var(--cat-fg);">${states.length} estado${states.length !== 1 ? 's' : ''}</strong> (${states.join(', ')}), com um CAPEX total combinado de <strong style="color:var(--cat-yellow);">US$ ${(rawCapex/1000).toFixed(1)} Bi</strong>.
     </p>
     <div class="meth-grid">
       <div class="meth-item">
@@ -4325,7 +5222,7 @@ function renderSotreqSummary() {
       </div>
     </div>
     <p style="font-size:13px;color:var(--cat-text-muted);line-height:1.6;margin-top:12px;border-top:1px solid var(--cat-gray-light);padding-top:12px;">
-      O objetivo é <strong>antecipar a demanda</strong> de equipamentos CAT, preparar propostas técnicas e comerciais com agilidade, e posicionar a Sotreq como <strong>fornecedora preferencial</strong> de equipamentos Caterpillar nesses projetos de terras raras no Brasil.
+      O objetivo é <strong>antecipar a demanda</strong> de equipamentos CAT, preparar propostas técnicas e comerciais com agilidade, e posicionar a Sotreq como <strong>fornecedora preferencial</strong> de equipamentos Caterpillar nesses ${meta.marketSentence} no Brasil.
     </p>
   `;
 }
@@ -4334,12 +5231,36 @@ function renderSotreqSummary() {
 let chartFilter = null;
 let chartSotreqView = true;
 
+function isDarkTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark';
+}
+
+function chartSliceStroke() {
+  return isDarkTheme() ? '#263244' : 'var(--cat-dark)';
+}
+
+function chartInactiveFill() {
+  return isDarkTheme() ? '#334155' : '#3a3a3a';
+}
+
+function chartMutedFill() {
+  return isDarkTheme() ? '#64748b' : '#8C8F94';
+}
+
+function mapEmptyFill() {
+  return isDarkTheme() ? '#2f3a49' : 'var(--cat-gray)';
+}
+
+function mapEmptyHoverFill() {
+  return isDarkTheme() ? '#465264' : 'var(--cat-gray-light)';
+}
+
 function chartFilteredProjects() {
   if (!chartFilter) return projects;
   return projects.filter(p => {
     if (chartFilter.type === 'state') return p.location.state === chartFilter.value;
     if (chartFilter.type === 'stage') return p.stage === chartFilter.value;
-    if (chartFilter.type === 'depositType') return (p.depositType || 'unknown') === chartFilter.value;
+    if (chartFilter.type === 'depositType') return opportunityProfileKey(p) === chartFilter.value;
     if (chartFilter.type === 'priority') return p.priority === chartFilter.value;
     if (chartFilter.type === 'company') return p.company === chartFilter.value;
     return true;
@@ -4351,8 +5272,7 @@ function chartFilterLabel() {
   if (chartFilter.type === 'state') return 'Estado: ' + chartFilter.value;
   if (chartFilter.type === 'stage') return 'Estágio: ' + (stageShort[chartFilter.value] || 'S' + chartFilter.value);
   if (chartFilter.type === 'depositType') {
-    const m = { iacSaprolite: 'Argila Iônica', hardRock: 'Rocha Dura', reprocessing: 'Fosfogesso', exploration: 'Exploração' };
-    return 'Tipo: ' + (m[chartFilter.value] || chartFilter.value);
+    return (activePortfolioMode === 'greenfield' ? 'Mineral: ' : 'Tipo: ') + opportunityProfileLabel(chartFilter.value);
   }
   if (chartFilter.type === 'priority') {
     const m = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
@@ -4396,6 +5316,249 @@ function renderCharts() {
   if (chartSotreqView) { renderChartCompanyCapexSotreq(); } else { renderChartCompanyCapex(); }
   renderFleetDonut();
   renderFleetTimeline();
+  renderCommercialPriorityMatrix();
+  renderCommercialFunnel();
+  renderScenarioSimulator();
+  renderNextActionRanking();
+}
+
+function commercialOpportunity(p) {
+  return p.capex * ((sotreqConfig.conversao || 30) / 100);
+}
+
+function projectFleetTotal(p) {
+  const f = estimateProjectFleet(p) || {};
+  return ['trucks','excavators','loaders','dozers','drills','support1','support2'].reduce((sum, k) => sum + (f[k] || 0), 0);
+}
+
+function commercialPriorityScore(p) {
+  const prioWeight = { critical: 110, high: 78, medium: 46, low: 18 };
+  const statusWeight = { 'proposta-enviada': 32, 'em-negociacao': 44, fechado: -25, 'nao-iniciado': 8 };
+  return commercialOpportunity(p) * 1.2 + (p.stage || 1) * 22 + projectFleetTotal(p) * 2.5 + (prioWeight[p.priority] || 20) + (statusWeight[p.sotreqStatus || 'nao-iniciado'] || 0);
+}
+
+function nextCommercialAction(p) {
+  const opp = commercialOpportunity(p);
+  const status = p.sotreqStatus || 'nao-iniciado';
+  if (status === 'fechado') return { tag: 'Pós-venda', text: 'Expandir peças, serviços e novas fases do projeto' };
+  if (status === 'em-negociacao') return { tag: 'Negociar', text: 'Reforçar proposta técnica e travar próximos passos com decisores' };
+  if (status === 'proposta-enviada') return { tag: 'Follow-up', text: 'Retomar proposta enviada e validar escopo de equipamentos' };
+  if ((p.stage || 1) >= 4 || opp >= 120) return { tag: 'Abordar agora', text: 'Agendar conversa executiva sobre frota, suporte e prazo de entrega' };
+  if ((p.stage || 1) >= 3) return { tag: 'Mapear decisores', text: 'Identificar engenharia, suprimentos e plano de implantação' };
+  return { tag: 'Monitorar', text: 'Acompanhar licenciamento, estudos e gatilhos de CAPEX' };
+}
+
+function renderCommercialPriorityMatrix() {
+  const container = document.getElementById('commercialPriorityMatrix');
+  if (!container) return;
+  d3.select(container).selectAll('svg').remove();
+  const data = chartFilteredProjects().slice().sort((a,b) => commercialPriorityScore(b) - commercialPriorityScore(a));
+  if (!data.length) return;
+
+  const cw = chartWidth(container);
+  const margin = { top: 34, right: 32, bottom: 54, left: 72 };
+  const h = Math.max(390, Math.min(520, cw * 0.52));
+  const iw = cw - margin.left - margin.right;
+  const ih = h - margin.top - margin.bottom;
+  const maxOpp = d3.max(data, commercialOpportunity) || 1;
+  const maxFleet = d3.max(data, projectFleetTotal) || 1;
+  const x = d3.scaleLinear().domain([1, 6]).range([0, iw]);
+  const y = d3.scaleLinear().domain([0, maxOpp * 1.18]).range([ih, 0]);
+  const r = d3.scaleSqrt().domain([0, maxFleet]).range([6, 20]);
+  const colors = isDarkTheme()
+    ? { critical: '#A78BFA', high: '#60A5FA', medium: '#FB923C', low: '#94A3B8' }
+    : { critical: '#6D28D9', high: '#2563EB', medium: '#C2410C', low: '#64748B' };
+  const tt = chartTooltip(container);
+  const labelFill = isDarkTheme() ? '#E5E7EB' : '#1F2937';
+  const labelBg = isDarkTheme() ? 'rgba(15,23,42,0.78)' : 'rgba(255,255,255,0.82)';
+  const labelStroke = isDarkTheme() ? '#334155' : '#CBD5E1';
+  const usedSlots = {};
+  const matrixData = data.map(p => {
+    const stage = p.stage || 1;
+    const band = Math.round(commercialOpportunity(p) / Math.max(maxOpp, 1) * 8);
+    const slotKey = stage + ':' + band;
+    const slot = usedSlots[slotKey] || 0;
+    usedSlots[slotKey] = slot + 1;
+    const direction = slot % 2 === 0 ? 1 : -1;
+    const spread = Math.ceil(slot / 2) * 14 * direction;
+    const px = Math.max(0, Math.min(iw, x(stage) + spread));
+    const py = y(commercialOpportunity(p));
+    const rawLabel = (p.project || p.company || '').replace(/\s*\/\s*/g, '/');
+    return {
+      ...p,
+      projectData: p,
+      x: px,
+      y: py,
+      label: rawLabel.length > 24 ? rawLabel.slice(0, 22) + '...' : rawLabel,
+      labelSide: px > iw * 0.72 ? -1 : 1,
+      labelLift: slot % 3 === 0 ? -16 : slot % 3 === 1 ? 0 : 16
+    };
+  });
+
+  const svg = d3.select(container).append('svg')
+    .attr('viewBox', `0 0 ${cw} ${h}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .style('width', '100%').style('height', 'auto');
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  g.append('line').attr('x1', x(3.5)).attr('x2', x(3.5)).attr('y1', 0).attr('y2', ih).attr('stroke', 'var(--cat-gray-light)').attr('stroke-dasharray', '4 4');
+  g.append('line').attr('x1', 0).attr('x2', iw).attr('y1', y(maxOpp * 0.45)).attr('y2', y(maxOpp * 0.45)).attr('stroke', 'var(--cat-gray-light)').attr('stroke-dasharray', '4 4');
+  g.append('text').attr('x', iw - 4).attr('y', 12).attr('text-anchor', 'end').style('fill', colors.critical).attr('font-size', '11px').attr('font-weight', '800').text('Prioridade comercial alta');
+  g.append('text').attr('x', 4).attr('y', ih - 6).style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '700').text('Monitorar e nutrir carteira');
+
+  g.selectAll('.matrix-bubble').data(matrixData).enter().append('circle')
+    .attr('class', 'matrix-bubble')
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
+    .attr('r', d => r(projectFleetTotal(d)))
+    .attr('fill', d => colors[d.priority] || colors.high)
+    .attr('stroke', chartSliceStroke())
+    .attr('stroke-width', 1.5)
+    .attr('opacity', 0.88)
+    .style('cursor', 'pointer')
+    .on('mouseenter', function(e, d) {
+      d3.select(this).attr('opacity', 1).attr('stroke-width', 3);
+      const action = nextCommercialAction(d);
+      tt.show(`<strong>${escHtml(d.company)}</strong><br>${escHtml(d.project)}<br>Oport.: <strong style="color:#FFCD00;">US$ ${commercialOpportunity(d).toFixed(0)}M</strong> · ${projectFleetTotal(d)} equip.<br>${stageShort[d.stage] || 'S' + d.stage}<br><span style="color:var(--cat-text-muted);">${action.tag}: ${action.text}</span>`);
+    })
+    .on('mousemove', e => tt.move(e))
+    .on('mouseleave', function() { d3.select(this).attr('opacity', 0.88).attr('stroke-width', 1.5); tt.hide(); })
+    .on('click', function(e, d) { chartSetFilter('company', d.company); });
+
+  const labelGroup = g.selectAll('.matrix-label').data(matrixData).enter().append('g')
+    .attr('class', 'matrix-label')
+    .style('pointer-events', 'none');
+
+  labelGroup.append('line')
+    .attr('x1', d => d.x)
+    .attr('y1', d => d.y)
+    .attr('x2', d => d.x + d.labelSide * 18)
+    .attr('y2', d => d.y + d.labelLift)
+    .attr('stroke', 'var(--cat-gray-light)')
+    .attr('stroke-width', 1)
+    .attr('opacity', 0.85);
+
+  labelGroup.append('rect')
+    .attr('x', d => d.x + d.labelSide * 20 + (d.labelSide < 0 ? -122 : 0))
+    .attr('y', d => d.y + d.labelLift - 10)
+    .attr('width', 120)
+    .attr('height', 20)
+    .attr('rx', 7)
+    .attr('fill', labelBg)
+    .attr('stroke', labelStroke)
+    .attr('stroke-width', 1);
+
+  labelGroup.append('text')
+    .attr('x', d => d.x + d.labelSide * 26 + (d.labelSide < 0 ? -112 : 0))
+    .attr('y', d => d.y + d.labelLift + 4)
+    .style('fill', labelFill)
+    .attr('font-size', cw < 620 ? '8px' : '9px')
+    .attr('font-weight', '800')
+    .text(d => d.label);
+
+  const legend = svg.append('g').attr('transform', `translate(${margin.left},${h - 34})`);
+  [
+    ['critical', 'Crítica'],
+    ['high', 'Alta'],
+    ['medium', 'Média'],
+    ['low', 'Baixa']
+  ].forEach((item, i) => {
+    const lg = legend.append('g').attr('transform', `translate(${i * 96},0)`);
+    lg.append('circle').attr('r', 5).attr('cx', 0).attr('cy', 0).attr('fill', colors[item[0]]);
+    lg.append('text').attr('x', 10).attr('y', 4).style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '700').text(item[1]);
+  });
+
+  g.append('g').attr('transform', `translate(0,${ih})`)
+    .call(d3.axisBottom(x).ticks(6).tickFormat(d => 'S' + d).tickSize(0).tickPadding(8))
+    .selectAll('text').style('fill', 'var(--cat-text-muted)').attr('font-size', '11px').attr('font-weight', '800');
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d => 'US$' + Math.round(d) + 'M').tickSize(0).tickPadding(8))
+    .selectAll('text').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '700');
+  g.selectAll('.domain').attr('stroke', 'none');
+  svg.append('text').attr('x', margin.left + iw / 2).attr('y', h - 12).attr('text-anchor', 'middle').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '800').text('Timing / estágio de maturidade');
+  svg.append('text').attr('transform', 'rotate(-90)').attr('x', -(margin.top + ih / 2)).attr('y', 18).attr('text-anchor', 'middle').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '800').text('Oportunidade Sotreq estimada');
+}
+
+function renderCommercialFunnel() {
+  const list = document.getElementById('commercialFunnelList');
+  if (!list) return;
+  const data = chartFilteredProjects();
+  const statuses = [
+    ['nao-iniciado', 'Não iniciado'],
+    ['mapeado', 'Mapeado'],
+    ['contato-feito', 'Contato feito'],
+    ['proposta-enviada', 'Proposta enviada'],
+    ['em-negociacao', 'Em negociação'],
+    ['fechado', 'Fechado']
+  ];
+  const rows = statuses.map(([key, label]) => {
+    const items = data.filter(p => (p.sotreqStatus || 'nao-iniciado') === key);
+    return { key, label, count: items.length, opp: d3.sum(items, commercialOpportunity) };
+  });
+  const max = d3.max(rows, d => d.opp) || d3.max(rows, d => d.count) || 1;
+  list.innerHTML = rows.map(r => {
+    const width = Math.max(3, ((r.opp || r.count) / max) * 100);
+    return `<div class="funnel-row" title="${r.count} projeto(s) · US$ ${r.opp.toFixed(1)}M em oportunidade">
+      <div class="funnel-label">${r.label}</div>
+      <div class="funnel-bar"><div class="funnel-fill" style="width:${width.toFixed(1)}%;"></div></div>
+      <div class="funnel-value">${r.count} · US$${Math.round(r.opp)}M</div>
+    </div>`;
+  }).join('');
+}
+
+function renderScenarioSimulator() {
+  const conv = document.getElementById('scenarioConversion');
+  const fx = document.getElementById('scenarioFx');
+  const truck = document.getElementById('scenarioTruckFactor');
+  if (!conv || !fx || !truck) return;
+  if (!conv.value) conv.value = sotreqConfig.conversao || 30;
+  if (!fx.value) fx.value = sotreqConfig.brlRate || 5;
+  if (!truck.value) truck.value = 100;
+  updateScenarioSimulator();
+}
+
+function updateScenarioSimulator() {
+  const result = document.getElementById('scenarioResults');
+  if (!result) return;
+  const data = chartFilteredProjects();
+  const conv = parseFloat(document.getElementById('scenarioConversion')?.value || sotreqConfig.conversao || 30);
+  const fx = parseFloat(document.getElementById('scenarioFx')?.value || sotreqConfig.brlRate || 5);
+  const truckFactor = parseFloat(document.getElementById('scenarioTruckFactor')?.value || 100) / 100;
+  const useSmallTruck = !!document.getElementById('scenarioCat707')?.checked;
+  const capex = d3.sum(data, d => d.capex);
+  const opportunity = capex * conv / 100;
+  const fleet = estimateFleet(data);
+  const trucks = Math.round((fleet.trucks || 0) * truckFactor * (useSmallTruck ? 1.12 : 1));
+  const totalFleet = Object.entries(fleet).reduce((sum, [k, v]) => sum + (k === 'trucks' ? trucks : v || 0), 0);
+  const brl = opportunity * fx;
+  result.innerHTML = `
+    <div class="scenario-kpi"><strong>US$ ${(opportunity / 1000).toFixed(2)} Bi</strong><span>oportunidade estimada</span></div>
+    <div class="scenario-kpi"><strong>R$ ${(brl / 1000).toFixed(2)} Bi</strong><span>equivalente em reais</span></div>
+    <div class="scenario-kpi"><strong>~${totalFleet}</strong><span>equipamentos CAT</span></div>
+    <div class="scenario-kpi"><strong>${trucks}</strong><span>caminhões estimados</span></div>
+  `;
+}
+
+function renderNextActionRanking() {
+  const list = document.getElementById('nextActionList');
+  if (!list) return;
+  const data = chartFilteredProjects().slice()
+    .sort((a,b) => commercialPriorityScore(b) - commercialPriorityScore(a))
+    .slice(0, 6);
+  if (!data.length) {
+    list.innerHTML = '<p style="color:var(--cat-text-muted);font-size:12px;">Nenhum projeto no filtro atual.</p>';
+    return;
+  }
+  list.innerHTML = data.map((p, i) => {
+    const action = nextCommercialAction(p);
+    return `<div class="next-action-item" onclick="chartSetFilter('company','${String(p.company).replace(/'/g, '&#39;')}')" style="cursor:pointer;">
+      <div class="next-rank">${i + 1}</div>
+      <div class="next-main">
+        <strong>${escHtml(p.company)} · ${escHtml(p.project)}</strong>
+        <span>${action.text} · ${stageShort[p.stage] || 'S' + p.stage} · US$ ${commercialOpportunity(p).toFixed(0)}M · ${projectFleetTotal(p)} equip.</span>
+      </div>
+      <div class="next-tag">${action.tag}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderFleetDonut() {
@@ -4405,7 +5568,9 @@ function renderFleetDonut() {
   const fleet = estimateFleet(projects);
   const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Perfuratrizes','Motoniveladoras','Apoio'];
-  const colors = ['#FFCD00','#2F343A','#6B7280','#111827','#C6A100','#8C8F94','#4B5563'];
+  const colors = isDarkTheme()
+    ? ['#FFCD00','#9aa7b8','#7c8aa0','#64748b','#D6B20B','#b5becb','#8896aa']
+    : ['#FFCD00','#2F343A','#6B7280','#111827','#C6A100','#8C8F94','#4B5563'];
   const data = keys.map((k,i) => ({ key: k, label: labels[i], value: fleet[k]||0, color: colors[i] }))
     .filter(d => d.value > 0)
     .sort((a,b) => b.value - a.value);
@@ -4429,8 +5594,8 @@ function renderFleetDonut() {
   svg.selectAll('path').data(pie(data)).enter().append('path')
     .attr('d', arc)
     .attr('fill', d=>d.data.color)
-    .attr('stroke','var(--cat-black)')
-    .attr('stroke-width',3)
+    .attr('stroke', chartSliceStroke())
+    .attr('stroke-width', isDarkTheme() ? 1.4 : 3)
     .style('cursor','pointer')
     .on('mouseenter', function(e,d){
       d3.select(this).transition().duration(180).attr('d', arcH).attr('filter','drop-shadow(0 8px 16px rgba(0,0,0,0.22))');
@@ -4462,7 +5627,9 @@ function renderFleetTimeline() {
   const fleet = estimateFleet(projects);
   const stageCurve = [0,0.05,0.10,0.20,0.15,0.40,0.10];
   const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
-  const colors = ['#FFCD00','#2F343A','#6B7280','#111827','#C6A100','#8C8F94','#4B5563'];
+  const colors = isDarkTheme()
+    ? ['#FFCD00','#9aa7b8','#7c8aa0','#64748b','#D6B20B','#b5becb','#8896aa']
+    : ['#FFCD00','#2F343A','#6B7280','#111827','#C6A100','#8C8F94','#4B5563'];
   const labels = ['Caminhões','Escavadeiras','Carregadeiras','Tratores','Perfuratrizes','Motoniveladoras','Apoio'];
 
   const totalByType = {};
@@ -4527,7 +5694,7 @@ function renderFleetTimeline() {
       .attr('fill', colors[li]).attr('opacity',0.85).attr('stroke','transparent').attr('stroke-width',0)
       .attr('class','timeline-bar').style('cursor','pointer')
       .on('mouseover', function(e, d) {
-        d3.select(this).attr('opacity',1).attr('stroke','#fff').attr('stroke-width',1.5);
+        d3.select(this).attr('opacity',1).attr('stroke', isDarkTheme() ? '#f8fafc' : '#fff').attr('stroke-width',1.5);
         const val = Math.round(d[1]-d[0]);
         tooltip.style('display','block').html(`<strong>${d.data.year}</strong><br>${labels[li]}: <strong>${val}</strong> un.`);
       })
@@ -4703,7 +5870,7 @@ function renderChartCapexByState() {
     .attr('width', x.bandwidth())
     .attr('y', d => y(d[1]))
     .attr('height', d => ih - y(d[1]))
-    .attr('fill', d => isFiltered && d[0] === chartFilter.value ? '#FFCD00' : isFiltered ? '#3a3a3a' : '#FFCD00')
+    .attr('fill', d => isFiltered && d[0] === chartFilter.value ? '#FFCD00' : isFiltered ? chartInactiveFill() : '#FFCD00')
     .attr('opacity', d => isFiltered && d[0] !== chartFilter.value ? 0.3 : 0.85)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
@@ -4768,7 +5935,9 @@ function renderChartStageDistribution() {
   const ih = h - margin.top - margin.bottom;
   const isFiltered = chartFilter && chartFilter.type === 'stage';
 
-  const colors = ['#4B5563', '#6B7280', '#8C8F94', '#C6A100', '#FFCD00', '#1F7A4D'];
+  const colors = isDarkTheme()
+    ? ['#7c8aa0', '#95a3b7', '#b5becb', '#d6b20b', '#FFCD00', '#25D366']
+    : ['#4B5563', '#6B7280', '#8C8F94', '#C6A100', '#FFCD00', '#1F7A4D'];
 
   d3.select(container).selectAll('svg').remove();
   const svg = d3.select(container).append('svg')
@@ -4789,7 +5958,7 @@ function renderChartStageDistribution() {
       .attr('y', d => y(d.stage))
       .attr('width', d => x(d.count))
       .attr('height', y.bandwidth())
-      .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? '#3a3a3a' : colors[i])
+      .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? chartInactiveFill() : colors[i])
       .attr('opacity', d => isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.9)
       .attr('rx', 5).attr('ry', 5)
       .style('cursor', 'pointer')
@@ -4832,7 +6001,7 @@ function renderChartStageDistribution() {
       .attr('width', x.bandwidth())
       .attr('y', d => y(d.count))
       .attr('height', d => ih - y(d.count))
-      .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? '#3a3a3a' : colors[i])
+      .attr('fill', (d, i) => isFiltered && d.stage === chartFilter.value ? colors[i] : isFiltered ? chartInactiveFill() : colors[i])
       .attr('opacity', d => isFiltered && d.stage !== chartFilter.value ? 0.3 : 0.88)
       .attr('rx', 6).attr('ry', 6)
       .style('cursor', 'pointer')
@@ -4891,18 +6060,31 @@ function renderChartDepositType() {
   const rate = (sotreqConfig.conversao || 30) / 100;
   const depData = {};
   data.forEach(p => {
-    const dt = p.depositType || 'unknown';
+    const dt = opportunityProfileKey(p);
     depData[dt] = (depData[dt] || 0) + p.capex * rate;
   });
-  const labels = {
-    iacSaprolite: 'Argila Iônica',
-    hardRock: 'Rocha Dura',
-    reprocessing: 'Fosfogesso',
-    exploration: 'Exploração',
-    unknown: 'Outros'
+  const title = container.querySelector('.chart-title');
+  const subtitle = container.querySelector('.chart-sub');
+  if (title) title.textContent = activePortfolioMode === 'greenfield' ? 'Tipo de Mineral Extraído' : 'Perfil da Oportunidade';
+  if (subtitle) subtitle.textContent = activePortfolioMode === 'greenfield'
+    ? 'Distribuição da oportunidade Sotreq por commodity/mineral'
+    : 'Leitura macro do portfólio para orientar abordagem e mix de oferta';
+  const colors = {
+    iacSaprolite: '#FFCD00',
+    hardRock: isDarkTheme() ? '#64748b' : '#111827',
+    reprocessing: '#8C8F94',
+    exploration: isDarkTheme() ? '#94a3b8' : '#6B7280',
+    unknown: '#4B5563',
+    bauxita: '#D95F02',
+    litio: '#22A7F0',
+    ouro: '#FFCD00',
+    niquel: '#009639',
+    potassio: '#7C3AED',
+    fosfato: '#8C8F94',
+    minerioFerro: '#B45309',
+    outros: '#4B5563'
   };
-  const colors = { iacSaprolite: '#FFCD00', hardRock: '#111827', reprocessing: '#8C8F94', exploration: '#6B7280', unknown: '#4B5563' };
-  const chartData = Object.entries(depData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: Math.round(v * 100) / 100 }));
+  const chartData = Object.entries(depData).map(([k, v]) => ({ key: k, label: opportunityProfileLabel(k), value: Math.round(v * 100) / 100 }));
   const total = chartData.reduce((a, d) => a + d.value, 0);
   if (!total) return;
 
@@ -4927,10 +6109,10 @@ function renderChartDepositType() {
 
   g.selectAll('path').data(pie(chartData)).enter().append('path')
     .attr('d', arc)
-    .attr('fill', d => isFiltered && d.data.key === chartFilter.value ? colors[d.data.key] : isFiltered ? '#2a2a2a' : colors[d.data.key])
+    .attr('fill', d => isFiltered && d.data.key === chartFilter.value ? colors[d.data.key] : isFiltered ? chartInactiveFill() : colors[d.data.key])
     .attr('opacity', d => isFiltered && d.data.key !== chartFilter.value ? 0.25 : 1)
-    .attr('stroke', 'var(--cat-dark)')
-    .attr('stroke-width', 2)
+    .attr('stroke', chartSliceStroke())
+    .attr('stroke-width', isDarkTheme() ? 1.2 : 2)
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('d', arcH);
@@ -4982,7 +6164,9 @@ function renderChartPriority() {
     prioData[p.priority] = (prioData[p.priority] || 0) + p.capex * rate;
   });
   const labels = { critical: 'Crítica', high: 'Alta', medium: 'Média', low: 'Baixa' };
-  const colors = { critical: '#111827', high: '#C6A100', medium: '#FFCD00', low: '#8C8F94' };
+  const colors = isDarkTheme()
+    ? { critical: '#64748b', high: '#D6B20B', medium: '#FFCD00', low: '#aab4c2' }
+    : { critical: '#111827', high: '#C6A100', medium: '#FFCD00', low: '#8C8F94' };
   const chartData = Object.entries(prioData).map(([k, v]) => ({ key: k, label: labels[k] || k, value: Math.round(v * 100) / 100 }));
   const total = chartData.reduce((a, d) => a + d.value, 0);
   if (!total) return;
@@ -5008,10 +6192,10 @@ function renderChartPriority() {
 
   g.selectAll('path').data(pie(chartData)).enter().append('path')
     .attr('d', arc)
-    .attr('fill', d => isFiltered && d.data.key === chartFilter.value ? colors[d.data.key] : isFiltered ? '#2a2a2a' : colors[d.data.key])
+    .attr('fill', d => isFiltered && d.data.key === chartFilter.value ? colors[d.data.key] : isFiltered ? chartInactiveFill() : colors[d.data.key])
     .attr('opacity', d => isFiltered && d.data.key !== chartFilter.value ? 0.25 : 1)
-    .attr('stroke', 'var(--cat-dark)')
-    .attr('stroke-width', 2)
+    .attr('stroke', chartSliceStroke())
+    .attr('stroke-width', isDarkTheme() ? 1.2 : 2)
     .style('cursor', 'pointer')
     .on('mouseenter', function(e, d) {
       d3.select(this).attr('d', arcH);
@@ -5084,14 +6268,14 @@ function renderChartCompanyCapex() {
   const y = d3.scaleBand().domain(chartData.map(d => d[0])).range([0, ih]).padding(0.25);
 
   const tt = chartTooltip(container);
-  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#8C8F94']);
+  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', isDarkTheme() ? '#aab4c2' : '#8C8F94']);
 
   g.selectAll('.bar').data(chartData).enter().append('rect')
     .attr('y', d => y(d[0]))
     .attr('height', y.bandwidth())
     .attr('x', 0)
     .attr('width', d => x(d[1]))
-    .attr('fill', (d, i) => isFiltered && (compFull[d[0]] || d[0]) === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
+    .attr('fill', (d, i) => isFiltered && (compFull[d[0]] || d[0]) === chartFilter.value ? colorScale(i) : isFiltered ? chartInactiveFill() : colorScale(i))
     .attr('opacity', d => isFiltered && (compFull[d[0]] || d[0]) !== chartFilter.value ? 0.3 : 0.85)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
@@ -5151,7 +6335,7 @@ function renderChartCompanyCapexSotreq() {
   const y = d3.scaleBand().domain(chartData.map(d => d.company)).range([0, ih]).padding(0.25);
 
   const tt = chartTooltip(container);
-  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', '#8C8F94']);
+  const colorScale = d3.scaleLinear().domain([0, chartData.length - 1]).range(['#FFCD00', isDarkTheme() ? '#aab4c2' : '#8C8F94']);
 
   // Background bar (total CAPEX)
   g.selectAll('.bar').data(chartData).enter().append('rect')
@@ -5159,7 +6343,7 @@ function renderChartCompanyCapexSotreq() {
     .attr('height', y.bandwidth())
     .attr('x', 0)
     .attr('width', d => x(d.capex))
-    .attr('fill', (d, i) => isFiltered && (compFull[d.company] || d.company) === chartFilter.value ? colorScale(i) : isFiltered ? '#3a3a3a' : colorScale(i))
+    .attr('fill', (d, i) => isFiltered && (compFull[d.company] || d.company) === chartFilter.value ? colorScale(i) : isFiltered ? chartInactiveFill() : colorScale(i))
     .attr('opacity', d => isFiltered && (compFull[d.company] || d.company) !== chartFilter.value ? 0.25 : 0.25)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
@@ -5180,7 +6364,7 @@ function renderChartCompanyCapexSotreq() {
     .attr('height', y.bandwidth())
     .attr('x', 0)
     .attr('width', d => x(d.sotreq))
-    .attr('fill', (d, i) => isFiltered && (compFull[d.company] || d.company) === chartFilter.value ? '#00e676' : isFiltered ? '#1a3a1a' : '#00cc66')
+    .attr('fill', (d, i) => isFiltered && (compFull[d.company] || d.company) === chartFilter.value ? '#25D366' : isFiltered ? (isDarkTheme() ? '#2f6f4e' : '#1a3a1a') : '#00cc66')
     .attr('opacity', d => isFiltered && (compFull[d.company] || d.company) !== chartFilter.value ? 0.3 : 0.9)
     .attr('rx', 4).attr('ry', 4)
     .style('cursor', 'pointer')
@@ -5274,6 +6458,10 @@ window.addEventListener('resize', () => {
   try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
   try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
   try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
+  document.querySelector('.tab-bar')?.style.setProperty('--tab-index', '0');
+  if (document.getElementById('tab-mineria')?.classList.contains('active')) {
+    setTimeout(() => initChat(), 260);
+  }
   // charts rendered lazily on tab switch
 })();
 </script>
@@ -6560,18 +7748,30 @@ async function adminFetchNewsAI() {
 async function adminDeepResearch() {
   openAdminModal();
   document.getElementById('amTitle').innerHTML = '<i class="bi bi-search-heart"></i> Pesquisa Profunda — Novos Projetos';
-  document.getElementById('amForm').innerHTML = '<div style="text-align:center;padding:30px;"><i class="bi bi-hourglass-split" style="font-size:32px;color:var(--cat-yellow);"></i><p style="margin-top:12px;color:var(--cat-text-muted);">Buscando novos projetos de mineração de terras raras no Brasil...</p></div>';
+  const deepContext = activePortfolioMode === 'greenfield' ? 'greenfield de mineração no Brasil' : 'mineração de terras raras no Brasil';
+  document.getElementById('amForm').innerHTML = '<div style="text-align:center;padding:30px;"><i class="bi bi-hourglass-split" style="font-size:32px;color:var(--cat-yellow);"></i><p style="margin-top:12px;color:var(--cat-text-muted);">Buscando novos projetos de ' + deepContext + '...</p></div>';
   const footer = document.querySelector('#adminModal .am-footer');
   footer.querySelector('.am-save').style.display = 'none';
   footer.querySelector('.am-cancel').textContent = 'Fechar';
 
   try {
-    const queries = [
+    const rareQueries = [
       'novo projeto mineração terras raras Brasil investimento',
       'rare earth mining Brazil new project investment',
       'projeto mineração Brasil investimento bilhões',
       'terras raras Brasil projeto mineração CAPEX'
     ];
+    const greenQueries = [
+      'novo projeto mineracao Brasil investimento CAPEX',
+      'projeto ouro Brasil licenciamento investimento',
+      'projeto bauxita Brasil licenciamento investimento',
+      'Amargosa Alurion bauxita Bahia',
+      'projeto litio Minas Gerais construcao investimento',
+      'projeto niquel Para investimento',
+      'projeto potassio Autazes construcao',
+      'projeto fosfato Santa Quiteria licenciamento'
+    ];
+    const queries = activePortfolioMode === 'greenfield' ? greenQueries : rareQueries;
     const allItems = [];
     for (const q of queries) {
       const url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(
@@ -6613,11 +7813,14 @@ async function adminDeepResearch() {
       };
     });
 
-    const promising = results.filter(r => r.capex !== null || /terras raras|rare earth|mineração|mineracao|mining.*brazil/i.test(r.title));
+    const relevanceRegex = activePortfolioMode === 'greenfield'
+      ? /greenfield|mineração|mineracao|mining.*brazil|ouro|gold|bauxita|litio|lithium|cobre|copper|niquel|nickel|potassio|potash|fosfato|phosphate/i
+      : /terras raras|rare earth|mineração|mineracao|mining.*brazil/i;
+    const promising = results.filter(r => r.capex !== null || relevanceRegex.test(r.title));
 
     document.getElementById('amForm').innerHTML = `
       <p style="color:var(--cat-text-muted);font-size:12px;margin-bottom:12px;">
-        <strong>${items.length}</strong> resultados encontrados · <strong>${promising.length}</strong> com possível CAPEX ou menção a terras raras
+        <strong>${items.length}</strong> resultados encontrados · <strong>${promising.length}</strong> com possível CAPEX ou aderência ao portfólio ativo
       </p>
       <div style="display:grid;gap:8px;max-height:420px;overflow-y:auto;">
         ${promising.slice(0, 20).map(r => `
@@ -6656,21 +7859,64 @@ function escHtml(str) {
 // ── MinerAÍ Chat ──
 let chatHistory = [];
 let chatInitialized = false;
+let chatIntroTyping = false;
 
 function initChat() {
   if (chatInitialized) return;
   chatHistory.push({ role: 'system', content: buildChatContext() });
   chatInitialized = true;
+  typeMinerAIIntro();
 }
 
 function resetChat() {
   chatHistory = [];
   chatInitialized = false;
+  chatIntroTyping = false;
   const el = document.getElementById('chatMessages');
-  if (el) el.innerHTML = '';
+  if (el) {
+    delete el.dataset.introTyped;
+    el.innerHTML = '';
+  }
+}
+
+function minerAIIntroText() {
+  const meta = portfolioInfo();
+  return `Olá. Sou o MinerAÍ. Estou olhando agora o portfólio ${meta.label}: projetos, CAPEX, estágio, frota CAT, timing comercial e oportunidades para a Sotreq. Pode perguntar por panorama, empresa, estado, mineral, ano previsto ou dimensionamento de frota.`;
+}
+
+function typeMinerAIIntro() {
+  const el = document.getElementById('chatMessages');
+  if (!el || chatIntroTyping || el.dataset.introTyped === activePortfolioMode) return;
+  chatIntroTyping = true;
+  el.dataset.introTyped = activePortfolioMode;
+  el.innerHTML = '';
+
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg assistant';
+  const bubble = document.createElement('div');
+  bubble.className = 'chat-bubble typing-intro';
+  msg.appendChild(bubble);
+  el.appendChild(msg);
+
+  const text = minerAIIntroText();
+  let i = 0;
+  const tick = () => {
+    if (!chatIntroTyping || !bubble.isConnected) return;
+    i += text.charAt(i - 1) === '.' ? 2 : 1;
+    bubble.textContent = text.slice(0, i);
+    el.scrollTop = el.scrollHeight;
+    if (i < text.length) {
+      setTimeout(tick, text.charAt(i - 1) === ',' ? 38 : 18);
+    } else {
+      bubble.classList.remove('typing-intro');
+      chatIntroTyping = false;
+    }
+  };
+  setTimeout(tick, 180);
 }
 
 function buildChatContextLegacy() {
+  const meta = portfolioInfo();
   const total = projects.reduce((a, p) => a + p.capex, 0);
   const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
   const conv = c.conversao;
@@ -6703,7 +7949,7 @@ function buildChatContextLegacy() {
     return `- ${lab}: ${fam}`;
   }).filter(Boolean).join('\n');
 
-  return `Você é o MinerAÍ — inteligência comercial interna da Sotreq. Seu propósito EXCLUSIVO é ajudar a Sotreq a identificar, qualificar e capturar novas oportunidades de negócio em projetos de terras raras, minerais estratégicos e mineração no Brasil.
+  return `Você é o MinerAÍ — inteligência comercial interna da Sotreq. Seu propósito EXCLUSIVO é ajudar a Sotreq a identificar, qualificar e capturar novas oportunidades de negócio em ${meta.mineraiScope}.
 
 CONTEXTO: Você é uma ferramenta de SALAS DE CONTROLE COMERCIAL da Sotreq (revenda CAT exclusiva no Brasil). Você NÃO é um portal para investidores ou consultoria para mineradoras. Você serve à equipe comercial, de marketing e diretoria da Sotreq para:
 - Entender quais projetos têm maior potencial para venda de equipamentos CAT, serviços e peças
@@ -6744,6 +7990,7 @@ REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em US
 }
 
 function buildChatContext() {
+  const meta = portfolioInfo();
   const total = projects.reduce((a, p) => a + p.capex, 0);
   const c = typeof sotreqConfig !== 'undefined'
     ? sotreqConfig
@@ -6820,7 +8067,7 @@ function buildChatContext() {
     'Operacao S6: foco em pecas, servicos, renovacao de frota, contratos de suporte, reforma e expansoes.'
   ];
 
-  return `Voce e o MinerAÍ, especialista de inteligencia de projetos da Sotreq para terras raras, minerais criticos, green field e mineracao no Brasil.
+  return `Voce e o MinerAÍ, especialista de inteligencia de projetos da Sotreq para ${meta.mineraiScope}.
 
 MISSAO
 Ajudar consultores da Sotreq a entender projetos, CAPEX, cronogramas, estagios, riscos, dimensionamento de frota CAT e oportunidades associadas. A essencia comercial continua: traduzir informacao tecnica e de mercado em contexto util para abordagem, planejamento e captura de oportunidades.
@@ -6828,7 +8075,8 @@ Ajudar consultores da Sotreq a entender projetos, CAPEX, cronogramas, estagios, 
 ESTILO DE RESPOSTA
 - O usuario e consultor da Sotreq. Responda como especialista de mercado e aplicacao CAT: direto, pratico e sem enrolacao.
 - Use primeiro os dados do portal. Quando complementar com conhecimento geral, avise: "fora dos dados do portal".
-- Nao invente noticias, datas, CAPEX, status ou cliente. Se o dado nao estiver no portal, diga que nao consta.
+- Nao invente noticias, datas, CAPEX, status ou cliente. So diga "nao consta" quando o usuario perguntar por uma empresa/projeto especifico que realmente nao esteja na lista.
+- Para perguntas genericas como "novos projetos", "me fala dos projetos", "pipeline", "oportunidades", "o que temos de novo" ou "quais contas olhar", entenda que o usuario quer um panorama da carteira ativa do portal. Nao responda que nao consta.
 - Resposta curta por padrao: 3 a 6 bullets. Para perguntas complexas, use "Resposta curta", "Por que importa" e "Proxima acao".
 - Quando recomendar uma acao comercial, inclua conta/projeto, motivo, timing e proximo passo.
 - Evite jargao geologico excessivo. Traduza para impacto comercial.
@@ -6836,20 +8084,32 @@ ESTILO DE RESPOSTA
 - Se houver incerteza, mostre a premissa e nao apresente como fato.
 
 REGRAS DE RACIOCINIO
-1. Procure primeiro empresa/projeto na lista de PROJETOS.
-2. Se encontrar, responda com CAPEX, oportunidade Sotreq, estado, estagio, frota/mix provavel, risco e proxima acao.
-3. Se nao encontrar, diga que nao consta no portfolio atual e sugira como qualificar a conta.
-4. Para "o que priorizar?", ranqueie por oportunidade Sotreq, estagio/timing e prioridade.
-5. Para "como abordar?", entregue uma fala pronta curta, pontos de descoberta e proximo passo.
-6. Para pergunta simples, responda simples. Nao explique metodologia se a pessoa pediu apenas um numero.
-7. Para pergunta dificil, separe dados do portal de premissas.
+1. Primeiro classifique a pergunta: panorama da carteira, projeto especifico, comparacao/priorizacao, frota/CAPEX ou abordagem comercial.
+2. Se for panorama da carteira, responda usando RESUMO DA CARTEIRA, TOP CONTAS, PIPELINE e MAPA POR ESTADO. Diga que sao os projetos mapeados no portal ativo.
+3. Se a pergunta mencionar "novos projetos", trate todos os projetos da carteira ativa como novos/projetos em acompanhamento, especialmente no modo Green Field.
+4. Se encontrar empresa/projeto especifico, responda com CAPEX, oportunidade Sotreq, estado, estagio, frota/mix provavel, risco e proxima acao.
+5. Se for uma empresa/projeto especifico e nao encontrar, diga que nao consta no portfolio atual e sugira como qualificar a conta.
+6. Para "o que priorizar?", ranqueie por oportunidade Sotreq, estagio/timing e prioridade.
+7. Para "como abordar?", entregue uma fala pronta curta, pontos de descoberta e proximo passo.
+8. Para pergunta simples, responda simples. Nao explique metodologia se a pessoa pediu apenas um numero.
+9. Para pergunta dificil, separe dados do portal de premissas.
+
+EXEMPLOS DE INTENCAO
+- Usuario: "me fala sobre os novos projetos" -> responder com panorama: total de projetos, CAPEX, principais contas, estados e 2-3 proximas acoes comerciais.
+- Usuario: "quais projetos green field temos?" -> listar os projetos da carteira Green Field por mineral/estado e destacar prioridades.
+- Usuario: "tem projeto da Empresa X?" -> procurar a empresa/projeto. Se nao estiver, ai sim dizer que nao consta.
 
 RESUMO DA CARTEIRA
+Portfolio ativo: ${meta.label}
 Projetos: ${projects.length}
 CAPEX total: US$${(total/1000).toFixed(1)}Bi
 Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}% do CAPEX)
 Janela critica: ${c.anoInicio}-${c.anoFim}
 Frota estimada total: ${fleet.total || 0} equipamentos | ${fleetLines}
+
+RESPOSTA MODELO PARA PANORAMA
+Se o usuario pedir "novos projetos" ou "me fala dos projetos", responda assim, adaptando aos dados:
+"No portfolio ativo (${meta.label}), temos ${projects.length} projetos mapeados, CAPEX total de US$${(total/1000).toFixed(1)}Bi e oportunidade Sotreq estimada em US$${(opp/1000).toFixed(1)}Bi. Os principais por potencial sao: ${topProjects.slice(0,3).join(' | ')}. Para vendas, eu priorizaria contas em S3-S5 e alto CAPEX, porque sao as janelas em que engenharia, frota e compras ficam mais influenciaveis."
 
 TOP CONTAS POR POTENCIAL
 ${topProjects.join('\n')}

@@ -1,72 +1,95 @@
-﻿# MinerAI - Inteligencia de Projetos Sotreq
+# MinerAÍ - Inteligência de Projetos Sotreq
 
-Portal interno para consultores da Sotreq acompanharem oportunidades em terras raras, minerais criticos, green field e projetos de mineracao no Brasil.
+Portal interno de inteligência comercial para consultores da Sotreq acompanharem oportunidades de mineração no Brasil.
 
-O objetivo do site e transformar informacao de mercado em acao: entender quais projetos existem, em que fase estao, qual CAPEX esta previsto, que frota CAT pode ser demandada e quando a Sotreq deve se aproximar do cliente.
+O site organiza duas carteiras em uma mesma experiência:
 
-## Para que serve
+- **Terras Raras**: projetos de minerais críticos e terras raras mapeados no Brasil.
+- **Green Field**: novos projetos de mineração em implantação, licenciamento, estudo ou ramp-up, como bauxita, ouro, lítio, níquel, potássio, fosfato e minério de ferro.
 
-- Mapear projetos de terras raras e minerais estrategicos no Brasil.
-- Acompanhar CAPEX, estagio, localizacao, capacidade, licenciamento e previsao de cada projeto.
-- Estimar oportunidade Sotreq com base no CAPEX configurado no portal.
-- Dimensionar demanda potencial de equipamentos CAT por projeto e por carteira.
-- Apoiar consultores em prospeccao, preparacao de abordagem e priorizacao de oportunidades.
-- Centralizar noticias e sinais de mercado que podem indicar novos movimentos comerciais.
-- Permitir consulta ao MinerAI, um assistente treinado com os dados do portal.
+A proposta é transformar informação de mercado em ação comercial: entender quais projetos existem, em que fase estão, qual CAPEX está previsto, qual frota CAT pode ser demandada e quando a Sotreq deve se aproximar do cliente.
 
-## Principais areas do site
+## Principais Recursos
 
-### MinerAI
+- Alternância entre as carteiras **Terras Raras** e **Green Field** por um switch no topo do portal.
+- Resumo executivo responsivo para leitura rápida e apresentação gerencial.
+- Mapa do Brasil com escala visual por quantidade de projetos e modal detalhado por estado.
+- Dashboard com gráficos interativos em D3.js.
+- Camada de inteligência comercial com matriz de priorização, funil Sotreq, simulador de cenários e ranking de próxima ação.
+- Tabela de projetos com filtros por estado, estágio, prioridade, mineral/depósito e status Sotreq.
+- Estimativa de oportunidade Sotreq, frota potencial e mix de equipamentos CAT.
+- Notícias por carteira, com filtros por empresa/projeto.
+- MinerAÍ, assistente de IA para perguntas sobre projetos, CAPEX, frota, timing e abordagem comercial.
+- Atualização automática diária de notícias via GitHub Actions.
 
-Assistente de inteligencia de projetos. Ele responde perguntas sobre:
+## Abas do Portal
 
-- CAPEX por projeto e por periodo.
-- Estagio dos projetos e timing de abordagem.
-- Dimensionamento estimado de frota CAT.
-- Oportunidade Sotreq por cliente, estado ou carteira.
-- Riscos, gargalos e proximos passos.
-- Resumos executivos para reunioes e preparacao de visitas.
+### MinerAÍ
 
-O MinerAI usa `gpt-4o-mini` via Worker/proxy configurado em `_worker.js`.
+Assistente de inteligência de projetos. Ele usa o contexto do portfólio ativo para responder perguntas como:
+
+- "Me fala sobre os novos projetos"
+- "Quais contas devo priorizar?"
+- "Qual CAPEX previsto para determinado projeto?"
+- "Qual frota CAT pode fazer sentido?"
+- "Quais projetos estão mais próximos de comprar equipamentos?"
+- "Como abordar essa conta comercialmente?"
+
+O MinerAÍ usa `gpt-4o-mini` via Cloudflare Worker configurado em `_worker.js`.
 
 ### Resumo Executivo
 
-Visao consolidada para leitura rapida:
+Visão para diretoria, liderança e consultores:
 
 - mapa de oportunidades por estado;
-- indicadores-chave da carteira;
-- pipeline dos projetos;
-- contexto de mercado;
-- conexao com oportunidades Sotreq.
+- indicadores-chave de CAPEX, frota e oportunidade Sotreq;
+- pipeline por estágio;
+- conexão com oportunidades comerciais;
+- leitura executiva por carteira.
 
-### Painel Comercial
+### Dashboard
 
-Dashboard interativo com graficos D3:
+Painel analítico com gráficos interativos:
 
-- carteira de oportunidades por cliente;
+- CAPEX por empresa;
 - oportunidade por estado;
-- timing comercial por estagio;
-- perfil da oportunidade;
+- timing comercial por estágio;
+- perfil da oportunidade ou tipo de mineral extraído;
 - prioridade de abordagem;
-- demanda estimada de equipamentos CAT;
+- matriz de priorização comercial por maturidade, oportunidade e frota;
+- funil comercial por status Sotreq;
+- simulador de cenários para conversão Sotreq, câmbio e ajuste de caminhões;
+- ranking de próxima ação para orientar follow-up dos consultores;
+- demanda estimada de equipamentos;
 - demanda por ano;
-- contas prioritarias e mix de equipamentos.
+- quantidade de equipamentos por empresa.
 
-Os graficos permitem filtro por clique e ajudam a navegar na tabela de projetos.
+Os gráficos permitem clique para filtrar a carteira.
 
-### Noticias
+### Notícias
 
-Feed de noticias relacionadas aos projetos e ao setor. Pode ser usado para acompanhar fatos novos e sinais de atualizacao comercial.
+Feed de notícias e comunicados públicos relacionados aos projetos mapeados. O botão **Buscar Notícias** atualiza manualmente, e a automação do GitHub Actions pode atualizar diariamente.
 
-### Painel Administrativo
+## Carteiras
 
-Interface dentro do proprio site para editar:
+### Terras Raras
 
-- projetos;
-- noticias;
-- indicadores e premissas;
-- configuracoes do portal;
-- importacao/exportacao de dados.
+Carteira focada em minerais críticos e terras raras, incluindo projetos como Meteoric, Viridis, Serra Verde, BRE, Aclara, St George, Power Minerals, ADL, Spark Energy Minerals e outros projetos mapeados.
+
+### Green Field
+
+Carteira focada em novos projetos de mineração fora do recorte exclusivo de terras raras. Exemplos atuais:
+
+- Brazil Potash Corp. - Autazes
+- Sul Americana de Metais (SAM) - Bloco 8
+- Alurion Resources - Amargosa
+- Belo Sun Mining - Volta Grande
+- Centaurus Metals - Jaguar
+- Consórcio Santa Quitéria (INB / Galvani) - Santa Quitéria
+- Lithium Ionic - Bandeira
+- Sigma Lithium - Grota do Cirilo Fase 2 / Barreiro
+- Atlas Lithium - Neves
+- Aura Minerals - Matupá
 
 ## Arquitetura
 
@@ -75,57 +98,81 @@ GitHub Pages / Navegador
         |
         v
 index.html
-  - UI do portal
-  - D3.js
-  - MinerAI
-  - Admin panel
-  - localStorage fallback
+  - Interface do portal
+  - Dados embutidos das carteiras
+  - Gráficos D3.js
+  - MinerAÍ
+  - Painel administrativo
+  - localStorage
         |
         +--> Supabase
         |      tabela: site_data
-        |      campos: id, projects, news, updated_at
+        |      usado principalmente para persistência da carteira Terras Raras
         |
-        +--> Cloudflare Worker / _worker.js
-               proxy para Chat Completions
+        +--> Cloudflare Worker (_worker.js)
+               proxy para o modelo de IA
 
-automacao/
-  - agente Node.js opcional
-  - busca RSS/Google News
-  - processa noticias com LLM
-  - cruza com projetos existentes
-  - atualiza Supabase/cache local
+GitHub Actions
+        |
+        v
+.github/workflows/daily-news.yml
+  - roda diariamente às 05:00 de Brasília
+  - executa automacao/update-news.mjs
+  - busca notícias para Terras Raras e Green Field
+  - commita index.html se houver notícia nova
 ```
 
 ## Tecnologias
 
-| Area | Tecnologia |
+| Área | Tecnologia |
 | --- | --- |
 | Frontend | HTML, CSS e JavaScript vanilla |
-| Graficos | D3.js v7 |
-| Icones | Bootstrap Icons + imagens PNG |
-| Persistencia | Supabase + localStorage |
-| Assistente | `gpt-4o-mini` via Worker |
-| Automacao | Node.js |
-| Noticias | Google News RSS / rss-parser |
-| Publicacao | GitHub Pages |
+| Gráficos | D3.js v7 |
+| Ícones | Bootstrap Icons |
+| Assistente | `gpt-4o-mini` via Cloudflare Worker |
+| Persistência | Supabase + localStorage |
+| Notícias | Google News RSS via `rss2json` |
+| Automação | Node.js + GitHub Actions |
+| Publicação | GitHub Pages |
 
-## Como publicar no GitHub Pages
+## Publicação no GitHub Pages
 
-Para disponibilizar a versao estatica, suba pelo menos:
+Para publicar, suba estes arquivos e pastas principais:
 
 - `index.html`
+- `_worker.js`
 - `minerai.png`
-- `perfuratriz.png`
-- imagens de equipamentos (`caminhao.png`, `escavadeira.png`, `carregadeira.png`, etc.)
-- logos (`logo-sotreq.png`, `logo-cat.png`)
+- imagens de equipamentos: `caminhao.png`, `escavadeira.png`, `carregadeira.png`, `perfuratriz.png`, etc.
+- logos: `logo-sotreq.png`, `logo-cat.png`
 - pasta `mapa/`
-- `_worker.js` apenas se for usar/consultar como referencia do proxy
+- pasta `automacao/`
+- pasta `.github/workflows/`
 
-Depois configure o GitHub Pages para servir a branch/pasta onde esta o `index.html`.
+Depois configure o GitHub Pages para servir a branch/pasta onde está o `index.html`.
 
-## Como usar localmente
+## Automação de Notícias
 
-O site e estatico. Para abrir rapidamente:
+O arquivo [.github/workflows/daily-news.yml](.github/workflows/daily-news.yml) agenda a atualização diária:
+
+```yaml
+cron: '0 8 * * *'
+```
+
+Isso equivale a **05:00 no horário de Brasília**.
+
+O workflow executa:
+
+```bash
+node automacao/update-news.mjs
+```
+
+Se encontrar notícias novas, ele atualiza o `index.html`, cria um commit automático e publica no GitHub Pages após o deploy da branch.
+
+Também é possível rodar manualmente pelo GitHub em **Actions > Atualizar noticias > Run workflow**.
+
+## Uso Local
+
+O site é estático. Para testar localmente:
 
 ```bash
 python -m http.server 8080
@@ -137,90 +184,49 @@ Depois acesse:
 http://localhost:8080
 ```
 
-Tambem e possivel abrir o `index.html` diretamente no navegador, mas o servidor local evita algumas limitacoes de carregamento de assets.
+Também é possível abrir o `index.html` diretamente no navegador, mas o servidor local evita limitações de carregamento de alguns recursos.
 
-## Dados e persistencia
+## Dados e Persistência
 
-O portal tenta carregar dados nesta ordem:
+O portal usa dados embutidos no `index.html` e pode salvar alterações localmente no navegador.
 
-1. Supabase (`site_data`)
-2. `localStorage`
-3. dados embutidos no `index.html`
+A ordem prática é:
 
-Isso permite que o site continue funcionando mesmo se o Supabase nao estiver disponivel.
+1. dados embutidos no `index.html`;
+2. dados salvos no `localStorage`;
+3. Supabase, quando configurado e disponível.
 
-## Agente automatizado
+As carteiras Terras Raras e Green Field usam chaves separadas no `localStorage` para evitar mistura de dados.
 
-A pasta `automacao/` contem um agente Node.js opcional para atualizar noticias e dados.
-
-### Configuracao
-
-```bash
-cd automacao
-npm install
-```
-
-Crie um arquivo `.env` em `automacao/` com as chaves necessarias:
+## Arquivos Importantes
 
 ```text
-SUPABASE_URL=...
-SUPABASE_ANON_KEY=...
-LLM_PROVIDER=groq|openai|gemini
-LLM_API_KEY=...
-LLM_MODEL=...
-SEARCH_DAYS=7
+index.html                         Portal principal
+_worker.js                         Proxy para chamadas ao modelo de IA
+minerai.png                        Ícone do MinerAÍ
+automacao/update-news.mjs          Script de atualização diária de notícias
+.github/workflows/daily-news.yml   Agendamento no GitHub Actions
+mapa/uf.json                       GeoJSON do Brasil
+sotreq-dados-2026-05-25.json       Exportação/base histórica
 ```
 
-### Comandos
+## Segurança e Uso
 
-```bash
-npm start       # busca padrao
-npm run dev     # logs detalhados
-npm run daily   # ultimas 24h
-npm run weekly  # ultimos 7 dias
-```
+Este portal foi pensado para uso interno/comercial da Sotreq.
 
-## Arquivos importantes
+- A senha no front-end é apenas uma barreira simples de acesso visual, não autenticação forte.
+- O Worker deve proteger a chave do modelo. Nunca coloque chave secreta diretamente no `index.html`.
+- Revise informações sensíveis antes de compartilhar externamente.
+- As premissas de dimensionamento são apresentadas em alto nível no portal.
 
-```text
-index.html                     # Portal principal
-minerai.png                    # Icone do assistente MinerAI
-perfuratriz.png                # Imagem usada para perfuratrizes
-_worker.js                     # Proxy para chamadas ao modelo
-sotreq-dados-2026-05-25.json   # Exportacao/base de dados
-mapa/uf.json                   # GeoJSON do Brasil
-automacao/                     # Agente Node.js opcional
-```
+## Objetivo Comercial
 
-## Observacoes de seguranca
+O objetivo central é apoiar consultores da Sotreq a:
 
-Este projeto foi pensado como portal interno/compartilhado para consultores.
+- identificar oportunidades antes da fase formal de compra;
+- priorizar contas com maior potencial;
+- conversar com clientes usando CAPEX, estágio e timing como contexto;
+- antecipar demanda de frota, peças, serviços e suporte;
+- transformar sinais de mercado em ações comerciais concretas.
 
-- A senha no front-end e uma barreira simples de acesso visual, nao autenticacao forte.
-- A chave anon do Supabase e publica por natureza, mas as politicas do banco precisam estar configuradas com cuidado.
-- O Worker deve proteger a chave do modelo; nunca coloque chave secreta diretamente no `index.html`.
-- Antes de compartilhar externamente, revise dados sensiveis, politicas de escrita no Supabase e permissao de acesso ao Worker.
-
-## Escopo atual
-
-O portal monitora projetos como:
-
-- Meteoric Resources - Caldeira
-- Viridis Mining & Minerals - Colossus
-- Serra Verde / USA Rare Earth - Pela Ema
-- Brazilian Rare Earths - Monte Alto
-- St George Mining - Araxa
-- Aclara Resources - Carina
-- Rainbow REE + Mosaic - Uberaba
-- Terra Brasil Minerals - Alto Paranaiba
-- Resouro Strategic Metals - Tiros
-- Power Minerals - Morro do Ferro
-- ADL Mineracao - Buena
-- Brazilian Critical Minerals - EMA/Apui
-- Belo Sun Mining - Volta Grande
-
-A lista pode ser alterada pelo painel administrativo ou pela automacao.
-
-## Licenca e uso
-
-Material de inteligencia de mercado para uso interno/comercial da Sotreq.
+Material de inteligência de mercado para uso interno/comercial da Sotreq.
