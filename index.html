@@ -5674,6 +5674,8 @@ async function sotreqLoadData() {
 }
 
 function detectPortfolioChanges() {
+  ensureNotificationCenter();
+  showValeDiscoveryExample();
   const key = `sotreq_project_watch_${activePortfolioMode}`;
   const current = projects.map(p => ({
     key: `${p.company}|${p.project}`,
@@ -5695,20 +5697,89 @@ function detectPortfolioChanges() {
   }).map(p => ({ ...p, oldCapex: Number(previousMap.get(p.key).capex || 0) }));
   if (!added.length && !capexChanges.length) return;
 
-  document.getElementById('portfolioChangeAlert')?.remove();
-  const overlay = document.createElement('div');
-  overlay.id = 'portfolioChangeAlert';
-  overlay.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:20px;';
-  const addedHtml = added.map(p => `<li><strong>Novo projeto:</strong> ${escHtml(p.company)} — ${escHtml(p.project)}</li>`).join('');
-  const capexHtml = capexChanges.map(p => `<li><strong>CAPEX alterado:</strong> ${escHtml(p.company)} — ${escHtml(p.project)}: ${p.oldCapex ? 'US$ ' + p.oldCapex + 'M' : 'não informado'} → ${p.estimated ? '~' : ''}US$ ${p.capex}M${p.estimated ? ' (estimativa)' : ''}</li>`).join('');
-  overlay.innerHTML = `<div style="width:min(620px,96vw);max-height:82vh;overflow:auto;background:var(--cat-dark);border:1px solid var(--cat-yellow);border-radius:16px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.55);">
-    <div style="display:flex;gap:12px;align-items:flex-start;"><i class="bi bi-bell-fill" style="font-size:25px;color:var(--cat-yellow);"></i><div><h3 style="margin:0 0 6px;">Atualização no portfólio ${escHtml(portfolioInfo().label)}</h3><p style="margin:0;color:var(--cat-text-muted);font-size:13px;">O sistema detectou novos projetos ou mudança de CAPEX desde sua última consulta.</p></div></div>
-    <ul style="margin:18px 0;padding-left:22px;display:grid;gap:10px;font-size:13px;line-height:1.45;">${addedHtml}${capexHtml}</ul>
-    <p style="font-size:11px;color:var(--cat-text-muted);">Valores com ~ são estimativas direcionais e devem ser qualificados antes de uso comercial.</p>
-    <button onclick="document.getElementById('portfolioChangeAlert').remove()" style="float:right;padding:9px 18px;border:0;border-radius:8px;background:var(--cat-yellow);color:#111;font-weight:800;cursor:pointer;">Entendido</button><div style="clear:both;"></div>
-  </div>`;
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-  document.body.appendChild(overlay);
+  const details = [
+    ...added.map(p => `Novo projeto: ${p.company} — ${p.project}`),
+    ...capexChanges.map(p => `CAPEX alterado: ${p.company} — ${p.project}: ${p.oldCapex ? 'US$ ' + p.oldCapex + 'M' : 'não informado'} → ${p.estimated ? '~' : ''}US$ ${p.capex}M${p.estimated ? ' (estimativa)' : ''}`)
+  ];
+  addPortfolioNotification({
+    id: `change-${activePortfolioMode}-${Date.now()}`,
+    title: `Atualização no portfólio ${portfolioInfo().label}`,
+    summary: `${details.length} alteração(ões) detectada(s)`,
+    details,
+    date: new Date().toISOString()
+  }, true);
+}
+
+function notificationHistory() {
+  try { return JSON.parse(localStorage.getItem('sotreq_notification_history') || '[]'); } catch (_) { return []; }
+}
+
+function ensureNotificationCenter() {
+  if (document.getElementById('portfolioNotificationButton')) return;
+  const button = document.createElement('button');
+  button.id = 'portfolioNotificationButton';
+  button.type = 'button';
+  button.setAttribute('aria-label', 'Abrir notificações');
+  button.style.cssText = 'position:fixed;right:18px;bottom:18px;z-index:9500;border:1px solid rgba(255,205,0,.7);border-radius:999px;background:#171717;color:#fff;padding:11px 15px;box-shadow:0 10px 28px rgba(0,0,0,.35);font:700 12px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;';
+  button.innerHTML = '<i class="bi bi-bell-fill" style="color:#FFCD00;font-size:16px;"></i><span>Notificações</span><b id="portfolioNotificationBadge" style="background:#FFCD00;color:#111;border-radius:999px;min-width:20px;height:20px;padding:0 5px;display:grid;place-items:center;font-size:10px;">0</b>';
+  button.onclick = togglePortfolioNotifications;
+  document.body.appendChild(button);
+
+  const panel = document.createElement('aside');
+  panel.id = 'portfolioNotificationPanel';
+  panel.style.cssText = 'display:none;position:fixed;right:18px;bottom:72px;z-index:9500;width:min(380px,calc(100vw - 36px));max-height:65vh;overflow:auto;background:#171717;color:#fff;border:1px solid rgba(255,205,0,.55);border-radius:14px;box-shadow:0 18px 45px rgba(0,0,0,.48);padding:15px;';
+  document.body.appendChild(panel);
+  renderPortfolioNotifications();
+}
+
+function renderPortfolioNotifications() {
+  const history = notificationHistory();
+  const badge = document.getElementById('portfolioNotificationBadge');
+  const panel = document.getElementById('portfolioNotificationPanel');
+  if (badge) badge.textContent = String(history.length);
+  if (!panel) return;
+  panel.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;"><strong style="font-size:14px;"><i class="bi bi-bell-fill" style="color:#FFCD00;margin-right:7px;"></i>Notificações</strong><button type="button" onclick="togglePortfolioNotifications(false)" style="border:0;background:transparent;color:#aaa;font-size:18px;cursor:pointer;">×</button></div>` +
+    (history.length ? history.map(n => `<article style="padding:11px 0;border-top:1px solid #333;"><strong style="display:block;font-size:12px;color:#FFCD00;">${escHtml(n.title)}</strong><span style="display:block;font-size:11px;color:#bbb;margin-top:3px;">${escHtml(n.summary || '')}</span>${(n.details || []).length ? `<ul style="padding-left:17px;margin:8px 0 0;display:grid;gap:5px;font-size:11px;line-height:1.35;color:#eee;">${n.details.map(d => `<li>${escHtml(d)}</li>`).join('')}</ul>` : ''}</article>`).join('') : '<p style="font-size:12px;color:#aaa;">Nenhuma notificação disponível.</p>');
+}
+
+function togglePortfolioNotifications(force) {
+  ensureNotificationCenter();
+  const panel = document.getElementById('portfolioNotificationPanel');
+  const shouldOpen = typeof force === 'boolean' ? force : panel.style.display === 'none';
+  panel.style.display = shouldOpen ? 'block' : 'none';
+}
+
+function addPortfolioNotification(notification, showToast) {
+  ensureNotificationCenter();
+  const history = notificationHistory().filter(n => n.id !== notification.id);
+  history.unshift(notification);
+  localStorage.setItem('sotreq_notification_history', JSON.stringify(history.slice(0, 20)));
+  renderPortfolioNotifications();
+  if (!showToast) return;
+  document.getElementById('portfolioNotificationToast')?.remove();
+  const toast = document.createElement('div');
+  toast.id = 'portfolioNotificationToast';
+  toast.style.cssText = 'position:fixed;right:18px;bottom:78px;z-index:9500;width:min(350px,calc(100vw - 36px));background:#171717;color:#fff;border:1px solid #FFCD00;border-radius:13px;padding:14px 38px 14px 14px;box-shadow:0 16px 42px rgba(0,0,0,.48);cursor:pointer;';
+  toast.innerHTML = `<button type="button" aria-label="Fechar" style="position:absolute;right:9px;top:7px;border:0;background:transparent;color:#aaa;font-size:18px;cursor:pointer;" onclick="event.stopPropagation();this.parentElement.remove()">×</button><div style="display:flex;gap:10px;align-items:flex-start;"><i class="bi bi-stars" style="color:#FFCD00;font-size:19px;"></i><div><strong style="display:block;font-size:13px;">${escHtml(notification.title)}</strong><span style="display:block;color:#bbb;font-size:11px;margin-top:4px;line-height:1.35;">${escHtml(notification.summary || '')}</span><span style="display:block;color:#FFCD00;font-size:10px;margin-top:8px;font-weight:800;">Clique para ver detalhes</span></div></div>`;
+  toast.onclick = () => { toast.remove(); togglePortfolioNotifications(true); };
+  document.body.appendChild(toast);
+}
+
+function showValeDiscoveryExample() {
+  const sessionKey = 'sotreq_vale_discovery_example_2026_08';
+  if (sessionStorage.getItem(sessionKey)) return;
+  sessionStorage.setItem(sessionKey, '1');
+  addPortfolioNotification({
+    id: 'vale-discovery-2026-08',
+    title: 'Novos projetos Vale identificados',
+    summary: '7 registros greenfield, representando 10 frentes de desenvolvimento no Pará.',
+    details: [
+      'Vale S.A.: Expansão Serra Leste; N1, N2, N3 e Morro 2.',
+      'Vale Base Metals: Alemão, Cristalino, Paulo Afonso, Projeto 118 e Bacaba.',
+      'Os projetos em operação comercial foram retirados da carteira Green Field.'
+    ],
+    date: new Date().toISOString()
+  }, true);
 }
 async function sotreqSaveData() {
   const saveKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
