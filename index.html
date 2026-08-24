@@ -2536,7 +2536,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <div class="chart-sub">Carteira por status de relacionamento, proposta e negociação</div>
       <div class="funnel-list" id="commercialFunnelList"></div>
     </div>
-    <div class="commercial-card" id="scenarioSimulator">
+    <div class="commercial-card" id="scenarioSimulator" style="display:none;" aria-hidden="true">
       <div class="chart-title">Simulador de Cenários</div>
       <div class="chart-sub">Ajuste premissas rápidas para estimar oportunidade e volume de máquinas</div>
       <div class="scenario-controls">
@@ -3263,25 +3263,14 @@ const rareEarthProjects = [ // __DATA_BEGIN_PROJECTS__
 
 const greenfieldProjects = [
   {
-    priority: 'critical', company: 'Vale S.A.', origin: 'Brasil',
-    project: 'VALE — Serra Sul +20 Mtpa / S11D', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 2800, capexDetail: 'US$ 2,8B divulgados pela Vale', capexEstimate: false, capexConfidence: 'alta', stage: 6,
-    forecast: 'Start-up iniciado em Jul/2026 · Britador de Compactos previsto para 4T26', capacity: '+20 Mt/ano de minério de ferro',
-    licensing: 'Licença de Operação obtida · comissionamento e ramp-up',
-    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras', 'Equipamentos de apoio'],
-    opportunity: 'US$ 840M', type: 'Minério de Ferro',
-    highlights: 'VALE S.A. · expansão da mina-planta S11D · novas áreas de lavra, britador semimóvel, duplicação de TCLD e novas linhas de processamento',
-    startYear: 2026, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — resultados 2T26 e licença do Serra Sul +20'
-  },
-  {
     priority: 'high', company: 'Vale S.A.', origin: 'Brasil',
     project: 'VALE — Expansão Serra Leste', location: { city: 'Curionópolis', state: 'PA' },
-    capex: 700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 700M alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 6,
-    forecast: 'Expansão licenciada para operação', capacity: 'Expansão de 6 para 10 Mt/ano (+4 Mt/ano)',
-    licensing: 'Licença de Operação da expansão obtida', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras'],
-    opportunity: 'A qualificar', type: 'Minério de Ferro',
-    highlights: 'VALE S.A. · ampliação e repotencialização da operação Serra Leste · oportunidade associada ao Programa Novo Carajás',
-    startYear: 2026, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — Relatório Anual 2025 e resultados 3T25'
+    capex: 700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 700M alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 5,
+    forecast: 'Expansão para 10 Mt/ano com Licença de Operação obtida; start-up da expansão ainda sem confirmação pública localizada', capacity: 'Expansão de 6 para 10 Mt/ano (+4 Mt/ano)',
+    licensing: 'Licença de Operação da expansão obtida; licença não equivale a início operacional confirmado', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras'],
+    opportunity: 'US$ 70M (cenário bruto a 10%)', type: 'Minério de Ferro',
+    highlights: 'VALE S.A. · a mina Serra Leste opera desde 2014, mas este cadastro representa a nova expansão para 10 Mtpa · manter fora de S6 até confirmação do start-up da expansão',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Mina-base em operação; expansão cadastrada ainda não confirmada em operação', source: 'Vale — Relatório Anual 2025 e resultados 3T25'
   },
   {
     priority: 'high', company: 'Vale S.A.', origin: 'Brasil',
@@ -3289,9 +3278,9 @@ const greenfieldProjects = [
     capex: 2500, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 2,5B alocados do programa regional Vale de US$ 15B para o conjunto N1/N2/N3/Morro 2', capexEstimate: true, capexConfidence: 'baixa', stage: 3,
     forecast: 'Novas frentes e reposição de reservas no ciclo 2026-2030', capacity: 'Capacidade incremental não individualizada',
     licensing: 'Frentes minerais em desenvolvimento/licenciamento', machines: ['Perfuratrizes', 'Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras'],
-    opportunity: 'A qualificar', type: 'Minério de Ferro',
+    opportunity: 'US$ 250M (cenário bruto a 10%)', type: 'Minério de Ferro',
     highlights: 'VALE S.A. · conjunto de novas frentes N1, N2, N3 e Morro 2 no Sistema Norte · manter qualificação individual por frente',
-    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Projetos novos; não estão em operação', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
   },
   {
     priority: 'critical', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
@@ -3299,75 +3288,44 @@ const greenfieldProjects = [
     capex: 290, capexDetail: 'US$ 290M divulgados pela Vale', capexEstimate: false, capexConfidence: 'alta', stage: 5,
     forecast: 'Start-up antecipado para 3T27', capacity: '~50 kt/ano de cobre por 8 anos',
     licensing: 'Licença de Instalação obtida · construção em andamento', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
-    opportunity: 'US$ 87M', type: 'Cobre', highlights: 'VALE BASE METALS · extensão da vida útil do Complexo Sossego · 39% de avanço físico ao fim do 2T26',
-    startYear: 2027, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — resultados 2T26 e Relatório Anual 2025'
+    opportunity: 'US$ 29M (cenário bruto a 10%)', type: 'Cobre', highlights: 'VALE BASE METALS · extensão da vida útil do Complexo Sossego · 39% de avanço físico ao fim do 2T26',
+    startYear: 2027, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Em construção; não está em operação · start-up previsto para 3T27', source: 'Vale — resultados 2T26 e Relatório Anual 2025'
   },
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Alemão', location: { city: 'Parauapebas', state: 'PA' },
     capex: 1500, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,5B alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
     capacity: '~80 kt/ano de cobre conforme mapa regional 2026-2030', licensing: 'Estudos e desenvolvimento',
-    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'US$ 150M (cenário bruto a 10%)', type: 'Cobre',
     highlights: 'VALE BASE METALS · depósito de cobre do pipeline orgânico de Carajás · CAPEX e cronograma ainda requerem qualificação',
-    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — pipeline público de crescimento da VBM e mapa regional 2026-2030'
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Projeto de desenvolvimento; não está em operação', source: 'Vale — pipeline público de crescimento da VBM e mapa regional 2026-2030'
   },
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Cristalino', location: { city: 'Canaã dos Carajás', state: 'PA' },
     capex: 1500, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,5B alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
     capacity: '~80 kt/ano de cobre conforme mapa regional 2026-2030', licensing: 'Estudos e desenvolvimento',
-    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'US$ 150M (cenário bruto a 10%)', type: 'Cobre',
     highlights: 'VALE BASE METALS · projeto de crescimento orgânico de cobre em Carajás · próximo ao corredor Sossego-Bacaba',
-    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — pipeline público de crescimento da VBM e mapa regional 2026-2030'
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Projeto de desenvolvimento; não está em operação', source: 'Vale — pipeline público de crescimento da VBM e mapa regional 2026-2030'
   },
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Paulo Afonso', location: { city: 'Parauapebas', state: 'PA' },
     capex: 1700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,7B alocados do programa regional Vale de US$ 15B; maior peso pela faixa de 70-100 kt/ano', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
     capacity: '70-100 kt/ano de cobre conforme mapa regional', licensing: 'Estudos e qualificação de recursos',
-    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'US$ 170M (cenário bruto a 10%)', type: 'Cobre',
     highlights: 'VALE BASE METALS · alvo greenfield de cobre na região de Carajás · capacidade apresentada como faixa preliminar',
-    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Projeto greenfield; não está em operação', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
   },
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Projeto 118', location: { city: 'Canaã dos Carajás', state: 'PA' },
     capex: 1100, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,1B alocados do programa regional Vale de US$ 15B; referência de ~60 kt/ano', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
     capacity: '~60 kt/ano de cobre conforme mapa regional', licensing: 'Estudos e qualificação de recursos',
-    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'US$ 110M (cenário bruto a 10%)', type: 'Cobre',
     highlights: 'VALE BASE METALS · alvo greenfield de cobre identificado como 118 · entre Carajás e o corredor Sossego-Bacaba',
-    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
-  },
-  {
-    priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
-    project: 'VALE BASE METALS — Complexo Sossego / hub de expansão', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 700M alocados do programa regional Vale de US$ 15B para integração e extensões do hub', capexEstimate: true, capexConfidence: 'baixa', stage: 6,
-    forecast: 'Operação-base para integração de Bacaba e outros depósitos do corredor', capacity: 'Operação de cobre existente; expansão vinculada ao pipeline regional',
-    licensing: 'Operação existente · expansões e extensões em desenvolvimento',
-    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
-    opportunity: 'Expansão, renovação e pós-venda a qualificar', type: 'Cobre',
-    highlights: 'VALE BASE METALS · Sossego é a operação-base do corredor; Bacaba foi concebido para estender sua vida útil · tratar como hub brownfield, não como mina greenfield isolada',
-    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — resultados 2T25/2T26 e mapa regional 2026-2030'
-  },
-  {
-    priority: 'medium', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
-    project: 'VALE BASE METALS — Salobo 3 / expansão Salobo', location: { city: 'Marabá', state: 'PA' },
-    capex: 1730, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,73B residuais alocados do programa regional Vale de US$ 15B para Salobo 3/expansões', capexEstimate: true, capexConfidence: 'baixa', stage: 6, forecast: 'Ramp-up concluído; acompanhamento de otimização e crescimento',
-    capacity: '+30 kt/ano de cobre no mapa regional', licensing: 'Operação e ramp-up',
-    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras', 'Equipamentos de apoio'],
-    opportunity: 'Pós-venda e expansão a qualificar', type: 'Cobre',
-    highlights: 'VALE BASE METALS · Salobo é operação existente; registro mantido como expansão/ramp-up e oportunidade de pós-venda, não como mina greenfield',
-    startYear: 2025, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — Relatório Anual 2025 e resultados de produção 2T25'
-  },
-  {
-    priority: 'medium', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
-    project: 'VALE BASE METALS — Onça Puma, Forno 2', location: { city: 'Ourilândia do Norte', state: 'PA' },
-    capex: 480, capexDetail: 'US$ 480M de CAPEX final', capexEstimate: false, capexConfidence: 'alta', stage: 6, forecast: 'Operação iniciada em Set/2025',
-    capacity: '+15 kt/ano de níquel; capacidade nominal total de 40 kt/ano', licensing: 'Em operação',
-    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Equipamentos de apoio'],
-    opportunity: 'Pós-venda e renovação a qualificar', type: 'Níquel',
-    highlights: 'VALE BASE METALS · expansão concluída 13% abaixo do orçamento · foco comercial atual em suporte, peças, serviços e renovação',
-    startYear: 2025, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale Base Metals — início de operação do Forno 2 em Onça Puma'
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', operationalStatus: 'Projeto greenfield; não está em operação', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
   },
   {
     priority: 'critical', company: 'Brazil Potash Corp.', origin: 'Canadá / Brasil',
@@ -3401,7 +3359,7 @@ const greenfieldProjects = [
     machines: ['Caminhões', 'Escavadeiras', 'Carregadeiras', 'Tratores de Esteira', 'Motoniveladoras', 'Equipamentos de apoio'],
     opportunity: 'US$ 36M', type: 'Bauxita / Gálio',
     highlights: 'Recurso JORC 568 Mt · 98 Mt DSB · operação truck-and-shovel simples com logística rodoviária até porto',
-    startYear: null, depositType: 'hardRock',
+    startYear: null, depositType: 'hardRock', fleetPotentialCap: 19,
     haulProfile: { romKm: 3.8, wasteKm: 0.5, romShare: 0.82, wasteShare: 0.18, source: 'DMT informada: ROM 3,8 km e estéril 0,5 km' }
   },
   {
@@ -3578,6 +3536,37 @@ function normalizeFleet(fleet) {
   const result = {};
   keys.forEach(k => { result[k] = Math.max(0, Math.round(fleet[k] || 0)); });
   result.total = keys.reduce((a, k) => a + result[k], 0);
+  return result;
+}
+
+function conservativeFleetPotential(p, fleet) {
+  const normalized = normalizeFleet(fleet);
+  if (p.realFleet || p.quoteStatus === 'enviada') return normalized;
+
+  // A frota exibida é o potencial comercial na maturidade atual, não a frota
+  // operacional máxima no pico. O redutor diminui conforme o projeto amadurece.
+  const stageFactor = { 1: 0.55, 2: 0.60, 3: 0.70, 4: 0.80, 5: 0.90, 6: 1.00 }[p.stage] || 0.60;
+  const baseFactor = Math.max(0.10, Math.min(Number(p.fleetPotentialFactor) || stageFactor, 1));
+  const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
+  const cap = Number(p.fleetPotentialCap) || 0;
+  const factor = cap > 0 && normalized.total > 0
+    ? Math.min(baseFactor, cap / normalized.total)
+    : baseFactor;
+  const scaled = {};
+  keys.forEach(k => {
+    const raw = normalized[k] || 0;
+    scaled[k] = raw > 0 ? Math.max(1, Math.round(raw * factor)) : 0;
+  });
+
+  let result = normalizeFleet(scaled);
+  if (cap > 0 && result.total > cap) {
+    while (result.total > cap) {
+      const reducible = keys.filter(k => result[k] > 1).sort((a, b) => result[b] - result[a]);
+      if (!reducible.length) break;
+      result[reducible[0]] -= 1;
+      result.total -= 1;
+    }
+  }
   return result;
 }
 
@@ -3777,10 +3766,10 @@ function estimateProjectFleet(p) {
   }
   const dt = p.depositType || 'exploration';
   const handbookFleet = handbookFleetFromMovement(p);
-  if (handbookFleet && handbookFleet.total > 0 && dt !== 'exploration') return handbookFleet;
+  if (handbookFleet && handbookFleet.total > 0 && dt !== 'exploration') return conservativeFleetPotential(p, handbookFleet);
   const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   const baselineKey = dt === 'hardRock' ? 'fleetHardRock' : dt === 'reprocessing' ? 'fleetReprocessing' : dt === 'iacSaprolite' ? 'fleetIac' : null;
-  if (!baselineKey || p.stage <= 1 && dt === 'exploration') return explorationFleet(p);
+  if (!baselineKey || p.stage <= 1 && dt === 'exploration') return conservativeFleetPotential(p, explorationFleet(p));
 
   const base = sotreqConfig[baselineKey] || {};
   const refCapex = Math.max(base.refCapex || (dt === 'hardRock' ? 720 : dt === 'reprocessing' ? 280 : 560), 1);
@@ -3804,7 +3793,7 @@ function estimateProjectFleet(p) {
   if (p.stage >= 3 && (dt === 'iacSaprolite' || dt === 'hardRock')) result.trucks = Math.max(result.trucks || 0, 1);
   result.support2 = Math.max(result.support2 || 0, 1);
 
-  return normalizeFleet(result);
+  return conservativeFleetPotential(p, result);
 }
 
 function estimateFleet(data) {
@@ -8908,7 +8897,7 @@ function buildChatContext() {
     return `[P${i+1}] ${p.company} — ${p.project}
 Local: ${p.location.city}/${p.location.state} | mineral/perfil: ${p.type || depTypesDB[p.depositType] || 'nao informado'} | origem: ${p.origin || 'nao informada'}
 CAPEX: ${capexText} | confianca: ${p.capexConfidence || (p.capexEstimate ? 'baixa' : 'nao classificada')} | detalhe CAPEX: ${p.capexDetail || 'nao informado'} | cenario potencial bruto Sotreq: ${opportunityText}
-Estagio: S${p.stage} ${stageShort[p.stage] || ''} | prioridade: ${priorityLabel[p.priority] || p.priority} | status Sotreq: ${statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'nao iniciado'}
+Estagio: S${p.stage} ${stageShort[p.stage] || ''} | status operacional: ${p.operationalStatus || (p.stage === 6 ? 'operacao indicada no cadastro' : 'nao confirmado em operacao')} | prioridade: ${priorityLabel[p.priority] || p.priority} | status Sotreq: ${statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'nao iniciado'}
 Cronograma: ${p.forecast || 'nao informado'} | inicio: ${p.startYear || 'nao definido'} | licenciamento: ${p.licensing || 'nao informado'}
 Capacidade/movimentacao: ${p.capacity || 'nao informada'}
 Maquinas indicadas no cadastro: ${(p.machines || []).join(', ') || 'nao informadas'}
