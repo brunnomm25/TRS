@@ -422,6 +422,55 @@
     color: var(--cat-text-muted); font-size: 10px; font-weight: 650;
   }
   .co-card .co-movement strong { color: var(--cat-fg); font-size: 11px; }
+  .co-card .co-calc-note {
+    margin: -2px 0 8px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--cat-blue) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--cat-blue) 16%, transparent);
+    color: var(--cat-text-muted);
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .co-card .co-calc-note strong { color: var(--cat-fg); }
+  .co-card .co-calc-detail {
+    margin: -2px 0 8px;
+    border: 1px solid var(--cat-gray-light);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--cat-gray) 55%, transparent);
+    overflow: hidden;
+  }
+  .co-card .co-calc-detail summary {
+    cursor: pointer;
+    padding: 7px 8px;
+    color: var(--cat-fg);
+    font-size: 10px;
+    font-weight: 800;
+    list-style: none;
+  }
+  .co-card .co-calc-detail summary::-webkit-details-marker { display: none; }
+  .co-card .co-calc-detail summary::after {
+    content: '+';
+    float: right;
+    color: var(--cat-yellow);
+    font-weight: 900;
+  }
+  .co-card .co-calc-detail[open] summary::after { content: '-'; }
+  .co-card .co-calc-detail .co-calc-body {
+    border-top: 1px solid var(--cat-gray-light);
+    padding: 8px;
+    display: grid;
+    gap: 5px;
+    color: var(--cat-text-muted);
+    font-size: 10px;
+    line-height: 1.35;
+  }
+  .co-card .co-calc-detail .co-formula {
+    padding: 5px 6px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--cat-black) 70%, transparent);
+  }
+  .co-card .co-calc-detail strong { color: var(--cat-fg); }
   .co-card .co-total-box {
     min-width: 48px; height: 40px; border-radius: 10px; background: var(--cat-yellow);
     color: #111827; display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
@@ -435,6 +484,8 @@
   .co-card .co-row .co-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .co-card .co-row .co-icon img { height: 24px; width: auto; }
   .co-card .co-row .co-label { color: var(--cat-text-muted); flex: 1; }
+  .co-card .co-row .co-label strong { display: block; color: var(--cat-text); font-size: 11px; line-height: 1.1; }
+  .co-card .co-row .co-model { display: block; color: var(--cat-text-muted); font-size: 9px; line-height: 1.2; margin-top: 2px; }
   .co-card .co-row .co-qty { color: var(--cat-fg); font-weight: 700; white-space: nowrap; }
   .co-card .co-row .co-mini-bar { width: 52px; height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--cat-gray-light) 55%, transparent); overflow: hidden; }
   .co-card .co-row .co-mini-bar span { display: block; height: 100%; background: var(--cat-yellow); border-radius: inherit; }
@@ -2585,7 +2636,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="caminhao.png" alt="Caminhão"></div>
         <div class="m-name">Caminhões articulados e rígidos menores</div>
         <div class="m-desc">Modelos: caminhões articulados e rígidos de menor porte · Aplicação: transporte em cava rasa, argila, saprolito, vias internas, seletividade e menor massa movimentada</div>
-        <div class="machine-match" id="matchTrucks">Match: 988K(3p)→773(55t) · 990H(4p)→777(90t) · 992K(4p)→785(136t)</div>
+        <div class="machine-match" id="matchTrucks">Critério: produção anual convertida em t/h efetiva, carga útil e ciclo estimado. Match ideal de carregamento busca 3-4 passes por caminhão.</div>
         <div class="m-demand" id="machTrucks">0 <small>unidades</small></div>
         <div class="m-value" id="machValTrucks" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2593,7 +2644,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="escavadeira.png" alt="Escavadeira"></div>
         <div class="m-name">Escavadeiras hidráulicas médias/grandes</div>
         <div class="m-desc">Modelos: CAT 349, CAT 350, CAT 352 · Aplicação: lavra seletiva, carregamento de caminhões 40–66 t, abertura de frentes e manuseio de material</div>
-        <div class="machine-match" id="matchExcavators">Match: 6020FS(3p)→777(90t) · 6040FS(3p)→789(177t) · 6060FS(4p)→797(313t)</div>
+        <div class="machine-match" id="matchExcavators">Critério: ferramenta de carregamento dimensionada por produção requerida, tempo de ciclo, enchimento de caçamba e troca de caminhão.</div>
         <div class="m-demand" id="machExcavators">0 <small>unidades</small></div>
         <div class="m-value" id="machValExcavators" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2601,7 +2652,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="carregadeira.png" alt="Carregadeira"></div>
         <div class="m-name">Carregadeiras de rodas</div>
         <div class="m-desc">Modelos: CAT 972, CAT 982, CAT 988 High Lift · Aplicação: alimentação de planta, pátios, pilhas, carregamento e apoio operacional</div>
-        <div class="machine-match" id="matchLoaders">Match IAC: 988K→773/775 · 990H→773/775/777 · 992K→777/785</div>
+        <div class="machine-match" id="matchLoaders">Critério: apoio de frente, pilhas e alimentação de planta; ciclo básico ajustado por material, alvo, pátio e eficiência operacional.</div>
         <div class="m-demand" id="machLoaders">0 <small>unidades</small></div>
         <div class="m-value" id="machValLoaders" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2609,7 +2660,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="trator_de_esteira.png" alt="Trator de Esteira"></div>
         <div class="m-name">Tratores de esteira</div>
         <div class="m-desc">Modelos: CAT D6, D8, D9 · Aplicação: acessos, limpeza, recomposição, pilhas, infraestrutura e apoio à lavra</div>
-        <div class="machine-match" id="matchDozers">Proporção: ~25% do nº de caminhões. D8/D9 para rocha dura, D6 para argila/rejeito.</div>
+        <div class="machine-match" id="matchDozers">Critério: preparo de frente, acessos, pilhas e suporte à lavra; quantidade ajustada por perfil do depósito e número de caminhões.</div>
         <div class="m-demand" id="machDozers">0 <small>unidades</small></div>
         <div class="m-value" id="machValDozers" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2617,7 +2668,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="perfuratriz.png" alt="Perfuratriz"></div>
         <div class="m-name">Perfuratrizes</div>
         <div class="m-desc">Modelos: CAT MD5150, MD6200, MD6250 · Aplicação: perfuração de rocha dura, desmonte, furos de produção e pré‑corte</div>
-        <div class="machine-match" id="matchDrills">Proporção: ~10% do nº de caminhões. 2–4 por frente de lavra em rocha dura. Uso reduzido em argila iônica.</div>
+        <div class="machine-match" id="matchDrills">Critério: aplicável principalmente a rocha dura; estimado por escala anual e presença de perfuração/desmonte no escopo.</div>
         <div class="m-demand" id="machDrills">0 <small>unidades</small></div>
         <div class="m-value" id="machValDrills" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2625,7 +2676,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="motoniveladora.png" alt="Motoniveladora"></div>
         <div class="m-name">Motoniveladoras</div>
         <div class="m-desc">Modelos: CAT 140, CAT 150, CAT 16 · Aplicação: manutenção de vias, plataformas, drenagem e estabilidade operacional</div>
-        <div class="machine-match" id="matchSupport1">Proporção: ~12% do nº de caminhões. 1–2 por frente de lavra.</div>
+        <div class="machine-match" id="matchSupport1">Critério: manutenção de vias pela largura/porte da frota de transporte e intensidade de tráfego.</div>
         <div class="m-demand" id="machSupport1">0 <small>unidades</small></div>
         <div class="m-value" id="machValSupport1" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2633,7 +2684,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <div class="m-icon"><img src="equipamento_de_apoio.png" alt="Equipamento de Apoio"></div>
         <div class="m-name">Equipamentos de apoio</div>
         <div class="m-desc">Modelos: CAT 318, CAT 250, CAT 815, CAT 825, manipuladores, empilhadeiras e equipamentos auxiliares · Aplicação: manutenção, apoio à planta, compactação, pequenas movimentações e operação de pátio</div>
-        <div class="machine-match" id="matchSupport2">Proporção: ~15% do nº de caminhões. Compactadores, empilhadeiras, minicarregadeiras.</div>
+        <div class="machine-match" id="matchSupport2">Critério: apoio operacional, manutenção, pátio e planta; cresce com número de caminhões, carregadeiras e frentes ativas.</div>
         <div class="m-demand" id="machSupport2">0 <small>unidades</small></div>
         <div class="m-value" id="machValSupport2" style="font-size:12px;color:var(--cat-blue);margin-top:2px;"></div>
       </div>
@@ -2648,7 +2699,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       <h3 id="demanda-empresas">Quantidade de Equipamentos por Empresa <a href="#demanda-empresas" class="anchor-link">#</a></h3>
     </div>
     <p style="color:var(--cat-text-muted);font-size:13px;margin-bottom:12px;">
-      Estimativa por empresa com base em premissas técnicas de dimensionamento, tipo de depósito, maturidade do projeto e cotações reais quando disponíveis.
+      Estimativa por empresa com quantidade e modelo-base de referência por família, considerando perfil operacional, movimentação, maturidade do projeto e cotações reais quando disponíveis.
     </p>
     <div class="co-carousel-wrapper">
       <button class="co-carousel-btn prev" onclick="scrollCompanyDemand(-1)" title="Ver empresas anteriores"><i class="bi bi-chevron-left"></i></button>
@@ -2675,12 +2726,12 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
       </div>
       <div class="meth-item">
         <h4>2. Método de Cálculo (Dual)</h4>
-        <p><strong>Base técnica + referência real:</strong> a frota é estimada por tipo de depósito, maturidade do projeto e baseline de aplicação CAT. Projetos com cotação real enviada usam a própria cotação como referência.</p>
-        <p><strong>Escalonamento por CAPEX e estágio:</strong> quando não há cotação, o baseline é ajustado pela escala do CAPEX e pelo estágio do projeto. Projetos em exploração recebem apenas demanda mínima de sondagem/apoio, sem frota operacional completa.</p>
+        <p><strong>Base técnica + referência real:</strong> a frota é estimada por tipo de depósito, capacidade anual declarada ou movimentação estimada, eficiência operacional, ciclo de carregamento/transporte e match entre carregamento e caminhões. Projetos com cotação real enviada usam a própria cotação como referência.</p>
+        <p><strong>Modelo inspirado no manual técnico CAT:</strong> quando existe capacidade anual, o portal converte esse volume em t/h efetiva, aplica horas/ano e eficiência, e estima as famílias de máquinas por carga por ciclo, ciclos/hora, 3-4 passes por caminhão e apoio de mina. Quando não há capacidade pública, usa CAPEX, estágio e perfil do depósito como fallback conservador.</p>
         <ul style="font-size:12px;color:var(--cat-text-muted);padding-left:20px;">
-          <li><strong>IAC / argila iônica:</strong> baseline calibrado pela cotação Viridis, com frota seletiva de médio porte.</li>
-          <li><strong>Rocha dura:</strong> baseline com perfuração, escavação, caminhões, carregadeiras e apoio de mina.</li>
-          <li><strong>Reprocessamento:</strong> foco em carregamento, pátio, manuseio e alimentação de planta.</li>
+          <li><strong>IAC / argila iônica:</strong> frota seletiva de médio porte, calibrada pela cotação Viridis quando não há cotação própria, com mais peso em caminhões menores, escavadeiras, tratores e apoio de frente.</li>
+          <li><strong>Rocha dura:</strong> frota orientada a perfuração, escavação/carregamento, transporte, vias e suporte de mina.</li>
+          <li><strong>Reprocessamento / pátio:</strong> mais peso em carregadeiras, tratores e equipamentos de apoio para manuseio e alimentação de planta.</li>
           <li><strong>Exploração:</strong> piso mínimo comercial para sondagem, apoio e abertura de acessos.</li>
         </ul>
         <p>Preços médios unitários e baselines são configuráveis no painel administrativo. Consulte a seção "Premissas de Dimensionamento" abaixo para a visão geral dos critérios utilizados.</p>
@@ -2695,7 +2746,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
         <strong>Rocha dura:</strong> caminhões CAT 745/770/772/773 (60–100+ t), escavadeiras CAT 352–395, carregadeiras CAT 988–992, tratores D8–D10, perfuratrizes e britadores.<br><br>
         <strong>Reprocessamento:</strong> foco em carregadeiras CAT 966–988, tratores D6/D8, empilhadeiras, correias, motoniveladoras e equipamentos de apoio.<br><br>
         <strong>Exploração:</strong> apenas equipamentos leves, sondagem e abertura de acessos — sem frota operacional completa.</p>
-        <div class="formula">Frota estimada por projeto = perfil do depósito × maturidade × escala do projeto × referências internas</div>
+        <div class="formula">Frota estimada = produção anual ÷ horas efetivas + carga/ciclo + ciclos/hora + match carregamento/transporte + apoio de mina</div>
       </div>
       <div class="meth-item">
         <h4>4. Fases do Projeto</h4>
@@ -2718,15 +2769,15 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     <div class="meth-grid">
       <div class="meth-item">
         <h4>Crit&eacute;rios T&eacute;cnicos</h4>
-        <p>As estimativas utilizam premissas internas de dimensionamento por tipo de dep&oacute;sito, maturidade do projeto, escala de CAPEX e perfil operacional esperado. O objetivo &eacute; apoiar prioriza&ccedil;&atilde;o comercial, n&atilde;o substituir engenharia detalhada ou proposta vinculante.</p>
+        <p>As estimativas usam conceitos do manual técnico de performance CAT: produ&ccedil;&atilde;o requerida, carga por ciclo, ciclos por hora, efici&ecirc;ncia real de opera&ccedil;&atilde;o, match entre carregamento e transporte e apoio de mina. O objetivo &eacute; apoiar prioriza&ccedil;&atilde;o comercial, n&atilde;o substituir engenharia detalhada ou proposta vinculante.</p>
       </div>
       <div class="meth-item">
         <h4>Perfis Considerados</h4>
-        <p><strong>Argila i&ocirc;nica:</strong> frota seletiva de m&eacute;dio porte. <strong>Rocha dura:</strong> maior peso em perfura&ccedil;&atilde;o, escava&ccedil;&atilde;o, carregamento e transporte. <strong>Reprocessamento:</strong> foco em p&aacute;tio, manuseio e alimenta&ccedil;&atilde;o de planta. <strong>Explora&ccedil;&atilde;o:</strong> demanda m&iacute;nima de sondagem e apoio.</p>
+        <p><strong>Argila i&ocirc;nica / bauxita rasa:</strong> frota seletiva e caminh&otilde;es menores. <strong>Rocha dura:</strong> maior peso em perfura&ccedil;&atilde;o, escava&ccedil;&atilde;o, carregamento e transporte. <strong>Reprocessamento:</strong> foco em p&aacute;tio, manuseio e alimenta&ccedil;&atilde;o de planta. <strong>Explora&ccedil;&atilde;o:</strong> demanda m&iacute;nima de sondagem e apoio.</p>
       </div>
       <div class="meth-item">
         <h4>Como Ler os N&uacute;meros</h4>
-        <p>A quantidade de equipamentos &eacute; uma estimativa direcional para identificar contas, timing e fam&iacute;lias de m&aacute;quinas com maior potencial. Projetos avan&ccedil;ados e cota&ccedil;&otilde;es reais t&ecirc;m maior peso; projetos iniciais aparecem com demanda conservadora.</p>
+        <p>A quantidade de equipamentos &eacute; uma estimativa direcional. Quando h&aacute; capacidade anual divulgada, ela pesa mais que CAPEX; quando n&atilde;o h&aacute;, o portal usa CAPEX, est&aacute;gio e perfil operacional. Projetos iniciais aparecem com demanda conservadora; cota&ccedil;&otilde;es reais continuam prevalecendo.</p>
       </div>
     </div>
   </div>
@@ -3242,7 +3293,8 @@ const greenfieldProjects = [
     machines: ['Caminhões', 'Escavadeiras', 'Carregadeiras', 'Tratores de Esteira', 'Motoniveladoras', 'Equipamentos de apoio'],
     opportunity: 'US$ 36M', type: 'Bauxita / Gálio',
     highlights: 'Recurso JORC 568 Mt · 98 Mt DSB · operação truck-and-shovel simples com logística rodoviária até porto',
-    startYear: null, depositType: 'hardRock'
+    startYear: null, depositType: 'hardRock',
+    haulProfile: { romKm: 3.8, wasteKm: 0.5, romShare: 0.82, wasteShare: 0.18, source: 'DMT informada: ROM 3,8 km e estéril 0,5 km' }
   },
   {
     priority: 'high', company: 'Belo Sun Mining', origin: 'Canadá',
@@ -3333,15 +3385,48 @@ let projects = activePortfolioMode === 'greenfield' ? greenfieldProjects : rareE
 
 const statesData = {};
 
+function escHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
+}
+
 function parseAnnualTonnes(capStr) {
   if (!capStr) return 0;
-  const m = capStr.match(/([\d.,]+)\s*([kM]?t)\s*\/?\s*(?:ano|a)/i);
+  const m = capStr.match(/([\d.,]+)(?:\s*[-–]\s*[\d.,]+)?\s*([kM]?t)\s*(?:\/?\s*(?:ano|a)|pa)?/i);
   if (!m) return 0;
   let val = parseFloat(m[1].replace(/\./g,'').replace(',','.'));
   const unit = m[2].toLowerCase();
   if (unit === 'kt') val *= 1000;
   else if (unit === 'mt') val *= 1000000;
   return val;
+}
+
+function parseOperationalMovement(capStr) {
+  if (!capStr) return null;
+  const matches = [...capStr.matchAll(/([\d.,]+)(?:\s*[-–]\s*([\d.,]+))?\s*(Mtpa|ktpa|[kM]?t)\s*(?:\/?\s*(?:ano|a)|pa)?/gi)];
+  const candidates = matches.map(m => {
+    const rawVal = m[2] || m[1];
+    let tonnes = parseFloat(rawVal.replace(/\./g,'').replace(',','.'));
+    const unit = m[3].toLowerCase();
+    if (unit === 'kt' || unit === 'ktpa') tonnes *= 1000;
+    else if (unit === 'mt' || unit === 'mtpa') tonnes *= 1000000;
+    const start = Math.max(0, m.index - 35);
+    const end = Math.min(capStr.length, m.index + m[0].length + 45);
+    const context = capStr.slice(start, end).toLowerCase();
+    let score = 0;
+    if (/mtpa|mt\/ano|m\s*t\/ano/.test(m[0].toLowerCase())) score += 4;
+    if (/rom|run of mine|min[eé]rio|bauxita|fosfogesso|fosfato|pellet|mop|concentrado|espodum[eê]nio|fertilizantes/.test(context)) score += 3;
+    if (/ni|ree|reo|treo|óxidos|oxidos|monazita|au|ouro/.test(context) && tonnes < 250000) score -= 3;
+    return { tonnes, text: m[0], score };
+  }).filter(c => c.tonnes > 0);
+  if (!candidates.length) return null;
+  candidates.sort((a, b) => (b.score - a.score) || (b.tonnes - a.tonnes));
+  return candidates[0].score > 0 ? candidates[0] : null;
 }
 
 function formatAnnualTonnes(t) {
@@ -3355,12 +3440,14 @@ function estimateAnnualMovement(p) {
   const dt = p.depositType || 'exploration';
   const capText = p.capacity || '';
   const capTonnes = parseAnnualTonnes(capText);
+  const operationalMovement = parseOperationalMovement(capText);
   const hasDirectOreMovement = /Mt\/ano|M\s*t\/ano|t\s+min[eé]rio|fosfogesso|fosfato/i.test(capText);
-  if (capTonnes > 0 && hasDirectOreMovement) {
+  const hasOperationalMovement = /Mtpa|bauxita|pellet|MOP|min[eé]rio/i.test(capText);
+  if (operationalMovement && (hasDirectOreMovement || hasOperationalMovement || operationalMovement.score >= 4)) {
     return {
-      tonnes: capTonnes,
-      label: formatAnnualTonnes(capTonnes),
-      detail: `${p.project}: capacidade/movimentação informada (${capText})`
+      tonnes: operationalMovement.tonnes,
+      label: formatAnnualTonnes(operationalMovement.tonnes),
+      detail: `${p.project}: capacidade/movimentação operacional usada (${operationalMovement.text}) | dado/capacidade publicada: ${capText}`
     };
   }
 
@@ -3408,6 +3495,172 @@ function explorationFleet(p) {
   return normalizeFleet(result);
 }
 
+function handbookFleetProfile(p) {
+  const dt = p.depositType || 'exploration';
+  const text = ((p.type || '') + ' ' + (p.capacity || '') + ' ' + (p.machines || []).join(' ')).toLowerCase();
+  const isBauxiteOrIac = dt === 'iacSaprolite' || /bauxita|argila|saprolito|direct-ship/.test(text);
+  const isRehandle = dt === 'reprocessing' || /fosfogesso|reprocess|res[ií]duo|p[aá]tio/.test(text);
+  const isLithiumSmall = /l[ií]tio|espodum[eê]nio|concentrado/.test(text) && (p.capex || 0) < 350;
+  if (isRehandle) return 'rehandling';
+  if (isBauxiteOrIac) return 'selective';
+  if (isLithiumSmall) return 'smallHardRock';
+  if (dt === 'hardRock') return 'hardRock';
+  return 'exploration';
+}
+
+function estimateHaulDmt(p) {
+  const profile = handbookFleetProfile(p);
+  const defaults = {
+    selective: { romKm: 2.2, wasteKm: 0.8, romShare: 0.80, wasteShare: 0.20, source: 'DMT padrão estimada para lavra seletiva rasa' },
+    smallHardRock: { romKm: 2.5, wasteKm: 1.2, romShare: 0.75, wasteShare: 0.25, source: 'DMT padrão estimada para rocha dura menor' },
+    hardRock: { romKm: 3.5, wasteKm: 1.5, romShare: 0.70, wasteShare: 0.30, source: 'DMT padrão estimada para cava a céu aberto em rocha dura' },
+    rehandling: { romKm: 1.0, wasteKm: 0.4, romShare: 0.85, wasteShare: 0.15, source: 'DMT padrão estimada para pátio/reprocessamento' },
+    exploration: { romKm: 0.8, wasteKm: 0.3, romShare: 0.80, wasteShare: 0.20, source: 'DMT padrão para apoio inicial/exploração' }
+  };
+  const base = { ...(defaults[profile] || defaults.exploration), ...(p.haulProfile || {}) };
+  const romShare = Number.isFinite(base.romShare) ? base.romShare : 0.8;
+  const wasteShare = Number.isFinite(base.wasteShare) ? base.wasteShare : (1 - romShare);
+  const avgKm = (base.romKm || 0) * romShare + (base.wasteKm || 0) * wasteShare;
+  return {
+    ...base,
+    profile,
+    avgKm,
+    label: avgKm.toFixed(1).replace('.', ',') + ' km',
+    calc: `ROM ${(base.romKm || 0).toFixed(1).replace('.', ',')} km × ${Math.round(romShare * 100)}% + estéril ${(base.wasteKm || 0).toFixed(1).replace('.', ',')} km × ${Math.round(wasteShare * 100)}%`
+  };
+}
+
+function truckAnnualByProfileAndDmt(profile, dmtKm) {
+  const baseAnnual = handbookTruckAnnualByProfile(profile);
+  const refDmt = {
+    selective: 2.2,
+    smallHardRock: 2.5,
+    hardRock: 3.5,
+    rehandling: 1.0,
+    exploration: 0.8
+  }[profile] || 2.5;
+  const factor = Math.max(0.55, Math.min(1.45, refDmt / Math.max(dmtKm || refDmt, 0.4)));
+  return {
+    tonnes: Math.round(baseAnnual * factor),
+    baseAnnual,
+    refDmt,
+    factor
+  };
+}
+
+function truckCycleByProfileAndDmt(profile, dmtKm) {
+  const payload = {
+    selective: 38,
+    smallHardRock: 45,
+    hardRock: 55,
+    rehandling: 35,
+    exploration: 25
+  }[profile] || 38;
+  const loadedKmh = {
+    selective: 22,
+    smallHardRock: 24,
+    hardRock: 24,
+    rehandling: 18,
+    exploration: 18
+  }[profile] || 22;
+  const emptyKmh = {
+    selective: 28,
+    smallHardRock: 30,
+    hardRock: 30,
+    rehandling: 22,
+    exploration: 22
+  }[profile] || 28;
+  const fixedMin = {
+    selective: 7.5,
+    smallHardRock: 8.0,
+    hardRock: 8.5,
+    rehandling: 6.5,
+    exploration: 6.0
+  }[profile] || 7.5;
+  const haulMin = (Math.max(dmtKm || 0, 0.1) / loadedKmh) * 60;
+  const returnMin = (Math.max(dmtKm || 0, 0.1) / emptyKmh) * 60;
+  const cycleMin = fixedMin + haulMin + returnMin;
+  return {
+    payload,
+    loadedKmh,
+    emptyKmh,
+    fixedMin,
+    haulMin,
+    returnMin,
+    cycleMin,
+    cyclesPerHour: 60 / cycleMin
+  };
+}
+
+function handbookFleetFromMovement(p) {
+  const profile = handbookFleetProfile(p);
+  if (profile === 'exploration' || (p.stage <= 1 && (p.depositType || 'exploration') === 'exploration')) return explorationFleet(p);
+
+  const move = estimateAnnualMovement(p);
+  const tonnes = Math.max(move.tonnes || 0, 1);
+  const machineText = (p.machines || []).join(' ').toLowerCase();
+  const cfg = (sotreqConfig && sotreqConfig.handbookModel) || {};
+  const hours = cfg.hoursPerYear || 5500;
+  const efficiency = cfg.efficiency || 0.72;
+  const effectiveHours = Math.max(hours * efficiency, 1);
+  const tph = tonnes / effectiveHours;
+  const dmt = estimateHaulDmt(p);
+  const truckCapacity = truckAnnualByProfileAndDmt(profile, dmt.avgKm);
+  const truckCycle = truckCycleByProfileAndDmt(profile, dmt.avgKm);
+  const truckAnnual = truckCapacity.tonnes;
+  const loadingTph = {
+    selective: 420,
+    smallHardRock: 720,
+    hardRock: 900,
+    rehandling: 620
+  }[profile] || 260;
+
+  let trucks = Math.ceil(tonnes / truckAnnual);
+  let excavators = Math.ceil(tph / loadingTph);
+  let loaders = Math.ceil(tph / (loadingTph * (profile === 'rehandling' ? 0.95 : 1.35)));
+  let dozers = Math.ceil(trucks / (profile === 'selective' ? 3.2 : profile === 'rehandling' ? 5 : 5.5));
+  let drills = 0;
+  let support1 = Math.ceil(trucks / 12);
+  let support2 = Math.ceil(trucks / 7);
+
+  if (profile === 'rehandling') {
+    trucks = Math.max(1, Math.ceil(tonnes / truckAnnual));
+    excavators = Math.max(machineText.includes('escav') ? 1 : 0, Math.ceil(loaders / 3));
+    loaders = Math.max(2, loaders);
+    dozers = Math.max(1, Math.ceil(loaders / 2));
+    support1 = Math.max(1, Math.ceil(trucks / 14));
+    support2 = Math.max(2, Math.ceil(loaders * 1.4));
+  } else if (profile === 'selective') {
+    excavators = Math.max(1, Math.ceil(trucks / 4.2), excavators);
+    loaders = Math.max(1, Math.ceil(trucks / 8), loaders);
+    dozers = Math.max(dozers, Math.ceil(trucks / 2));
+    drills = machineText.includes('perfuratriz') || machineText.includes('sondagem') ? Math.max(1, Math.ceil(tonnes / 6000000)) : 0;
+    support2 = Math.max(2, support2);
+  } else {
+    excavators = Math.max(1, Math.ceil(trucks / 5.5), excavators);
+    loaders = Math.max(1, Math.ceil(trucks / 8), loaders);
+    drills = machineText.includes('perfuratriz') || machineText.includes('sondagem') ? Math.max(1, Math.ceil(tonnes / 6500000)) : Math.max(0, Math.ceil(tonnes / 12000000));
+    support2 = Math.max(2, support2);
+  }
+
+  const maturityMin = p.stage <= 2 ? explorationFleet(p) : null;
+  const result = normalizeFleet({ trucks, excavators, loaders, dozers, drills, support1, support2 });
+  if (maturityMin) {
+    ['trucks','excavators','loaders','dozers','drills','support1','support2'].forEach(k => {
+      result[k] = Math.max(result[k] || 0, maturityMin[k] || 0);
+    });
+    return normalizeFleet(result);
+  }
+  result.handbookBasis = {
+    profile,
+    movement: move.label,
+    dmt: dmt.label,
+    tph: Math.round(tph),
+    effectiveHours: Math.round(effectiveHours)
+  };
+  return result;
+}
+
 function estimateProjectFleet(p) {
   if (p.realFleet) return normalizeFleet(p.realFleet);
   if (p.quoteStatus === 'enviada') {
@@ -3415,6 +3668,8 @@ function estimateProjectFleet(p) {
     if (quoted && quoted.total > 0) return quoted;
   }
   const dt = p.depositType || 'exploration';
+  const handbookFleet = handbookFleetFromMovement(p);
+  if (handbookFleet && handbookFleet.total > 0 && dt !== 'exploration') return handbookFleet;
   const keys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   const baselineKey = dt === 'hardRock' ? 'fleetHardRock' : dt === 'reprocessing' ? 'fleetReprocessing' : dt === 'iacSaprolite' ? 'fleetIac' : null;
   if (!baselineKey || p.stage <= 1 && dt === 'exploration') return explorationFleet(p);
@@ -3486,6 +3741,210 @@ function scrollCompanyDemand(dir) {
   grid.scrollBy({ left: dir * Math.max(320, Math.round(grid.clientWidth * 0.75)), behavior: 'smooth' });
 }
 
+function baseEquipmentModelForProject(p, family) {
+  const profile = handbookFleetProfile(p);
+  const table = {
+    selective: {
+      trucks: { model: 'CAT 707 / 730 GC', note: 'transporte seletivo, menor porte e menor custo por unidade' },
+      excavators: { model: 'CAT 320 / 330 / 349', note: 'escavação média para lavra rasa e seletividade' },
+      loaders: { model: 'CAT 938 / 966', note: 'pátio, pilhas e alimentação de planta' },
+      dozers: { model: 'CAT D6 / D8', note: 'acessos, limpeza, pilhas e apoio de frente' },
+      drills: { model: 'CAT MD5150 / MD6200', note: 'uso pontual quando há sondagem/perfuração no escopo' },
+      support1: { model: 'CAT 140 / 150', note: 'vias internas e manutenção de acesso' },
+      support2: { model: 'CAT 420 / 250 / 815', note: 'apoio, manutenção, compactação e pátio' }
+    },
+    smallHardRock: {
+      trucks: { model: 'CAT 707 / 730 / 745', note: 'operação de menor escala ou lavra em ramp-up' },
+      excavators: { model: 'CAT 330 / 349', note: 'carregamento principal em escala média' },
+      loaders: { model: 'CAT 938 / 966 / 980', note: 'apoio de frente, pilhas e planta' },
+      dozers: { model: 'CAT D6 / D8', note: 'infraestrutura, acessos e suporte de mina' },
+      drills: { model: 'CAT MD5150 / MD6200', note: 'perfuração para rocha dura em escala média' },
+      support1: { model: 'CAT 140 / 150', note: 'manutenção de vias' },
+      support2: { model: 'CAT 420 / 250 / 815', note: 'apoio operacional e manutenção' }
+    },
+    hardRock: {
+      trucks: { model: 'CAT 745 / 770 / 772 / 773', note: 'transporte de rocha dura com maior payload' },
+      excavators: { model: 'CAT 349 / 352 / 374', note: 'carregamento principal e escavação pesada' },
+      loaders: { model: 'CAT 966 / 980 / 988', note: 'carregamento auxiliar, pilhas e planta' },
+      dozers: { model: 'CAT D8 / D9', note: 'frentes de lavra, acessos e suporte pesado' },
+      drills: { model: 'CAT MD6200 / MD6250', note: 'perfuração de produção em rocha dura' },
+      support1: { model: 'CAT 140 / 150 / 16', note: 'vias de mina para frota de transporte' },
+      support2: { model: 'CAT 420 / 250 / 825', note: 'apoio, manutenção, compactação e pátio' }
+    },
+    rehandling: {
+      trucks: { model: 'CAT 730 / 745', note: 'movimentação interna e pátio' },
+      excavators: { model: 'CAT 320 / 330', note: 'alimentação, limpeza e apoio de pátio' },
+      loaders: { model: 'CAT 966 / 980 / 988', note: 'equipamento principal para pilhas e planta' },
+      dozers: { model: 'CAT D6 / D8', note: 'pilhas, empilhamento e regularização' },
+      drills: { model: 'N/A', note: 'normalmente não aplicável em reprocessamento/pátio' },
+      support1: { model: 'CAT 140', note: 'vias e pátios internos' },
+      support2: { model: 'CAT 420 / 250 / 815', note: 'apoio de planta, pátio e manutenção' }
+    },
+    exploration: {
+      trucks: { model: 'CAT 707 / 730', note: 'apoio inicial e abertura de acessos' },
+      excavators: { model: 'CAT 320 / 330', note: 'apoio de campanha e acessos' },
+      loaders: { model: 'CAT 938 / 966', note: 'apoio leve de pátio' },
+      dozers: { model: 'CAT D6', note: 'abertura de acesso e limpeza' },
+      drills: { model: 'CAT MD5150 / sonda', note: 'sondagem e campanha exploratória' },
+      support1: { model: 'CAT 140', note: 'acessos' },
+      support2: { model: 'CAT 420 / 250', note: 'apoio geral' }
+    }
+  };
+  return (table[profile] && table[profile][family]) || table.exploration[family] || { model: 'A definir', note: 'porte depende de engenharia detalhada' };
+}
+
+function baseEquipmentModelForCompany(co, family) {
+  const candidates = co.projectRefs || [];
+  if (!candidates.length) return { model: 'A definir', note: 'porte depende de engenharia detalhada' };
+  const ranked = [...candidates].sort((a, b) => {
+    const fa = estimateProjectFleet(a)[family] || 0;
+    const fb = estimateProjectFleet(b)[family] || 0;
+    if (fb !== fa) return fb - fa;
+    return (estimateAnnualMovement(b).tonnes || b.capex || 0) - (estimateAnnualMovement(a).tonnes || a.capex || 0);
+  });
+  const ref = ranked.find(p => (estimateProjectFleet(p)[family] || 0) > 0) || ranked[0];
+  const base = baseEquipmentModelForProject(ref, family);
+  return { ...base, project: ref.project, profile: handbookFleetProfile(ref) };
+}
+
+function quotedFamilyQty(p, family) {
+  if (!p.quote || !p.quote.length) return 0;
+  return p.quote
+    .filter(line => line.family === family)
+    .reduce((sum, line) => sum + (line.qty || 0), 0);
+}
+
+function handbookTruckAnnualByProfile(profile) {
+  return {
+    selective: 140000,
+    smallHardRock: 420000,
+    hardRock: 540000,
+    rehandling: 700000,
+    exploration: 280000
+  }[profile] || 280000;
+}
+
+function handbookProfileLabel(profile) {
+  return {
+    selective: 'lavra seletiva / IAC',
+    smallHardRock: 'rocha dura menor',
+    hardRock: 'rocha dura',
+    rehandling: 'pátio / reprocessamento',
+    exploration: 'exploração'
+  }[profile] || profile;
+}
+
+function companyCalculationNote(co, source) {
+  const refs = co.projectRefs || [];
+  const dominant = [...refs].sort((a, b) => estimateProjectFleet(b).total - estimateProjectFleet(a).total)[0];
+  if (!dominant) return 'Como calculei: sem projeto de referência suficiente para detalhar.';
+  const fleet = estimateProjectFleet(dominant);
+  const movement = estimateAnnualMovement(dominant);
+  const profile = handbookFleetProfile(dominant);
+  const dmt = estimateHaulDmt(dominant);
+  const truckCapacity = truckAnnualByProfileAndDmt(profile, dmt.avgKm);
+
+  if (dominant.realFleet) {
+    const quotedTrucks = quotedFamilyQty(dominant, 'trucks');
+    const truckPart = quotedTrucks && fleet.trucks !== quotedTrucks
+      ? ` Caminhões: ${fleet.trucks} na frota histórica; a cotação/lista de referência mostra ${quotedTrucks}, então a diferença de ${fleet.trucks - quotedTrucks} vem do cadastro operacional/histórico, não de nova cotação.`
+      : '';
+    return `Como calculei: usei a frota real/histórica cadastrada para ${dominant.project}.${truckPart}`;
+  }
+
+  if (dominant.quoteStatus === 'enviada') {
+    return `Como calculei: usei a cotação enviada para ${dominant.project} como base principal. As quantidades do card são a soma das famílias cotadas.`;
+  }
+
+  return `Como calculei: ${movement.label} em perfil ${handbookProfileLabel(profile)}, DMT média ${dmt.label}. Para caminhões, benchmark ajustado de ~${formatAnnualTonnes(truckCapacity.tonnes).replace('/ano','/caminhão/ano')}; demais famílias seguem match carregamento-transporte, ciclos/hora, eficiência e apoio de mina.`;
+}
+
+function companyCalculationDetailHtml(co, source) {
+  const refs = co.projectRefs || [];
+  const dominant = [...refs].sort((a, b) => estimateProjectFleet(b).total - estimateProjectFleet(a).total)[0];
+  if (!dominant) return '<div class="co-calc-body"><div>Sem projeto de referência suficiente.</div></div>';
+
+  const fleet = estimateProjectFleet(dominant);
+  const movement = estimateAnnualMovement(dominant);
+  const profile = handbookFleetProfile(dominant);
+  const dmt = estimateHaulDmt(dominant);
+  const cfg = (sotreqConfig && sotreqConfig.handbookModel) || {};
+  const hours = cfg.hoursPerYear || 5500;
+  const fdf = 0.85;
+  const utilization = 0.85;
+  const efficiency = cfg.efficiency || 0.72;
+  const effectiveHours = Math.round(hours * efficiency);
+  const tonnes = Math.round(movement.tonnes || 0);
+  const tph = effectiveHours ? Math.round(tonnes / effectiveHours) : 0;
+  const truckCapacity = truckAnnualByProfileAndDmt(profile, dmt.avgKm);
+  const truckCycle = truckCycleByProfileAndDmt(profile, dmt.avgKm);
+  const truckAnnual = truckCapacity.tonnes;
+  const loadingTph = {
+    selective: 420,
+    smallHardRock: 720,
+    hardRock: 900,
+    rehandling: 620,
+    exploration: 260
+  }[profile] || 260;
+
+  const sourceLine = dominant.realFleet
+    ? 'Fonte principal: frota real/histórica cadastrada. Neste caso, o portal não recalcula por FDF/ciclo; ele apenas reporta a frota conhecida.'
+    : dominant.quoteStatus === 'enviada'
+      ? 'Fonte principal: cotação enviada. Neste caso, o portal não recalcula por FDF/ciclo; ele soma as famílias cotadas.'
+      : 'Fonte principal: premissa técnica calibrada por produtividade e benchmark CAT.';
+
+  const quotedTrucks = quotedFamilyQty(dominant, 'trucks');
+  const quoteVsReal = dominant.realFleet && quotedTrucks
+    ? `<div class="co-formula"><strong>Caminhões:</strong> frota histórica ${fleet.trucks} un. vs. lista/cotação referência ${quotedTrucks} un. Diferença = ${fleet.trucks} - ${quotedTrucks} = ${fleet.trucks - quotedTrucks} un.</div>`
+    : '';
+
+  if (dominant.realFleet || dominant.quoteStatus === 'enviada') {
+    return '<div class="co-calc-body">' +
+      '<div><strong>Projeto ref.:</strong> ' + escHtml(dominant.project) + '</div>' +
+      '<div><strong>' + escHtml(sourceLine) + '</strong></div>' +
+      '<div class="co-formula"><strong>DMT média estimada:</strong> ' + escHtml(dmt.calc) + ' = ' + escHtml(dmt.label) + '. Fonte: ' + escHtml(dmt.source || 'estimativa por perfil') + '</div>' +
+      quoteVsReal +
+      '<div class="co-formula"><strong>Total:</strong> caminhões ' + (fleet.trucks || 0) +
+        ' + escavadeiras ' + (fleet.excavators || 0) +
+        ' + carregadeiras ' + (fleet.loaders || 0) +
+        ' + tratores ' + (fleet.dozers || 0) +
+        ' + perfuratrizes ' + (fleet.drills || 0) +
+        ' + motoniveladoras ' + (fleet.support1 || 0) +
+        ' + apoio ' + (fleet.support2 || 0) +
+        ' = ' + (fleet.total || 0) + ' un.</div>' +
+      '<div>FDF/utilização: não aplicado para substituir a quantidade, porque há fonte real/cotada. Usado apenas em projetos sem cotação.</div>' +
+    '</div>';
+  }
+
+  const truckCalc = Math.ceil((movement.tonnes || 0) / truckAnnual);
+  const excavatorCalc = profile === 'selective'
+    ? Math.max(1, Math.ceil(tph / loadingTph), Math.ceil((fleet.trucks || truckCalc) / 4.2))
+    : Math.max(1, Math.ceil(tph / loadingTph), Math.ceil((fleet.trucks || truckCalc) / 5.5));
+  const loaderCalc = Math.max(1, Math.ceil(tph / (loadingTph * (profile === 'rehandling' ? 0.95 : 1.35))), Math.ceil((fleet.trucks || truckCalc) / 8));
+  const dozerDivisor = profile === 'selective' ? 2 : profile === 'rehandling' ? 5 : 5.5;
+  const dozerCalc = Math.ceil((fleet.trucks || truckCalc) / dozerDivisor);
+  const support1Calc = Math.ceil((fleet.trucks || truckCalc) / 12);
+  const support2Calc = Math.max(2, Math.ceil((fleet.trucks || truckCalc) / 7));
+  const drillDivisor = profile === 'selective' ? 6000000 : 6500000;
+  const drillCalc = (dominant.machines || []).join(' ').toLowerCase().includes('perfuratriz')
+    ? Math.max(1, Math.ceil((movement.tonnes || 0) / drillDivisor))
+    : fleet.drills || 0;
+
+  return '<div class="co-calc-body">' +
+    '<div><strong>Projeto ref.:</strong> ' + escHtml(dominant.project) + ' · perfil ' + escHtml(handbookProfileLabel(profile)) + '</div>' +
+    '<div class="co-formula"><strong>Ciclo de transporte:</strong> fixo carga/manobra/descarga ' + truckCycle.fixedMin.toFixed(1).replace('.', ',') + ' min + ida ' + escHtml(dmt.label) + ' ÷ ' + truckCycle.loadedKmh + ' km/h + volta ' + escHtml(dmt.label) + ' ÷ ' + truckCycle.emptyKmh + ' km/h = ~' + truckCycle.cycleMin.toFixed(1).replace('.', ',') + ' min/ciclo (' + truckCycle.cyclesPerHour.toFixed(1).replace('.', ',') + ' ciclos/h, carga ref. ' + truckCycle.payload + ' t)</div>' +
+    '<div><strong>Movimentação:</strong> ' + escHtml(movement.label) + '</div>' +
+    '<div class="co-formula"><strong>DMT média:</strong> ' + escHtml(dmt.calc) + ' = ' + escHtml(dmt.label) + '. Fonte: ' + escHtml(dmt.source || 'estimativa por perfil') + '</div>' +
+    '<div class="co-formula"><strong>Horas efetivas:</strong> ' + hours.toLocaleString('pt-BR') + ' h/ano × FDF ' + Math.round(fdf * 100) + '% × utilização ' + Math.round(utilization * 100) + '% ≈ ' + effectiveHours.toLocaleString('pt-BR') + ' h/ano úteis</div>' +
+    '<div class="co-formula"><strong>Produção requerida:</strong> ' + formatAnnualTonnes(tonnes) + ' ÷ ' + effectiveHours.toLocaleString('pt-BR') + ' h = ~' + tph.toLocaleString('pt-BR') + ' t/h</div>' +
+    '<div class="co-formula"><strong>Capacidade/caminhão ajustada por DMT:</strong> ' + formatAnnualTonnes(truckCapacity.baseAnnual).replace('/ano','/caminhão/ano') + ' × fator DMT ' + truckCapacity.factor.toFixed(2).replace('.', ',') + ' = ~' + formatAnnualTonnes(truckAnnual).replace('/ano','/caminhão/ano') + '</div>' +
+    '<div class="co-formula"><strong>Caminhões:</strong> ' + formatAnnualTonnes(tonnes) + ' ÷ ' + formatAnnualTonnes(truckAnnual).replace('/ano','/caminhão/ano') + ' = ' + ((movement.tonnes || 0) / truckAnnual).toFixed(1).replace('.', ',') + ' → ' + truckCalc + ' un.</div>' +
+    '<div class="co-formula"><strong>Carregamento:</strong> alvo de match 3-4 passes/caminhão. Escavadeiras = máx(t/h ÷ ' + loadingTph + ' t/h, caminhões ÷ ' + (profile === 'selective' ? '4,2' : '5,5') + ') → ' + excavatorCalc + ' un.</div>' +
+    '<div class="co-formula"><strong>Carregadeiras:</strong> máx(t/h ÷ ' + Math.round(loadingTph * (profile === 'rehandling' ? 0.95 : 1.35)) + ' t/h, caminhões ÷ 8) → ' + loaderCalc + ' un.</div>' +
+    '<div class="co-formula"><strong>Apoio:</strong> tratores ≈ caminhões ÷ ' + String(dozerDivisor).replace('.', ',') + ' → ' + dozerCalc + '; motoniveladoras ≈ caminhões ÷ 12 → ' + support1Calc + '; apoio ≈ caminhões ÷ 7 → ' + support2Calc + '; perfuratrizes → ' + drillCalc + '.</div>' +
+  '</div>';
+}
+
 function renderCompanyDemand() {
   const equipKeys = ['trucks','excavators','loaders','dozers','drills','support1','support2'];
   const equipMeta = {
@@ -3500,10 +3959,11 @@ function renderCompanyDemand() {
 
   const byCo = {};
   projects.forEach(p => {
-    if (!byCo[p.company]) byCo[p.company] = { company: p.company, states: new Set(), projects: [], total: 0, equip: {}, hasQuote: false, movement: 0, movementNotes: [] };
+    if (!byCo[p.company]) byCo[p.company] = { company: p.company, states: new Set(), projects: [], projectRefs: [], total: 0, equip: {}, hasQuote: false, movement: 0, movementNotes: [] };
     byCo[p.company].states.add(p.location.state);
     byCo[p.company].projects.push(p.project);
-    if (p.quoteStatus === 'enviada') byCo[p.company].hasQuote = true;
+    byCo[p.company].projectRefs.push(p);
+    if (p.quoteStatus === 'enviada' || p.quoteStatus === 'historica' || p.realFleet) byCo[p.company].hasQuote = true;
     const movement = estimateAnnualMovement(p);
     byCo[p.company].movement += movement.tonnes || 0;
     byCo[p.company].movementNotes.push(movement.detail);
@@ -3527,20 +3987,32 @@ function renderCompanyDemand() {
       .filter(k => co.equip[k])
       .sort((a, b) => co.equip[b] - co.equip[a])
       .slice(0, 4)
-      .map(k =>
+      .map(k => {
+        const base = baseEquipmentModelForCompany(co, k);
+        const modelTitle = equipMeta[k].label + '\\nBase: ' + base.model + '\\nProjeto ref.: ' + (base.project || 'n/d') + '\\nCritério: ' + base.note;
+        return (
         '<div class="co-row">' +
           '<div class="co-icon"><img src="' + equipMeta[k].img + '" alt="' + equipMeta[k].label + '"></div>' +
-          '<span class="co-label">' + equipMeta[k].label + '</span>' +
+          '<span class="co-label" title="' + escHtml(modelTitle) + '"><strong>' + equipMeta[k].label + '</strong><span class="co-model">Base: ' + escHtml(base.model) + '</span></span>' +
           '<span class="co-mini-bar"><span style="width:' + Math.max(8, Math.round((co.equip[k] / co.total) * 100)) + '%"></span></span>' +
           '<span class="co-qty">' + co.equip[k] + ' unid.</span>' +
         '</div>'
-      ).join('');
+        );
+      }).join('');
     const hiddenCount = equipKeys.filter(k => co.equip[k]).length - 4;
-    const source = co.hasQuote ? 'Cotação enviada' : 'Premissas técnicas';
+    const hasSentQuote = co.projectRefs.some(p => p.quoteStatus === 'enviada');
+    const hasHistoricalFleet = co.projectRefs.some(p => p.quoteStatus === 'historica' || p.realFleet);
+    const source = hasSentQuote ? 'Cotação enviada' : hasHistoricalFleet ? 'Frota real/histórica' : 'Premissas técnicas';
     const states = [...co.states].join(' / ');
     const movementLabel = co.movement > 0 ? formatAnnualTonnes(co.movement) : 'n/d';
+    const dominant = [...co.projectRefs].sort((a, b) => estimateProjectFleet(b).total - estimateProjectFleet(a).total)[0];
+    const dmt = dominant ? estimateHaulDmt(dominant) : null;
+    const dmtLabel = dmt ? dmt.label : 'n/d';
+    const calcNote = companyCalculationNote(co, source);
+    const calcDetail = companyCalculationDetailHtml(co, source);
     const tooltip = 'Base da estimativa\\n' +
       'Mov./cap. anual considerada: ' + movementLabel + '\\n' +
+      'DMT média estimada: ' + dmtLabel + '\\n' +
       'Fonte: ' + source + '\\n' +
       co.movementNotes.join('\\n');
     return '<div class="co-card" title="' + escHtml(tooltip) + '">' +
@@ -3554,6 +4026,9 @@ function renderCompanyDemand() {
         '<span class="co-badge">' + source + '</span>' +
       '</div>' +
       '<div class="co-movement"><span>Mov./cap. anual considerada</span><strong>' + movementLabel + '</strong></div>' +
+      '<div class="co-movement"><span>DMT média estimada</span><strong>' + dmtLabel + '</strong></div>' +
+      '<div class="co-calc-note"><strong>Como calculei:</strong> ' + escHtml(calcNote).replace(/^Como calculei:\s*/, '') + '</div>' +
+      '<details class="co-calc-detail"><summary>Detalhar cálculo</summary>' + calcDetail + '</details>' +
       '<div class="co-bar"><span style="width:' + Math.max(6, Math.round((co.total / maxTotal) * 100)) + '%"></span></div>' +
       rows +
       (hiddenCount > 0 ? '<div style="font-size:10px;color:var(--cat-text-muted);margin-top:6px;">+' + hiddenCount + ' fam&iacute;lia(s) de equipamento</div>' : '') +
@@ -4944,7 +5419,8 @@ let sotreqConfig = {
   anoFim: 2030,
   taxaCrescimento: '15–20%',
   capMaxTabela: 200,       // max CAPEX p/ escala visual
-  fleetModelVersion: 4,
+  fleetModelVersion: 5,
+  handbookModel: { hoursPerYear: 5500, efficiency: 0.72, targetPasses: 3.5 },
   fleetIac: { refCapex: 560, trucks: 20, excavators: 5, loaders: 2, dozers: 8, drills: 1, support1: 1, support2: 3 },
   fleetHardRock: { refCapex: 720, trucks: 28, excavators: 6, loaders: 4, dozers: 6, drills: 3, support1: 2, support2: 4 },
   fleetReprocessing: { refCapex: 280, trucks: 4, excavators: 3, loaders: 5, dozers: 2, drills: 0, support1: 1, support2: 4 },
@@ -4957,13 +5433,15 @@ function sotreqLoadConfig() {
   if (saved) {
     let c;
     try { c = JSON.parse(saved); Object.assign(sotreqConfig, c); } catch(e) { c = {}; }
-    if (!c.fleetModelVersion || c.fleetModelVersion < 4) {
-      sotreqConfig.fleetModelVersion = 4;
+    if (!c.fleetModelVersion || c.fleetModelVersion < 5) {
+      sotreqConfig.fleetModelVersion = 5;
+      sotreqConfig.handbookModel = { hoursPerYear: 5500, efficiency: 0.72, targetPasses: 3.5 };
       sotreqConfig.fleetIac = { refCapex: 560, trucks: 20, excavators: 5, loaders: 2, dozers: 8, drills: 1, support1: 1, support2: 3 };
       sotreqConfig.fleetHardRock = { refCapex: 720, trucks: 28, excavators: 6, loaders: 4, dozers: 6, drills: 3, support1: 2, support2: 4 };
       sotreqConfig.fleetReprocessing = { refCapex: 280, trucks: 4, excavators: 3, loaders: 5, dozers: 2, drills: 0, support1: 1, support2: 4 };
       sotreqConfig.equipPrices = { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 };
     }
+    if (!sotreqConfig.handbookModel) sotreqConfig.handbookModel = { hoursPerYear: 5500, efficiency: 0.72, targetPasses: 3.5 };
     // Migrate old fleet keys to new structure
     if (c && c.viridisFleet && !c.fleetIac) {
       const old = c.viridisFleet;
@@ -6451,13 +6929,28 @@ window.addEventListener('resize', () => {
 
 // ── INIT ──
 (async function() {
-  await sotreqLoadData();
-  sotreqLoadConfig();
-  sotreqApplyConfig();
-  try { init(); } catch(e) { console.error('init() falhou:', e); }
-  try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
-  try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
-  try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
+  const renderInitialView = () => {
+    sotreqLoadConfig();
+    sotreqApplyConfig();
+    try { init(); } catch(e) { console.error('init() falhou:', e); }
+    try { renderExecutiveSummary(); } catch(e) { console.error('renderExecutiveSummary() falhou:', e); }
+    try { renderNoticias(); } catch(e) { console.error('renderNoticias() falhou:', e); }
+    try { renderSotreqSummary(); } catch(e) { console.error('renderSotreqSummary() falhou:', e); }
+    setTimeout(() => {
+      const grid = document.getElementById('coDemandGrid');
+      if (grid && grid.children.length === 0) {
+        try { renderCompanyDemand(); } catch(e) { console.error('renderCompanyDemand() falhou:', e); }
+      }
+    }, 250);
+  };
+
+  renderInitialView();
+  try {
+    await sotreqLoadData();
+    renderInitialView();
+  } catch(e) {
+    console.warn('sotreqLoadData() falhou; usando dados locais:', e.message);
+  }
   document.querySelector('.tab-bar')?.style.setProperty('--tab-index', '0');
   if (document.getElementById('tab-mineria')?.classList.contains('active')) {
     setTimeout(() => initChat(), 260);
@@ -7982,9 +8475,9 @@ PROJEÇÕES (use para calcular estimativas anuais):
 - Explique suas premissas ao fazer projeções.
 
 PREMISSAS TECNICAS DE DIMENSIONAMENTO:
-- Use premissas internas por tipo de deposito, escala do projeto, maturidade e perfil operacional.
+- Use conceitos de performance CAT: producao anual, carga por ciclo, ciclos por hora, eficiencia operacional, match carregamento/transporte e apoio de mina.
 - Para frota, responda de forma direcional e comercial. Evite expor formulas detalhadas, tabelas internas ou parametros sensiveis.
-- Se perguntarem como foi calculado, explique em alto nivel: tipo de deposito, CAPEX, estagio, capacidade informada e cotacoes reais quando existirem.
+- Se perguntarem como foi calculado, explique em alto nivel: capacidade anual quando existir, tipo de deposito, estagio, eficiencia, perfil operacional, CAPEX como fallback e cotacoes reais quando existirem.
 
 REGRAS: Responda em português, direto ao ponto. Markdown simples. Valores em USD. Cite os dados do projeto quando usá-los.`;
 }
@@ -8141,7 +8634,7 @@ Use apenas quando o usuario pedir estimativa por ano.
 PREMISSAS TECNICAS
 Use somente quando a pergunta envolver frota, produtividade ou combinacao de equipamento.
 - Responda em alto nivel, sem expor tabelas internas ou parametros sensiveis.
-- Explique que a estimativa considera tipo de deposito, CAPEX, estagio, capacidade informada e cotacoes reais quando existirem.
+- Explique que a estimativa considera capacidade anual/movimentacao, horas efetivas, carga por ciclo, ciclos por hora, match carregamento-transporte, tipo de deposito, estagio, CAPEX como fallback e cotacoes reais quando existirem.
 
 FORMATO DE SAIDA
 - Resposta facil: 1 paragrafo ou 3 bullets.
