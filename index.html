@@ -3262,6 +3262,113 @@ const rareEarthProjects = [ // __DATA_BEGIN_PROJECTS__
 
 const greenfieldProjects = [
   {
+    priority: 'critical', company: 'Vale S.A.', origin: 'Brasil',
+    project: 'VALE — Serra Sul +20 Mtpa / S11D', location: { city: 'Canaã dos Carajás', state: 'PA' },
+    capex: 2800, capexDetail: 'US$ 2,8B divulgados pela Vale', stage: 6,
+    forecast: 'Start-up iniciado em Jul/2026 · Britador de Compactos previsto para 4T26', capacity: '+20 Mt/ano de minério de ferro',
+    licensing: 'Licença de Operação obtida · comissionamento e ramp-up',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras', 'Equipamentos de apoio'],
+    opportunity: 'US$ 840M', type: 'Minério de Ferro',
+    highlights: 'VALE S.A. · expansão da mina-planta S11D · novas áreas de lavra, britador semimóvel, duplicação de TCLD e novas linhas de processamento',
+    startYear: 2026, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — resultados 2T26 e licença do Serra Sul +20'
+  },
+  {
+    priority: 'high', company: 'Vale S.A.', origin: 'Brasil',
+    project: 'VALE — Expansão Serra Leste', location: { city: 'Curionópolis', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX individual não divulgado no material consultado', stage: 6,
+    forecast: 'Expansão licenciada para operação', capacity: 'Expansão de 6 para 10 Mt/ano (+4 Mt/ano)',
+    licensing: 'Licença de Operação da expansão obtida', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras'],
+    opportunity: 'A qualificar', type: 'Minério de Ferro',
+    highlights: 'VALE S.A. · ampliação e repotencialização da operação Serra Leste · oportunidade associada ao Programa Novo Carajás',
+    startYear: 2026, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — Relatório Anual 2025 e resultados 3T25'
+  },
+  {
+    priority: 'high', company: 'Vale S.A.', origin: 'Brasil',
+    project: 'VALE — Serra Norte: N1, N2, N3 e Morro 2', location: { city: 'Parauapebas', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX individual não divulgado; inserido no programa regional de investimentos', stage: 3,
+    forecast: 'Novas frentes e reposição de reservas no ciclo 2026-2030', capacity: 'Capacidade incremental não individualizada',
+    licensing: 'Frentes minerais em desenvolvimento/licenciamento', machines: ['Perfuratrizes', 'Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras'],
+    opportunity: 'A qualificar', type: 'Minério de Ferro',
+    highlights: 'VALE S.A. · conjunto de novas frentes N1, N2, N3 e Morro 2 no Sistema Norte · manter qualificação individual por frente',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
+  },
+  {
+    priority: 'critical', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Bacaba', location: { city: 'Canaã dos Carajás', state: 'PA' },
+    capex: 290, capexDetail: 'US$ 290M divulgados pela Vale', stage: 5,
+    forecast: 'Start-up antecipado para 3T27', capacity: '~50 kt/ano de cobre por 8 anos',
+    licensing: 'Licença de Instalação obtida · construção em andamento', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'US$ 87M', type: 'Cobre', highlights: 'VALE BASE METALS · extensão da vida útil do Complexo Sossego · 39% de avanço físico ao fim do 2T26',
+    startYear: 2027, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — resultados 2T26 e Relatório Anual 2025'
+  },
+  {
+    priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Alemão', location: { city: 'Parauapebas', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
+    capacity: '~80 kt/ano de cobre conforme mapa regional 2026-2030', licensing: 'Estudos e desenvolvimento',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    highlights: 'VALE BASE METALS · depósito de cobre do pipeline orgânico de Carajás · CAPEX e cronograma ainda requerem qualificação',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — pipeline público de crescimento da VBM e mapa regional 2026-2030'
+  },
+  {
+    priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Cristalino', location: { city: 'Canaã dos Carajás', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
+    capacity: '~80 kt/ano de cobre conforme mapa regional 2026-2030', licensing: 'Estudos e desenvolvimento',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    highlights: 'VALE BASE METALS · projeto de crescimento orgânico de cobre em Carajás · próximo ao corredor Sossego-Bacaba',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — pipeline público de crescimento da VBM e mapa regional 2026-2030'
+  },
+  {
+    priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Paulo Afonso', location: { city: 'Parauapebas', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
+    capacity: '70-100 kt/ano de cobre conforme mapa regional', licensing: 'Estudos e qualificação de recursos',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    highlights: 'VALE BASE METALS · alvo greenfield de cobre na região de Carajás · capacidade apresentada como faixa preliminar',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
+  },
+  {
+    priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Projeto 118', location: { city: 'Canaã dos Carajás', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
+    capacity: '~60 kt/ano de cobre conforme mapa regional', licensing: 'Estudos e qualificação de recursos',
+    machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
+    highlights: 'VALE BASE METALS · alvo greenfield de cobre identificado como 118 · entre Carajás e o corredor Sossego-Bacaba',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Mapa Vale Northern Region 2026-2030 fornecido pela Sotreq'
+  },
+  {
+    priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Complexo Sossego / hub de expansão', location: { city: 'Canaã dos Carajás', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX incremental do hub não divulgado individualmente', stage: 6,
+    forecast: 'Operação-base para integração de Bacaba e outros depósitos do corredor', capacity: 'Operação de cobre existente; expansão vinculada ao pipeline regional',
+    licensing: 'Operação existente · expansões e extensões em desenvolvimento',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
+    opportunity: 'Expansão, renovação e pós-venda a qualificar', type: 'Cobre',
+    highlights: 'VALE BASE METALS · Sossego é a operação-base do corredor; Bacaba foi concebido para estender sua vida útil · tratar como hub brownfield, não como mina greenfield isolada',
+    startYear: null, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — resultados 2T25/2T26 e mapa regional 2026-2030'
+  },
+  {
+    priority: 'medium', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Salobo 3 / expansão Salobo', location: { city: 'Marabá', state: 'PA' },
+    capex: 0, capexDetail: 'CAPEX do recorte apresentado não individualizado', stage: 6, forecast: 'Ramp-up concluído; acompanhamento de otimização e crescimento',
+    capacity: '+30 kt/ano de cobre no mapa regional', licensing: 'Operação e ramp-up',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras', 'Equipamentos de apoio'],
+    opportunity: 'Pós-venda e expansão a qualificar', type: 'Cobre',
+    highlights: 'VALE BASE METALS · Salobo é operação existente; registro mantido como expansão/ramp-up e oportunidade de pós-venda, não como mina greenfield',
+    startYear: 2025, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale — Relatório Anual 2025 e resultados de produção 2T25'
+  },
+  {
+    priority: 'medium', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
+    project: 'VALE BASE METALS — Onça Puma, Forno 2', location: { city: 'Ourilândia do Norte', state: 'PA' },
+    capex: 480, capexDetail: 'US$ 480M de CAPEX final', stage: 6, forecast: 'Operação iniciada em Set/2025',
+    capacity: '+15 kt/ano de níquel; capacidade nominal total de 40 kt/ano', licensing: 'Em operação',
+    machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Equipamentos de apoio'],
+    opportunity: 'Pós-venda e renovação a qualificar', type: 'Níquel',
+    highlights: 'VALE BASE METALS · expansão concluída 13% abaixo do orçamento · foco comercial atual em suporte, peças, serviços e renovação',
+    startYear: 2025, depositType: 'hardRock', sotreqStatus: 'nao-iniciado', source: 'Vale Base Metals — início de operação do Forno 2 em Onça Puma'
+  },
+  {
     priority: 'critical', company: 'Brazil Potash Corp.', origin: 'Canadá / Brasil',
     project: 'Autazes', location: { city: 'Autazes', state: 'AM' },
     capex: 2491, capexDetail: 'US$ 2,49B pre-operating CAPEX (after-tax)',
@@ -4117,12 +4224,17 @@ function resetRenderState() {
   });
 }
 
-function setPortfolioMode(mode) {
+async function setPortfolioMode(mode) {
   if (!portfolioMeta[mode] || activePortfolioMode === mode) return;
   activePortfolioMode = mode;
   localStorage.setItem('sotreq_portfolio_mode', mode);
   projects = mode === 'greenfield' ? greenfieldProjects : rareEarthProjects;
   newsData = mode === 'greenfield' ? greenfieldNewsData : rareEarthNewsData;
+  try {
+    await sotreqLoadData();
+  } catch (e) {
+    console.warn('Falha ao carregar a carteira selecionada; usando dados locais:', e.message);
+  }
   resetRenderState();
   applyPortfolioCopy();
   init();
@@ -5197,7 +5309,8 @@ if (SUPABASE_URL && SUPABASE_URL.startsWith('http') && SUPABASE_ANON_KEY && SUPA
 async function supaCarregarDados() {
   if (!supabaseClient) return null;
   try {
-    const { data, error } = await supabaseClient.from('site_data').select('*').limit(1).single();
+    const portfolioId = activePortfolioMode === 'rareEarth' ? 1 : 2;
+    const { data, error } = await supabaseClient.from('site_data').select('*').eq('id', portfolioId).maybeSingle();
     if (error && error.code === '42P01') {
       console.log('%c═══ SUPABASE SETUP ═══', 'font-size:16px;font-weight:bold;color:#FFCD00;');
       console.log('1. Vá no SQL Editor do seu projeto Supabase');
@@ -5222,10 +5335,11 @@ GRANT ALL ON site_data TO anon;`);
 }
 
 async function supaSalvarDados() {
-  if (!supabaseClient || activePortfolioMode !== 'rareEarth') return false;
+  if (!supabaseClient) return false;
   try {
+    const portfolioId = activePortfolioMode === 'rareEarth' ? 1 : 2;
     const payload = { projects: JSON.parse(JSON.stringify(projects)), news: JSON.parse(JSON.stringify(newsData)), updated_at: new Date().toISOString() };
-    const { error } = await supabaseClient.from('site_data').upsert({ id: 1, ...payload }, { onConflict: 'id' });
+    const { error } = await supabaseClient.from('site_data').upsert({ id: portfolioId, ...payload }, { onConflict: 'id' });
     if (error) { console.warn('Supabase save:', error.message); return false; }
     return true;
   } catch(e) { console.warn('Supabase save exception:', e.message); return false; }
@@ -5240,35 +5354,41 @@ async function sotreqLoadData() {
   // Load saved data from Supabase or localStorage
   let savedProjects = [];
   let savedNews = [];
-  const supaData = activePortfolioMode === 'rareEarth' ? await supaCarregarDados() : null;
-  if (supaData && supaData.projects && supaData.projects.length > 0) {
+  let localSavedAt = '';
+  const supaData = await supaCarregarDados();
+  const savedKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
+  const saved = localStorage.getItem(savedKey);
+  let localData = null;
+  if (saved) {
+    try {
+      localData = JSON.parse(saved);
+      localSavedAt = localData.savedAt || '';
+    } catch(e) { console.warn('Falha ao carregar dados salvos'); }
+  }
+  const remoteIsNewer = supaData && (!localSavedAt || !supaData.updated_at || new Date(supaData.updated_at) >= new Date(localSavedAt));
+  const localNeedsDatabaseSync = Boolean(localSavedAt && (!supaData?.updated_at || new Date(localSavedAt) > new Date(supaData.updated_at)));
+  if (remoteIsNewer && supaData.projects && supaData.projects.length > 0) {
     savedProjects = supaData.projects;
     if (supaData.news && supaData.news.length > 0) savedNews = supaData.news;
-  } else {
-    const savedKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
-    const saved = localStorage.getItem(savedKey);
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        if (Array.isArray(data.projects)) savedProjects = data.projects;
-        if (Array.isArray(data.news)) savedNews = data.news;
-      } catch(e) { console.warn('Falha ao carregar dados salvos'); }
-    }
+  } else if (localData) {
+    if (Array.isArray(localData.projects)) savedProjects = localData.projects;
+    if (Array.isArray(localData.news)) savedNews = localData.news;
   }
 
   // Filter out invalid saved projects
   const invalid = ['Não especificada','Não especificado',''];
   savedProjects = savedProjects.filter(p =>
     p.company && !invalid.includes(p.company) &&
-    p.project && !invalid.includes(p.project) && p.capex > 0
+    p.project && !invalid.includes(p.project) && Number(p.capex) >= 0
   );
   if (activePortfolioMode === 'greenfield') {
-    savedProjects = savedProjects.filter(p => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper|Vale Base Metals/i.test(`${p.company || ''} ${p.project || ''}`));
-    savedNews = savedNews.filter(n => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper|Vale Base Metals/i.test(`${n.company || ''} ${n.title || ''}`));
+    savedProjects = savedProjects.filter(p => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper/i.test(`${p.company || ''} ${p.project || ''}`));
+    savedNews = savedNews.filter(n => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper/i.test(`${n.company || ''} ${n.title || ''}`));
   }
 
   // Start from defaults, overlay safe fields from saved projects
   projects.length = 0;
+  let projectsChanged = false;
   const safeFields = ['stage','forecast','licensing','highlights','capacity','sotreqStatus','machines'];
   for (const dp of defaultProjects) {
     const sp = savedProjects.find(p => p.company === dp.company && p.project === dp.project);
@@ -5280,6 +5400,7 @@ async function sotreqLoadData() {
       projects.push(merged);
     } else {
       projects.push(dp);
+      if (savedProjects.length > 0) projectsChanged = true;
     }
   }
 
@@ -5293,7 +5414,7 @@ async function sotreqLoadData() {
       const pk = (p.company||'').toLowerCase().replace(/[^a-z0-9]/g,'').substring(0,6);
       return pk === spKey || pk.startsWith(spKey) || spKey.startsWith(pk);
     });
-    if (!fuzzyMatch && sp.company && sp.capex > 0) {
+    if (!fuzzyMatch && sp.company && Number(sp.capex) >= 0) {
       projects.push(sp);
     }
   }
@@ -5303,7 +5424,7 @@ async function sotreqLoadData() {
     newsData.length = 0; newsData.push(...savedNews);
   }
   // Merge any default news not in saved
-  let changed = false;
+  let changed = projectsChanged;
   for (const dn of defaultNews) {
     const exists = newsData.some(n =>
       n.title === dn.title ||
@@ -5403,13 +5524,15 @@ async function sotreqLoadData() {
     newsData.push(...dedupedNews);
     changed = true;
   }
-  if (changed) sotreqSaveData();
+  if (changed || localNeedsDatabaseSync) await sotreqSaveData();
 }
-function sotreqSaveData() {
+async function sotreqSaveData() {
   const saveKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
-  localStorage.setItem(saveKey, JSON.stringify({ projects, news: newsData }));
-  supaSalvarDados();
+  localStorage.setItem(saveKey, JSON.stringify({ projects, news: newsData, savedAt: new Date().toISOString() }));
+  const savedInDatabase = await supaSalvarDados();
+  if (!savedInDatabase && supabaseClient) console.warn('Dados mantidos localmente, mas não foram confirmados no Supabase.');
   resetChat();
+  return savedInDatabase;
 }
 
 // ── CONFIGURAÇÕES DOS INDICADORES ──
@@ -5457,9 +5580,57 @@ function sotreqLoadConfig() {
     }
   }
 }
-function sotreqSaveConfig() {
+async function supaCarregarConfig() {
+  if (!supabaseClient) return null;
+  try {
+    const { data, error } = await supabaseClient.from('site_data').select('projects, updated_at').eq('id', 3).maybeSingle();
+    if (error) throw error;
+    const record = Array.isArray(data?.projects) ? data.projects[0] : null;
+    return record?.__kind === 'sotreq_config' && record.value ? { value: record.value, updatedAt: data.updated_at } : null;
+  } catch (e) {
+    console.warn('Supabase config load:', e.message);
+    return null;
+  }
+}
+
+async function supaSalvarConfig() {
+  if (!supabaseClient) return false;
+  try {
+    const payload = [{ __kind: 'sotreq_config', value: JSON.parse(JSON.stringify(sotreqConfig)) }];
+    const { error } = await supabaseClient.from('site_data').upsert({
+      id: 3,
+      projects: payload,
+      news: [],
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'id' });
+    if (error) throw error;
+    return true;
+  } catch (e) {
+    console.warn('Supabase config save:', e.message);
+    return false;
+  }
+}
+
+async function sotreqLoadConfigFromDatabase() {
+  const remote = await supaCarregarConfig();
+  const localUpdatedAt = localStorage.getItem('sotreq_config_updated_at');
+  if (!remote) return localUpdatedAt ? await supaSalvarConfig() : false;
+  if (localUpdatedAt && remote.updatedAt && new Date(localUpdatedAt) > new Date(remote.updatedAt)) {
+    return await supaSalvarConfig();
+  }
+  Object.assign(sotreqConfig, remote.value);
   localStorage.setItem('sotreq_config', JSON.stringify(sotreqConfig));
+  if (remote.updatedAt) localStorage.setItem('sotreq_config_updated_at', remote.updatedAt);
+  return true;
+}
+
+async function sotreqSaveConfig() {
+  localStorage.setItem('sotreq_config', JSON.stringify(sotreqConfig));
+  localStorage.setItem('sotreq_config_updated_at', new Date().toISOString());
+  const savedInDatabase = await supaSalvarConfig();
+  if (!savedInDatabase && supabaseClient) console.warn('Configuração mantida localmente, mas não foi confirmada no Supabase.');
   resetChat();
+  return savedInDatabase;
 }
 
 // ── NEWS FETCH (Google News RSS via rss2json — funciona no navegador, sem chave) ──
@@ -5482,7 +5653,9 @@ async function sotreqFetchNews() {
     'litio+Minas+Gerais+projeto+construcao',
     'niquel+Carajas+Jaguar+FID',
     'potassio+Autazes+construcao',
-    'fosfato+Santa+Quiteria+licenciamento'
+    'fosfato+Santa+Quiteria+licenciamento',
+    'Vale+Serra+Sul+S11D+Serra+Leste+Carajas+expansao',
+    'Vale+Base+Metals+Bacaba+Alemao+Cristalino+Paulo+Afonso+Projeto+118'
   ];
   const queries = activePortfolioMode === 'greenfield' ? greenQueries : rareQueries;
   const all = [];
@@ -5569,6 +5742,9 @@ async function sotreqFetchNews() {
       'Sigma Lithium': 'Sigma Lithium', 'Atlas Lithium': 'Atlas Lithium', 'Neves': 'Atlas Lithium',
       'Santa Quitéria': 'Consórcio Santa Quitéria (INB / Galvani)', 'Galvani': 'Consórcio Santa Quitéria (INB / Galvani)',
       'Aura Minerals': 'Aura Minerals', 'Matupá': 'Aura Minerals',
+      'Vale Base Metals': 'Vale Base Metals', 'Bacaba': 'Vale Base Metals', 'Cristalino': 'Vale Base Metals',
+      'Paulo Afonso': 'Vale Base Metals', 'Onça Puma': 'Vale Base Metals',
+      'Serra Sul': 'Vale S.A.', 'S11D': 'Vale S.A.', 'Serra Leste': 'Vale S.A.',
       'Sotreq': 'Sotreq', 'Caterpillar': 'Cat', 'Cat': 'Cat',
       'Ibram': 'Ibram', 'BNDES': 'BNDES', 'ANM': 'ANM', 'Vale S.A.': 'Vale', 'Samarco': 'Samarco',
       'Anglo American': 'Anglo American', 'GSX': 'GSX', 'Rio Tinto': 'Rio Tinto'
@@ -6944,6 +7120,12 @@ window.addEventListener('resize', () => {
     }, 250);
   };
 
+  sotreqLoadConfig();
+  try {
+    await sotreqLoadConfigFromDatabase();
+  } catch (e) {
+    console.warn('Configuração remota indisponível; usando configuração local:', e.message);
+  }
   renderInitialView();
   try {
     await sotreqLoadData();
@@ -7971,7 +8153,7 @@ function adminPreviewConfig() {
   });
   adminRenderIndicatorsSummary();
 }
-function adminSaveConfig() {
+async function adminSaveConfig() {
   const c = sotreqConfig;
   c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 30, 50);
   c.anoInicio = parseInt(document.getElementById('cfg_anoInicio').value) || 2026;
@@ -7985,11 +8167,14 @@ function adminSaveConfig() {
     const el = document.getElementById('cfg_price_' + k);
     if (el) c.equipPrices[k] = parseFloat(el.value) || 0;
   });
-  sotreqSaveConfig();
+  const savedInDatabase = await sotreqSaveConfig();
   console.log('[SAVE] conversao:', c.conversao, 'taxaCrescimento:', c.taxaCrescimento);
   fullRefresh();
   adminRenderIndicators();
-  sotreqMsg('<i class="bi bi-check-lg"></i> Configura\u00E7\u00F5es salvas e dashboard atualizado!');
+  sotreqMsg(savedInDatabase
+    ? '<i class="bi bi-check-lg"></i> Configura\u00E7\u00F5es salvas no navegador e no banco de dados!'
+    : '<i class="bi bi-exclamation-triangle"></i> Configura\u00E7\u00F5es salvas neste navegador; o banco não confirmou o salvamento.',
+    savedInDatabase ? undefined : 'warning');
 }
 
 function adminUpdateFleet(key, field, value) {
@@ -8217,14 +8402,14 @@ async function adminFetchNewsAI() {
       newsData.splice(12, newsData.length - 12);
     }
 
-    sotreqSaveData();
+    const savedInDatabase = await sotreqSaveData();
     adminRenderNews();
     renderNoticias();
     renderSotreqSummary();
 
     status.style.color = 'var(--cat-green)';
     if (added > 0) {
-      status.innerHTML = '<i class="bi bi-check-lg"></i> ' + added + ' nova' + (added > 1 ? 's' : '') + ' notícia' + (added > 1 ? 's' : '') + ' adicionada' + (added > 1 ? 's' : '') + '! (Máx. 12)';
+      status.innerHTML = '<i class="bi bi-check-lg"></i> ' + added + ' nova' + (added > 1 ? 's' : '') + ' notícia' + (added > 1 ? 's' : '') + ' adicionada' + (added > 1 ? 's' : '') + (savedInDatabase ? ' e salva no banco! (Máx. 12)' : ' e salva somente neste navegador. (Máx. 12)');
     } else {
       status.innerHTML = '<i class="bi bi-info-circle"></i> Nenhuma notícia nova encontrada. As existentes já estão atualizadas.';
     }
@@ -8798,12 +8983,12 @@ async function fetchNewsUI() {
     });
     if (newsData.length > 12) newsData.splice(12, newsData.length - 12);
 
-    sotreqSaveData();
+    const savedInDatabase = await sotreqSaveData();
     renderNoticias();
     renderSotreqSummary();
 
     if (added > 0) {
-      status.innerHTML = '<span style="color:var(--cat-green);"><i class="bi bi-check-lg"></i> ' + added + ' nova' + (added > 1 ? 's' : '') + ' notícia' + (added > 1 ? 's' : '') + ' adicionada' + (added > 1 ? 's' : '') + '</span>';
+      status.innerHTML = '<span style="color:' + (savedInDatabase ? 'var(--cat-green)' : 'var(--cat-yellow)') + ';"><i class="bi bi-check-lg"></i> ' + added + ' nova' + (added > 1 ? 's' : '') + ' notícia' + (added > 1 ? 's' : '') + ' adicionada' + (added > 1 ? 's' : '') + (savedInDatabase ? ' e salva no banco' : ' e salva somente neste navegador') + '</span>';
     } else {
       status.innerHTML = '<span style="color:var(--cat-text-muted);"><i class="bi bi-info-circle"></i> Nenhuma notícia nova</span>';
     }
