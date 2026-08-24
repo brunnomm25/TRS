@@ -5141,156 +5141,296 @@ function renderBrazilMap(stateData) {
 
 // ── PIPELINE DETALHADO ──
 // ── NOTÍCIAS ──
-const rareEarthNewsData = [ // __DATA_BEGIN_NEWS__
-  { date: '26 Mai/2026', source: 'Revista Fórum', company: 'Spark Energy Minerals',
-    title: 'Mineradora canadense quer investir R$ 150 milhões em projeto de minerais críticos no Vale do Lítio',
-    text: 'A Spark Energy Minerals, do Canadá, quer investir R$ 150 milhões no projeto Arapaima, no Vale do Lítio, em Minas Gerais. O projeto envolve minerais críticos como lítio, terras raras e gálio, com protocolo de intenções junto ao Governo de MG e potencial de geração de empregos na fase de pesquisa mineral.',
-    tags: ['Spark Energy', 'Arapaima', 'MG', 'Exploração'],
-    link: 'https://revistaforum.com.br/brasil/mineradora-canadense-quer-investir-r-150-milhoes-em-projeto-de-minerais-criticos-no-vale-do-litio/' },
-  { date: '26 Mai/2026', source: 'BNamericas', company: 'Spark Energy Minerals',
-    title: 'Canadense Spark prevê R$150 mi para projeto de minerais críticos no Brasil',
-    text: 'A BNamericas reporta que a canadense Spark Energy Minerals prevê investimento de R$ 150 milhões para avançar o projeto Arapaima, de minerais críticos, em Minas Gerais. O sinal reforça a entrada da companhia no radar de prospecção comercial para oportunidades futuras.',
-    tags: ['Spark Energy', 'Arapaima', 'MG', 'Investimento'],
-    link: 'https://www.bnamericas.com/pt/noticias/canadense-spark-preve-r150mi-para-projeto-de-minerais-criticos-no-brasil' },
-  { date: '26 Mai/2026', source: 'Notícias da Mineração', company: 'Viridis',
-    title: 'Viridis já mira construção do projeto Colossus',
-    text: 'Viridis Mining & Minerals finalizou o DFS do projeto Colossus, em Poços de Caldas (MG), e protocolou a Licença de Instalação (LI) junto à FEAM. CAPEX estimado de US$ 560M e produção prevista de ~13.500 t/ano de REO. FID prevista para o 2S/2026.',
-    tags: ['Viridis', 'Colossus', 'MG', 'DFS'],
-    link: 'https://www.noticiasdemineracao.com/metais-basicos/news-articles/4531694/viridis-ja-mira-construcao-projeto-colossus' },
-  { date: '22 Abr/2026', source: 'BNamericas', company: 'Meteoric',
-    title: 'Meteoric levanta novos recursos para projeto Caldeira',
-    text: 'A Meteoric Resources levantou A$ 40M (US$ 30M) via colocação privada para avançar o projeto Caldeira (MG). Recursos vão para DFS, licenciamento ambiental e operação da planta-piloto. FID prevista para 2026.',
-    tags: ['Meteoric', 'Caldeira', 'MG', 'Financiamento'],
-    link: 'https://www.bnamericas.com/pt/noticias/meteoric-vai-levantar-novos-recursos-para-seu-projeto-de-terras-raras-de-us450-milhoes-no-brasil' },
-  { date: '15 Abr/2026', source: 'Brasil Mineral', company: 'BRE',
-    title: 'BRE poderá investir até R$ 3,6 bilhões para implantar polo de produção na Bahia',
-    text: 'A Brazilian Rare Earths prevê investir até R$ 3,6 bi no projeto Monte Alto (BA), maior teor global de terras raras (>15% TREO). Parceria com Carester (França). Primeira fase de R$ 600 mi com mina e planta de concentração.',
-    tags: ['BRE', 'Monte Alto', 'BA', 'Investimento'],
-    link: 'https://www.brasilmineral.com.br/noticias/bre-podera-investir-ate-r-36-bilhoes-para-implantar-polo-de-producao-na-bahia' },
-  { date: '10 Abr/2026', source: 'Tribuna do Planalto', company: 'Aclara',
-    title: 'Aclara prevê início da produção comercial de terras raras em Goiás em 2028',
-    text: 'A Aclara Resources concluiu o FS do projeto Carina (GO) com CAPEX de US$ 781M. Início das obras no H2/26 e produção no H2/28. VPL de US$ 1,7 bi e TIR de 26,9%. Capacidade de 4.378 t/ano de REO.',
-    tags: ['Aclara', 'Carina', 'GO', 'FS'],
-    link: 'https://tribunadoplanalto.com.br/aclara-preve-inicio-da-producao-comercial-de-terras-raras-em-goias-em-2028/' },
-  { date: '20 Mar/2026', source: 'Reuters · UOL', company: 'St George',
-    title: 'St George avança com projeto de terras raras em Araxá',
-    text: 'A St George Mining avança na estruturação financeira do projeto Araxá (MG) com estimativa de US$ 350M em investimentos. Sondagens elevaram em 75% os recursos de terras raras, para 70,91 Mt @ 4,06% TREO.',
-    tags: ['St George', 'Araxá', 'MG', 'Recursos'],
-    link: 'https://economia.uol.com.br/noticias/reuters/2026/03/05/st-george-avanca-com-projeto-de-terras-raras-em-minas-ve-maior-demanda-com-guerra.htm' },
-  { date: '08 Abr/2026', source: 'Brasil Mineral', company: 'Power Minerals',
-    title: 'Australiana Power Minerals adquire a Mineração Terras Raras',
-    text: 'A Power Minerals concluiu a aquisição da MTR por A$ 22,5 mi (US$ 16 mi), dona do projeto Morro do Ferro em Poços de Caldas (MG). Área de 3,5 Mt @ 3,95% TREO. Protocolo de intenções assinado com governo de MG.',
-    tags: ['Power Minerals', 'MTR', 'MG', 'Aquisição'],
-    link: 'https://www.brasilmineral.com.br/noticias/australiana-power-minerals-adquire-a-mineracao-terras-raras-por-a-225-milhoes' },
-  { date: '05 Abr/2026', source: 'TeféNews', company: 'BCM',
-    title: 'BCM firma parceria internacional para explorar terras raras no Amazonas',
-    text: 'A Brazilian Critical Minerals firmou acordo com a Southern Alliance Mining (Malásia) para o projeto EMA em Apuí (AM). Licenciamento em andamento no IPAAM. Método de lixiviação in-situ (ISR). Previsão de início em 2027.',
-    tags: ['BCM', 'EMA', 'AM', 'Parceria'],
-    link: 'https://tefenews.com.br/amazonas/empresa-australiana-firma-parceria-internacional-para-explorar-terras-raras-no-sul-do-amazonas' },
-  { date: '02 Abr/2026', source: 'Forbes', company: 'ADL',
-    title: 'ADL Mineração realiza primeira exportação privada de terras raras do Brasil',
-    text: 'A ADL Mineração embarcou o primeiro container de monazita para o Canadá, retomando a exportação privada de terras raras após 7 anos. Meta de 500-1.000 t em 2026 e 3.000 t/ano até 2028. Projeto Buena (RJ).',
-    tags: ['ADL', 'Buena', 'RJ', 'Exportação'],
-    link: 'https://forbes.com.br/forbes-money/2026/04/marco-historico-jovem-ceo-lidera-retomada-da-exportacao-de-terras-raras-pelo-brasil/' },
-  { date: '15 Mar/2026', source: 'BNamericas', company: 'Rainbow',
-    title: 'Mosaic e Rainbow avaliam projeto de terras raras de US$ 279 mi no Brasil',
-    text: 'Rainbow REE e Mosaic concluíram avaliação econômica do projeto Uberaba (MG) — recuperação de REE a partir de fosfogesso. Processamento de 2,7 Mt/ano com vida útil de 30 anos. VPL de US$ 916 mi e TIR de 45%.',
-    tags: ['Rainbow', 'Uberaba', 'Fosfogesso', 'PFS'],
-    link: 'https://www.bnamericas.com/pt/noticias/mosaic-e-rainbow-avaliam-projeto-de-terras-raras-de-us279-milhoes-no-brasil' },
-  { date: '25 Mar/2026', source: 'BNamericas', company: 'Meteoric',
-    title: 'Meteoric busca licença para projeto Caldeira de US$ 443 mi',
-    text: 'A Meteoric Resources protocolou o pedido de Licença de Instalação (LI) do projeto Caldeira junto à FEAM/MG. LP obtida em dez/2025. CAPEX estimado de US$ 443 mi. Projeto integra mina e planta de separação.',
-    tags: ['Meteoric', 'Caldeira', 'MG', 'LI'],
-    link: 'https://www.bnamericas.com/pt/noticias/meteoric-busca-licenca-para-projeto-de-terras-raras-de-us443-milhoes-no-brasil' },
-  { date: '24 Mai/2026', source: 'BNamericas', company: 'Viridis',
-    title: 'Viridis avança Colossus em direção à construção após protocolo da LI',
-    text: 'A Viridis Mining apresentou o pedido de LI para o projeto Colossus junto à FEAM. Financiamento em andamento com BNDES, Export Finance Australia e investidores privados. FID prevista para o 2S/2026.',
-    tags: ['Viridis', 'Colossus', 'MG', 'LI'],
-    link: 'https://www.bnamericas.com/pt/noticias/viridis-avanca-projeto-colossus-de-terras-raras-em-direcao-a-construcao-apos-protocolo-da-licenca-de-instalacao' },
-  { date: '12 Abr/2026', source: 'Jornal de Patrocínio', company: 'Terra Brasil',
-    title: 'Indústria de terras raras e fertilizantes no Alto Paranaíba pode sair do papel',
-    text: 'A Terra Brasil Minerals negocia JV internacional para o projeto integrado de terras raras e fertilizantes no Alto Paranaíba (MG). Investimento de R$ 2,5 bi. Produção prevista de 10.000 t/ano REE e 1 Mt/ano fosfato.',
-    tags: ['Terra Brasil', 'Alto Paranaíba', 'MG', 'JV'],
-    link: 'https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel' },
+const rareEarthNewsData = [
+  {
+    date: '20 Ago/2026', source: 'Reuters · Folha de S.Paulo', company: 'Viridis Mining & Minerals',
+    title: 'Viridis assegura até US$ 120 milhões para avançar o projeto Colossus',
+    text: 'A Viridis obteve compromissos de investimento de até US$ 120 milhões para o Colossus. A companhia informou CAPEX total de US$ 449 milhões, decisão final de investimento prevista para o 4T26, construção em 2027 e produção comercial em 2028.',
+    tags: ['Viridis', 'Colossus', 'MG', 'Financiamento', 'CAPEX', 'FID'],
+    link: 'https://www1.folha.uol.com.br/mercado/2026/08/viridis-garante-investimentos-estrangeiros-em-projeto-de-terras-raras-no-brasil.shtml'
+  },
+  {
+    date: '13 Jul/2026', source: 'SMM', company: 'Meteoric Resources / Viridis Mining & Minerals',
+    title: 'Caldeira e Colossus elevam recursos minerais à categoria Medido',
+    text: 'Meteoric e Viridis anunciaram avanços na classificação dos recursos. Caldeira passou a reportar 128 milhões de toneladas medidas e Colossus, 31 milhões de toneladas medidas, reforçando a base para estudos de viabilidade.',
+    tags: ['Meteoric', 'Viridis', 'Caldeira', 'Colossus', 'MG', 'Recursos Medidos'],
+    link: 'https://news.metal.com/pt/newscontent/103999993-projetos-brasileiros-de-terras-raras-elevam-recursos-ao-status-medido-avan%C3%A7ando-estudos-de-viabilidade'
+  },
+  {
+    date: "20 Ago/2026", source: "Repórter Brasil", company: "Geral",
+    title: "Mineradoras estrangeiras detêm 4 a cada 10 projetos de terras raras no país",
+    text: "Mineradoras estrangeiras detêm 4 a cada 10 projetos de terras raras no país  Repórter Brasil",
+    tags: ["Notícia","Terras Raras"],
+    link: "https://news.google.com/rss/articles/CBMiswFBVV95cUxQRzM2MUFuVXh0YnprVk5IajJyVXJwT0ZFb2pqMDRuVmRud2pJWG1KUEZUWXhVTHJUbHAxTFRXYUw3OVpCc3ZJQnVxdDUxLU9fNnVBZFcwMXVpLWxWdmpwRS05NXdHMGIyRUhDdTBrZFYtZWtaZGJnWVdUdFNUT1lEREZRMUdVMjVnc1pLb2lleElKdHZYd29pa0pBSzFZRjJTZE9aMnNodGx0Mklsd3RNaVZDWQ?oc=5"
+  },
+  {
+    date: "20 Ago/2026", source: "Folha de S.Paulo", company: "Viridis",
+    title: "Viridis obtém investimentos estrangeiros em projeto de terras raras no Brasil",
+    text: "Viridis obtém investimentos estrangeiros em projeto de terras raras no Brasil  Folha de S.Paulo",
+    tags: ["Notícia","Terras Raras","Viridis"],
+    link: "https://news.google.com/rss/articles/CBMiywFBVV95cUxPeG0tbWpvdU5PR3pReHNKSk41TVJDeWpHaE1IdVBKUnJBLTdKREdNNk5ueTZ5Zm5zQ0FTVUJpMHZCenBUWG04c3hkcTNzbXRGaDVzck1Ud1AyQkhMTnM5RW95UWhQRmwycjdwZXJmOC1fdmpkTV9iYnAyLW05aVVfVGVDaVNsWU1JWk9JQnpyUDFVYlVsem0wVXJaVVBhRzMxdnFVU0cwVnJrLVg3NkV0bXZiY1J0dnY3aERPRXUtemdvRGFSUWhkWmFUTQ?oc=5"
+  },
+  {
+    date: "19 Ago/2026", source: "Valor Econômico", company: "Geral",
+    title: "Com a 2ª maior reserva do mundo de terras raras, o Brasil vem atraindo investimentos externos",
+    text: "Com a 2ª maior reserva do mundo de terras raras, o Brasil vem atraindo investimentos externos  Valor Econômico",
+    tags: ["Notícia","Terras Raras"],
+    link: "https://news.google.com/rss/articles/CBMigwJBVV95cUxPelc1R0p5YmczdWNCQVRrMDhTUHhMTDkxZjVldW11QmNhazMzNE0zcVRPUExScDNHN0RzaUsyZG43Slh4TWFDRnFLc3RfbFRGQ1JicUhtTFlvOS1NbkkxMmx3YmM1eXlzRWM1X29WenZac0J5ZC1VTmRCX3p2eWJ5WUpscnNTYXpYd3ZIc3lzNlhWLVlsVV9lRlBHQ1lONUwzbDBjSzdIQ2tMUGJBRkdPYm53cUR1WGNiZkxJVzhoSVlWYVl1QUI1bUZsMGxraUVIcnBXc1E3ZVBkSVF4UzFjTjRxb0RKMHZudXpQa0VWalpRSk9lanBkajNpU0RZRnNrX25B?oc=5"
+  },
+  {
+    date: "21 Ago/2026", source: "Estadão", company: "Geral",
+    title: "EUA e outros países recorrem ao Brasil em busca de terras raras, acirrando competição com a China",
+    text: "EUA e outros países recorrem ao Brasil em busca de terras raras, acirrando competição com a China  Estadão",
+    tags: ["Notícia","Terras Raras"],
+    link: "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOWGR5OF8zall4a0dkckFabENwa2lWbzF2dHRSbHpoZkozNm5BeUxvemJJNDhtSUZ6UmFROWlGQ1ZHS2FhSmNJdzd4c0NiOHNlY09rUFd6S29RMzAyZnNiaGdxeE1ISE05WlNJWlRjb25vS3Z6bThpdVg3YXFLeFdGNjNyblU3NnlDQjlR0gGQAUFVX3lxTE9jcnVVcGhCMHJocEY0OUdKMjZyQ0x5clhPVHd0VEI3YjNNRk9nd2kyQjVKTnEtdVpvX1hUbllabmM4UEJLS1NFa3kwdlRHUmpoMzlvNi10SEp1WEFHbHNLNVdEVWpQaEstSHV0S2RWcjlWeDBtdjU2LXNUd1VRSHRObldBUXItOUFmVGhTdTRheA?oc=5"
+  },
+  {
+    date: "18 Ago/2026", source: "Brasil Mineral", company: "BRE",
+    title: "TERRAS RARAS | Brazilian Rare Earths estima valor de US$ 7,9 bilhões para projeto na Bahia",
+    text: "TERRAS RARAS | Brazilian Rare Earths estima valor de US$ 7,9 bilhões para projeto na Bahia  Brasil Mineral",
+    tags: ["Notícia","Terras Raras","BRE"],
+    link: "https://news.google.com/rss/articles/CBMisAFBVV95cUxOSzBueFh2VERmYkJZNERiTmZWR1E0Y3h6OEJmWV93OFJWMFJiUXNaOWlFcE93N0F0RExOVElXUlg5dUhiTTZuZ3JNZVlsWnRyUzdHLWtpOEQ5dkp5ZXVhS052dWtPSWZHWUtYSWlvY0MwWVozOEtJRkJVMTBwWVl3MlBaeU5RbTdsUUtGNUtQdHIxQTBDNkZYaGhQelR1VnpiTG1qRG5uU0R1Y3o3Y1VjNQ?oc=5"
+  },
+  {
+    date: "21 Ago/2026", source: "BNamericas", company: "Viridis",
+    title: "Australiana Viridis capta US$120 milhões para financiar projeto de terras raras no Brasil",
+    text: "Australiana Viridis capta US$120 milhões para financiar projeto de terras raras no Brasil  BNamericas",
+    tags: ["Notícia","Terras Raras","Viridis"],
+    link: "https://news.google.com/rss/articles/CBMixAFBVV95cUxPeVZCbTY1bllnMEZEZFNucENBcUtmWk5nVjZSS25oSzYzT1pyM0U1MnRMdlVQNGEtOENEWjc3Z2IyVk1ncDlRTENrV1AwZk5ObHhjNGdqaW9OWjlfQnBjTTVaeUZQRUl3M01vTW1neFktUm91RFJXVnBGNDlwUDlXdGhLeERQQ2lVZFE3UVpGUDFQX0hhaVJ4cHFSc3Y0TzlFNVJBdXY0bVRXX0dXaGlLbXJCTk5GZHdGdGxlcGYtcjlPWTFy?oc=5"
+  },
+  {
+    date: "26 Mai/2026", source: "Revista Fórum", company: "Spark Energy Minerals",
+    title: "Mineradora canadense quer investir R$ 150 milhões em projeto de minerais críticos no Vale do Lítio",
+    text: "A Spark Energy Minerals, do Canadá, quer investir R$ 150 milhões no projeto Arapaima, no Vale do Lítio, em Minas Gerais. O projeto envolve minerais críticos como lítio, terras raras e gálio, com protocolo de intenções junto ao Governo de MG e potencial de geração de empregos na fase de pesquisa mineral.",
+    tags: ["Spark Energy","Arapaima","MG","Exploração"],
+    link: "https://revistaforum.com.br/brasil/mineradora-canadense-quer-investir-r-150-milhoes-em-projeto-de-minerais-criticos-no-vale-do-litio/"
+  },
+  {
+    date: "26 Mai/2026", source: "BNamericas", company: "Spark Energy Minerals",
+    title: "Canadense Spark prevê R$150 mi para projeto de minerais críticos no Brasil",
+    text: "A BNamericas reporta que a canadense Spark Energy Minerals prevê investimento de R$ 150 milhões para avançar o projeto Arapaima, de minerais críticos, em Minas Gerais. O sinal reforça a entrada da companhia no radar de prospecção comercial para oportunidades futuras.",
+    tags: ["Spark Energy","Arapaima","MG","Investimento"],
+    link: "https://www.bnamericas.com/pt/noticias/canadense-spark-preve-r150mi-para-projeto-de-minerais-criticos-no-brasil"
+  },
+  {
+    date: "26 Mai/2026", source: "Notícias da Mineração", company: "Viridis",
+    title: "Viridis já mira construção do projeto Colossus",
+    text: "Viridis Mining & Minerals finalizou o DFS do projeto Colossus, em Poços de Caldas (MG), e protocolou a Licença de Instalação (LI) junto à FEAM. CAPEX estimado de US$ 560M e produção prevista de ~13.500 t/ano de REO. FID prevista para o 2S/2026.",
+    tags: ["Viridis","Colossus","MG","DFS"],
+    link: "https://www.noticiasdemineracao.com/metais-basicos/news-articles/4531694/viridis-ja-mira-construcao-projeto-colossus"
+  },
+  {
+    date: "22 Abr/2026", source: "BNamericas", company: "Meteoric",
+    title: "Meteoric levanta novos recursos para projeto Caldeira",
+    text: "A Meteoric Resources levantou A$ 40M (US$ 30M) via colocação privada para avançar o projeto Caldeira (MG). Recursos vão para DFS, licenciamento ambiental e operação da planta-piloto. FID prevista para 2026.",
+    tags: ["Meteoric","Caldeira","MG","Financiamento"],
+    link: "https://www.bnamericas.com/pt/noticias/meteoric-vai-levantar-novos-recursos-para-seu-projeto-de-terras-raras-de-us450-milhoes-no-brasil"
+  },
+  {
+    date: "15 Abr/2026", source: "Brasil Mineral", company: "BRE",
+    title: "BRE poderá investir até R$ 3,6 bilhões para implantar polo de produção na Bahia",
+    text: "A Brazilian Rare Earths prevê investir até R$ 3,6 bi no projeto Monte Alto (BA), maior teor global de terras raras (>15% TREO). Parceria com Carester (França). Primeira fase de R$ 600 mi com mina e planta de concentração.",
+    tags: ["BRE","Monte Alto","BA","Investimento"],
+    link: "https://www.brasilmineral.com.br/noticias/bre-podera-investir-ate-r-36-bilhoes-para-implantar-polo-de-producao-na-bahia"
+  },
+  {
+    date: "10 Abr/2026", source: "Tribuna do Planalto", company: "Aclara",
+    title: "Aclara prevê início da produção comercial de terras raras em Goiás em 2028",
+    text: "A Aclara Resources concluiu o FS do projeto Carina (GO) com CAPEX de US$ 781M. Início das obras no H2/26 e produção no H2/28. VPL de US$ 1,7 bi e TIR de 26,9%. Capacidade de 4.378 t/ano de REO.",
+    tags: ["Aclara","Carina","GO","FS"],
+    link: "https://tribunadoplanalto.com.br/aclara-preve-inicio-da-producao-comercial-de-terras-raras-em-goias-em-2028/"
+  },
+  {
+    date: "20 Mar/2026", source: "Reuters · UOL", company: "St George",
+    title: "St George avança com projeto de terras raras em Araxá",
+    text: "A St George Mining avança na estruturação financeira do projeto Araxá (MG) com estimativa de US$ 350M em investimentos. Sondagens elevaram em 75% os recursos de terras raras, para 70,91 Mt @ 4,06% TREO.",
+    tags: ["St George","Araxá","MG","Recursos"],
+    link: "https://economia.uol.com.br/noticias/reuters/2026/03/05/st-george-avanca-com-projeto-de-terras-raras-em-minas-ve-maior-demanda-com-guerra.htm"
+  },
+  {
+    date: "08 Abr/2026", source: "Brasil Mineral", company: "Power Minerals",
+    title: "Australiana Power Minerals adquire a Mineração Terras Raras",
+    text: "A Power Minerals concluiu a aquisição da MTR por A$ 22,5 mi (US$ 16 mi), dona do projeto Morro do Ferro em Poços de Caldas (MG). Área de 3,5 Mt @ 3,95% TREO. Protocolo de intenções assinado com governo de MG.",
+    tags: ["Power Minerals","MTR","MG","Aquisição"],
+    link: "https://www.brasilmineral.com.br/noticias/australiana-power-minerals-adquire-a-mineracao-terras-raras-por-a-225-milhoes"
+  },
+  {
+    date: "05 Abr/2026", source: "TeféNews", company: "BCM",
+    title: "BCM firma parceria internacional para explorar terras raras no Amazonas",
+    text: "A Brazilian Critical Minerals firmou acordo com a Southern Alliance Mining (Malásia) para o projeto EMA em Apuí (AM). Licenciamento em andamento no IPAAM. Método de lixiviação in-situ (ISR). Previsão de início em 2027.",
+    tags: ["BCM","EMA","AM","Parceria"],
+    link: "https://tefenews.com.br/amazonas/empresa-australiana-firma-parceria-internacional-para-explorar-terras-raras-no-sul-do-amazonas"
+  },
+  {
+    date: "02 Abr/2026", source: "Forbes", company: "ADL",
+    title: "ADL Mineração realiza primeira exportação privada de terras raras do Brasil",
+    text: "A ADL Mineração embarcou o primeiro container de monazita para o Canadá, retomando a exportação privada de terras raras após 7 anos. Meta de 500-1.000 t em 2026 e 3.000 t/ano até 2028. Projeto Buena (RJ).",
+    tags: ["ADL","Buena","RJ","Exportação"],
+    link: "https://forbes.com.br/forbes-money/2026/04/marco-historico-jovem-ceo-lidera-retomada-da-exportacao-de-terras-raras-pelo-brasil/"
+  },
+  {
+    date: "15 Mar/2026", source: "BNamericas", company: "Rainbow",
+    title: "Mosaic e Rainbow avaliam projeto de terras raras de US$ 279 mi no Brasil",
+    text: "Rainbow REE e Mosaic concluíram avaliação econômica do projeto Uberaba (MG) — recuperação de REE a partir de fosfogesso. Processamento de 2,7 Mt/ano com vida útil de 30 anos. VPL de US$ 916 mi e TIR de 45%.",
+    tags: ["Rainbow","Uberaba","Fosfogesso","PFS"],
+    link: "https://www.bnamericas.com/pt/noticias/mosaic-e-rainbow-avaliam-projeto-de-terras-raras-de-us279-milhoes-no-brasil"
+  },
+  {
+    date: "25 Mar/2026", source: "BNamericas", company: "Meteoric",
+    title: "Meteoric busca licença para projeto Caldeira de US$ 443 mi",
+    text: "A Meteoric Resources protocolou o pedido de Licença de Instalação (LI) do projeto Caldeira junto à FEAM/MG. LP obtida em dez/2025. CAPEX estimado de US$ 443 mi. Projeto integra mina e planta de separação.",
+    tags: ["Meteoric","Caldeira","MG","LI"],
+    link: "https://www.bnamericas.com/pt/noticias/meteoric-busca-licenca-para-projeto-de-terras-raras-de-us443-milhoes-no-brasil"
+  },
+  {
+    date: "24 Mai/2026", source: "BNamericas", company: "Viridis",
+    title: "Viridis avança Colossus em direção à construção após protocolo da LI",
+    text: "A Viridis Mining apresentou o pedido de LI para o projeto Colossus junto à FEAM. Financiamento em andamento com BNDES, Export Finance Australia e investidores privados. FID prevista para o 2S/2026.",
+    tags: ["Viridis","Colossus","MG","LI"],
+    link: "https://www.bnamericas.com/pt/noticias/viridis-avanca-projeto-colossus-de-terras-raras-em-direcao-a-construcao-apos-protocolo-da-licenca-de-instalacao"
+  },
+  {
+    date: "12 Abr/2026", source: "Jornal de Patrocínio", company: "Terra Brasil",
+    title: "Indústria de terras raras e fertilizantes no Alto Paranaíba pode sair do papel",
+    text: "A Terra Brasil Minerals negocia JV internacional para o projeto integrado de terras raras e fertilizantes no Alto Paranaíba (MG). Investimento de R$ 2,5 bi. Produção prevista de 10.000 t/ano REE e 1 Mt/ano fosfato.",
+    tags: ["Terra Brasil","Alto Paranaíba","MG","JV"],
+    link: "https://www.jornaldepatrocinio.com/industria-de-terras-raras-e-fertilizantes-no-alto-paranaiba-pode-sair-do-papel"
+  }
 ]; // __DATA_END_NEWS__
 
 const greenfieldNewsData = [
   {
-    date: '13 Jul/2026', source: 'Atlas Lithium', company: 'Atlas Lithium',
-    title: 'Atlas Lithium mantém Neves no caminho para produção comercial em 2027',
-    text: 'A companhia informou que o projeto Neves, em Minas Gerais, está totalmente permitido, com produção planejada de cerca de 150 mil toneladas anuais de concentrado de lítio e interesse comercial acima da capacidade planejada.',
-    tags: ['Lítio', 'MG', 'Neves', 'Produção 2027'],
-    link: 'https://www.atlas-lithium.com/news/atlas-lithium-receives-strong-product-demand-on-track-for-commercial-production-in-2027'
+    date: '30 Jul/2026', source: 'Vale', company: 'Vale S.A. / Vale Base Metals',
+    title: 'Serra Sul +20 inicia operação e Bacaba avança à frente do cronograma',
+    text: 'A Vale informou que Serra Sul +20 iniciou operação em julho com o segundo sistema de correias de longa distância. Bacaba atingiu 39% de avanço físico ao fim do 2T26 e teve o start-up antecipado para o 3T27.',
+    tags: ['Vale', 'Serra Sul +20', 'S11D', 'Bacaba', 'PA', 'Construção'],
+    link: 'https://vale.com/pt/confira-os-resultados-financeiros-do-2t26'
   },
   {
-    date: '30 Jun/2026', source: 'Belo Sun', company: 'Belo Sun Mining',
-    title: 'Belo Sun atualiza avanço do projeto Volta Grande no Pará',
-    text: 'A Belo Sun informou avanços técnicos, contratação da G Mining Services para análise técnica e programa de capacitação local, mantendo o projeto Volta Grande no radar de pré-construção.',
-    tags: ['Ouro', 'PA', 'Volta Grande', 'Licenciamento'],
-    link: 'https://www.belosun.com/news/belo-sun-provides-project-update'
+    date: '21 Jul/2026', source: 'Vale', company: 'Vale Base Metals',
+    title: 'Ativos brasileiros levam cobre da Vale ao melhor segundo trimestre em nove anos',
+    text: 'A produção de cobre da Vale alcançou 98,4 kt no 2T26, alta de 6% no ano, com recorde de segundo trimestre em Salobo e maior produção em Sossego. O resultado reforça o corredor de cobre de Carajás acompanhado pela Sotreq.',
+    tags: ['Vale Base Metals', 'Salobo', 'Sossego', 'Cobre', 'PA'],
+    link: 'https://www.vale.com/pt/confira-os-resultados-de-produ%C3%A7%C3%A3o-e-vendas-do-2t26'
   },
   {
-    date: '28 Mai/2026', source: 'INB', company: 'Consórcio Santa Quitéria (INB / Galvani)',
-    title: 'Projeto Santa Quitéria avança com melhorias ambientais e previsão de LP em 2026',
-    text: 'A INB destacou avanços no projeto de fosfato e urânio em Santa Quitéria, incluindo menor consumo de água, eliminação de barragens de rejeitos e cronograma com instalação prevista para 2027.',
-    tags: ['Fosfato', 'CE', 'Santa Quitéria', 'Licenciamento'],
-    link: 'https://www.inb.gov.br/pt-br/Detalhe/Conteudo/avancos-do-projeto-santa-quiteria-sao-destaques-no-segundo-dia-de-seminario-inte/Origem/1534'
+    date: "19 Ago/2026", source: "BNamericas", company: "Geral",
+    title: "Peru busca destravar US$40bi em investimento em mineração",
+    text: "Peru busca destravar US$40bi em investimento em mineração  BNamericas",
+    tags: ["Notícia"],
+    link: "https://news.google.com/rss/articles/CBMimwFBVV95cUxNUE9IX05BYTNkSDBCem1JZURIMTFVWFRPSVdDeDExWWV6WnVNZVNvOS1HMUFkd3RwNEZ4S3MxWFZoUW1iM2pGUTBLb2t1NFNJTUFaeW1KYTVxTWtzVUs1Q3d5eVZ5cE1PZVlQbnVtVk5fWi15Q2c3aFdxR0YyQlE1Zno1YjdLd2R4cGN5Q3l3NFdySU1aYWowRFRJRQ?oc=5"
   },
   {
-    date: '07 Mai/2026', source: 'Lithium Ionic', company: 'Lithium Ionic',
-    title: 'Lithium Ionic inicia cotações de contratação para operações de mina em Bandeira',
-    text: 'A Lithium Ionic informou que engenharia, procurement, licenciamento e engajamento comunitário seguem avançando no Projeto Bandeira, em Minas Gerais.',
-    tags: ['Lítio', 'MG', 'Bandeira', 'Construção'],
-    link: 'https://www.lithiumionic.com/news/lithium-ionic-initiates-mine-operations-contractor-tenders-and-provides-bandeira-development-and-community-engagement-update'
+    date: "03 Ago/2026", source: "CNN Brasil", company: "Geral",
+    title: "Temos que fortalecer cadeias para atrair investimentos, diz Invest Minas",
+    text: "Temos que fortalecer cadeias para atrair investimentos, diz Invest Minas  CNN Brasil",
+    tags: ["Notícia"],
+    link: "https://news.google.com/rss/articles/CBMiygFBVV95cUxQMzJhTGNvRzA3bU1iSGFTcjRRcVJWS284QTZSempKcU5qWDIxakRveGVqaG5wd3c4MjEwRXlMWW5NcTgzTlhkcHlJc3hVZkxFU3ZNWENQYnBTVW9MX1Axc191Ri1ud1pKRUNrbDd0ekVCam9XVWdFdGk5V1ZlYVpYRTJYYzJiejNkM19IUlNzSlVQNGNfc05TUTlzWloyR1B1dE5mUFp6a3NVZEt5bzdEV0M3cHZMSFIwdG9YTlpPaEEtRml3ekExVGxR?oc=5"
   },
   {
-    date: '30 Abr/2026', source: 'Belo Sun', company: 'Belo Sun Mining',
-    title: 'SEMAS reemite Licença de Instalação do projeto Volta Grande',
-    text: 'A Belo Sun comunicou a reemissão da LI 3698/2026 para o projeto de ouro Volta Grande, válida até abril de 2029, permitindo avanço do projeto.',
-    tags: ['Ouro', 'PA', 'LI', 'Volta Grande'],
-    link: 'https://www.belosun.com/news/belo-sun-provides-update-on-volta-grande-gold-project'
+    date: "07 Jul/2026", source: "Valor Econômico", company: "Geral",
+    title: "Unctad: Brasil ocupa o 5º lugar entre os maiores destinos de IED",
+    text: "Unctad: Brasil ocupa o 5º lugar entre os maiores destinos de IED  Valor Econômico",
+    tags: ["Notícia"],
+    link: "https://news.google.com/rss/articles/CBMivwFBVV95cUxPdWdUaXZlRG9GNFdpTEplb0s4cFBFbUZwcHpQRE5xTURIZFdxSU5vemEycUlXbFhlQXdDQlY4YVZPQk1kcHBVQ05DS3ZCWGZia09jaHV5Slc4bEVibTdVa0o4eUV3Zno4OUt0SXJDRFFTbWoxZi1zWlQ3NEVlSVhvU3A2WkFVRi1UZzhuUExudUNGdHBzYzIyU0dYbUQ0bmdGRzl1Y2lJVzV6dEpHZXM2b20tTmhMVS05S2MwYkwyb9IBzgFBVV95cUxPSm1VdkJ1OG1ZWUJoYTZCTEZzTVRiQ1JZNFdybk5PWDNycl81QXZFcENtV2RncFoyVWtQbEh1ek1SblZDMnZFWThIWHBIc1A4RlRfSXV0dGFaZHdRa2hDZmFDUVhtS3h2MnVHZm5TOXZzdlhXZkpYTExtMG5EOGNSMlFGNWNVajlMLXFWaE1iTkhvVmlMMHNiWncyNWRJTG1XakR0R0x1dGZqNUhYazBlSkZFZHByUUtjRVNxQnNrQUtJcVJQTTI2Mk5SNF9TZw?oc=5"
   },
   {
-    date: '27 Abr/2026', source: 'Atlas Lithium', company: 'Atlas Lithium',
-    title: 'Atlas Lithium contrata parceiros de execução para levar Neves à produção',
-    text: 'A Atlas anunciou contratos com parceiros operacionais para implementação do projeto Neves, com produção prevista de cerca de 146 mil toneladas anuais de concentrado de lítio.',
-    tags: ['Lítio', 'MG', 'Neves', 'Execução'],
-    link: 'https://www.atlas-lithium.com/news/atlas-lithium-contracts-key-project-execution-partners-to-drive-its-neves-project-toward-production/'
+    date: "18 Fev/2026", source: "Estadão", company: "Geral",
+    title: "Agenda ferroviária, de R$ 140 bi, prevê oito leilões para tentar destravar setor após décadas",
+    text: "Agenda ferroviária, de R$ 140 bi, prevê oito leilões para tentar destravar setor após décadas  Estadão",
+    tags: ["Notícia"],
+    link: "https://news.google.com/rss/articles/CBMixgFBVV95cUxOX0EwZjhsVVVKSGZvMi1nek1hTjBCQnRuTHlLcnBFcS05dTJWaHRwaXRGZFU2cGtLbG0wTnNKTGJLM0RaSzVXMVRKUWViQXZaWHg4SllxanFLTThmcHR0QXJJbldYRFNicUVtdXJ0d19wTzNpeklxUHYyQi1qTmc5Qk5CbTE3cjRUeEIwTXRBcVBiRnM4WGpaZ0JkTkRMNWUwVXJYZnFqZVlIV29hMkhsN2Vvb1R1TGhBbllMRmtDQlE4WnM4cEHSAcsBQVVfeXFMT2I5WXE2bXFsb2puUE1HVWZGM3JQNGZPYUlUZ3BLdVN2UzQ2TXZkR3V0aG9QZVZnTEJoM0Y0eGd4WUpCT1E2Q3FFa1o1MFZYbkNscGk3S3d0ZVVQaE5xQndmMWxMYjFXOGlqZU1JY3hJWGp6SVZpNUFXajMweXIzd3lGVDVmbVFsa3dsc1VYY0xDcGVVNF8zVERkWWZHYk10Nmh4RERjYi1uMDBKdEo3N241MTRicWNhNEpmNVJPaTlyWW9iUVB2VUJNRWM?oc=5"
   },
   {
-    date: '18 Mai/2026', source: 'GlobeNewswire', company: 'Alurion Resources',
-    title: 'BRE propõe separar Amargosa em nova empresa Alurion Resources',
-    text: 'A Brazilian Rare Earths anunciou intenção de separar o Projeto Amargosa, de bauxita-gálio na Bahia, em uma nova companhia dedicada chamada Alurion Resources.',
-    tags: ['Bauxita', 'Gálio', 'BA', 'Amargosa', 'Alurion'],
-    link: 'https://www.globenewswire.com/news-release/2026/05/18/3296635/0/en/Brazilian-Rare-Earths-Amargosa-Bauxite-Gallium-Project-to-Be-Demerged-as-Alurion-Resources-Limited.html'
+    date: "03 Out/2025", source: "Brasil Mineral", company: "Geral",
+    title: "MINÉRIO DE FERRO | Minerita terá equipamentos de cominuição da Metso para projeto greenfield",
+    text: "MINÉRIO DE FERRO | Minerita terá equipamentos de cominuição da Metso para projeto greenfield  Brasil Mineral",
+    tags: ["Notícia"],
+    link: "https://news.google.com/rss/articles/CBMisAFBVV95cUxNN2tIWjZIUE9PclhOLVFCRVJjVXI1UFVpMG5YODVGTnpJamRXSERIMWRNVXI2WEd1YVdJV3cyTndxN2U0ZzVGc0x0V3ZWQWhtX1M5TmUxenlpMExaSGZXUF9mbUYzT21aV25VWXFFNl9kZURIMU53WjlaSXNjMHdrS0VHWThIdXVVQmU0eFNPeHNwWkhKME9Hb0EzZHZBZldvNnBtWGFnOGVfSVhRVDY3aA?oc=5"
   },
   {
-    date: '10 Fev/2026', source: 'Brazil Potash', company: 'Brazil Potash Corp.',
-    title: 'Brazil Potash reporta avanços em Autazes e iniciativas de financiamento',
-    text: 'A Brazil Potash informou avanços em outorgas, infraestrutura e discussões de financiamento para o projeto de potássio Autazes, no Amazonas.',
-    tags: ['Potássio', 'AM', 'Autazes', 'Fertilizantes'],
-    link: 'https://ir.brazilpotash.com/news-events/press-releases/detail/52/brazil-potash-reports-significant-site-progress-including-federal-water-rights-approval-indigenous-community-partnership-advancement-and-construction-financing-initiatives'
+    date: "17 Mar/2026", source: "CNN Brasil", company: "Geral",
+    title: "Gigantes da mineração avaliam entrada no mercado de terras raras no Brasil",
+    text: "Gigantes da mineração avaliam entrada no mercado de terras raras no Brasil  CNN Brasil",
+    tags: ["Notícia","Terras Raras"],
+    link: "https://news.google.com/rss/articles/CBMirwFBVV95cUxNTTEyaTl6TW1hZ1FNekk0ZG1oeXMwaWFtSVJaV0ttd3Z3N3pVT0x0aTQtY0l3d1BGdkNxdF91QUhwLUVUaUwzM21CWUxhNnNxMEpfTUw2SzB6dmxCX01oSDhZRUphcV9UNm9wMUtFX0F0bkhsNVI2Y2NicmdlenY5NzFTNmNuU0Z6VU12dDZoeVRmVmZrREVOYm5lZTQxNjN0UENTSE5vRFk4Zno2RHJZ?oc=5"
   },
   {
-    date: '02 Fev/2026', source: 'Sigma Lithium', company: 'Sigma Lithium',
-    title: 'Sigma Lithium retoma atividades de mineração e prepara expansão da Fase 2',
-    text: 'A Sigma informou retomada das atividades de lavra na Mina 1 e preparação da expansão da Planta Greentech Fase 2, com maior frota fora de estrada e ramp-up controlado.',
-    tags: ['Lítio', 'MG', 'Sigma', 'Fase 2'],
-    link: 'https://sigmalithiumcorp.com/sigma-lithium-announces-the-resumption-of-mining-activities-at-mine-1-with-over-600-people-working-on-site/'
+    date: "13 Jul/2026", source: "Atlas Lithium", company: "Atlas Lithium",
+    title: "Atlas Lithium mantém Neves no caminho para produção comercial em 2027",
+    text: "A companhia informou que o projeto Neves, em Minas Gerais, está totalmente permitido, com produção planejada de cerca de 150 mil toneladas anuais de concentrado de lítio e interesse comercial acima da capacidade planejada.",
+    tags: ["Lítio","MG","Neves","Produção 2027"],
+    link: "https://www.atlas-lithium.com/news/atlas-lithium-receives-strong-product-demand-on-track-for-commercial-production-in-2027"
   },
   {
-    date: '2026', source: 'Centaurus Metals', company: 'Centaurus Metals',
-    title: 'Jaguar mira FID em 2026 e primeira produção de níquel em 2029',
-    text: 'A Centaurus apresenta o projeto Jaguar, em Carajás, com CAPEX pré-produção de US$ 380 milhões, FID prevista para 2026 e primeira produção alvo em 2029.',
-    tags: ['Níquel', 'PA', 'Jaguar', 'Carajás'],
-    link: 'https://centaurusmetals.com/projects/jaguar-nickel-sulphide-project'
+    date: "30 Jun/2026", source: "Belo Sun", company: "Belo Sun Mining",
+    title: "Belo Sun atualiza avanço do projeto Volta Grande no Pará",
+    text: "A Belo Sun informou avanços técnicos, contratação da G Mining Services para análise técnica e programa de capacitação local, mantendo o projeto Volta Grande no radar de pré-construção.",
+    tags: ["Ouro","PA","Volta Grande","Licenciamento"],
+    link: "https://www.belosun.com/news/belo-sun-provides-project-update"
   },
   {
-    date: '2026', source: 'SAM Metais', company: 'Sul Americana de Metais (SAM)',
-    title: 'SAM informa investimento de US$ 2,1 bilhões no Projeto Bloco 8',
-    text: 'A SAM apresenta o Projeto Bloco 8, no Norte de Minas, como complexo de minério de ferro de baixo teor com investimento previsto de US$ 2,1 bilhões.',
-    tags: ['Minério de Ferro', 'MG', 'Bloco 8'],
-    link: 'https://www.sammetais.com.br/'
+    date: "28 Mai/2026", source: "INB", company: "Consórcio Santa Quitéria (INB / Galvani)",
+    title: "Projeto Santa Quitéria avança com melhorias ambientais e previsão de LP em 2026",
+    text: "A INB destacou avanços no projeto de fosfato e urânio em Santa Quitéria, incluindo menor consumo de água, eliminação de barragens de rejeitos e cronograma com instalação prevista para 2027.",
+    tags: ["Fosfato","CE","Santa Quitéria","Licenciamento"],
+    link: "https://www.inb.gov.br/pt-br/Detalhe/Conteudo/avancos-do-projeto-santa-quiteria-sao-destaques-no-segundo-dia-de-seminario-inte/Origem/1534"
+  },
+  {
+    date: "07 Mai/2026", source: "Lithium Ionic", company: "Lithium Ionic",
+    title: "Lithium Ionic inicia cotações de contratação para operações de mina em Bandeira",
+    text: "A Lithium Ionic informou que engenharia, procurement, licenciamento e engajamento comunitário seguem avançando no Projeto Bandeira, em Minas Gerais.",
+    tags: ["Lítio","MG","Bandeira","Construção"],
+    link: "https://www.lithiumionic.com/news/lithium-ionic-initiates-mine-operations-contractor-tenders-and-provides-bandeira-development-and-community-engagement-update"
+  },
+  {
+    date: "30 Abr/2026", source: "Belo Sun", company: "Belo Sun Mining",
+    title: "SEMAS reemite Licença de Instalação do projeto Volta Grande",
+    text: "A Belo Sun comunicou a reemissão da LI 3698/2026 para o projeto de ouro Volta Grande, válida até abril de 2029, permitindo avanço do projeto.",
+    tags: ["Ouro","PA","LI","Volta Grande"],
+    link: "https://www.belosun.com/news/belo-sun-provides-update-on-volta-grande-gold-project"
+  },
+  {
+    date: "27 Abr/2026", source: "Atlas Lithium", company: "Atlas Lithium",
+    title: "Atlas Lithium contrata parceiros de execução para levar Neves à produção",
+    text: "A Atlas anunciou contratos com parceiros operacionais para implementação do projeto Neves, com produção prevista de cerca de 146 mil toneladas anuais de concentrado de lítio.",
+    tags: ["Lítio","MG","Neves","Execução"],
+    link: "https://www.atlas-lithium.com/news/atlas-lithium-contracts-key-project-execution-partners-to-drive-its-neves-project-toward-production/"
+  },
+  {
+    date: "18 Mai/2026", source: "GlobeNewswire", company: "Alurion Resources",
+    title: "BRE propõe separar Amargosa em nova empresa Alurion Resources",
+    text: "A Brazilian Rare Earths anunciou intenção de separar o Projeto Amargosa, de bauxita-gálio na Bahia, em uma nova companhia dedicada chamada Alurion Resources.",
+    tags: ["Bauxita","Gálio","BA","Amargosa","Alurion"],
+    link: "https://www.globenewswire.com/news-release/2026/05/18/3296635/0/en/Brazilian-Rare-Earths-Amargosa-Bauxite-Gallium-Project-to-Be-Demerged-as-Alurion-Resources-Limited.html"
+  },
+  {
+    date: "10 Fev/2026", source: "Brazil Potash", company: "Brazil Potash Corp.",
+    title: "Brazil Potash reporta avanços em Autazes e iniciativas de financiamento",
+    text: "A Brazil Potash informou avanços em outorgas, infraestrutura e discussões de financiamento para o projeto de potássio Autazes, no Amazonas.",
+    tags: ["Potássio","AM","Autazes","Fertilizantes"],
+    link: "https://ir.brazilpotash.com/news-events/press-releases/detail/52/brazil-potash-reports-significant-site-progress-including-federal-water-rights-approval-indigenous-community-partnership-advancement-and-construction-financing-initiatives"
+  },
+  {
+    date: "02 Fev/2026", source: "Sigma Lithium", company: "Sigma Lithium",
+    title: "Sigma Lithium retoma atividades de mineração e prepara expansão da Fase 2",
+    text: "A Sigma informou retomada das atividades de lavra na Mina 1 e preparação da expansão da Planta Greentech Fase 2, com maior frota fora de estrada e ramp-up controlado.",
+    tags: ["Lítio","MG","Sigma","Fase 2"],
+    link: "https://sigmalithiumcorp.com/sigma-lithium-announces-the-resumption-of-mining-activities-at-mine-1-with-over-600-people-working-on-site/"
+  },
+  {
+    date: "2026", source: "Centaurus Metals", company: "Centaurus Metals",
+    title: "Jaguar mira FID em 2026 e primeira produção de níquel em 2029",
+    text: "A Centaurus apresenta o projeto Jaguar, em Carajás, com CAPEX pré-produção de US$ 380 milhões, FID prevista para 2026 e primeira produção alvo em 2029.",
+    tags: ["Níquel","PA","Jaguar","Carajás"],
+    link: "https://centaurusmetals.com/projects/jaguar-nickel-sulphide-project"
+  },
+  {
+    date: "2026", source: "SAM Metais", company: "Sul Americana de Metais (SAM)",
+    title: "SAM informa investimento de US$ 2,1 bilhões no Projeto Bloco 8",
+    text: "A SAM apresenta o Projeto Bloco 8, no Norte de Minas, como complexo de minério de ferro de baixo teor com investimento previsto de US$ 2,1 bilhões.",
+    tags: ["Minério de Ferro","MG","Bloco 8"],
+    link: "https://www.sammetais.com.br/"
   }
 ];
 
@@ -5524,6 +5664,16 @@ async function sotreqLoadData() {
     newsData.push(...dedupedNews);
     changed = true;
   }
+  const newsMonths = { Jan:0, Fev:1, Mar:2, Abr:3, Mai:4, Jun:5, Jul:6, Ago:7, Set:8, Out:9, Nov:10, Dez:11 };
+  const newsDateValue = value => {
+    const match = String(value || '').match(/(?:(\d{1,2})\s+)?([A-Z][a-z]{2})\/(\d{4})/);
+    if (match) return new Date(Number(match[3]), newsMonths[match[2]] ?? 0, Number(match[1] || 1)).getTime();
+    const year = String(value || '').match(/\b(20\d{2})\b/);
+    return year ? new Date(Number(year[1]), 0, 1).getTime() : 0;
+  };
+  const beforeSort = newsData.map(n => `${n.date}|${n.title}`).join('\n');
+  newsData.sort((a, b) => newsDateValue(b.date) - newsDateValue(a.date));
+  if (beforeSort !== newsData.map(n => `${n.date}|${n.title}`).join('\n')) changed = true;
   if (changed || localNeedsDatabaseSync) await sotreqSaveData();
 }
 async function sotreqSaveData() {
