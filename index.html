@@ -2221,7 +2221,7 @@ if (sessionStorage.getItem('sotreq_logged') === '1') {
     <div class="summary-card" onclick="goToChart('chartCompanyCapex')" style="cursor:pointer;">
       <div class="label">Oportunidade Sotreq</div>
       <div class="value green" id="totalOpportunity">0</div>
-      <div class="sub">Receita estimada máquinas + serviços</div>
+      <div class="sub">Cenário potencial bruto · não representa previsão de receita</div>
     </div>
     <div class="summary-card" style="display:none;">
       <div class="label">Valor Total Frota</div>
@@ -3056,12 +3056,13 @@ const rareEarthProjects = [ // __DATA_BEGIN_PROJECTS__
   {
     priority: 'critical', company: 'Viridis Mining & Minerals', origin: 'Austrália',
     project: 'Colossus', location: { city: 'Poços de Caldas', state: 'MG' },
-    capex: 560, capexDetail: 'US$ 360M (mina) + US$ 200M (separação)',
+    capex: 449, capexDetail: 'US$ 449M divulgados em Ago/2026',
     stage: 4, forecast: 'Produção 2028', capacity: '~13.500 t/ano REO',
     licensing: 'LP obtida (Dez/25) · LI protocolada (Mai/26) · DF concluído',
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
-    opportunity: 'US$ 168M', type: 'Argila Iônica',
-    highlights: 'US$50M Export Finance Australia · US$30M BNDES · Plataforma BIP Gov.Federal · JV Viridion reciclagem',
+    opportunity: 'US$ 45M (cenário bruto a 10%)', type: 'Argila Iônica',
+    highlights: 'Até US$120M em compromissos de investimento · CAPEX US$449M · FID prevista 4T26 · construção 2027 · produção 2028',
+    source: 'Reuters/Folha, 20 Ago/2026 — financiamento e CAPEX do Colossus',
     startYear: 2028, depositType: 'iacSaprolite', sotreqStatus: 'proposta-enviada', quoteStatus: 'enviada',
     quote: [
       { model: 'CAT 707', family: 'trucks', desc: 'Caminhão Rígido 66 Ton (equiv. SANY SAT40C)', qty: 15, unitPrice: 350000, currency: 'USD' },
@@ -3116,14 +3117,14 @@ const rareEarthProjects = [ // __DATA_BEGIN_PROJECTS__
   },
   {
     priority: 'high', company: 'Aclara Resources', origin: 'Canadá',
-    project: 'Carina', location: { city: 'Aparecida de Goiânia', state: 'GO' },
+    project: 'Carina', location: { city: 'Nova Roma', state: 'GO' },
     capex: 781, capexDetail: 'US$ 780,9M',
-    stage: 5, forecast: 'Construção H2/26 · Produção H2/28', capacity: '4.378 t/ano REO',
-    licensing: 'FS completo (Abr/26) · LI obtida',
+    stage: 4, forecast: 'Obras iniciais 2026 · construção plena 2027 · produção 2028', capacity: '4.378 t/ano REO',
+    licensing: 'EIA recebido em Jun/2026 · processo de licenciamento em andamento',
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras Hidráulicas', 'Tratores de Esteira', 'Pás Carregadeiras', 'Perfuratrizes'],
-    opportunity: 'US$ 234M', type: 'Argila Iônica',
+    opportunity: 'US$ 78M (cenário bruto a 10%)', type: 'Argila Iônica',
     highlights: 'Refino em Louisiana (EUA) · Hochschild + CAP + DFC · 18 anos vida útil',
-    startYear: 2028, depositType: 'iacSaprolite'
+    startYear: 2028, depositType: 'iacSaprolite', source: 'Aclara Resources — Carina Project e FS 2026'
   },
   {
     priority: 'high', company: 'Rainbow REE + Mosaic', origin: 'Internacional',
@@ -3264,7 +3265,7 @@ const greenfieldProjects = [
   {
     priority: 'critical', company: 'Vale S.A.', origin: 'Brasil',
     project: 'VALE — Serra Sul +20 Mtpa / S11D', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 2800, capexDetail: 'US$ 2,8B divulgados pela Vale', stage: 6,
+    capex: 2800, capexDetail: 'US$ 2,8B divulgados pela Vale', capexEstimate: false, capexConfidence: 'alta', stage: 6,
     forecast: 'Start-up iniciado em Jul/2026 · Britador de Compactos previsto para 4T26', capacity: '+20 Mt/ano de minério de ferro',
     licensing: 'Licença de Operação obtida · comissionamento e ramp-up',
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras', 'Equipamentos de apoio'],
@@ -3275,7 +3276,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale S.A.', origin: 'Brasil',
     project: 'VALE — Expansão Serra Leste', location: { city: 'Curionópolis', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX individual não divulgado no material consultado', stage: 6,
+    capex: 700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 700M alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 6,
     forecast: 'Expansão licenciada para operação', capacity: 'Expansão de 6 para 10 Mt/ano (+4 Mt/ano)',
     licensing: 'Licença de Operação da expansão obtida', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras'],
     opportunity: 'A qualificar', type: 'Minério de Ferro',
@@ -3285,7 +3286,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale S.A.', origin: 'Brasil',
     project: 'VALE — Serra Norte: N1, N2, N3 e Morro 2', location: { city: 'Parauapebas', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX individual não divulgado; inserido no programa regional de investimentos', stage: 3,
+    capex: 2500, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 2,5B alocados do programa regional Vale de US$ 15B para o conjunto N1/N2/N3/Morro 2', capexEstimate: true, capexConfidence: 'baixa', stage: 3,
     forecast: 'Novas frentes e reposição de reservas no ciclo 2026-2030', capacity: 'Capacidade incremental não individualizada',
     licensing: 'Frentes minerais em desenvolvimento/licenciamento', machines: ['Perfuratrizes', 'Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras'],
     opportunity: 'A qualificar', type: 'Minério de Ferro',
@@ -3295,7 +3296,7 @@ const greenfieldProjects = [
   {
     priority: 'critical', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Bacaba', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 290, capexDetail: 'US$ 290M divulgados pela Vale', stage: 5,
+    capex: 290, capexDetail: 'US$ 290M divulgados pela Vale', capexEstimate: false, capexConfidence: 'alta', stage: 5,
     forecast: 'Start-up antecipado para 3T27', capacity: '~50 kt/ano de cobre por 8 anos',
     licensing: 'Licença de Instalação obtida · construção em andamento', machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
     opportunity: 'US$ 87M', type: 'Cobre', highlights: 'VALE BASE METALS · extensão da vida útil do Complexo Sossego · 39% de avanço físico ao fim do 2T26',
@@ -3304,7 +3305,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Alemão', location: { city: 'Parauapebas', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
+    capex: 1500, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,5B alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
     capacity: '~80 kt/ano de cobre conforme mapa regional 2026-2030', licensing: 'Estudos e desenvolvimento',
     machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
     highlights: 'VALE BASE METALS · depósito de cobre do pipeline orgânico de Carajás · CAPEX e cronograma ainda requerem qualificação',
@@ -3313,7 +3314,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Cristalino', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
+    capex: 1500, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,5B alocados do programa regional Vale de US$ 15B', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto no pipeline de crescimento de cobre',
     capacity: '~80 kt/ano de cobre conforme mapa regional 2026-2030', licensing: 'Estudos e desenvolvimento',
     machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
     highlights: 'VALE BASE METALS · projeto de crescimento orgânico de cobre em Carajás · próximo ao corredor Sossego-Bacaba',
@@ -3322,7 +3323,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Paulo Afonso', location: { city: 'Parauapebas', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
+    capex: 1700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,7B alocados do programa regional Vale de US$ 15B; maior peso pela faixa de 70-100 kt/ano', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
     capacity: '70-100 kt/ano de cobre conforme mapa regional', licensing: 'Estudos e qualificação de recursos',
     machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
     highlights: 'VALE BASE METALS · alvo greenfield de cobre na região de Carajás · capacidade apresentada como faixa preliminar',
@@ -3331,7 +3332,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Projeto 118', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX individual não divulgado', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
+    capex: 1100, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,1B alocados do programa regional Vale de US$ 15B; referência de ~60 kt/ano', capexEstimate: true, capexConfidence: 'baixa', stage: 2, forecast: 'Projeto greenfield no horizonte 2026-2030',
     capacity: '~60 kt/ano de cobre conforme mapa regional', licensing: 'Estudos e qualificação de recursos',
     machines: ['Perfuratrizes', 'Escavadeiras', 'Tratores de Esteira', 'Caminhões Fora de Estrada', 'Carregadeiras'], opportunity: 'A qualificar', type: 'Cobre',
     highlights: 'VALE BASE METALS · alvo greenfield de cobre identificado como 118 · entre Carajás e o corredor Sossego-Bacaba',
@@ -3340,7 +3341,7 @@ const greenfieldProjects = [
   {
     priority: 'high', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Complexo Sossego / hub de expansão', location: { city: 'Canaã dos Carajás', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX incremental do hub não divulgado individualmente', stage: 6,
+    capex: 700, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 700M alocados do programa regional Vale de US$ 15B para integração e extensões do hub', capexEstimate: true, capexConfidence: 'baixa', stage: 6,
     forecast: 'Operação-base para integração de Bacaba e outros depósitos do corredor', capacity: 'Operação de cobre existente; expansão vinculada ao pipeline regional',
     licensing: 'Operação existente · expansões e extensões em desenvolvimento',
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Perfuratrizes', 'Motoniveladoras'],
@@ -3351,7 +3352,7 @@ const greenfieldProjects = [
   {
     priority: 'medium', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Salobo 3 / expansão Salobo', location: { city: 'Marabá', state: 'PA' },
-    capex: 0, capexDetail: 'CAPEX do recorte apresentado não individualizado', stage: 6, forecast: 'Ramp-up concluído; acompanhamento de otimização e crescimento',
+    capex: 1730, capexDetail: 'ESTIMATIVA DIRECIONAL: US$ 1,73B residuais alocados do programa regional Vale de US$ 15B para Salobo 3/expansões', capexEstimate: true, capexConfidence: 'baixa', stage: 6, forecast: 'Ramp-up concluído; acompanhamento de otimização e crescimento',
     capacity: '+30 kt/ano de cobre no mapa regional', licensing: 'Operação e ramp-up',
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Motoniveladoras', 'Equipamentos de apoio'],
     opportunity: 'Pós-venda e expansão a qualificar', type: 'Cobre',
@@ -3361,7 +3362,7 @@ const greenfieldProjects = [
   {
     priority: 'medium', company: 'Vale Base Metals', origin: 'Brasil / Internacional',
     project: 'VALE BASE METALS — Onça Puma, Forno 2', location: { city: 'Ourilândia do Norte', state: 'PA' },
-    capex: 480, capexDetail: 'US$ 480M de CAPEX final', stage: 6, forecast: 'Operação iniciada em Set/2025',
+    capex: 480, capexDetail: 'US$ 480M de CAPEX final', capexEstimate: false, capexConfidence: 'alta', stage: 6, forecast: 'Operação iniciada em Set/2025',
     capacity: '+15 kt/ano de níquel; capacidade nominal total de 40 kt/ano', licensing: 'Em operação',
     machines: ['Caminhões Fora de Estrada', 'Escavadeiras', 'Tratores de Esteira', 'Carregadeiras', 'Equipamentos de apoio'],
     opportunity: 'Pós-venda e renovação a qualificar', type: 'Níquel',
@@ -4272,6 +4273,10 @@ function init() {
 
   document.getElementById('totalProjetos').textContent = projects.length;
   document.getElementById('totalCapex').innerHTML = 'US$ ' + (totalCapex / 1000).toFixed(1) + ' Bi';
+  const totalCapexSub = document.getElementById('totalCapex')?.parentElement?.querySelector('.sub');
+  if (totalCapexSub) totalCapexSub.textContent = projects.some(p => p.capexEstimate)
+    ? 'Inclui estimativas direcionais claramente identificadas'
+    : 'Investimento acumulado';
 
   document.getElementById('totalEstados').textContent = states.length;
   const statesListEl = document.getElementById('summaryStatesList');
@@ -4379,7 +4384,7 @@ function renderTable(data) {
           <span class="state">${p.location.state}</span>
         </div>
       </td>
-      <td class="capex">US$ ${p.capex}M <small>${p.capexDetail.split('·')[0]}</small></td>
+      <td class="capex">${p.capexEstimate ? '~' : ''}US$ ${p.capex}M <small>${p.capexEstimate ? 'ESTIMATIVA · ' : ''}${p.capexDetail.split('·')[0]}</small></td>
       <td><span class="tag ${stageClassMap[p.stage]}">${stageShort[p.stage]}</span></td>
       <td style="font-size:12px;color:var(--cat-text-muted)">${p.forecast}</td>
       <td style="font-size:11px;color:var(--cat-text-muted);max-width:160px">${p.licensing}</td>
@@ -4875,7 +4880,7 @@ function showStateProjects(abbr, info, stateName) {
 
   const sorted = [...info.projects].sort((a, b) => b.capex - a.capex);
   const totalCapex = sorted.reduce((sum, p) => sum + (p.capex || 0), 0);
-  const conv = ((sotreqConfig && sotreqConfig.conversao) || 30) / 100;
+  const conv = ((sotreqConfig && sotreqConfig.conversao) || 10) / 100;
   const opp = Math.round(totalCapex * conv);
   const companies = new Set(sorted.map(p => p.company)).size;
   const maxStage = Math.max(...sorted.map(p => p.stage || 1));
@@ -4901,7 +4906,7 @@ function showStateProjects(abbr, info, stateName) {
           '<div class="sdp-top">' +
             '<div><div class="sdp-company">' + escHtml(p.company) + '</div>' +
             '<div class="sdp-project">' + escHtml(p.project) + ' · ' + escHtml((p.location && p.location.city) || '') + '</div></div>' +
-            '<div class="sdp-capex">US$ ' + escHtml(String(p.capex || 0)) + 'M</div>' +
+            '<div class="sdp-capex">' + (p.capexEstimate ? '~' : '') + 'US$ ' + escHtml(String(p.capex || 0)) + 'M' + (p.capexEstimate ? ' <small>estimativa</small>' : '') + '</div>' +
           '</div>' +
           '<div class="sdp-tags">' +
             '<span class="sdp-tag">' + escHtml(stageShort[p.stage] || ('S' + p.stage)) + '</span>' +
@@ -5526,17 +5531,18 @@ async function sotreqLoadData() {
     savedNews = savedNews.filter(n => !/MRN|Rio do Norte|Novas Minas|Furnas|Ero Copper/i.test(`${n.company || ''} ${n.title || ''}`));
   }
 
-  // Start from defaults, overlay safe fields from saved projects
+  // Start from defaults and overlay the complete persisted record. This keeps
+  // CAPEX, priority, location, quotes, fleet and sources after a reload.
   projects.length = 0;
   let projectsChanged = false;
-  const safeFields = ['stage','forecast','licensing','highlights','capacity','sotreqStatus','machines'];
   for (const dp of defaultProjects) {
     const sp = savedProjects.find(p => p.company === dp.company && p.project === dp.project);
     if (sp) {
-      const merged = JSON.parse(JSON.stringify(dp));
-      for (const f of safeFields) {
-        if (sp[f] !== undefined && sp[f] !== null && sp[f] !== '') merged[f] = sp[f];
-      }
+      const merged = {
+        ...JSON.parse(JSON.stringify(dp)),
+        ...JSON.parse(JSON.stringify(sp)),
+        location: { ...(dp.location || {}), ...(sp.location || {}) }
+      };
       projects.push(merged);
     } else {
       projects.push(dp);
@@ -5675,6 +5681,45 @@ async function sotreqLoadData() {
   newsData.sort((a, b) => newsDateValue(b.date) - newsDateValue(a.date));
   if (beforeSort !== newsData.map(n => `${n.date}|${n.title}`).join('\n')) changed = true;
   if (changed || localNeedsDatabaseSync) await sotreqSaveData();
+  detectPortfolioChanges();
+}
+
+function detectPortfolioChanges() {
+  const key = `sotreq_project_watch_${activePortfolioMode}`;
+  const current = projects.map(p => ({
+    key: `${p.company}|${p.project}`,
+    company: p.company,
+    project: p.project,
+    capex: Number(p.capex || 0),
+    estimated: Boolean(p.capexEstimate)
+  }));
+  let previous = null;
+  try { previous = JSON.parse(localStorage.getItem(key) || 'null'); } catch (_) {}
+  localStorage.setItem(key, JSON.stringify(current));
+  if (!Array.isArray(previous) || !previous.length) return;
+
+  const previousMap = new Map(previous.map(p => [p.key, p]));
+  const added = current.filter(p => !previousMap.has(p.key));
+  const capexChanges = current.filter(p => {
+    const old = previousMap.get(p.key);
+    return old && Number(old.capex) !== Number(p.capex);
+  }).map(p => ({ ...p, oldCapex: Number(previousMap.get(p.key).capex || 0) }));
+  if (!added.length && !capexChanges.length) return;
+
+  document.getElementById('portfolioChangeAlert')?.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'portfolioChangeAlert';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:20px;';
+  const addedHtml = added.map(p => `<li><strong>Novo projeto:</strong> ${escHtml(p.company)} — ${escHtml(p.project)}</li>`).join('');
+  const capexHtml = capexChanges.map(p => `<li><strong>CAPEX alterado:</strong> ${escHtml(p.company)} — ${escHtml(p.project)}: ${p.oldCapex ? 'US$ ' + p.oldCapex + 'M' : 'não informado'} → ${p.estimated ? '~' : ''}US$ ${p.capex}M${p.estimated ? ' (estimativa)' : ''}</li>`).join('');
+  overlay.innerHTML = `<div style="width:min(620px,96vw);max-height:82vh;overflow:auto;background:var(--cat-dark);border:1px solid var(--cat-yellow);border-radius:16px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.55);">
+    <div style="display:flex;gap:12px;align-items:flex-start;"><i class="bi bi-bell-fill" style="font-size:25px;color:var(--cat-yellow);"></i><div><h3 style="margin:0 0 6px;">Atualização no portfólio ${escHtml(portfolioInfo().label)}</h3><p style="margin:0;color:var(--cat-text-muted);font-size:13px;">O sistema detectou novos projetos ou mudança de CAPEX desde sua última consulta.</p></div></div>
+    <ul style="margin:18px 0;padding-left:22px;display:grid;gap:10px;font-size:13px;line-height:1.45;">${addedHtml}${capexHtml}</ul>
+    <p style="font-size:11px;color:var(--cat-text-muted);">Valores com ~ são estimativas direcionais e devem ser qualificados antes de uso comercial.</p>
+    <button onclick="document.getElementById('portfolioChangeAlert').remove()" style="float:right;padding:9px 18px;border:0;border-radius:8px;background:var(--cat-yellow);color:#111;font-weight:800;cursor:pointer;">Entendido</button><div style="clear:both;"></div>
+  </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
 }
 async function sotreqSaveData() {
   const saveKey = activePortfolioMode === 'rareEarth' ? 'sotreq_data' : 'sotreq_data_greenfield';
@@ -5687,7 +5732,8 @@ async function sotreqSaveData() {
 
 // ── CONFIGURAÇÕES DOS INDICADORES ──
 let sotreqConfig = {
-  conversao: 30,           // % do CAPEX Total que vira Oportunidade Sotreq
+  conversao: 10,           // cenário potencial bruto da oportunidade Sotreq
+  businessModelVersion: 2, // v2 fixa o cenário executivo em 10%
   anoInicio: 2026,
   anoFim: 2030,
   taxaCrescimento: '15–20%',
@@ -5706,6 +5752,12 @@ function sotreqLoadConfig() {
   if (saved) {
     let c;
     try { c = JSON.parse(saved); Object.assign(sotreqConfig, c); } catch(e) { c = {}; }
+    if (!c.businessModelVersion || c.businessModelVersion < 2) {
+      sotreqConfig.conversao = 10;
+      sotreqConfig.businessModelVersion = 2;
+      localStorage.setItem('sotreq_config', JSON.stringify(sotreqConfig));
+      localStorage.setItem('sotreq_config_updated_at', new Date().toISOString());
+    }
     if (!c.fleetModelVersion || c.fleetModelVersion < 5) {
       sotreqConfig.fleetModelVersion = 5;
       sotreqConfig.handbookModel = { hoursPerYear: 5500, efficiency: 0.72, targetPasses: 3.5 };
@@ -6127,7 +6179,7 @@ function renderCharts() {
 }
 
 function commercialOpportunity(p) {
-  return p.capex * ((sotreqConfig.conversao || 30) / 100);
+  return p.capex * ((sotreqConfig.conversao || 10) / 100);
 }
 
 function projectFleetTotal(p) {
@@ -6279,7 +6331,7 @@ function renderCommercialPriorityMatrix() {
     .selectAll('text').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '700');
   g.selectAll('.domain').attr('stroke', 'none');
   svg.append('text').attr('x', margin.left + iw / 2).attr('y', h - 12).attr('text-anchor', 'middle').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '800').text('Timing / estágio de maturidade');
-  svg.append('text').attr('transform', 'rotate(-90)').attr('x', -(margin.top + ih / 2)).attr('y', 18).attr('text-anchor', 'middle').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '800').text('Oportunidade Sotreq estimada');
+  svg.append('text').attr('transform', 'rotate(-90)').attr('x', -(margin.top + ih / 2)).attr('y', 18).attr('text-anchor', 'middle').style('fill', 'var(--cat-text-muted)').attr('font-size', '10px').attr('font-weight', '800').text('Cenário potencial bruto Sotreq');
 }
 
 function renderCommercialFunnel() {
@@ -6314,7 +6366,7 @@ function renderScenarioSimulator() {
   const fx = document.getElementById('scenarioFx');
   const truck = document.getElementById('scenarioTruckFactor');
   if (!conv || !fx || !truck) return;
-  if (!conv.value) conv.value = sotreqConfig.conversao || 30;
+  if (!conv.value) conv.value = sotreqConfig.conversao || 10;
   if (!fx.value) fx.value = sotreqConfig.brlRate || 5;
   if (!truck.value) truck.value = 100;
   updateScenarioSimulator();
@@ -6324,7 +6376,7 @@ function updateScenarioSimulator() {
   const result = document.getElementById('scenarioResults');
   if (!result) return;
   const data = chartFilteredProjects();
-  const conv = parseFloat(document.getElementById('scenarioConversion')?.value || sotreqConfig.conversao || 30);
+  const conv = parseFloat(document.getElementById('scenarioConversion')?.value || sotreqConfig.conversao || 10);
   const fx = parseFloat(document.getElementById('scenarioFx')?.value || sotreqConfig.brlRate || 5);
   const truckFactor = parseFloat(document.getElementById('scenarioTruckFactor')?.value || 100) / 100;
   const useSmallTruck = !!document.getElementById('scenarioCat707')?.checked;
@@ -6590,7 +6642,7 @@ function openCompare() {
     { label: 'Carregadeiras', fn: p => { const f = estimateProjectFleet(p); return (f.loaders||0) + ' un.'; } },
     { label: 'Escavadeiras', fn: p => { const f = estimateProjectFleet(p); return (f.excavators||0) + ' un.'; } },
     { label: 'Tratores', fn: p => { const f = estimateProjectFleet(p); return (f.dozers||0) + ' un.'; } },
-    { label: 'Oport. Sotreq', fn: p => { const c = sotreqConfig || {}; const r = (c.conversao||30)/100; return 'US$ ' + (p.capex * r).toFixed(0) + 'M'; } },
+    { label: 'Cenário Sotreq', fn: p => { const c = sotreqConfig || {}; const r = (c.conversao||10)/100; return 'US$ ' + (p.capex * r).toFixed(0) + 'M'; } },
     { label: 'Status', fn: p => p.sotreqStatus || 'não iniciado' }
   ];
 
@@ -6640,7 +6692,7 @@ function chartTooltip(container) {
 function renderChartCapexByState() {
   const container = document.getElementById('chartCapexByState');
   const data = chartFilteredProjects();
-  const rate = (sotreqConfig.conversao || 30) / 100;
+  const rate = (sotreqConfig.conversao || 10) / 100;
   const stateData = {};
   data.forEach(p => {
     const st = p.location.state;
@@ -6861,7 +6913,7 @@ function renderChartStageDistribution() {
 function renderChartDepositType() {
   const container = document.getElementById('chartDepositType');
   const data = chartFilteredProjects();
-  const rate = (sotreqConfig.conversao || 30) / 100;
+  const rate = (sotreqConfig.conversao || 10) / 100;
   const depData = {};
   data.forEach(p => {
     const dt = opportunityProfileKey(p);
@@ -6962,7 +7014,7 @@ function renderChartDepositType() {
 function renderChartPriority() {
   const container = document.getElementById('chartPriority');
   const data = chartFilteredProjects();
-  const rate = (sotreqConfig.conversao || 30) / 100;
+  const rate = (sotreqConfig.conversao || 10) / 100;
   const prioData = {};
   data.forEach(p => {
     prioData[p.priority] = (prioData[p.priority] || 0) + p.capex * rate;
@@ -7116,7 +7168,7 @@ function renderChartCompanyCapexSotreq() {
     compData[key] = (compData[key] || 0) + p.capex;
   });
   const chartData = Object.entries(compData).sort((a, b) => b[1] - a[1]).map(d => {
-    const conv = sotreqConfig.conversao || 30;
+    const conv = sotreqConfig.conversao || 10;
     return { company: d[0], capex: d[1], sotreq: Math.round(d[1] * conv / 100) };
   });
 
@@ -8000,7 +8052,7 @@ function adminSaveForm() {
       capacity: vals.capacity || '',
       licensing: vals.licensing || '',
       machines: vals.machines ? vals.machines.split(',').map(s => s.trim()).filter(Boolean) : [],
-      opportunity: 'US$ ' + Math.round((parseFloat(vals.capex) || 0) * (sotreqConfig.conversao || 30) / 100) + 'M',
+      opportunity: 'US$ ' + Math.round((parseFloat(vals.capex) || 0) * (sotreqConfig.conversao || 10) / 100) + 'M (cenário bruto)',
       type: vals.type || 'Argila Iônica',
       highlights: vals.highlights || '',
       sotreqStatus: vals.sotreqStatus || 'nao-iniciado',
@@ -8149,7 +8201,7 @@ function adminRenderIndicatorsSummary() {
   const states = [...new Set(projects.map(p => p.location.state))];
   const fe = estimateFleet(projects);
   const sm = {};
-  Object.keys(fe).forEach(k => { sm[k] = Math.round(fe[k] * rate); });
+  Object.keys(fe).forEach(k => { sm[k] = fe[k]; });
   const totalOpp = rawCapex * rate;
   const is_ = document.getElementById('apIndicatorsSummary');
   is_.innerHTML = `
@@ -8202,8 +8254,8 @@ function adminRenderIndicatorsSummary() {
     </div></div>
 
     <div class="ap-card"><div class="apc-header"><div>
-      <div class="apc-title"><i class="bi bi-currency-dollar"></i> Oportunidade Sotreq</div>
-      <span class="apc-sub">Receita estimada · ${c.conversao}% do CAPEX Total</span>
+      <div class="apc-title"><i class="bi bi-currency-dollar"></i> Cenário potencial bruto Sotreq</div>
+      <span class="apc-sub">${c.conversao}% do CAPEX total · não representa previsão de receita</span>
     </div></div>
     <div class="apc-body"><span class="apc-field"><strong>Total:</strong> US$ ${totalOpp >= 1000 ? (totalOpp/1000).toFixed(1) + ' Bi' : totalOpp + ' Mi'}</span></div>
     <div style="margin-top:8px;padding:8px;background:rgba(255,205,0,0.06);border-radius:6px;font-size:11px;color:var(--cat-text-muted);font-family:monospace;">
@@ -8290,7 +8342,7 @@ function adminRenderIndicatorsSummary() {
 
 function adminPreviewConfig() {
   const c = sotreqConfig;
-  c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 30, 50);
+  c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 10, 50);
   c.anoInicio = parseInt(document.getElementById('cfg_anoInicio').value) || 2026;
   c.anoFim = parseInt(document.getElementById('cfg_anoFim').value) || 2030;
   c.taxaCrescimento = document.getElementById('cfg_taxaCrescimento').value || '15–20%';
@@ -8305,7 +8357,7 @@ function adminPreviewConfig() {
 }
 async function adminSaveConfig() {
   const c = sotreqConfig;
-  c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 30, 50);
+  c.conversao = Math.min(parseFloat(document.getElementById('cfg_conversao').value) || 10, 50);
   c.anoInicio = parseInt(document.getElementById('cfg_anoInicio').value) || 2026;
   c.anoFim = parseInt(document.getElementById('cfg_anoFim').value) || 2030;
   c.taxaCrescimento = document.getElementById('cfg_taxaCrescimento').value || '15–20%';
@@ -8746,7 +8798,7 @@ function typeMinerAIIntro() {
 function buildChatContextLegacy() {
   const meta = portfolioInfo();
   const total = projects.reduce((a, p) => a + p.capex, 0);
-  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
+  const c = typeof sotreqConfig !== 'undefined' ? sotreqConfig : { conversao: 10, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
   const conv = c.conversao;
   const opp = total * (conv / 100);
 
@@ -8795,7 +8847,7 @@ FUNCIONAMENTO:
 PROJETOS (${projects.length}):
 ${projLines.join('\n')}
 
-CAPEX total: US$${(total/1000).toFixed(1)}Bi | Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}%) | Janela crítica: ${c.anoInicio}–${c.anoFim}
+CAPEX total: US$${(total/1000).toFixed(1)}Bi | Cenário potencial bruto Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}%; não é previsão de receita) | Janela crítica: ${c.anoInicio}–${c.anoFim}
 
 FROTA: Caminhões US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Perfuratrizes US$1,2Mi | Motoniveladoras US$1,5Mi | Equip.Apoio US$700k
 Alocações: ${allocLines.join(' | ') || '—'}
@@ -8805,7 +8857,7 @@ PROJEÇÕES (use para calcular estimativas anuais):
 - CAPEX total do projeto distribuído pelos anos conforme estágio.
 - Curva de desembolso estimada por estágio: S1(Exploração)=5% ano | S2(Prospecção)=10% | S3(Viabilidade)=20% | S4(Licenciamento)=15% | S5(Construção)=40% | S6(Operação/Expansão)=10% (do CAPEX total por ano, enquanto durar a fase)
 - Use o campo "forecast" de cada projeto para identificar marcos e anos-chave.
-- Oportunidade Sotreq por ano = CAPEX anual do projeto × ${conv}%
+- Cenário potencial bruto Sotreq por ano = CAPEX anual do projeto × ${conv}%; não tratar como receita prevista ou contratada
 - Janela ${c.anoInicio}–${c.anoFim} é o período crítico de oportunidade Sotreq.
 - Explique suas premissas ao fazer projeções.
 
@@ -8822,8 +8874,8 @@ function buildChatContext() {
   const total = projects.reduce((a, p) => a + p.capex, 0);
   const c = typeof sotreqConfig !== 'undefined'
     ? sotreqConfig
-    : { conversao: 30, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
-  const conv = c.conversao || 30;
+    : { conversao: 10, anoInicio: 2026, anoFim: 2030, equipPrices: { trucks: 443000, excavators: 255000, loaders: 245000, dozers: 410000, drills: 1200000, support1: 293000, support2: 113000 }, brlRate: 5.0 };
+  const conv = c.conversao || 10;
   const opp = total * (conv / 100);
 
   const famLabels = {
@@ -8842,9 +8894,30 @@ function buildChatContext() {
   const fleet = estimateFleet(projects);
   const fleetLines = Object.entries(famLabels).map(([k, label]) => `${label}: ${fleet[k] || 0}`).join(' | ');
 
-  const projLines = projects.map((p, i) =>
-    `${i+1}. ${p.company} - ${p.project} (${p.location.city}, ${p.location.state}) | CAPEX US$${p.capex}M | Oport. Sotreq ~US$${Math.round(p.capex * conv / 100)}M | S${p.stage} ${stageShort[p.stage] || ''} | prioridade ${priorityLabel[p.priority] || p.priority} | forecast: ${p.forecast || 'sem previsao'}${p.capacity ? ' | capacidade: ' + p.capacity : ''} | status Sotreq: ${statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'nao iniciado'} | destaque: ${p.highlights || 'sem destaque'}`
-  );
+  const projectEvidence = projects.map((p, i) => {
+    const pf = estimateFleet([p]);
+    const fleetDetail = Object.entries(famLabels).map(([k, label]) => `${label} ${pf[k] || 0}`).join(', ');
+    const realFleet = p.realFleet
+      ? Object.entries(p.realFleet).map(([k, qty]) => `${famLabels[k] || k} ${qty}`).join(', ')
+      : 'nao cadastrada';
+    const quotes = Array.isArray(p.quote) && p.quote.length
+      ? p.quote.map(q => `${q.qty}x ${q.model} (${q.currency} ${Number(q.unitPrice || 0).toLocaleString('pt-BR')}/un)`).join('; ')
+      : 'nenhuma cotacao cadastrada';
+    const capexText = Number(p.capex) > 0 ? `${p.capexEstimate ? 'ESTIMATIVA ~' : 'DIVULGADO '}US$${p.capex}M` : 'nao divulgado';
+    const opportunityText = Number(p.capex) > 0 ? `~US$${Math.round(p.capex * conv / 100)}M (premissa ${conv}%)` : 'a qualificar; nao calcular sem CAPEX';
+    return `[P${i+1}] ${p.company} — ${p.project}
+Local: ${p.location.city}/${p.location.state} | mineral/perfil: ${p.type || depTypesDB[p.depositType] || 'nao informado'} | origem: ${p.origin || 'nao informada'}
+CAPEX: ${capexText} | confianca: ${p.capexConfidence || (p.capexEstimate ? 'baixa' : 'nao classificada')} | detalhe CAPEX: ${p.capexDetail || 'nao informado'} | cenario potencial bruto Sotreq: ${opportunityText}
+Estagio: S${p.stage} ${stageShort[p.stage] || ''} | prioridade: ${priorityLabel[p.priority] || p.priority} | status Sotreq: ${statusLabel[p.sotreqStatus || 'nao-iniciado'] || 'nao iniciado'}
+Cronograma: ${p.forecast || 'nao informado'} | inicio: ${p.startYear || 'nao definido'} | licenciamento: ${p.licensing || 'nao informado'}
+Capacidade/movimentacao: ${p.capacity || 'nao informada'}
+Maquinas indicadas no cadastro: ${(p.machines || []).join(', ') || 'nao informadas'}
+Frota direcional calculada: total ${pf.total || 0}; ${fleetDetail}
+Frota real/historica: ${realFleet}
+Cotacao: ${quotes}
+Destaques: ${p.highlights || 'nao informados'}
+Fonte do projeto: ${p.source || 'fonte individual nao cadastrada; tratar como dado interno do portal'}`;
+  });
 
   const topProjects = [...projects].sort((a, b) => b.capex - a.capex).slice(0, 8).map((p, i) =>
     `${i+1}. ${p.company}/${p.project}: CAPEX US$${p.capex}M, oport. Sotreq ~US$${Math.round(p.capex * conv / 100)}M, S${p.stage}, ${p.location.state}, prioridade ${priorityLabel[p.priority] || p.priority}`
@@ -8868,8 +8941,8 @@ function buildChatContext() {
     .sort((a, b) => b[1].capex - a[1].capex)
     .map(([st, v]) => `${st}: ${v.count} projeto(s), CAPEX US$${v.capex}M, oport. Sotreq ~US$${Math.round(v.capex * conv / 100)}M, contas: ${v.companies.slice(0,4).join('; ')}`);
 
-  const newsLines = (typeof newsData !== 'undefined' && newsData.length ? newsData.slice(-10).map(n =>
-    `- [${n.date}] ${n.company} - ${n.title}`
+  const newsLines = (typeof newsData !== 'undefined' && newsData.length ? newsData.slice(0, 20).map((n, i) =>
+    `[N${i+1}] ${n.date} | ${n.company} | ${n.title} | Fonte: ${n.source || 'nao informada'} | Resumo: ${n.text || 'sem resumo'} | Link: ${n.link || 'nao cadastrado'}`
   ) : []);
 
   const allocMap = typeof EQUIP_ALLOC !== 'undefined' ? EQUIP_ALLOC : {};
@@ -8910,6 +8983,11 @@ ESTILO DE RESPOSTA
 - Evite jargao geologico excessivo. Traduza para impacto comercial.
 - Nao seja consultoria para mineradora nem portal de investidor. O foco e entendimento do projeto e impacto para a Sotreq.
 - Se houver incerteza, mostre a premissa e nao apresente como fato.
+- Nunca use conhecimento de memoria para atualizar o status de um projeto. O portal nao possui busca web ao vivo. Se a informacao nao estiver nos dados abaixo, diga exatamente que ela nao esta cadastrada.
+- Diferencie sempre: DADO DO PORTAL, PREMISSA/ESTIMATIVA e RECOMENDACAO COMERCIAL.
+- Ao citar fato material (CAPEX, data, licenca, capacidade, financiamento), indique a referencia [P#] e, quando houver noticia, [N#].
+- Nao transforme o total regional de US$15B da Vale em CAPEX individual. Projetos com CAPEX zero significam "nao divulgado", nunca investimento zero.
+- Operacao existente, expansao, brownfield e greenfield sao categorias diferentes. Nao chame Salobo, Sossego ou Onca Puma de mina greenfield nova.
 
 REGRAS DE RACIOCINIO
 1. Primeiro classifique a pergunta: panorama da carteira, projeto especifico, comparacao/priorizacao, frota/CAPEX ou abordagem comercial.
@@ -8921,6 +8999,12 @@ REGRAS DE RACIOCINIO
 7. Para "como abordar?", entregue uma fala pronta curta, pontos de descoberta e proximo passo.
 8. Para pergunta simples, responda simples. Nao explique metodologia se a pessoa pediu apenas um numero.
 9. Para pergunta dificil, separe dados do portal de premissas.
+10. Antes de responder, confira empresa e projeto por nome completo e apelidos. Nao misture projetos com nomes parecidos.
+11. Recalcule somas a partir dos projetos relevantes. Nao estime total por memoria.
+12. Se houver cotacao ou frota real, elas prevalecem sobre a frota direcional. Diga qual base foi usada.
+13. Se CAPEX, capacidade, licenciamento ou cronograma estiver ausente, nao preencha a lacuna. Informe "nao cadastrado" e proponha a pergunta comercial necessaria para qualificar.
+14. Para ranking, explique os criterios: valor, maturidade, timing, status Sotreq e confiabilidade do dado.
+15. Se o usuario contestar um dado, reconheca a divergencia e apresente a referencia do portal; nao insista sem evidencia.
 
 EXEMPLOS DE INTENCAO
 - Usuario: "me fala sobre os novos projetos" -> responder com panorama: total de projetos, CAPEX, principais contas, estados e 2-3 proximas acoes comerciais.
@@ -8931,13 +9015,13 @@ RESUMO DA CARTEIRA
 Portfolio ativo: ${meta.label}
 Projetos: ${projects.length}
 CAPEX total: US$${(total/1000).toFixed(1)}Bi
-Oportunidade Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}% do CAPEX)
+Cenario potencial bruto Sotreq: ~US$${(opp/1000).toFixed(1)}Bi (${conv}% do CAPEX; hipotese executiva, nao previsao de receita)
 Janela critica: ${c.anoInicio}-${c.anoFim}
 Frota estimada total: ${fleet.total || 0} equipamentos | ${fleetLines}
 
 RESPOSTA MODELO PARA PANORAMA
 Se o usuario pedir "novos projetos" ou "me fala dos projetos", responda assim, adaptando aos dados:
-"No portfolio ativo (${meta.label}), temos ${projects.length} projetos mapeados, CAPEX total de US$${(total/1000).toFixed(1)}Bi e oportunidade Sotreq estimada em US$${(opp/1000).toFixed(1)}Bi. Os principais por potencial sao: ${topProjects.slice(0,3).join(' | ')}. Para vendas, eu priorizaria contas em S3-S5 e alto CAPEX, porque sao as janelas em que engenharia, frota e compras ficam mais influenciaveis."
+"No portfolio ativo (${meta.label}), temos ${projects.length} projetos mapeados, CAPEX total de US$${(total/1000).toFixed(1)}Bi e cenario potencial bruto Sotreq de US$${(opp/1000).toFixed(1)}Bi, usando a hipotese executiva de ${conv}% — nao uma previsao de receita. Os principais por potencial sao: ${topProjects.slice(0,3).join(' | ')}. Para vendas, eu priorizaria contas em S3-S5 e alto CAPEX, porque sao as janelas em que engenharia, frota e compras ficam mais influenciaveis."
 
 TOP CONTAS POR POTENCIAL
 ${topProjects.join('\n')}
@@ -8952,18 +9036,18 @@ PLAYBOOK COMERCIAL
 ${playbook.map(x => '- ' + x).join('\n')}
 
 PROJETOS DO PORTAL
-${projLines.join('\n')}
+${projectEvidence.join('\n\n')}
 
 PREMISSAS DE VALOR E FROTA
-Oportunidade Sotreq = CAPEX do projeto x ${conv}%.
+Cenario potencial bruto Sotreq = CAPEX do projeto x ${conv}%. Esta e uma hipotese executiva de dimensionamento; nunca a apresente como receita prevista, contratada ou probabilidade de fechamento.
 Precos medios: Caminhoes US$800k | Escavadeiras US$4,5Mi | Carregadeiras US$3,8Mi | Tratores US$2,5Mi | Perfuratrizes US$1,2Mi | Motoniveladoras US$1,5Mi | Equip. Apoio US$700k.
 Alocacoes por perfil: ${allocLines.join(' | ') || 'nao disponivel'}
-${newsLines.length ? '\nULTIMAS NOTICIAS DO PORTAL\n' + newsLines.join('\n') : ''}
+${newsLines.length ? '\nULTIMAS NOTICIAS DO PORTAL (ordenadas da mais recente para a mais antiga)\n' + newsLines.join('\n') : ''}
 
 PROJECOES
 Use apenas quando o usuario pedir estimativa por ano.
 - Curva estimada por estagio: S1=5%, S2=10%, S3=20%, S4=15%, S5=40%, S6=10% do CAPEX.
-- Oportunidade Sotreq por ano = CAPEX anual x ${conv}%.
+- Cenario potencial bruto Sotreq por ano = CAPEX anual x ${conv}%; mantenha o alerta de que nao e previsao de receita.
 - Explique a premissa em uma linha.
 
 PREMISSAS TECNICAS
@@ -9018,7 +9102,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 const WORKER_URL = 'https://winter-pond-4ae1.brunnomm1.workers.dev';
-const CHAT_MODEL = 'gpt-4o-mini';
+const CHAT_MODEL = 'gpt-5.4-mini';
 
 async function chatFetch(body) {
   const resp = await fetch(WORKER_URL, {
@@ -9055,7 +9139,7 @@ async function sendChat() {
       { role: 'user', content: text }
     ];
 
-    const body = { messages: msgs, stream: true, temperature: 0.2, max_tokens: 2200 };
+    const body = { messages: msgs, stream: true, reasoning_effort: 'low', max_completion_tokens: 3500 };
 
     const resp = await chatFetch(body);
 
